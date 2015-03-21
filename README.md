@@ -50,6 +50,7 @@
 *	Creación Ventana Principal.
 *	CRUD Usuarios (Cocineros, Mozos).
 *	CRUD Proveedores y sus categorías.
-*	CRUD Productos (Primario, Elaborado, Final) y sus categorías. *	Juntar en el controlador principal.		
+*	CRUD Productos (Primario, Elaborado, Final) y sus categorías
+*	Juntar en el controlador principal.	
 
 
