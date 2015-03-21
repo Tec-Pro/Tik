@@ -32,8 +32,8 @@
 *   DefaultTableModel = dtm 
 
 12.Clases:
-*   Controlador: controllerGui
-*   Interfaz: guiFunción
+*   Controlador: ControllerGui
+*   Interfaz: GuiFunción
 *   ABM: CRUDModel
 
 13.Tablas: convención de ActiveJDBC.    
