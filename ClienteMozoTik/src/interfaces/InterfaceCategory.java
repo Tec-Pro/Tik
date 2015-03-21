@@ -18,9 +18,9 @@ public interface InterfaceCategory extends Remote {
     
     
     
-    public boolean create(String name) throws java.rmi.RemoteException;
+    public Map<String,Object> create(String name) throws java.rmi.RemoteException;
      
-     public boolean modify(int id,String name) throws java.rmi.RemoteException;
+     public Map<String,Object> modify(int id,String name) throws java.rmi.RemoteException;
      
      public boolean delete(int id) throws java.rmi.RemoteException;
 
@@ -29,11 +29,11 @@ public interface InterfaceCategory extends Remote {
      
      public  List<Map> getCategories() throws java.rmi.RemoteException;    
      
-     public boolean addSubcategory(int id,String name)throws java.rmi.RemoteException;
+     public Map<String,Object> addSubcategory(int id,String name)throws java.rmi.RemoteException;
      
      public boolean deleteSubcategory(int id) throws java.rmi.RemoteException;
      
-     public boolean modifySubcategory(int id, String number)throws java.rmi.RemoteException;
+     public Map<String,Object> modifySubcategory(int id, String number)throws java.rmi.RemoteException;
      
      public List<Map> getSubcategoriesCategory(int id)throws java.rmi.RemoteException;
              

@@ -16,9 +16,9 @@ import java.util.Map;
  */
 public interface InterfaceProvider extends Remote {
 
-    public boolean create(String name, String cuit,String address,String description) throws java.rmi.RemoteException;
+    public Map<String,Object> create(String name, String cuit,String address,String description) throws java.rmi.RemoteException;
      
-     public boolean modify(int id,String name, String cuit,String address,String description) throws java.rmi.RemoteException;
+     public Map<String,Object> modify(int id,String name, String cuit,String address,String description) throws java.rmi.RemoteException;
      
      public boolean delete(int id) throws java.rmi.RemoteException;
      
@@ -26,11 +26,11 @@ public interface InterfaceProvider extends Remote {
      
      public  List<Map> getProviders() throws java.rmi.RemoteException;    
      
-     public boolean addPhone(int id,String number)throws java.rmi.RemoteException;
+     public Map<String,Object> addPhone(int id,String number)throws java.rmi.RemoteException;
      
      public boolean deletePhone(int id) throws java.rmi.RemoteException;
      
-     public boolean modifyPhone(int id, String number)throws java.rmi.RemoteException;
+     public Map<String,Object> modifyPhone(int id, String number)throws java.rmi.RemoteException;
      
      public List<Map> getPhonesProvider(int id)throws java.rmi.RemoteException;
              

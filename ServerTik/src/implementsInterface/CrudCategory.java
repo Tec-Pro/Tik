@@ -26,18 +26,16 @@ public class CrudCategory extends UnicastRemoteObject implements interfaces.Inte
         super();
         
     }
-    public boolean create(String name) throws java.rmi.RemoteException{
+    public Map<String,Object> create(String name) throws java.rmi.RemoteException{
         Utils.abrirBase();
         Base.openTransaction();
-        Category category= new Category();
-        category.setString("name",name);
-        boolean res = category.saveIt();
+        Map<String,Object> res = Category.createIt("name",name).toMap();
         Base.commitTransaction();
         Utils.cerrarBase();        
         return res;
     }
      
-     public boolean modify(int id,String name) throws java.rmi.RemoteException{
+     public Map<String,Object> modify(int id,String name) throws java.rmi.RemoteException{
         Utils.abrirBase();
         Category category= Category.findById(id);
         boolean res= false;
@@ -48,7 +46,7 @@ public class CrudCategory extends UnicastRemoteObject implements interfaces.Inte
             Base.commitTransaction();
             Utils.cerrarBase();
         }
-        return res;
+        return category.toMap();
      }
      
      public boolean delete(int id) throws java.rmi.RemoteException{
@@ -77,15 +75,15 @@ public class CrudCategory extends UnicastRemoteObject implements interfaces.Inte
          return ret;
      }
 
-             public boolean addSubcategory(int id,String name)throws java.rmi.RemoteException{
+             public Map<String,Object> addSubcategory(int id,String name)throws java.rmi.RemoteException{
              Utils.abrirBase();
              Base.openTransaction();
              Category category= Category.findById(id);
-             boolean ret= false;
+             Map<String,Object> ret= null;
              if(category!=null){
-                Subcategory subcategory = Subcategory.create("name",name);
+                Subcategory subcategory = Subcategory.createIt("name",name);
                 category.add(subcategory);
-                ret= true;
+                ret= subcategory.toMap();
              }
              Base.commitTransaction();
              Utils.cerrarBase();
@@ -105,14 +103,15 @@ public class CrudCategory extends UnicastRemoteObject implements interfaces.Inte
              return ret;
          }
          
-         public boolean modifySubcategory(int id, String name)throws java.rmi.RemoteException{
+         public Map<String,Object> modifySubcategory(int id, String name)throws java.rmi.RemoteException{
              Utils.abrirBase();
              Base.openTransaction();
-             boolean ret= false;
+             Map<String,Object> ret= null;
              Subcategory subcategory = Subcategory.findById(id);
              if(subcategory!=null){
                  subcategory.setString("name", name);
-                 ret=subcategory.saveIt();
+                 subcategory.saveIt();
+                 ret= subcategory.toMap();
              }
              Base.commitTransaction();
              Utils.cerrarBase();

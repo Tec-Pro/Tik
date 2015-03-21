@@ -25,19 +25,16 @@ public class CrudAdmin extends UnicastRemoteObject implements interfaces.Interfa
         
     }
     
-    public boolean create(String name, String pass) throws java.rmi.RemoteException{
+    public Map<String,Object> create(String name, String pass) throws java.rmi.RemoteException{
         Utils.abrirBase();
         Base.openTransaction();
-        Admin admin= new Admin();
-        admin.setString("name",name);
-        admin.setString("pass",pass);
-        boolean res = admin.saveIt();
+        Map<String,Object> res =Admin.createIt("name",name,"pass",pass);
         Base.commitTransaction();
         Utils.cerrarBase();        
         return res;
     }
      
-     public boolean modify(int id,String name, String pass) throws java.rmi.RemoteException{
+     public Map<String,Object> modify(int id,String name, String pass) throws java.rmi.RemoteException{
         Utils.abrirBase();
         Admin admin= Admin.findById(id);
         boolean res= false;
@@ -49,7 +46,7 @@ public class CrudAdmin extends UnicastRemoteObject implements interfaces.Interfa
             Base.commitTransaction();
             Utils.cerrarBase();
         }
-        return res;
+        return admin.toMap();
      }
      
      public boolean delete(int id) throws java.rmi.RemoteException{

@@ -26,31 +26,27 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.Inte
 
     }
 
-    public boolean create(String name, String cuit, String address, String description) throws java.rmi.RemoteException {
+    public Map<String,Object> create(String name, String cuit, String address, String description) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
-        Provider provider = new Provider();
-        provider.setString("name", name);
-        provider.setString("cuit", cuit);
-        provider.setString("address", address);
-        provider.setString("description", description);
-        boolean res = provider.saveIt();
+        Map<String,Object> ret= Provider.createIt("name", name,"cuit", cuit,"address", address,"description", description);
         Base.commitTransaction();
         Utils.cerrarBase();
-        return res;
+        return ret;
     }
 
-    public boolean modify(int id, String name, String cuit, String address, String description) throws java.rmi.RemoteException {
+    public Map<String,Object> modify(int id, String name, String cuit, String address, String description) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Provider provider = Provider.findById(id);
-        boolean res = false;
+        Map<String,Object> res = null;
         if (provider != null) {
             provider.setString("name", name);
             provider.setString("cuit", cuit);
             provider.setString("address", address);
             provider.setString("description", description);
             Base.openTransaction();
-            res = provider.saveIt();
+           provider.saveIt();
+            res= provider.toMap();
             Base.commitTransaction();
             Utils.cerrarBase();
         }
@@ -82,15 +78,15 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.Inte
         return ret;
     }
     
-         public boolean addPhone(int id,String number)throws java.rmi.RemoteException{
+         public Map<String,Object> addPhone(int id,String number)throws java.rmi.RemoteException{
              Utils.abrirBase();
              Base.openTransaction();
              Provider provider= Provider.findById(id);
-             boolean ret= false;
+             Map<String,Object> ret= null;
              if(provider!=null){
-                Phone phone = Phone.create("number",number);
+                Phone phone = Phone.createIt("number",number);
                 provider.add(phone);
-                ret= true;
+                ret= phone.toMap();
              }
              Base.commitTransaction();
              Utils.cerrarBase();
@@ -110,14 +106,15 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.Inte
              return ret;
          }
          
-         public boolean modifyPhone(int id, String number)throws java.rmi.RemoteException{
+         public Map<String,Object> modifyPhone(int id, String number)throws java.rmi.RemoteException{
              Utils.abrirBase();
              Base.openTransaction();
-             boolean ret= false;
+             Map<String,Object> ret= null;
              Phone phone = Phone.findById(id);
              if(phone!=null){
                  phone.setString("number", number);
-                 ret=phone.saveIt();
+                 phone.saveIt();
+                 ret= phone.toMap();
              }
              Base.commitTransaction();
              Utils.cerrarBase();

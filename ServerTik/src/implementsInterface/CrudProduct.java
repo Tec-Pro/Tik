@@ -23,31 +23,27 @@ public class CrudProduct extends UnicastRemoteObject implements interfaces.Inter
         super();
     }
 
-    public boolean create(String name, float stock, String measureUnit, float unitPrice) throws java.rmi.RemoteException {
+    public Map<String,Object> create(String name, float stock, String measureUnit, float unitPrice) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
-        Product product = new Product();
-        product.setString("name", name);
-        product.setFloat("stock", stock);
-        product.setString("measure_unit", measureUnit);
-        product.setFloat("unit_price", unitPrice);
-        boolean res = product.saveIt();
+        Map<String,Object>  ret= Product.createIt("name", name,"stock", stock,"measure_unit", measureUnit,"unit_price", unitPrice);
         Base.commitTransaction();
         Utils.cerrarBase();
-        return res;
+        return ret;
     }
 
-    public boolean modify(int id, String name, float stock, String measureUnit, float unitPrice) throws java.rmi.RemoteException {
+    public Map<String,Object> modify(int id, String name, float stock, String measureUnit, float unitPrice) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Product product = Product.findById(id);
-        boolean res = false;
+        Map<String,Object> res = null;
         if (product != null) {
             product.setString("name", name);
             product.setFloat("stock", stock);
             product.setString("measure_unit", measureUnit);
             product.setFloat("unit_price", unitPrice);
             Base.openTransaction();
-            res = product.saveIt();
+            product.saveIt();
+            res= product.toMap();
             Base.commitTransaction();
             Utils.cerrarBase();
         }

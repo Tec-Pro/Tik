@@ -25,25 +25,19 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
 
     }
 
-    public boolean create(String name, String pass, Date entryDate, Date exitDate, String turn) throws java.rmi.RemoteException {
+    public Map<String,Object> create(String name, String pass, Date entryDate, Date exitDate, String turn) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
-        User user = new User();
-        user.setString("name", name);
-        user.setString("pass", pass);
-        user.setDate("entry_date", entryDate);
-        user.setDate("exit_date", exitDate);
-        user.setString("turn", turn);
-        boolean res = user.saveIt();
+        Map<String,Object> ret= User.createIt("name", name,"pass", pass,"entry_date", entryDate,"exit_date", exitDate,"turn", turn);
         Base.commitTransaction();
         Utils.cerrarBase();
-        return res;
+        return ret;
     }
 
-    public boolean modify(int id, String name, String pass, Date entryDate, Date exitDate, String turn) throws java.rmi.RemoteException {
+    public Map<String,Object> modify(int id, String name, String pass, Date entryDate, Date exitDate, String turn) throws java.rmi.RemoteException {
         Utils.abrirBase();
         User user = User.findById(id);
-        boolean res = false;
+        Map<String,Object> res = null;
         if (user != null) {
             user.setString("name", name);
             user.setString("pass", pass);
@@ -51,7 +45,8 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
             user.setDate("exit_date", exitDate);
             user.setString("turn", turn);
             Base.openTransaction();
-            res = user.saveIt();
+            user.saveIt();
+            res = user.toMap();
             Base.commitTransaction();
             Utils.cerrarBase();
         }

@@ -16,9 +16,9 @@ import java.util.Map;
  */
 public interface InterfaceProdCategory extends Remote {
 
-    public boolean create(String name) throws java.rmi.RemoteException;
+    public Map<String,Object> create(String name) throws java.rmi.RemoteException;
      
-     public boolean modify(int id,String name) throws java.rmi.RemoteException;
+     public Map<String,Object> modify(int id,String name) throws java.rmi.RemoteException;
      
      public boolean delete(int id) throws java.rmi.RemoteException;
      
