@@ -46,6 +46,10 @@
 
 ##Etapas
 
-1.Creación Ventana Principal. CRUD Usuarios (Cocineros, Mozos), CRUD Proveedores y sus categorías, CRUD Productos (Primario, Elaborado, Final) y sus categorías. Juntar en el controlador principal.		
+1.Modelos base y ventana principal:
+*	Creación Ventana Principal.
+*	CRUD Usuarios (Cocineros, Mozos).
+*	CRUD Proveedores y sus categorías.
+*	CRUD Productos (Primario, Elaborado, Final) y sus categorías. *	Juntar en el controlador principal.		
 
 

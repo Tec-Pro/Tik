@@ -1,6 +1,7 @@
 delimiter $$
 
 CREATE DATABASE `tik` /*!40100 DEFAULT CHARACTER SET latin1 */$$
+
 USE tik $$
 
 delimiter $$
@@ -88,16 +89,6 @@ CREATE TABLE `p_categories` (
 
 delimiter $$
 
-CREATE TABLE `phones` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `number` varchar(45) DEFAULT '-1',
-  `provider_id` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1$$
-
-
-delimiter $$
-
 CREATE TABLE `primary_products` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT 'empty',
@@ -117,6 +108,7 @@ CREATE TABLE `providers` (
   `cuit` int(11) DEFAULT '-1',
   `address` varchar(45) DEFAULT NULL,
   `description` varchar(200) DEFAULT NULL,
+  `phones` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1$$
 
@@ -156,10 +148,21 @@ delimiter $$
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
+  `surname` varchar(45) DEFAULT NULL,
   `pass` varchar(45) DEFAULT NULL,
   `entry_date` date DEFAULT NULL,
   `exit_date` date DEFAULT NULL,
   `turn` varchar(45) DEFAULT NULL,
+  `date_of_birth` date DEFAULT NULL,
+  `place_of_birth` varchar(45) DEFAULT NULL,
+  `id_type` varchar(45) DEFAULT NULL,
+  `id_number` varchar(45) DEFAULT NULL,
+  `address` varchar(45) DEFAULT NULL,
+  `home_phone` varchar(45) DEFAULT NULL,
+  `emergency_phone` varchar(45) DEFAULT NULL,
+  `mobile_phone` varchar(45) DEFAULT NULL,
+  `marital_status` varchar(45) DEFAULT NULL,
+  `blood_type` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1$$
 
