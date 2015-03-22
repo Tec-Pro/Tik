@@ -105,7 +105,7 @@ delimiter $$
 CREATE TABLE `providers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
-  `cuit` int(11) DEFAULT '-1',
+  `cuit` varchar(45) DEFAULT '-1',
   `address` varchar(45) DEFAULT NULL,
   `description` varchar(200) DEFAULT NULL,
   `phones` varchar(100) DEFAULT NULL,
