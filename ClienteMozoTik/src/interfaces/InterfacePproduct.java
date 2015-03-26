@@ -14,7 +14,7 @@ import java.util.Map;
  *
  * @author nico
  */
-public interface InterfaceProduct extends Remote {
+public interface InterfacePproduct extends Remote {
 
     public Map<String,Object> create(String name, float stock, String measureUnit, float unitPrice) throws java.rmi.RemoteException;
      
@@ -22,7 +22,7 @@ public interface InterfaceProduct extends Remote {
      
      public boolean delete(int id) throws java.rmi.RemoteException;
  
-     public Map<String,Object> getProduct(int id) throws java.rmi.RemoteException;     
+     public Map<String,Object> getPproduct(int id) throws java.rmi.RemoteException;     
      
-     public  List<Map> getProducts() throws java.rmi.RemoteException;    
+     public  List<Map> getPproducts() throws java.rmi.RemoteException;    
 }

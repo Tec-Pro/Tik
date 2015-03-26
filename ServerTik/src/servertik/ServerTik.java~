@@ -6,8 +6,12 @@
 
 package servertik;
 
-
-import implementsInterface.CRUDPproduct;
+import implementsInterface.CrudAdmin;
+import implementsInterface.CrudCategory;
+import implementsInterface.CrudProdCategory;
+import implementsInterface.CrudProduct;
+import implementsInterface.CrudProvider;
+import implementsInterface.CrudUser;
 import implementsInterface.Server;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -37,11 +41,13 @@ public class ServerTik {
            LocateRegistry.createRegistry(1099);
            //para saber que el servidor esta funcionando 
            System.out.println("<<<<<<<<< Servidor Andando >>>>>>>>>");
+           CrudCategory crudCategory = new CrudCategory();
+           CrudProdCategory crudProdCategory = new CrudProdCategory();
            Server server= new Server();
-           CRUDPproduct crudpproduct = new CRUDPproduct();
            //Asocio el objeto remoto 's' a la direccion de mi host seguida de un /nombreAsociado
+           Naming.rebind("crudCategory", crudCategory);  
+           Naming.rebind("crudProduct", crudProduct);
            Naming.rebind("Server", server);  
-           Naming.rebind("CRUDPproduct", crudpproduct);
     }
     
 }
