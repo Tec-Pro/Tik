@@ -15,6 +15,7 @@ import implementsInterface.CrudUser;
 import implementsInterface.Server;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 
@@ -30,12 +31,12 @@ public class ServerTik {
     public static void main(String[] args) throws RemoteException, MalformedURLException {
                  // arrancar un gestor de seguridad – esto es 
             // necesario si se utiliza stub downloading
-          //  if (System.getSecurityManager() == null){
-          //      System.setSecurityManager(new RMISecurityManager());
-          //  }
-           // System.setProperty("java.rmi.server.codebase",getClass().getResource("java.policy").toString());
-           // System.setProperty("java.security.policy","/home/eze/NetBeansProjects/EjemploRMIServidor/src/servidor/java.policy");
-
+            /*if (System.getSecurityManager() == null){
+                System.setSecurityManager(new RMISecurityManager());
+            }*/
+            //System.setProperty("java.rmi.server.codebase",getClass().getResource("java.policy").toString());
+            //System.setProperty("java.security.policy","/home/agustin/Documentos/ProyectosGithub/Tik/ServerTik/src/java.policy");
+          
 
             // Creo el registro de objetos remotos, que acepte llamadas en el puerto 1099
            LocateRegistry.createRegistry(1099);
@@ -56,6 +57,8 @@ public class ServerTik {
            Naming.rebind("crudProvider", crudProvider);
            Naming.rebind("crudUser", crudUser);  
            Naming.rebind("Server", server);  
+           
+        //   System.out.println("hice un usuario" + crudAdmin.create("agu", "aguasdasd"));
     }
     
 }
