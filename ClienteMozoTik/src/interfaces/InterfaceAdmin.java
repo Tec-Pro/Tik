@@ -25,4 +25,6 @@ public interface InterfaceAdmin extends Remote {
      public Map<String,Object> getAdmin(int id) throws java.rmi.RemoteException;
           
      public  List<Map> getAdmins() throws java.rmi.RemoteException;
+     
+     public Map<String,Object> loginAdmin(String name, String pass) throws java.rmi.RemoteException;
 }
