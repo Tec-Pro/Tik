@@ -14,13 +14,21 @@ import org.javalite.activejdbc.Base;
 import utils.Utils;
 
 
+/**
+ *
+ * @author jacinto
+ */
 public class CRUDPproduct extends UnicastRemoteObject implements interfaces.InterfacePproduct {
 
+    /**
+     * Constructor
+     * @throws RemoteException
+     */
     public CRUDPproduct() throws RemoteException {
         super();
     }
 
-    
+
     public Map<String,Object> create(String name, float stock, String measureUnit, float unitPrice) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
@@ -29,6 +37,7 @@ public class CRUDPproduct extends UnicastRemoteObject implements interfaces.Inte
         Utils.cerrarBase();
         return ret;
     }
+
 
     public Map<String,Object> modify(int id, String name, float stock, String measureUnit, float unitPrice) throws java.rmi.RemoteException {
         Utils.abrirBase();
@@ -48,6 +57,7 @@ public class CRUDPproduct extends UnicastRemoteObject implements interfaces.Inte
         return res;
     }
 
+
     public boolean delete(int id) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Pproduct product = Pproduct.findById(id);
@@ -60,12 +70,14 @@ public class CRUDPproduct extends UnicastRemoteObject implements interfaces.Inte
         return res;
     }
 
-     public Map<String,Object> getPproduct(int id) throws java.rmi.RemoteException{
+
+    public Map<String,Object> getPproduct(int id) throws java.rmi.RemoteException{
          Utils.abrirBase();
          Map<String,Object> ret= Pproduct.findById(id).toMap();
          Utils.cerrarBase();
          return ret;
      }    
+
     public List<Map> getPproducts() throws java.rmi.RemoteException {
         Utils.abrirBase();
         List<Map> ret = Pproduct.findAll().toMaps();

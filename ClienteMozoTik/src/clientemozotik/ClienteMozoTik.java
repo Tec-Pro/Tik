@@ -33,6 +33,7 @@ public class ClienteMozoTik {
         Client client= new Client();
         server.registerClient(client,"mozo");
      
+            
         System.out.println("CREAR Pproducto = " +pproduct.create("arit1", new Float("150"), "Kg",new Float("150") ));
     
        System.out.println("MODIFICAR Pproducto = " + pproduct.modify(1, "arit1MODIFY", new Float("150"), "Kg",new Float("150")));
