@@ -1,9 +1,11 @@
 package utils;
 
+import java.io.Serializable;
+
 /**
  *	Implements an immutable 3-uple. 
 */
-public class Pair<A,B> {
+public class Pair<A,B> implements Serializable{
 
 	// Private attributes
 	

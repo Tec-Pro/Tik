@@ -13,7 +13,6 @@ import models.Pproduct;
 import org.javalite.activejdbc.Base;
 import utils.Utils;
 
-
 /**
  *
  * @author jacinto
@@ -22,42 +21,45 @@ public class CRUDPproduct extends UnicastRemoteObject implements interfaces.Inte
 
     /**
      * Constructor
+     *
      * @throws RemoteException
      */
     public CRUDPproduct() throws RemoteException {
         super();
     }
 
-
-    public Map<String,Object> create(String name, float stock, String measureUnit, float unitPrice) throws java.rmi.RemoteException {
+    public Map<String, Object> create(String name, float stock, String measureUnit, float unitPrice) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
-        Map<String,Object>  ret= Pproduct.createIt("name", name,"stock", stock,"measure_unit", measureUnit,"unit_price", unitPrice).toMap();
+        String st = String.valueOf(stock).replace(',', '.');
+        String unitP = String.valueOf(unitPrice).replace(',', '.');
+        Map<String, Object> ret = Pproduct.createIt("name", name, "stock", st, "measure_unit", measureUnit, "unit_price", unitPrice).toMap();
         Base.commitTransaction();
         Utils.cerrarBase();
         return ret;
     }
 
-
-    public Map<String,Object> modify(int id, String name, float stock, String measureUnit, float unitPrice) throws java.rmi.RemoteException {
+    public Map<String, Object> modify(int id, String name, float stock, String measureUnit, float unitPrice) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Pproduct product = Pproduct.findById(id);
-        Map<String,Object> res = null;
+        Map<String, Object> res = null;
         if (product != null) {
+            String st = String.valueOf(stock).replace(',', '.');
+            String unitP = String.valueOf(unitPrice).replace(',', '.');
             product.setString("name", name);
-            product.setFloat("stock", stock);
+            product.setFloat("stock", st);
             product.setString("measure_unit", measureUnit);
-            product.setFloat("unit_price", unitPrice);
+            product.setFloat("unit_price", unitP);
             Base.openTransaction();
             product.saveIt();
-            res= product.toMap();
+            res = product.toMap();
             Base.commitTransaction();
-            Utils.cerrarBase();
         }
+        Utils.cerrarBase();
         return res;
     }
 
-
+    //FALTA ELIMINAR LAS MOVIDAS DONDE PERTENECE
     public boolean delete(int id) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Pproduct product = Pproduct.findById(id);
@@ -67,16 +69,16 @@ public class CRUDPproduct extends UnicastRemoteObject implements interfaces.Inte
             res = product.delete();
             Base.commitTransaction();
         }
+        Utils.cerrarBase();
         return res;
     }
 
-
-    public Map<String,Object> getPproduct(int id) throws java.rmi.RemoteException{
-         Utils.abrirBase();
-         Map<String,Object> ret= Pproduct.findById(id).toMap();
-         Utils.cerrarBase();
-         return ret;
-     }    
+    public Map<String, Object> getPproduct(int id) throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        Map<String, Object> ret = Pproduct.findById(id).toMap();
+        Utils.cerrarBase();
+        return ret;
+    }
 
     public List<Map> getPproducts() throws java.rmi.RemoteException {
         Utils.abrirBase();

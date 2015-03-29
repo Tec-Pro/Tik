@@ -7,6 +7,7 @@ package interfaces;
 import java.rmi.Remote;
 import java.util.List;
 import java.util.Map;
+import utils.Pair;
 
 /**
  *
@@ -20,11 +21,11 @@ public interface InterfaceEproduct extends Remote {
      * @param stock
      * @param measureUnit
      * @param subcategory_id
-     * @param pProductsIds
+     * @param pProducts es una List<Pair<Integer,Float> con todos los id de productos primarios y cantidades que forman al producto elaborado
      * @return Map<String,Object> 
      * @throws java.rmi.RemoteException
      */
-    public Map<String,Object> create(String name, float stock, String measureUnit, int subcategory_id, List pProductsIds) throws java.rmi.RemoteException;
+    public Map<String,Object> create(String name, float stock, String measureUnit, int subcategory_id, List<Pair> pProducts) throws java.rmi.RemoteException;
      
     /**
      * Modifica un producto elaborado.
@@ -33,11 +34,11 @@ public interface InterfaceEproduct extends Remote {
      * @param stock
      * @param measureUnit
      * @param subcategory_id
-     * @param pProductsIds
+     * @param pProducts es una List<Pair<Integer,Float> con todos los id de productos primarios y cantidades que forman al producto elaborado
      * @return Map<String,Object>
      * @throws java.rmi.RemoteException
      */
-     public Map<String,Object> modify(int id,String name, float stock, String measureUnit, int subcategory_id, List pProductsIds) throws java.rmi.RemoteException;
+     public Map<String,Object> modify(int id,String name, float stock, String measureUnit, int subcategory_id, List<Pair> pProducts) throws java.rmi.RemoteException;
          /**
      * Elimina un producto elaborado.
      * @param id
@@ -57,6 +58,14 @@ public interface InterfaceEproduct extends Remote {
      * @return List<Map>
      * @throws java.rmi.RemoteException
      */
-     public  List<Map> getEproducts() throws java.rmi.RemoteException;    
+     public  List<Map> getEproducts() throws java.rmi.RemoteException;   
+     
+     /**
+     * Dado un producto elaborado retonra todos sus productos primarios.
+     * @param id
+     * @return List<Map>
+     * @throws java.rmi.RemoteException
+     */
+     public  List<Map> getPproducts(int id) throws java.rmi.RemoteException;    
 
 }
