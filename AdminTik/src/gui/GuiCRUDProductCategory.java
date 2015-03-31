@@ -27,53 +27,54 @@ public class GuiCRUDProductCategory extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panel1 = new org.edisoncor.gui.panel.Panel();
-        panelImage2 = new org.edisoncor.gui.panel.PanelImage();
+        panelImage1 = new org.edisoncor.gui.panel.PanelImage();
         panelCurves1 = new org.edisoncor.gui.panel.PanelCurves();
+        panelImage2 = new org.edisoncor.gui.panel.PanelImage();
 
-        panelImage2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images.jpg"))); // NOI18N
+        panelImage1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/red.jpg"))); // NOI18N
+
+        panelImage2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/black.jpg"))); // NOI18N
 
         javax.swing.GroupLayout panelImage2Layout = new javax.swing.GroupLayout(panelImage2);
         panelImage2.setLayout(panelImage2Layout);
         panelImage2Layout.setHorizontalGroup(
             panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 964, Short.MAX_VALUE)
+            .addGap(0, 811, Short.MAX_VALUE)
         );
         panelImage2Layout.setVerticalGroup(
             panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 388, Short.MAX_VALUE)
+            .addGap(0, 299, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
-        panel1.setLayout(panel1Layout);
-        panel1Layout.setHorizontalGroup(
-            panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelImage2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(panelCurves1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE))
+        javax.swing.GroupLayout panelImage1Layout = new javax.swing.GroupLayout(panelImage1);
+        panelImage1.setLayout(panelImage1Layout);
+        panelImage1Layout.setHorizontalGroup(
+            panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panelCurves1, javax.swing.GroupLayout.DEFAULT_SIZE, 811, Short.MAX_VALUE)
+            .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(panelImage2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        panel1Layout.setVerticalGroup(
-            panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel1Layout.createSequentialGroup()
-                .addGap(49, 49, 49)
-                .addComponent(panelImage2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(75, 75, 75))
-            .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(panel1Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(panelCurves1, javax.swing.GroupLayout.DEFAULT_SIZE, 486, Short.MAX_VALUE)
-                    .addContainerGap()))
+        panelImage1Layout.setVerticalGroup(
+            panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panelCurves1, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE)
+            .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelImage1Layout.createSequentialGroup()
+                    .addGap(56, 56, 56)
+                    .addComponent(panelImage2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGap(61, 61, 61)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(panelImage1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelImage1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -81,8 +82,8 @@ public class GuiCRUDProductCategory extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private org.edisoncor.gui.panel.Panel panel1;
     private org.edisoncor.gui.panel.PanelCurves panelCurves1;
+    private org.edisoncor.gui.panel.PanelImage panelImage1;
     private org.edisoncor.gui.panel.PanelImage panelImage2;
     // End of variables declaration//GEN-END:variables
 }
