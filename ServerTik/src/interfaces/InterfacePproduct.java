@@ -38,7 +38,7 @@ public interface InterfacePproduct extends Remote {
      */
      public Map<String,Object> modify(int id,String name, float stock, String measureUnit, float unitPrice) throws java.rmi.RemoteException;
          /**
-     * Elimina un producto primario.
+     * Elimina un producto primario de manera logica, setea al atributo removed en 1 como asi tambien a todos sus relacionados.
      * @param id
      * @return boolean
      * @throws java.rmi.RemoteException

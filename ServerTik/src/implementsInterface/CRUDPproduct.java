@@ -7,11 +7,14 @@ package implementsInterface;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import models.Pproduct;
 import org.javalite.activejdbc.Base;
 import utils.Utils;
+import models.FproductsEproducts;
+import models.FproductsPproducts;
 
 /**
  *
@@ -66,7 +69,9 @@ public class CRUDPproduct extends UnicastRemoteObject implements interfaces.Inte
         boolean res = false;
         if (product != null) {
             Base.openTransaction();
-            res = product.delete();
+            product.setInteger("removed", 1);
+            res = product.saveIt();           
+            //FALTA ELIMINAR RELACIONES.
             Base.commitTransaction();
         }
         Utils.cerrarBase();
@@ -82,7 +87,7 @@ public class CRUDPproduct extends UnicastRemoteObject implements interfaces.Inte
 
     public List<Map> getPproducts() throws java.rmi.RemoteException {
         Utils.abrirBase();
-        List<Map> ret = Pproduct.findAll().toMaps();
+        List<Map> ret = Pproduct.where("removed = ?", 0 ).toMaps();
         Utils.cerrarBase();
         return ret;
     }
