@@ -163,6 +163,7 @@ CREATE TABLE `users` (
   `mobile_phone` varchar(45) DEFAULT NULL,
   `marital_status` varchar(45) DEFAULT NULL,
   `blood_type` varchar(45) DEFAULT NULL,
+  `position` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1$$
 
