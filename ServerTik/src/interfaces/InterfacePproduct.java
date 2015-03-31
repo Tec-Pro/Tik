@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -22,10 +22,11 @@ public interface InterfacePproduct extends Remote {
      * @param stock
      * @param measureUnit
      * @param unitPrice
+     * @param subcategory_id
      * @return Map<String,Object> 
      * @throws java.rmi.RemoteException
      */
-    public Map<String,Object> create(String name, float stock, String measureUnit, float unitPrice) throws java.rmi.RemoteException;
+    public Map<String,Object> create(String name, float stock, String measureUnit, float unitPrice, int subcategory_id) throws java.rmi.RemoteException;
          /**
      * Modifica un producto primario.
      * @param id
@@ -33,10 +34,11 @@ public interface InterfacePproduct extends Remote {
      * @param stock
      * @param measureUnit
      * @param unitPrice
+     * @param subcategory_id
      * @return Map<String,Object>
      * @throws java.rmi.RemoteException
      */
-     public Map<String,Object> modify(int id,String name, float stock, String measureUnit, float unitPrice) throws java.rmi.RemoteException;
+     public Map<String,Object> modify(int id,String name, float stock, String measureUnit, float unitPrice, int subcategory_id) throws java.rmi.RemoteException;
          /**
      * Elimina un producto primario de manera logica, setea al atributo removed en 1 como asi tambien a todos sus relacionados.
      * @param id

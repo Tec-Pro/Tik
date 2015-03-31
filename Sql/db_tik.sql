@@ -65,7 +65,7 @@ CREATE TABLE `fproducts_pproducts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `fproduct_id` int(11) DEFAULT NULL,
   `pproduct_id` int(11) DEFAULT NULL,
-  `pproduct_amount` float DEFAULT NULL,
+  `amount` float DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1$$
 

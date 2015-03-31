@@ -38,12 +38,12 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
     public Map<String, Object> create(String name, int subcategory_id, List<Pair> pProducts, List<Pair> eProducts) throws RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
-        Fproduct ret = Fproduct.createIt("name", name);
+        Fproduct ret = Fproduct.createIt("name", name,"subcategory_id",subcategory_id);
         Iterator it = pProducts.iterator();
         while (it.hasNext()) { //creo la relacion Fproduct Eproduct
             Pair<Integer, Float> prod = (Pair<Integer, Float>) it.next();
             String amount = prod.second().toString().replace(',', '.');
-            FproductsPproducts.create("fproduct_id", ret.getId(), "pproduct_id", prod.first(), "amount", amount);
+            FproductsPproducts.create("fproduct_id", ret.getId(), "pproduct_id", prod.first(), "amount", amount).saveIt();
         }
         it = eProducts.iterator();
         while (it.hasNext()) { //creo la relacion Pproduct Fproduct
@@ -51,9 +51,6 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
             String amount = prod.second().toString().replace(',', '.');
             FproductsEproducts.create("fproduct_id", ret.getId(), "eproduct_id", prod.first(), "amount", amount);
         }
-        ret.add(Subcategory.findById(subcategory_id));
-        ret.saveIt();
-        ret = Fproduct.findById(ret.getId());
         Base.commitTransaction();
         Utils.cerrarBase();
         return ret.toMap();
@@ -63,10 +60,10 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
     public Map<String, Object> modify(int id, String name, int subcategory_id, List<Pair> pProducts, List<Pair> eProducts) throws RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
-        Eproduct ret = Eproduct.findById(id);
+        Fproduct ret = Fproduct.findById(id);
         if (ret != null) {
             ret.setString("name", name);
-            ret.set("subcategory_id", null);
+            ret.set("subcategory_id", subcategory_id);
             Iterator it = FproductsPproducts.find("fproduct_id = ?", id).iterator();
             while (it.hasNext()) {//elimino relaciones pre existenes
                 ((FproductsPproducts) it.next()).delete();
@@ -75,7 +72,7 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
             while (it.hasNext()) {  //creo relacion entre primarios y finales nuevamente
                 Pair<Integer, Float> prod = (Pair<Integer, Float>) it.next();
                 String amount = prod.second().toString().replace(',', '.');
-                FproductsPproducts.create("fproduct_id", ret.getId(), "pproduct_id", prod.first(), "amount", amount);
+                FproductsPproducts.create("fproduct_id", ret.getId(), "pproduct_id", prod.first(), "amount", amount).saveIt();
             }
             it = FproductsEproducts.find("fproduct_id = ?", id).iterator();
             while (it.hasNext()) {//elimino relaciones pre existenes
@@ -85,11 +82,9 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
             while (it.hasNext()) {  //creo relacion entre elaborados y finales nuevamente
                 Pair<Integer, Float> prod = (Pair<Integer, Float>) it.next();
                 String amount = prod.second().toString().replace(',', '.');
-                FproductsEproducts.create("fproduct_id", ret.getId(), "eproduct_id", prod.first(), "amount", amount);
+                FproductsEproducts.create("fproduct_id", ret.getId(), "eproduct_id", prod.first(), "amount", amount).saveIt();
             }
-            ret.add(Subcategory.findById(subcategory_id));
             ret.saveIt();
-            ret = Eproduct.findById(ret.getId());
             Base.commitTransaction();
             Utils.cerrarBase();
             return ret.toMap();
@@ -100,14 +95,15 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
         }
     }
 
-    @Override //FALTA ELIMINAR LAS MOVIDAS DONDE PERTENECE  
+    @Override
     public boolean delete(int id) throws RemoteException {
         Utils.abrirBase();
-        Eproduct product = Fproduct.findById(id);
-        boolean res = false;
+        Fproduct product = Fproduct.findById(id);
+        boolean res = true;
         if (product != null) {
             Base.openTransaction();
-            res = product.delete();
+            product.setInteger("removed", 1);
+            res = res && product.saveIt();
             Base.commitTransaction();
         }
         Utils.cerrarBase();
@@ -117,7 +113,11 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
     @Override
     public Map<String, Object> getFproduct(int id) throws RemoteException {
         Utils.abrirBase();
-        Map<String, Object> ret = Fproduct.findById(id).toMap();
+        Map<String, Object> ret = null;
+        Fproduct product = Fproduct.findById(id);
+        if (product != null) {
+            ret = product.toMap();
+        }
         Utils.cerrarBase();
         return ret;
     }
@@ -125,23 +125,31 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
     @Override
     public List<Map> getFproducts() throws RemoteException {
         Utils.abrirBase();
-        List<Map> ret = Fproduct.findAll().toMaps();
+        List<Map> ret = Fproduct.where("removed = ?", 0).toMaps();
         Utils.cerrarBase();
         return ret;
     }
 
+    @Override
     public List<Map> getPproducts(int id) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Fproduct fProd = Fproduct.findById(id);
-        List<Map> ret = fProd.getAll(Pproduct.class).toMaps();
+        List<Map> ret = null;
+        if (fProd != null) {
+            ret = fProd.getAll(Pproduct.class).toMaps();
+        }
         Utils.cerrarBase();
         return ret;
     }
 
+    @Override
     public List<Map> getEproducts(int id) throws java.rmi.RemoteException {
         Utils.abrirBase();
-        Fproduct fProd = Fproduct.findById(id);
-        List<Map> ret = fProd.getAll(Eproduct.class).toMaps();
+       Fproduct fProd = Fproduct.findById(id);
+        List<Map> ret = null;
+        if (fProd != null) {
+            ret = fProd.getAll(Eproduct.class).toMaps();
+        }
         Utils.cerrarBase();
         return ret;
     }

@@ -40,7 +40,7 @@ public interface InterfaceEproduct extends Remote {
      */
      public Map<String,Object> modify(int id,String name, float stock, String measureUnit, int subcategory_id, List<Pair> pProducts) throws java.rmi.RemoteException;
          /**
-     * Elimina un producto elaborado.
+     * Elimina un producto elaborado de manera logica, setea al atributo removed en 1 como asi tambien a todos sus relacionados.
      * @param id
      * @return boolean
      * @throws java.rmi.RemoteException
