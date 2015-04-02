@@ -80,7 +80,7 @@ CREATE TABLE `fproducts_pproducts` (
 
 delimiter $$
 
-CREATE TABLE `p_categories` (
+CREATE TABLE `providercategories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -115,10 +115,10 @@ CREATE TABLE `providers` (
 
 delimiter $$
 
-CREATE TABLE `providers_p_categories` (
+CREATE TABLE `providers_providercategories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `provider_id` int(11) NOT NULL,
-  `p_category_id` int(11) NOT NULL,
+  `providercategory_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1$$
 

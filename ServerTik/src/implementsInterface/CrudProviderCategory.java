@@ -2,9 +2,10 @@ package implementsInterface;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import models.PCategory;
+import models.ProviderCategory;
 import org.javalite.activejdbc.Base;
 import utils.Utils;
 
@@ -17,26 +18,41 @@ import utils.Utils;
  *
  * @author nico
  */
-public class CrudProdCategory extends UnicastRemoteObject implements interfaces.InterfaceProdCategory {
+public class CrudProviderCategory extends UnicastRemoteObject implements interfaces.InterfaceProviderCategory {
 
-    public CrudProdCategory() throws RemoteException {
+    public CrudProviderCategory() throws RemoteException {
         super();
 
     }
 
+    /**
+     *
+     * @param name
+     * @return map representing the new category created.
+     * @throws RemoteException
+     */
+    @Override
     public Map<String, Object> create(String name) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
-        Map<String, Object> ret = PCategory.createIt("name", name);
+        Map<String, Object> ret = ProviderCategory.createIt("name", name).toMap();
         Base.commitTransaction();
         Utils.cerrarBase();
         return ret;
     }
 
+    /**
+     *
+     * @param id
+     * @param name
+     * @return the modified category if exists, empty map otherwise.
+     * @throws RemoteException
+     */
+    @Override
     public Map<String, Object> modify(int id, String name) throws java.rmi.RemoteException {
         Utils.abrirBase();
-        PCategory pCategory = PCategory.findById(id);
-        Map<String, Object> res = null;
+        ProviderCategory pCategory = ProviderCategory.findById(id);
+        Map<String, Object> res = Collections.EMPTY_MAP;
         if (pCategory != null) {
             pCategory.setString("name", name);
             Base.openTransaction();
@@ -48,9 +64,16 @@ public class CrudProdCategory extends UnicastRemoteObject implements interfaces.
         return res;
     }
 
+    /**
+     *
+     * @param id
+     * @return True if the requested category was deleted from the database.
+     * @throws RemoteException
+     */
+    @Override
     public boolean delete(int id) throws java.rmi.RemoteException {
         Utils.abrirBase();
-        PCategory pCategory = PCategory.findById(id);
+        ProviderCategory pCategory = ProviderCategory.findById(id);
         boolean res = false;
         if (pCategory != null) {
             Base.openTransaction();
@@ -60,16 +83,29 @@ public class CrudProdCategory extends UnicastRemoteObject implements interfaces.
         return res;
     }
 
-    public Map<String, Object> getProdCategory(int id) throws java.rmi.RemoteException {
+    /**
+     *
+     * @param id
+     * @return Map representing the requested category.
+     * @throws RemoteException
+     */
+    @Override
+    public Map<String, Object> getProviderCategory(int id) throws RemoteException {
         Utils.abrirBase();
-        Map<String, Object> ret = PCategory.findById(id).toMap();
+        Map<String, Object> ret = ProviderCategory.findById(id).toMap();
         Utils.cerrarBase();
         return ret;
     }
 
-    public List<Map> getPCategories() throws java.rmi.RemoteException {
+    /**
+     *
+     * @return A list of all the provider categories.
+     * @throws RemoteException
+     */
+    @Override
+    public List<Map> getProviderCategories() throws RemoteException {
         Utils.abrirBase();
-        List<Map> ret = PCategory.findAll().toMaps();
+        List<Map> ret = ProviderCategory.findAll().toMaps();
         Utils.cerrarBase();
         return ret;
     }

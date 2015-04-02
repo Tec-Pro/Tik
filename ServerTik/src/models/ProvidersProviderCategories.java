@@ -3,19 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package models;
-
 
 import org.javalite.activejdbc.Model;
 
 /**
  *
- * @author nico
+ * @author joako
  */
-public class PCategory extends Model {
-    
-    
-
+public class ProvidersProviderCategories extends Model {
     
 }
