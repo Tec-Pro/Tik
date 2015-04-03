@@ -30,6 +30,7 @@
 *   Table = table
 *   TableModel = tm
 *   DefaultTableModel = dtm 
+*   Tree = tree
 
 12.Clases:
 *   Controlador: ControllerGui
