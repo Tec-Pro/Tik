@@ -36,6 +36,10 @@ public interface InterfaceCategory extends Remote {
      public Map<String,Object> modifySubcategory(int id, String number)throws java.rmi.RemoteException;
      
      public List<Map> getSubcategoriesCategory(int id)throws java.rmi.RemoteException;
+     
+     public List<Map> getSubcategoriesCategory()throws java.rmi.RemoteException;
              
      public Map<String,Object> getSubcategory(int id)throws java.rmi.RemoteException;
+     
+     public Map<String,Object> getSubcategory(String name)throws java.rmi.RemoteException;
 }

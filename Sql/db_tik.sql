@@ -89,6 +89,7 @@ CREATE TABLE `pproducts` (
   `measure_unit` varchar(45) DEFAULT NULL,
   `unit_price` float DEFAULT '0',
   `removed` int(1) DEFAULT '0',
+  `amount` float DEFAULT '0',	
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1$$
 

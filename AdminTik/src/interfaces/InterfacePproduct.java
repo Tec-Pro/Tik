@@ -1,4 +1,4 @@
-    /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -15,7 +15,7 @@ import java.util.Map;
  * @author nico
  */
 public interface InterfacePproduct extends Remote {
-    
+
     /**
      * Crea un producto primario.
      * @param name
@@ -60,13 +60,12 @@ public interface InterfacePproduct extends Remote {
      * @return List<Map>
      * @throws java.rmi.RemoteException
      */
-     public  List<Map> getPproducts() throws java.rmi.RemoteException;    
-     
-      /**
+     public  List<Map> getPproducts() throws java.rmi.RemoteException;      
+       /**
      * Retorna un produto primario, dado el id o el nombre
      * @param searchParams
      * @return List<Map>
      * @throws java.rmi.RemoteException
      */
-     public List<Map> getPproducts(String searchParams) throws java.rmi.RemoteException;    
+     public List<Map> getPproducts(String searchParams) throws java.rmi.RemoteException; 
 }
