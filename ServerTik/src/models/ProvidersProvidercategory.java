@@ -11,6 +11,6 @@ import org.javalite.activejdbc.Model;
  *
  * @author joako
  */
-public class ProvidersProviderCategories extends Model {
+public class ProvidersProvidercategory extends Model {
     
 }

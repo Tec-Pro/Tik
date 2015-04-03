@@ -6,12 +6,8 @@
 
 package servertik;
 
-import implementsInterface.CrudAdmin;
-import implementsInterface.CrudCategory;
-import implementsInterface.CrudProdCategory;
-import implementsInterface.CrudProduct;
 import implementsInterface.CrudProvider;
-import implementsInterface.CrudUser;
+import implementsInterface.CrudProviderCategory;
 import implementsInterface.Server;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -27,6 +23,8 @@ public class ServerTik {
 
     /**
      * @param args the command line arguments
+     * @throws java.rmi.RemoteException
+     * @throws java.net.MalformedURLException
      */
     public static void main(String[] args) throws RemoteException, MalformedURLException {
                  // arrancar un gestor de seguridad – esto es 
@@ -42,20 +40,12 @@ public class ServerTik {
            LocateRegistry.createRegistry(1099);
            //para saber que el servidor esta funcionando 
            System.out.println("<<<<<<<<< Servidor Andando >>>>>>>>>");
-           CrudAdmin crudAdmin = new CrudAdmin();
-           CrudCategory crudCategory = new CrudCategory();
-           CrudProdCategory crudProdCategory = new CrudProdCategory();
-           CrudProduct crudProduct = new CrudProduct();
            CrudProvider crudProvider = new CrudProvider();
-           CrudUser crudUser = new CrudUser();
+           CrudProviderCategory crudProviderCategory = new CrudProviderCategory();
            Server server= new Server();
            //Asocio el objeto remoto 's' a la direccion de mi host seguida de un /nombreAsociado
-           Naming.rebind("crudAdmin", crudAdmin); 
-           Naming.rebind("crudCategory", crudCategory);
-           Naming.rebind("crudProdCategory", crudProdCategory);  
-           Naming.rebind("crudProduct", crudProduct);
            Naming.rebind("crudProvider", crudProvider);
-           Naming.rebind("crudUser", crudUser);  
+           Naming.rebind("crudProviderCategory", crudProviderCategory); 
            Naming.rebind("Server", server);  
            
         //   System.out.println("hice un usuario" + crudAdmin.create("agu", "aguasdasd"));

@@ -13,7 +13,7 @@ import org.javalite.activejdbc.Model;
  *
  * @author nico
  */
-public class Phone extends Model {
+public class Providercategory extends Model {
     
     
 

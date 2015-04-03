@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import models.Provider;
-import models.ProvidersProviderCategories;
+import models.ProvidersProvidercategory;
 import org.javalite.activejdbc.Base;
 import utils.Utils;
 
@@ -129,7 +129,7 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.Inte
     public Map<String, Object> addCategoryToProvider(int provider_id, int category_id) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
-        ProvidersProviderCategories.createIt("provider_id",provider_id,"providercategory_id",category_id);
+        ProvidersProvidercategory.createIt("provider_id",provider_id,"providercategory_id",category_id);
         Base.commitTransaction();
         return getProvider(provider_id);
     }

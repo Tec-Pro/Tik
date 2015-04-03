@@ -5,7 +5,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import models.ProviderCategory;
+import models.Providercategory;
 import org.javalite.activejdbc.Base;
 import utils.Utils;
 
@@ -35,7 +35,7 @@ public class CrudProviderCategory extends UnicastRemoteObject implements interfa
     public Map<String, Object> create(String name) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
-        Map<String, Object> ret = ProviderCategory.createIt("name", name).toMap();
+        Map<String, Object> ret = Providercategory.createIt("name", name).toMap();
         Base.commitTransaction();
         Utils.cerrarBase();
         return ret;
@@ -51,7 +51,7 @@ public class CrudProviderCategory extends UnicastRemoteObject implements interfa
     @Override
     public Map<String, Object> modify(int id, String name) throws java.rmi.RemoteException {
         Utils.abrirBase();
-        ProviderCategory pCategory = ProviderCategory.findById(id);
+        Providercategory pCategory = Providercategory.findById(id);
         Map<String, Object> res = Collections.EMPTY_MAP;
         if (pCategory != null) {
             pCategory.setString("name", name);
@@ -73,7 +73,7 @@ public class CrudProviderCategory extends UnicastRemoteObject implements interfa
     @Override
     public boolean delete(int id) throws java.rmi.RemoteException {
         Utils.abrirBase();
-        ProviderCategory pCategory = ProviderCategory.findById(id);
+        Providercategory pCategory = Providercategory.findById(id);
         boolean res = false;
         if (pCategory != null) {
             Base.openTransaction();
@@ -92,7 +92,7 @@ public class CrudProviderCategory extends UnicastRemoteObject implements interfa
     @Override
     public Map<String, Object> getProviderCategory(int id) throws RemoteException {
         Utils.abrirBase();
-        Map<String, Object> ret = ProviderCategory.findById(id).toMap();
+        Map<String, Object> ret = Providercategory.findById(id).toMap();
         Utils.cerrarBase();
         return ret;
     }
@@ -105,7 +105,7 @@ public class CrudProviderCategory extends UnicastRemoteObject implements interfa
     @Override
     public List<Map> getProviderCategories() throws RemoteException {
         Utils.abrirBase();
-        List<Map> ret = ProviderCategory.findAll().toMaps();
+        List<Map> ret = Providercategory.findAll().toMaps();
         Utils.cerrarBase();
         return ret;
     }
