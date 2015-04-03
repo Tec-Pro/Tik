@@ -31,6 +31,7 @@
 *   TableModel = tm
 *   DefaultTableModel = dtm 
 *   Tree = tree
+*   Combo Box = combo
 
 12.Clases:
 *   Controlador: ControllerGui
