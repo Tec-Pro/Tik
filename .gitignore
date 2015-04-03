@@ -1,1 +1,5 @@
 /ClienteMozoTik/dist/
+/ClienteMozoTik/build/
+/ServerTik/nbproject/private/
+/ClienteMozoTik/nbproject/private/
+/ServerTik/dist/
