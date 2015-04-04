@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui;
+package gui.providers;
 
 /**
  *
@@ -29,8 +29,8 @@ public class GuiCRUDProviders extends javax.swing.JInternalFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
-        panelImage1 = new org.edisoncor.gui.panel.PanelImage();
-        panelImage2 = new org.edisoncor.gui.panel.PanelImage();
+        panelImage1 = new org.netbeans.modules.form.InvalidComponent();
+        panelImage2 = new org.netbeans.modules.form.InvalidComponent();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableProviders = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -47,11 +47,6 @@ public class GuiCRUDProviders extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setTitle("Proveedores");
         setPreferredSize(new java.awt.Dimension(1095, 627));
-
-        panelImage1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/red.jpg"))); // NOI18N
-        panelImage1.setPreferredSize(new java.awt.Dimension(1082, 418));
-
-        panelImage2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/black.jpg"))); // NOI18N
 
         tableProviders.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -165,7 +160,7 @@ public class GuiCRUDProviders extends javax.swing.JInternalFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelImage1, javax.swing.GroupLayout.DEFAULT_SIZE, 592, Short.MAX_VALUE)
+            .addComponent(panelImage1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(jPanel1);
@@ -188,13 +183,13 @@ public class GuiCRUDProviders extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnNewCategoryActionPerformed
 
-    private void btnFindProviderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindProviderActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnFindProviderActionPerformed
-
     private void txtFindProviderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFindProviderActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtFindProviderActionPerformed
+
+    private void btnFindProviderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindProviderActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnFindProviderActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
