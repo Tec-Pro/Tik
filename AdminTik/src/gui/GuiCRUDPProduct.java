@@ -33,10 +33,18 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         tableProductsDefault = (DefaultTableModel) tableProducts.getModel(); //convierto la tabla
     }
     
+    /**
+     * setea el CRUDCategoria
+     * @param CRUDCategory
+     */
     public void setCRUDCategory(InterfaceCategory CRUDCategory){
         this.CRUDCategory = CRUDCategory;
     }
 
+    /**
+     *
+     * @param lis
+     */
     public void setActionListener(ActionListener lis) {
         this.btnDelete.addActionListener(lis);
         this.btnModify.addActionListener(lis);
@@ -44,6 +52,9 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         this.btnSave.addActionListener(lis);
     }
 
+    /**
+     * Limpia todos los campos.
+     */
     public void clear() {
         txtId.setText("");
         txtMeasureUnit.setText("");
@@ -55,12 +66,20 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         category.removeAllItems();
     }
 
+    /**
+     * Carga todas las subcategorias en el select de categoria
+     * @throws RemoteException
+     */
     public void loadCategory() throws RemoteException {
         for (Map subC : CRUDCategory.getCategories()) {
             category.addItem(subC.get("name"));
         }
     }
 
+    /**
+     * habilita y desabilita los campos y botones como sea necesario cuando haga clic en nuevo 
+     * @throws RemoteException
+     */
     public void clicNewProduct() throws RemoteException {
         clear();
         loadCategory();
@@ -75,6 +94,9 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         btnModify.setEnabled(false);
     }
 
+    /**
+     * habilita y desabilita los campos y botones como sea necesario cuando haga clic en guardar
+     */
     public void clicSaveProduct() {
         clear();
         txtMeasureUnit.setEnabled(false);
@@ -88,6 +110,10 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         btnModify.setEnabled(false);
     }
 
+    /**
+     * habilita y desabilita los campos y botones como sea necesario cuando haga clic en la tabla producto
+     * @throws RemoteException
+     */
     public void clicTableProducts() throws RemoteException {
         clear();
         btnNew.setEnabled(true);
@@ -95,6 +121,9 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         btnModify.setEnabled(true);
     }
 
+    /**
+     * habilita y desabilita los campos y botones como sea necesario cuando haga clic en eliminar
+     */
     public void clicDeleteProduct() {
         clear();
         txtMeasureUnit.setEnabled(false);
@@ -108,6 +137,10 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         btnModify.setEnabled(false);
     }
 
+    /**
+     * habilita y desabilita los campos y botones como sea necesario cuando haga clic en modificar
+     * @throws RemoteException
+     */
     public void clicModifyProduct() throws RemoteException {
         txtMeasureUnit.setEnabled(true);
         txtPurchasePrice.setEnabled(true);
@@ -120,62 +153,124 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         btnModify.setEnabled(false);
     }
 
+    /**
+     *
+     * @return
+     */
     public DefaultTableModel getTableProductsDefault() {
         return tableProductsDefault;
     }
 
+    /**
+     *
+     * @return
+     */
     public JComboBox getCategory() {
         return category;
     }
 
+    /**
+     *
+     * @return
+     */
     public JButton getBtnDelete() {
         return btnDelete;
     }
 
+    /**
+     *
+     * @return
+     */
     public JButton getBtnModify() {
         return btnModify;
     }
 
+    /**
+     *
+     * @return
+     */
     public JButton getBtnNew() {
         return btnNew;
     }
 
+    /**
+     *
+     * @return
+     */
     public JButton getBtnSave() {
         return btnSave;
     }
 
+    /**
+     *
+     * @return
+     */
     public JTable getTableProducts() {
         return tableProducts;
     }
 
+    /**
+     *
+     * @return
+     */
     public JTextField getTxtId() {
         return txtId;
     }
 
+    /**
+     *
+     * @return
+     */
     public JTextField getTxtMeasureUnit() {
         return txtMeasureUnit;
     }
 
+    /**
+     *
+     * @return
+     */
     public JTextField getTxtName() {
         return txtName;
     }
 
+    /**
+     *
+     * @return
+     */
     public JFormattedTextField getTxtPurchasePrice() {
         return txtPurchasePrice;
     }
 
+    /**
+     *
+     * @return
+     */
     public JTextField getTxtQuantity() {
         return txtQuantity;
     }
 
+    /**
+     *
+     * @return
+     */
     public JTextField getTxtSearch() {
         return txtSearch;
     }
 
+    /**
+     *
+     * @return
+     */
     public JFormattedTextField getTxtStock() {
         return txtStock;
     }
 
+    /**
+     * cargae el producto en los txt
+     *
+     * @param prod
+     * @throws RemoteException
+     */
     public void loadProduct(Map<String, Object> prod) throws RemoteException {
         category.setSelectedIndex(-1);
         category.removeAllItems();

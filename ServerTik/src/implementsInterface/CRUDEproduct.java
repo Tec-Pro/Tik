@@ -38,7 +38,7 @@ public class CRUDEproduct extends UnicastRemoteObject implements interfaces.Inte
         Utils.abrirBase();
         Base.openTransaction();
         String st = String.valueOf(stock).replace(',', '.');
-        Eproduct ret = Eproduct.createIt("name", name, "stock", st, "measure_unit", measureUnit,"subcategory_id",subcategory_id);
+        Eproduct ret = Eproduct.createIt("name", name, "stock", st, "measure_unit", measureUnit, "subcategory_id", subcategory_id);
         Iterator it = pProducts.iterator();
         while (it.hasNext()) { //creo la relacion Pproduct Eproduct
             Pair<Integer, Float> prod = (Pair<Integer, Float>) it.next();
@@ -131,5 +131,22 @@ public class CRUDEproduct extends UnicastRemoteObject implements interfaces.Inte
         }
         Utils.cerrarBase();
         return ret;
+    }
+
+    @Override
+    public List<Map> getEproducts(String name) throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        List<Map> ret = Eproduct.where("removed = ? and (id = ? or nombre = ?)", 0, name, name).toMaps();
+        Utils.cerrarBase();
+        return ret;
+    }
+
+    @Override
+    public List<Map> getEproductPproduts(int idEproduct) throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        List<Map> ret = EproductsPproducts.where("eproduct_id = ?)", idEproduct).toMaps();
+        Utils.cerrarBase();
+        return ret;
+
     }
 }
