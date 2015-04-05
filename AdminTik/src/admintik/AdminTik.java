@@ -36,7 +36,7 @@ public class AdminTik{
         }
         
         
-        InterfaceServer server = (InterfaceServer) Naming.lookup("//192.168.1.26/Server");
+        InterfaceServer server = (InterfaceServer) Naming.lookup("//192.168.0.15/Server");
         
        // InterfaceAdmin crudAdmin = (InterfaceAdmin)   Naming.lookup("//192.168.1.26/crudAdmin");
         ControllerGuiAdminLogin controllerLogin = new ControllerGuiAdminLogin();
