@@ -47,7 +47,8 @@ public class ControllerGuiAdminLogin implements ActionListener {
                 newUser = crudAdmin.loginAdmin(guiAdminLogin.getTxtName().getText(), guiAdminLogin.getTxtPassword().getText());                
                 if(newUser != null){
                     guiAdminLogin.dispose();
-                    controllerGuiAdmin = new ControllerGuiCRUDAdmin(newUser);
+                    new ControllerTest(newUser); //aca deberia ir el controlador main.
+                   // controllerGuiAdmin = new ControllerGuiCRUDAdmin(newUser);
                 }
                 else
                     JOptionPane.showMessageDialog(guiAdminLogin, "Nombre de usuario o contraseña no valida!", "Error!", JOptionPane.ERROR_MESSAGE);

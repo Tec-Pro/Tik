@@ -23,23 +23,28 @@ import javax.swing.JOptionPane;
  *
  * @author agustin
  */
-public class ControllerGuiCRUDAdmin implements ActionListener {
+public class ControllerGuiCRUDAdmin implements ActionListener{
     
     private final GuiCRUDAdmin guiAdmin;
     private final InterfaceAdmin crudAdmin;
     private final Map<String,Object> currentAdmin;
     
-    public ControllerGuiCRUDAdmin(Map<String,Object> admin) throws NotBoundException, MalformedURLException, RemoteException{
+    public ControllerGuiCRUDAdmin(Map<String,Object> admin,GuiCRUDAdmin gui) throws NotBoundException, MalformedURLException, RemoteException{
         currentAdmin = admin;
         crudAdmin = (InterfaceAdmin)   Naming.lookup("//192.168.1.26/crudAdmin");
-        guiAdmin = new GuiCRUDAdmin();
+
+        guiAdmin = gui;
+        guiAdmin.cleanFields();
+        guiAdmin.getTxtName().setEditable(false);
+        guiAdmin.getPassField().setEditable(false);
         guiAdmin.setActionListener(this);
         guiAdmin.setVisible(true);
+    
     }
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource().equals(guiAdmin.getBtnConfirm()) && guiAdmin.getBtnCreate().isSelected()){
+        if(e.getSource().equals(guiAdmin.getBtnConfirm()) && guiAdmin.getBtnCreate().isSelected()){ //crear nuevo administrador
             if(!dataIsValid()){
                 JOptionPane.showMessageDialog(guiAdmin, "Los campos no pueden estar vacios!", "Error!", JOptionPane.ERROR_MESSAGE);
             } else {
@@ -55,7 +60,7 @@ public class ControllerGuiCRUDAdmin implements ActionListener {
                 }
             }
         }
-        if(e.getSource().equals(guiAdmin.getBtnConfirm()) && guiAdmin.getBtnModify().isSelected()){     
+        if(e.getSource().equals(guiAdmin.getBtnConfirm()) && guiAdmin.getBtnModify().isSelected()){    //modificar el administrador actual 
             if(!dataIsValid()) {
                 JOptionPane.showMessageDialog(guiAdmin, "Los campos no pueden estar vacios!", "Error!", JOptionPane.ERROR_MESSAGE);
             } else {
@@ -73,7 +78,7 @@ public class ControllerGuiCRUDAdmin implements ActionListener {
             }
           
         }
-        if(e.getSource().equals(guiAdmin.getBtnConfirm()) && guiAdmin.getBtnDelete().isSelected()){          
+        if(e.getSource().equals(guiAdmin.getBtnConfirm()) && guiAdmin.getBtnDelete().isSelected()){    //borrar el administrador luego se cierra sesion      
             try {          
                 boolean userDeleted = crudAdmin.delete((int)currentAdmin.get("id"));
                 
@@ -92,15 +97,16 @@ public class ControllerGuiCRUDAdmin implements ActionListener {
             }
           
         }
-        if(e.getSource().equals(guiAdmin.getBtnCreate())){
+        if(e.getSource().equals(guiAdmin.getBtnCreate())){ //modifica la gui para crear un nuevo administrador
             guiAdmin.getBtnDelete().setSelected(false);
             guiAdmin.getBtnModify().setSelected(false);
             guiAdmin.getBtnCreate().setSelected(true);
             guiAdmin.cleanFields();
             guiAdmin.setLblMessage("Crear nuevo administrador");
             guiAdmin.getTxtName().setEditable(true);
+            guiAdmin.getPassField().setEditable(true);
         }
-        if(e.getSource().equals(guiAdmin.getBtnDelete())){
+        if(e.getSource().equals(guiAdmin.getBtnDelete())){ //modifica gui para eliminar
             guiAdmin.getBtnDelete().setSelected(true);
             guiAdmin.getBtnModify().setSelected(false);
             guiAdmin.getBtnCreate().setSelected(false);
@@ -108,8 +114,9 @@ public class ControllerGuiCRUDAdmin implements ActionListener {
             guiAdmin.cleanFields();
             guiAdmin.getTxtName().setText(currentAdmin.get("name").toString());
             guiAdmin.getTxtName().setEditable(false);
+            guiAdmin.getPassField().setEditable(false);
         }
-        if(e.getSource().equals(guiAdmin.getBtnModify())){
+        if(e.getSource().equals(guiAdmin.getBtnModify())){ //modifica gui para modificar administrador
             guiAdmin.getBtnDelete().setSelected(false);
             guiAdmin.getBtnModify().setSelected(true);
             guiAdmin.getBtnCreate().setSelected(false);       
@@ -117,10 +124,12 @@ public class ControllerGuiCRUDAdmin implements ActionListener {
             guiAdmin.cleanFields();
             guiAdmin.getTxtName().setText(currentAdmin.get("name").toString());
             guiAdmin.getTxtName().setEditable(true);
+             guiAdmin.getPassField().setEditable(true);
+            
         }
     }
     
-    private boolean dataIsValid(){
+    private boolean dataIsValid(){ //retorna true si los campos no estan vacios
         
         return !guiAdmin.getTxtName().getText().equals("") && !(guiAdmin.getPassField().getPassword().length == 0);
     }

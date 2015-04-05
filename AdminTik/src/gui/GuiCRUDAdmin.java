@@ -5,29 +5,30 @@
  */
 package gui;
 
-import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
-import javax.swing.border.LineBorder;
 
 /**
  *
  * @author agustin
  */
-public class GuiCRUDAdmin extends javax.swing.JFrame {
+public class GuiCRUDAdmin extends javax.swing.JInternalFrame{
 
     /**
-     * Creates new form GuiAdmin
+     * Creates new form GuiCRUDAdmin2
      */
     public GuiCRUDAdmin() {
         initComponents();
         cleanFields();
         setTitle("Opciones de Administrador");
+        setVisible(true);
+        setResizable(false);
     }
 
     /**
@@ -39,34 +40,35 @@ public class GuiCRUDAdmin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jFrame1 = new javax.swing.JFrame();
-        txtName = new javax.swing.JTextField();
-        passField = new javax.swing.JPasswordField();
-        lblMessage = new javax.swing.JLabel();
-        lblName = new javax.swing.JLabel();
-        lblPass = new javax.swing.JLabel();
-        btnConfirm = new javax.swing.JButton();
         btnCreate = new javax.swing.JToggleButton();
         btnModify = new javax.swing.JToggleButton();
         btnDelete = new javax.swing.JToggleButton();
+        lblName = new javax.swing.JLabel();
+        lblPass = new javax.swing.JLabel();
+        txtName = new javax.swing.JTextField();
+        passField = new javax.swing.JPasswordField();
+        lblMessage = new javax.swing.JLabel();
+        btnConfirm = new javax.swing.JButton();
 
-        javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
-        jFrame1.getContentPane().setLayout(jFrame1Layout);
-        jFrame1Layout.setHorizontalGroup(
-            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        jFrame1Layout.setVerticalGroup(
-            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                formKeyTyped(evt);
+            }
+        });
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        btnCreate.setFont(new java.awt.Font("Droid Sans", 1, 14)); // NOI18N
+        btnCreate.setText("Crear Administrador");
 
-        txtName.setToolTipText("");
+        btnModify.setFont(new java.awt.Font("Droid Sans", 1, 14)); // NOI18N
+        btnModify.setText("Modificar");
 
-        lblMessage.setFont(new java.awt.Font("Droid Sans", 0, 14)); // NOI18N
-        lblMessage.setText("Seleccione una opcion");
+        btnDelete.setFont(new java.awt.Font("Droid Sans", 1, 14)); // NOI18N
+        btnDelete.setText("Borrar Administrador");
+        btnDelete.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                btnDeleteKeyTyped(evt);
+            }
+        });
 
         lblName.setFont(new java.awt.Font("Droid Sans", 1, 14)); // NOI18N
         lblName.setText("Nombre");
@@ -74,169 +76,149 @@ public class GuiCRUDAdmin extends javax.swing.JFrame {
         lblPass.setFont(new java.awt.Font("Droid Sans", 1, 14)); // NOI18N
         lblPass.setText("Contraseña");
 
+        txtName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNameKeyTyped(evt);
+            }
+        });
+
+        passField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                passFieldKeyTyped(evt);
+            }
+        });
+
+        lblMessage.setFont(new java.awt.Font("Droid Sans", 1, 14)); // NOI18N
+        lblMessage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblMessage.setText("Seleccione una opcion: Crear, modificar o borrar");
+
+        btnConfirm.setFont(new java.awt.Font("Droid Sans", 1, 14)); // NOI18N
         btnConfirm.setText("Listo");
-
-        btnCreate.setText("Crear Administrador");
-
-        btnModify.setText("Modificar");
-
-        btnDelete.setText("Borrar Administrador");
+        btnConfirm.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnConfirm.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                btnConfirmKeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblMessage, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnCreate)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
-                        .addComponent(btnModify)
-                        .addGap(57, 57, 57)
-                        .addComponent(btnDelete))
-                    .addGroup(layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addComponent(btnCreate))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(lblPass)
                             .addComponent(lblName))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(17, 17, 17)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(btnModify, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                        .addComponent(btnDelete))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(passField, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(passField, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(25, 25, 25))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(86, 86, 86))
+                        .addComponent(btnConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(26, 26, 26))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(lblMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(25, 25, 25)
+                .addComponent(lblMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblName))
-                        .addGap(21, 21, 21)
+                            .addComponent(lblName)
+                            .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(40, 40, 40)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(passField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblPass)))
-                    .addComponent(btnConfirm, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(68, 68, 68)
+                    .addComponent(btnConfirm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnModify, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33))
+                    .addComponent(btnCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnModify, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GuiCRUDAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GuiCRUDAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GuiCRUDAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GuiCRUDAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
+    private void txtNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNameKeyTyped
+         if(evt.getKeyChar() == KeyEvent.VK_ENTER)
+            btnConfirm.doClick();
+    }//GEN-LAST:event_txtNameKeyTyped
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GuiCRUDAdmin().setVisible(true);
-            }
-        });
-    }
+    private void passFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passFieldKeyTyped
+         if(evt.getKeyChar() == KeyEvent.VK_ENTER)
+            btnConfirm.doClick();
+    }//GEN-LAST:event_passFieldKeyTyped
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnConfirm;
-    private javax.swing.JToggleButton btnCreate;
-    private javax.swing.JToggleButton btnDelete;
-    private javax.swing.JToggleButton btnModify;
-    private javax.swing.JFrame jFrame1;
-    private javax.swing.JLabel lblMessage;
-    private javax.swing.JLabel lblName;
-    private javax.swing.JLabel lblPass;
-    private javax.swing.JPasswordField passField;
-    private javax.swing.JTextField txtName;
-    // End of variables declaration//GEN-END:variables
+    private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
+        if(evt.getKeyChar() == KeyEvent.VK_ENTER)
+           btnConfirm.doClick();
+    }//GEN-LAST:event_formKeyTyped
+
+    private void btnDeleteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnDeleteKeyTyped
+       /* if(evt.getKeyChar() == KeyEvent.VK_ENTER)
+           btnConfirm.doClick();*/
+    }//GEN-LAST:event_btnDeleteKeyTyped
+
+    private void btnConfirmKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnConfirmKeyTyped
+        if(evt.getKeyChar() == KeyEvent.VK_ENTER)
+           btnConfirm.doClick();
+    }//GEN-LAST:event_btnConfirmKeyTyped
 
     
-    /**
-     * @return btnCreate
-     */
-    public JToggleButton getBtnCreate() {
-        return btnCreate;
-    }
-
-    /**
-     * @return btnConfirm
-     */
+    
     public JButton getBtnConfirm() {
         return btnConfirm;
     }
 
-    /**
-     * @return btnDelete
-     */
+    public JToggleButton getBtnCreate() {
+        return btnCreate;
+    }
+
     public JToggleButton getBtnDelete() {
         return btnDelete;
     }
 
-    /**
-     * @return btnModify
-     */
     public JToggleButton getBtnModify() {
-        
         return btnModify;
-        
     }
 
-    /**
-     * @return lblName
-     */
+    public JLabel getLblMessage() {
+        return lblMessage;
+    }
+
     public JLabel getLblName() {
         return lblName;
     }
 
-    /**
-     * @return lblPass
-     */
     public JLabel getLblPass() {
         return lblPass;
     }
-    
-    /**
-     * @return lblMessage
-     */
-    public JLabel getLblMessage() {
-        return lblMessage;
+
+    public JPasswordField getPassField() {
+        return passField;
+    }
+
+    public JTextField getTxtName() {
+        return txtName;
     }
     
     /**
@@ -247,29 +229,17 @@ public class GuiCRUDAdmin extends javax.swing.JFrame {
         lblMessage.setText(newMessage);
     }
     
-    /**
-     * @return passField
-     */
-    public JPasswordField getPassField() {
-        return passField;
-    }
-    
-    /**
-     * @return txtName
-     */
-    public JTextField getTxtName() {
-        return txtName;
-    }
     
     /**
      * clean all the text fields
+     * 
      */
     public void cleanFields(){
         passField.setText("");
         txtName.setText("");
     }
     
-     /**
+    /**
      * Set an action listener for all buttons of this class
      * @param ac new action listener to be added
      */
@@ -278,5 +248,19 @@ public class GuiCRUDAdmin extends javax.swing.JFrame {
         btnConfirm.addActionListener(ac);
         btnDelete.addActionListener(ac);
         btnModify.addActionListener(ac);
+ 
     }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnConfirm;
+    private javax.swing.JToggleButton btnCreate;
+    private javax.swing.JToggleButton btnDelete;
+    private javax.swing.JToggleButton btnModify;
+    private javax.swing.JLabel lblMessage;
+    private javax.swing.JLabel lblName;
+    private javax.swing.JLabel lblPass;
+    private javax.swing.JPasswordField passField;
+    private javax.swing.JTextField txtName;
+    // End of variables declaration//GEN-END:variables
+
 }
