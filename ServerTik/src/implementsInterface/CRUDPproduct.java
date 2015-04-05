@@ -119,7 +119,7 @@ public class CRUDPproduct extends UnicastRemoteObject implements interfaces.Inte
     @Override
       public List<Map> getPproducts(String searchParams) throws java.rmi.RemoteException{
         Utils.abrirBase();
-        List<Map> ret = Pproduct.where("removed = ? and id = ? and nombre = ? ", 0,searchParams,searchParams).toMaps();
+        List<Map> ret = Pproduct.where("removed = ? and (id = ? or nombre = ?)", 0,searchParams,searchParams).toMaps();
         Utils.cerrarBase();
         return ret;
           

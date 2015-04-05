@@ -40,6 +40,13 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
     Map<String, Object> product;
     //private CRUDPproduct crudPproduct;
 
+    /**
+     *
+     * @param guiCRUDPProduct
+     * @throws NotBoundException
+     * @throws MalformedURLException
+     * @throws RemoteException
+     */
     public ControllerGuiCRUDPproduct(GuiCRUDPProduct guiCRUDPProduct) throws NotBoundException, MalformedURLException, RemoteException {
         this.guiCRUDPProduct = guiCRUDPProduct;
         ip = "//192.168.1.16/";
@@ -65,22 +72,38 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
                 }
             }
         });
+        tableProductsDefault = guiCRUDPProduct.getTableProductsDefault();
         pproduct = (InterfacePproduct) Naming.lookup(ip + "CRUDPproduct");
-        category = (InterfaceCategory) Naming.lookup(ip + "CRUDCategory");
+        //  category = (InterfaceCategory) Naming.lookup(ip + "CRUDCategory");
         productList = pproduct.getPproducts();
-        guiCRUDPProduct.setCRUDCategory(category);
-        search();
+        //   guiCRUDPProduct.setCRUDCategory(category);
+        refreshList();
     }
 
+    /**
+     * key listener para el buscador
+     *
+     * @param evt
+     * @throws RemoteException
+     */
     public void searchKeyReleased(java.awt.event.KeyEvent evt) throws RemoteException {
         search();
     }
 
+    /**
+     * busca los productos con el parametro de la barra de busqueda
+     *
+     * @param evt
+     * @throws RemoteException
+     */
     private void search() throws RemoteException {
         productList = pproduct.getPproducts(guiCRUDPProduct.getTxtSearch().getText());
         refreshList();
     }
 
+    /**
+     * refresca la lista de productos
+     */
     private void refreshList() throws RemoteException {
         tableProductsDefault.setRowCount(0);
         Iterator<Map> it = productList.iterator();
@@ -98,6 +121,12 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
         }
     }
 
+    /**
+     * Mouse Clicked listener en la tabla para cargar el producto en los txt
+     *
+     * @param evt
+     * @throws RemoteException
+     */
     public void tableMouseClicked(java.awt.event.MouseEvent evt) throws RemoteException {
         if (evt.getClickCount() == 2) {
             guiCRUDPProduct.clicTableProducts();
@@ -108,7 +137,7 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == guiCRUDPProduct.getBtnNew()) {
+        if (e.getSource() == guiCRUDPProduct.getBtnNew()) { //Boton nuevo
             try {
                 guiCRUDPProduct.clicNewProduct();
             } catch (RemoteException ex) {
@@ -117,7 +146,7 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
             isNew = true;
             editingInformation = true;
         }
-        if (e.getSource() == guiCRUDPProduct.getBtnModify()) {
+        if (e.getSource() == guiCRUDPProduct.getBtnModify()) { //boton modificar
             try {
                 guiCRUDPProduct.clicModifyProduct();
             } catch (RemoteException ex) {
@@ -126,7 +155,7 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
             isNew = false;
             editingInformation = true;
         }
-        if (e.getSource() == guiCRUDPProduct.getBtnDelete()) {
+        if (e.getSource() == guiCRUDPProduct.getBtnDelete()) { //boton eliminar
             Integer resp = JOptionPane.showConfirmDialog(guiCRUDPProduct, "¿Desea borrar el producto " + guiCRUDPProduct.getTxtName().getText(), "Confirmar borrado", JOptionPane.YES_NO_OPTION);
             if (resp == JOptionPane.YES_OPTION) {
                 int id = Integer.parseInt(guiCRUDPProduct.getTxtId().getText());
@@ -142,14 +171,14 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
                 }
             }
         }
-        if (e.getSource() == guiCRUDPProduct.getBtnSave() && editingInformation && isNew) {
+        if (e.getSource() == guiCRUDPProduct.getBtnSave() && editingInformation && isNew) { //guardo un producto nuevo, boton guardar
             guiCRUDPProduct.clicSaveProduct();
-            String name = guiCRUDPProduct.getTxtName().getText();
-            float stock = Float.parseFloat(guiCRUDPProduct.getTxtStock().getText());
-            float amount = Float.parseFloat(guiCRUDPProduct.getTxtQuantity().getText());
             try {
                 Map subC = category.getSubcategory(guiCRUDPProduct.getCategory().getSelectedItem().toString());
                 int subcategory_id = Integer.parseInt(subC.get("id").toString());//obtener categoria
+                String name = guiCRUDPProduct.getTxtName().getText();
+                float stock = Float.parseFloat(guiCRUDPProduct.getTxtStock().getText());
+                float amount = Float.parseFloat(guiCRUDPProduct.getTxtQuantity().getText());
                 String measureUnit = guiCRUDPProduct.getTxtMeasureUnit().getText();
                 String purchasePricea = guiCRUDPProduct.getTxtPurchasePrice().getText();
                 float unitPrice = amount / Float.parseFloat(purchasePricea);
@@ -165,7 +194,7 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
             }
 
         }
-        if (e.getSource() == guiCRUDPProduct.getBtnSave() && editingInformation && !isNew) {
+        if (e.getSource() == guiCRUDPProduct.getBtnSave() && editingInformation && !isNew) { //modifico un producto, boton guardar
             guiCRUDPProduct.clicSaveProduct();
             String name = guiCRUDPProduct.getTxtName().getText();
             float stock = Float.parseFloat(guiCRUDPProduct.getTxtStock().getText());
@@ -179,7 +208,8 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
                 float unitPrice = amount / Float.parseFloat(purchasePricea);
                 try {
                     pproduct.modify(id, name, stock, measureUnit, unitPrice, subcategory_id, amount);
-                    JOptionPane.showMessageDialog(guiCRUDPProduct, "¡Producto modificado exitosamente!");                } catch (RemoteException ex) {
+                    JOptionPane.showMessageDialog(guiCRUDPProduct, "¡Producto modificado exitosamente!");
+                } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } catch (RemoteException ex) {
