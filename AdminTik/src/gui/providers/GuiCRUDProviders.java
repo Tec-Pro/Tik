@@ -5,6 +5,12 @@
  */
 package gui.providers;
 
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.JTree;
+
 /**
  *
  * @author eze
@@ -18,6 +24,64 @@ public class GuiCRUDProviders extends javax.swing.JInternalFrame {
         initComponents();
     }
 
+    /**
+     *
+     * @return
+     */
+    public JButton getBtnNewCategory() {
+        return btnNewCategory;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JButton getBtnNewProvider() {
+        return btnNewProvider;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JButton getBtnRemoveProvider() {
+        return btnRemoveProvider;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JTable getTableProviders() {
+        return tableProviders;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JTree getTreeCategoriesProviders() {
+        return treeCategoriesProviders;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JTextField getTxtFindProvider() {
+        return txtFindProvider;
+    }
+    
+    /**
+     *
+     * @param lis
+     */
+    public void setActionListener(ActionListener lis) {
+        this.btnNewCategory.addActionListener(lis);
+        this.btnNewProvider.addActionListener(lis);
+        this.btnRemoveProvider.addActionListener(lis);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -35,11 +99,11 @@ public class GuiCRUDProviders extends javax.swing.JInternalFrame {
         tableProviders = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
         treeCategoriesProviders = new javax.swing.JTree();
-        btnFindProvider = new javax.swing.JButton();
         txtFindProvider = new javax.swing.JTextField();
         btnNewProvider = new javax.swing.JButton();
         btnRemoveProvider = new javax.swing.JButton();
         btnNewCategory = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -47,6 +111,11 @@ public class GuiCRUDProviders extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setTitle("Proveedores");
         setPreferredSize(new java.awt.Dimension(1095, 627));
+
+        panelImage1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/red.jpg"))); // NOI18N
+        panelImage1.setPreferredSize(new java.awt.Dimension(1082, 418));
+
+        panelImage2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/black.jpg"))); // NOI18N
 
         tableProviders.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -70,13 +139,6 @@ public class GuiCRUDProviders extends javax.swing.JInternalFrame {
         treeCategoriesProviders.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         jScrollPane3.setViewportView(treeCategoriesProviders);
 
-        btnFindProvider.setText("BUSCAR");
-        btnFindProvider.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnFindProviderActionPerformed(evt);
-            }
-        });
-
         txtFindProvider.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtFindProviderActionPerformed(evt);
@@ -94,6 +156,10 @@ public class GuiCRUDProviders extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Century Schoolbook L", 3, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(144, 0, 0));
+        jLabel1.setText("Proveedores");
+
         javax.swing.GroupLayout panelImage2Layout = new javax.swing.GroupLayout(panelImage2);
         panelImage2.setLayout(panelImage2Layout);
         panelImage2Layout.setHorizontalGroup(
@@ -105,16 +171,16 @@ public class GuiCRUDProviders extends javax.swing.JInternalFrame {
                         .addComponent(btnNewProvider, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnRemoveProvider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 755, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelImage2Layout.createSequentialGroup()
-                        .addComponent(txtFindProvider)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnFindProvider))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 755, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtFindProvider, javax.swing.GroupLayout.PREFERRED_SIZE, 590, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane3)
                     .addComponent(btnNewCategory, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
         panelImage2Layout.setVerticalGroup(
             panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -128,12 +194,12 @@ public class GuiCRUDProviders extends javax.swing.JInternalFrame {
                     .addGroup(panelImage2Layout.createSequentialGroup()
                         .addGroup(panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtFindProvider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnFindProvider))
+                            .addComponent(jLabel1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnNewProvider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnNewProvider, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
                             .addComponent(btnRemoveProvider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(20, 20, 20))
         );
@@ -160,7 +226,7 @@ public class GuiCRUDProviders extends javax.swing.JInternalFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelImage1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelImage1, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(jPanel1);
@@ -187,16 +253,12 @@ public class GuiCRUDProviders extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtFindProviderActionPerformed
 
-    private void btnFindProviderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindProviderActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnFindProviderActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnFindProvider;
     private javax.swing.JButton btnNewCategory;
     private javax.swing.JButton btnNewProvider;
     private javax.swing.JButton btnRemoveProvider;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

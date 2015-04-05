@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package interfaces;
+package interfaces.providers;
 
 import java.rmi.Remote;
 import java.util.List;

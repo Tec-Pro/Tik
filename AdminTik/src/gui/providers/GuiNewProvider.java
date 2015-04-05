@@ -5,6 +5,12 @@
  */
 package gui.providers;
 
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JList;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+
 /**
  *
  * @author eze
@@ -18,6 +24,46 @@ public class GuiNewProvider extends javax.swing.JInternalFrame {
         initComponents();
     }
 
+    public JButton getBtnCancelProvider() {
+        return btnCancelProvider;
+    }
+
+    public JButton getBtnSaveProvider() {
+        return btnSaveProvider;
+    }
+
+    public JTable getTableFindProviderCategories() {
+        return tableFindProviderCategories;
+    }
+    
+    public JTable getTableCategoriesProviders() {
+        return tableCategoriesProviders;
+    }
+
+    public JTextField getTxtProviderAddress() {
+        return txtProviderAddress;
+    }
+
+    public JTextField getTxtProviderCuit() {
+        return txtProviderCuit;
+    }
+
+    public JTextField getTxtProviderDescription() {
+        return txtProviderDescription;
+    }
+
+    public JTextField getTxtProviderName() {
+        return txtProviderName;
+    }
+
+    public JTextField getTxtProviderPhone() {
+        return txtProviderPhone;
+    }
+    
+    public void setActionListener(ActionListener lis) {
+        this.btnCancelProvider.addActionListener(lis);
+        this.btnSaveProvider.addActionListener(lis);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -44,10 +90,10 @@ public class GuiNewProvider extends javax.swing.JInternalFrame {
         jLabel6 = new javax.swing.JLabel();
         btnSaveProvider = new javax.swing.JButton();
         btnCancelProvider = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        listCategoriesProviders = new javax.swing.JList();
         jScrollPane3 = new javax.swing.JScrollPane();
         tableCategoriesProviders = new javax.swing.JTable();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tableFindProviderCategories = new javax.swing.JTable();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -113,8 +159,6 @@ public class GuiNewProvider extends javax.swing.JInternalFrame {
             }
         });
 
-        jScrollPane2.setViewportView(listCategoriesProviders);
-
         tableCategoriesProviders.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -138,59 +182,83 @@ public class GuiNewProvider extends javax.swing.JInternalFrame {
             tableCategoriesProviders.getColumnModel().getColumn(1).setResizable(false);
         }
 
+        tableFindProviderCategories.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Id", "Categoría"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane4.setViewportView(tableFindProviderCategories);
+        if (tableFindProviderCategories.getColumnModel().getColumnCount() > 0) {
+            tableFindProviderCategories.getColumnModel().getColumn(0).setResizable(false);
+            tableFindProviderCategories.getColumnModel().getColumn(0).setPreferredWidth(10);
+            tableFindProviderCategories.getColumnModel().getColumn(1).setResizable(false);
+        }
+
         javax.swing.GroupLayout panelImage2Layout = new javax.swing.GroupLayout(panelImage2);
         panelImage2.setLayout(panelImage2Layout);
         panelImage2Layout.setHorizontalGroup(
             panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelImage2Layout.createSequentialGroup()
                 .addGap(61, 61, 61)
-                .addGroup(panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(panelImage2Layout.createSequentialGroup()
-                            .addComponent(jLabel4)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(txtProviderAddress))
-                        .addGroup(panelImage2Layout.createSequentialGroup()
-                            .addComponent(jLabel1)
-                            .addGap(18, 18, 18)
-                            .addComponent(txtProviderName, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(panelImage2Layout.createSequentialGroup()
-                            .addComponent(jLabel6)
-                            .addGap(18, 18, 18)
-                            .addComponent(txtProviderDescription))
+                .addGroup(panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelImage2Layout.createSequentialGroup()
                         .addGroup(panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(panelImage2Layout.createSequentialGroup()
+                                    .addComponent(jLabel4)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(txtProviderAddress))
+                                .addGroup(panelImage2Layout.createSequentialGroup()
+                                    .addComponent(jLabel1)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(txtProviderName, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addGroup(panelImage2Layout.createSequentialGroup()
-                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel6)
                                     .addGap(18, 18, 18)
-                                    .addComponent(txtProviderPhone, javax.swing.GroupLayout.DEFAULT_SIZE, 445, Short.MAX_VALUE))
-                                .addGroup(panelImage2Layout.createSequentialGroup()
-                                    .addComponent(jLabel3)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(txtProviderCuit)))
+                                    .addComponent(txtProviderDescription))
+                                .addGroup(panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addGroup(panelImage2Layout.createSequentialGroup()
+                                            .addComponent(jLabel2)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(txtProviderPhone, javax.swing.GroupLayout.DEFAULT_SIZE, 445, Short.MAX_VALUE))
+                                        .addGroup(panelImage2Layout.createSequentialGroup()
+                                            .addComponent(jLabel3)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(txtProviderCuit)))
+                                    .addGroup(panelImage2Layout.createSequentialGroup()
+                                        .addGap(45, 45, 45)
+                                        .addComponent(btnSaveProvider, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(94, 94, 94)
+                                        .addComponent(btnCancelProvider, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGroup(panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelImage2Layout.createSequentialGroup()
-                                .addGap(45, 45, 45)
-                                .addComponent(btnSaveProvider, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(94, 94, 94)
-                                .addComponent(btnCancelProvider, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGroup(panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelImage2Layout.createSequentialGroup()
-                        .addGap(129, 129, 129)
-                        .addComponent(jLabel5))
-                    .addGroup(panelImage2Layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addGroup(panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE))))
+                                .addGap(129, 129, 129)
+                                .addComponent(jLabel5))
+                            .addGroup(panelImage2Layout.createSequentialGroup()
+                                .addGap(39, 39, 39)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(33, Short.MAX_VALUE))
         );
         panelImage2Layout.setVerticalGroup(
             panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelImage2Layout.createSequentialGroup()
-                .addGroup(panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addGroup(panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(panelImage2Layout.createSequentialGroup()
-                        .addGap(52, 52, 52)
                         .addGroup(panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(txtProviderName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -215,11 +283,10 @@ public class GuiNewProvider extends javax.swing.JInternalFrame {
                             .addComponent(btnSaveProvider, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnCancelProvider, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(panelImage2Layout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
@@ -293,12 +360,12 @@ public class GuiNewProvider extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JList listCategoriesProviders;
+    private javax.swing.JScrollPane jScrollPane4;
     private org.edisoncor.gui.panel.PanelImage panelImage1;
     private org.edisoncor.gui.panel.PanelImage panelImage2;
     private javax.swing.JTable tableCategoriesProviders;
+    private javax.swing.JTable tableFindProviderCategories;
     private javax.swing.JTextField txtProviderAddress;
     private javax.swing.JTextField txtProviderCuit;
     private javax.swing.JTextField txtProviderDescription;

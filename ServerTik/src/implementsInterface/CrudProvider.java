@@ -19,7 +19,7 @@ import utils.Utils;
  *
  * @author nico
  */
-public class CrudProvider extends UnicastRemoteObject implements interfaces.InterfaceProvider {
+public class CrudProvider extends UnicastRemoteObject implements interfaces.providers.InterfaceProvider {
 
     public CrudProvider() throws RemoteException {
         super();

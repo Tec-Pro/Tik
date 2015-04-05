@@ -5,15 +5,18 @@
  */
 package admintik;
 
+import controllers.providers.ControllerGuiCRUDProviders;
+import gui.providers.*;
 import implementsInterface.Client;
-import interfaces.InterfaceProvider;
-import interfaces.InterfaceProviderCategory;
+import interfaces.providers.InterfaceProvider;
+import interfaces.providers.InterfaceProviderCategory;
 import interfaces.InterfaceServer;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
+import javax.swing.JFrame;
 
 /**
  *
@@ -43,6 +46,24 @@ public class AdminTik{
         InterfaceProviderCategory providerCategory = (InterfaceProviderCategory ) Naming.lookup("//localhost/crudProviderCategory");
         
         
+        //gui contenedora para testear
+        GuiTest guiPrincipal = new GuiTest();
+        
+        //guis internas
+        GuiCRUDProviders guiCRUDProviders = new GuiCRUDProviders();
+        GuiNewCategory guiNewCategory = new GuiNewCategory();
+        GuiNewProvider guiNewProvider = new GuiNewProvider();
+        
+        
+        new ControllerGuiCRUDProviders(guiCRUDProviders, guiNewCategory, guiNewProvider, provider, providerCategory);
+        
+        //configuraciones de la gui test
+        guiPrincipal.getjDesktopPane1().add(guiCRUDProviders);
+        guiPrincipal.getjDesktopPane1().add(guiNewCategory);
+        guiPrincipal.getjDesktopPane1().add(guiNewProvider);
+        guiPrincipal.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        guiPrincipal.setVisible(true);
+        guiCRUDProviders.setVisible(true);
     }
 
 }

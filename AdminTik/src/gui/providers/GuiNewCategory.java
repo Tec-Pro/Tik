@@ -5,6 +5,10 @@
  */
 package gui.providers;
 
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JTextField;
+
 /**
  *
  * @author eze
@@ -18,6 +22,27 @@ public class GuiNewCategory extends javax.swing.JInternalFrame {
         initComponents();
     }
 
+    public JButton getBtnCancelCategory() {
+        return btnCancelCategory;
+    }
+
+    public JButton getBtnSaveCategory() {
+        return btnSaveCategory;
+    }
+
+    public JTextField getTxtCategoryName() {
+        return txtCategoryName;
+    }
+
+    public void setActionListener(ActionListener lis) {
+        this.btnCancelCategory.addActionListener(lis);
+        this.btnSaveCategory.addActionListener(lis);
+    }
+    
+    public void cleanComponents(){
+        this.txtCategoryName.setText("");
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -36,6 +61,9 @@ public class GuiNewCategory extends javax.swing.JInternalFrame {
         btnCancelCategory = new javax.swing.JButton();
         txtCategoryName = new javax.swing.JTextField();
 
+        setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        setIconifiable(true);
         setTitle("Registro de Categoría");
 
         panelImage1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/red.jpg"))); // NOI18N
@@ -115,7 +143,7 @@ public class GuiNewCategory extends javax.swing.JInternalFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelImage1, javax.swing.GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE)
+            .addComponent(panelImage1, javax.swing.GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(jPanel1);
