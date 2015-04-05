@@ -23,9 +23,12 @@ public interface InterfaceCategory extends Remote {
      public Map<String,Object> modify(int id,String name) throws java.rmi.RemoteException;
      
      public boolean delete(int id) throws java.rmi.RemoteException;
+     
+      public boolean categoryExists(String name);
 
      public Map<String,Object> getCategory(int id) throws java.rmi.RemoteException;
      
+     public Map<String, Object> getCategoryByName(String name) throws java.rmi.RemoteException;
      
      public  List<Map> getCategories() throws java.rmi.RemoteException;    
      

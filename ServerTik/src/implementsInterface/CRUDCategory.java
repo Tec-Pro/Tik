@@ -26,10 +26,16 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
 
     }
 
+    public boolean categoryExists(String name){
+        return Category.first("name = ?", name) != null;
+    }
+    
     public Map<String, Object> create(String name) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
-        Map<String, Object> res = Category.createIt("name", name).toMap();
+        Map<String, Object> res = null;
+        if(!categoryExists(name))
+            res = Category.createIt("name", name).toMap();
         Base.commitTransaction();
         Utils.cerrarBase();
         return res;
@@ -38,11 +44,10 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
     public Map<String, Object> modify(int id, String name) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Category category = Category.findById(id);
-        boolean res = false;
         if (category != null) {
             category.setString("name", name);
             Base.openTransaction();
-            res = category.saveIt();
+            category.saveIt();
             Base.commitTransaction();
             Utils.cerrarBase();
         }
@@ -71,6 +76,13 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
     public Map<String, Object> getCategory(int id) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Map<String, Object> ret = Category.findById(id).toMap();
+        Utils.cerrarBase();
+        return ret;
+    }
+    
+    public Map<String, Object> getCategoryByName(String name) throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        Map<String, Object> ret = Category.first("name = ?",name).toMap();
         Utils.cerrarBase();
         return ret;
     }
