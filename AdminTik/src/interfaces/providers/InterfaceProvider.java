@@ -24,7 +24,9 @@ public interface InterfaceProvider extends Remote {
      
      public Map<String,Object> getProvider(int id) throws java.rmi.RemoteException;
      
-     public  List<Map> getProviders() throws java.rmi.RemoteException;    
+     public  List<Map> getProviders() throws java.rmi.RemoteException; 
+     
+     public List<Map> getCategoriesFromProvider(int id) throws java.rmi.RemoteException;
   
      public Map<String,Object> addCategoryToProvider(int provider_id, int category_id) throws java.rmi.RemoteException;
 }

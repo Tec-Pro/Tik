@@ -11,6 +11,7 @@ import implementsInterface.Client;
 import interfaces.providers.InterfaceProvider;
 import interfaces.providers.InterfaceProviderCategory;
 import interfaces.InterfaceServer;
+import interfaces.providers.InterfaceProvidersSearch;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -44,7 +45,7 @@ public class AdminTik{
         
         InterfaceProvider provider = (InterfaceProvider) Naming.lookup("//localhost/crudProvider");
         InterfaceProviderCategory providerCategory = (InterfaceProviderCategory ) Naming.lookup("//localhost/crudProviderCategory");
-        
+        InterfaceProvidersSearch providersSearch = (InterfaceProvidersSearch) Naming.lookup("//localhost/providersSearch");
         
         //gui contenedora para testear
         GuiTest guiPrincipal = new GuiTest();
@@ -55,7 +56,7 @@ public class AdminTik{
         GuiNewProvider guiNewProvider = new GuiNewProvider();
         
         
-        new ControllerGuiCRUDProviders(guiCRUDProviders, guiNewCategory, guiNewProvider, provider, providerCategory);
+        new ControllerGuiCRUDProviders(guiCRUDProviders, guiNewCategory, guiNewProvider, provider, providerCategory, providersSearch);
         
         //configuraciones de la gui test
         guiPrincipal.getjDesktopPane1().add(guiCRUDProviders);
@@ -63,6 +64,7 @@ public class AdminTik{
         guiPrincipal.getjDesktopPane1().add(guiNewProvider);
         guiPrincipal.setExtendedState(JFrame.MAXIMIZED_BOTH);
         guiPrincipal.setVisible(true);
+        guiCRUDProviders.cleanComponents();
         guiCRUDProviders.setVisible(true);
     }
 

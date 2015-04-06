@@ -8,9 +8,13 @@ package implementsInterface;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import models.Category;
 import models.Provider;
+import models.Providercategory;
 import models.ProvidersProvidercategory;
 import org.javalite.activejdbc.Base;
 import utils.Utils;
@@ -54,7 +58,8 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.prov
      * @param address
      * @param description
      * @param phones
-     * @return a map representing the modified provider if exists, empty map otherwise.
+     * @return a map representing the modified provider if exists, empty map
+     * otherwise.
      * @throws RemoteException
      */
     @Override
@@ -129,9 +134,30 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.prov
     public Map<String, Object> addCategoryToProvider(int provider_id, int category_id) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
-        ProvidersProvidercategory.createIt("provider_id",provider_id,"providercategory_id",category_id);
+        ProvidersProvidercategory.createIt("provider_id", provider_id, "providercategory_id", category_id);
         Base.commitTransaction();
         return getProvider(provider_id);
+    }
+
+    @Override
+    public List<Map> getCategoriesFromProvider(int id) throws RemoteException {
+        Utils.abrirBase();
+        Base.openTransaction();
+        List<Map> result = new LinkedList<>();
+        Provider prov = Provider.findById(id);
+        if (prov != null) {
+            List<ProvidersProvidercategory> provCategoryList = prov.getAll(ProvidersProvidercategory.class);
+            if (provCategoryList != null) {
+                Iterator<ProvidersProvidercategory> provCategoryItr = provCategoryList.iterator();
+                while (provCategoryItr.hasNext()) {
+                    ProvidersProvidercategory provCategory = provCategoryItr.next();
+                    Providercategory category = Providercategory.findById(provCategory.getInteger("providercategory_id"));
+                    result.add(category.toMap());
+                }
+            }
+        }
+        Base.commitTransaction();
+        return result;
     }
 
 }

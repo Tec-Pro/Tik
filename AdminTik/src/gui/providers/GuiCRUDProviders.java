@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTree;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -70,6 +71,11 @@ public class GuiCRUDProviders extends javax.swing.JInternalFrame {
      */
     public JTextField getTxtFindProvider() {
         return txtFindProvider;
+    }
+    
+    public void cleanComponents(){
+        this.txtFindProvider.setText("");
+        ((DefaultTableModel)this.tableProviders.getModel()).setRowCount(0);
     }
     
     /**

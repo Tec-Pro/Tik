@@ -14,6 +14,7 @@ import java.rmi.Naming;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import search.providersSearch.ProvidersSearch;
 
 /**
  *
@@ -42,13 +43,14 @@ public class ServerTik {
            System.out.println("<<<<<<<<< Servidor Andando >>>>>>>>>");
            CrudProvider crudProvider = new CrudProvider();
            CrudProviderCategory crudProviderCategory = new CrudProviderCategory();
+           ProvidersSearch providersSearch = new ProvidersSearch();
            Server server= new Server();
            //Asocio el objeto remoto 's' a la direccion de mi host seguida de un /nombreAsociado
            Naming.rebind("crudProvider", crudProvider);
            Naming.rebind("crudProviderCategory", crudProviderCategory); 
            Naming.rebind("Server", server);  
+           Naming.rebind("providersSearch", providersSearch);
            
-        //   System.out.println("hice un usuario" + crudAdmin.create("agu", "aguasdasd"));
     }
     
 }
