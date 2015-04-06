@@ -23,6 +23,11 @@ public class ControllerGuiNewCategory implements ActionListener {
     private final GuiNewCategory guiNewCategory;
     private final InterfaceProviderCategory providerCategory;
     
+    /**
+     *
+     * @param guiNCat
+     * @param provCategory
+     */
     public ControllerGuiNewCategory(GuiNewCategory guiNCat, InterfaceProviderCategory provCategory){
         this.guiNewCategory = guiNCat;
         this.providerCategory = provCategory;

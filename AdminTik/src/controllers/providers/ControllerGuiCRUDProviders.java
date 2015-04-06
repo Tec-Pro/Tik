@@ -49,10 +49,10 @@ public class ControllerGuiCRUDProviders implements ActionListener {
         }
         //Si presiono el boton de agregar un nuevo proveedor
         if(e.getSource().equals(this.guiCRUDProviders.getBtnNewProvider())){
-            //this.guiNewProvider.cleanComponents();
+            this.guiNewProvider.cleanComponents();
             try {
                 //cargo las categorias disponibles en la tabla correspondiente de la guiNewProvider
-                this.controllerGuiNewProvider.loadCategoryList();
+                this.controllerGuiNewProvider.loadFindCategoryTable();
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
             }

@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -58,6 +59,16 @@ public class GuiNewProvider extends javax.swing.JInternalFrame {
 
     public JTextField getTxtProviderPhone() {
         return txtProviderPhone;
+    }
+    
+    public void cleanComponents(){
+        this.txtProviderAddress.setText("");
+        this.txtProviderCuit.setText("");
+        this.txtProviderDescription.setText("");
+        this.txtProviderName.setText("");
+        this.txtProviderPhone.setText("");
+        ((DefaultTableModel)this.tableCategoriesProviders.getModel()).setRowCount(0);
+        ((DefaultTableModel)this.tableFindProviderCategories.getModel()).setRowCount(0);
     }
     
     public void setActionListener(ActionListener lis) {
