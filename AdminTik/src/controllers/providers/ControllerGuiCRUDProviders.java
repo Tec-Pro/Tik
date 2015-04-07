@@ -46,6 +46,7 @@ public class ControllerGuiCRUDProviders implements ActionListener {
         this.controllerGuiNewProvider = new ControllerGuiNewProvider(this.guiNewProvider,this.provider, this.providerCategory);
         this.guiCRUDProviders.setActionListener(this);
         //escucho en el txtFindProvider lo que se va ingresando para buscar un proveedor
+        loadProviderCategories();
         this.guiCRUDProviders.getTxtFindProvider().addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -58,6 +59,19 @@ public class ControllerGuiCRUDProviders implements ActionListener {
             }
 
         });
+    }
+    
+    private void loadProviderCategories() throws RemoteException{
+        List<Map> providerCategoriesList = this.providerCategory.getProviderCategories();
+        DefaultTableModel providerCategoriesTableModel = (DefaultTableModel) this.guiCRUDProviders.getTableProviderCategories().getModel();
+        providerCategoriesTableModel.setRowCount(0);
+        Object[] o = new Object[1];
+        for (Map provCat : providerCategoriesList){
+            o[0] = provCat.get("name");
+            providerCategoriesTableModel.addRow(o);
+        }
+        o[0] = "";
+        providerCategoriesTableModel.addRow(o);
     }
     
     private void updateSearchProviderTable() throws RemoteException{
