@@ -17,10 +17,47 @@ import java.util.Map;
  */
 public interface InterfaceUser extends Remote {
 
-    public Map<String,Object> create(String name, String pass,Date entryDate, Date exitDate, String turn) throws java.rmi.RemoteException;
+    public Map<String,Object> create(
+            String name,
+            String surname,
+            String pass,
+            Date entryDate,
+            Date exitDate,
+            String turn,
+            Date dateOfBirth,
+            String placeOfBirth,
+            String idType,
+            String idNumber,
+            String adress,
+            String homePhone,
+            String emergencyPhone,
+            String mobilePhone,
+            String maritalStatus,
+            String bloodType,
+            String position
+            ) throws java.rmi.RemoteException;
      
-     public Map<String,Object> modify(int id,String name, String pass,Date entryDate, Date exitDate, String turn) throws java.rmi.RemoteException;
-     
+    public Map<String,Object> modify(
+            int id,
+            String name,
+            String surname,
+            String pass,
+            Date entryDate,
+            Date exitDate,
+            String turn,
+            Date dateOfBirth,
+            String placeOfBirth,
+            String idType,
+            String idNumber,
+            String adress,
+            String homePhone,
+            String emergencyPhone,
+            String mobilePhone,
+            String maritalStatus,
+            String bloodType,
+            String position
+            ) throws java.rmi.RemoteException ;
+    
      public boolean delete(int id) throws java.rmi.RemoteException;
      
      public Map<String,Object> getUser(int id) throws java.rmi.RemoteException;
