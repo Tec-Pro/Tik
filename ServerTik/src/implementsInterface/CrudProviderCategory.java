@@ -3,9 +3,13 @@ package implementsInterface;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import models.Provider;
 import models.Providercategory;
+import models.ProvidersProvidercategory;
 import org.javalite.activejdbc.Base;
 import utils.Utils;
 
@@ -110,4 +114,25 @@ public class CrudProviderCategory extends UnicastRemoteObject implements interfa
         return ret;
     }
 
+    @Override
+    public List<Map> getProvidersFromCategory(int categoryId) throws RemoteException {
+        Utils.abrirBase();
+        Base.openTransaction();
+        List<Map> result = new LinkedList<>();
+        //saco las relaciones de la categoria(a treves de categoryId) con los proveedores
+        List<ProvidersProvidercategory> provCategoryList = ProvidersProvidercategory.find("providercategory_id = ?", categoryId);
+        //si la categoria tiene proveedores asociados
+        if (provCategoryList != null) {
+            //saco los proveedores de esas relaciones, y los agrego a la lista resultado
+            Iterator<ProvidersProvidercategory> provCategoryItr = provCategoryList.iterator();
+                while (provCategoryItr.hasNext()) {
+                    ProvidersProvidercategory provCategory = provCategoryItr.next();
+                    Map provider = Provider.findById(provCategory.getInteger("provider_id")).toMap();
+                    result.add(provider);
+                }
+            
+        }
+        Base.commitTransaction();
+        return result;
+    }
 }

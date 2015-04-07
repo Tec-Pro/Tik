@@ -144,10 +144,14 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.prov
         Utils.abrirBase();
         Base.openTransaction();
         List<Map> result = new LinkedList<>();
+        //busco el proveedor corespondiente al id
         Provider prov = Provider.findById(id);
         if (prov != null) {
+            //saco las relaciones con categorias en las cuales se encuentra ese proveedor
             List<ProvidersProvidercategory> provCategoryList = prov.getAll(ProvidersProvidercategory.class);
+            //si tiene categorias asociadas
             if (provCategoryList != null) {
+                //saco la categoria de cada relacion y la agrego a la lista resultado
                 Iterator<ProvidersProvidercategory> provCategoryItr = provCategoryList.iterator();
                 while (provCategoryItr.hasNext()) {
                     ProvidersProvidercategory provCategory = provCategoryItr.next();
