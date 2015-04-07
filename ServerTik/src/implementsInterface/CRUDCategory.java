@@ -7,6 +7,7 @@ package implementsInterface;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +27,26 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
 
     }
 
-    public boolean categoryExists(String name){
-        return Category.first("name = ?", name) != null;
+    public boolean categoryExists(String name) throws java.rmi.RemoteException{
+        Utils.abrirBase();
+        boolean res = false;
+        Category c = Category.first("name = ?", name);
+        if(c != null){
+            res = true;
+        }
+        Utils.cerrarBase();
+        return res;
+    }
+    
+    public boolean subCategoryExists(String name) throws java.rmi.RemoteException{
+        Utils.abrirBase();
+        boolean res = false;
+        Subcategory c = Subcategory.first("name = ?", name);
+        if(c != null){
+            res = true;
+        }
+        Utils.cerrarBase();
+        return res;
     }
     
     public Map<String, Object> create(String name) throws java.rmi.RemoteException {
@@ -57,10 +76,13 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
     public boolean delete(int id) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Category category = Category.findById(id);
-        boolean res = false;
+        boolean res = true;
         if (category != null) {
             Base.openTransaction();
-            res = category.delete();
+           for(Subcategory s : category.getAll(Subcategory.class)){
+              res = res && s.delete();
+           }
+           res = res && category.delete();
             Base.commitTransaction();
         }
         return res;
@@ -92,7 +114,7 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
         Base.openTransaction();
         Category category = Category.findById(id);
         Map<String, Object> ret = null;
-        if (category != null) {
+        if (category != null && !subCategoryExists(name)) {
             Subcategory subcategory = Subcategory.createIt("name", name);
             category.add(subcategory);
             ret = subcategory.toMap();

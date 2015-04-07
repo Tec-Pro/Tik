@@ -21,6 +21,7 @@ public class GuiCRUDProductCategory extends javax.swing.JInternalFrame {
     private DefaultTableModel tableCategoryDefault;
     private DefaultTableModel tableSubCategoryDefault;
     private boolean btnUpdateCategorySelected;
+    private boolean btnUpdateSubCategorySelected;
     
     public GuiCRUDProductCategory() {
         initComponents();
@@ -29,6 +30,10 @@ public class GuiCRUDProductCategory extends javax.swing.JInternalFrame {
         tableSubCategoryDefault = (DefaultTableModel) tableSubCategory.getModel();
     }
     
+    /**
+     * Agrega a los botones de la interfaz un actionlistenes pasado como parametro.
+     *@param ActionListener
+     */
     public void setActionListener(ActionListener al){
         btnDeleteCategory.addActionListener(al);
         btnDeleteSubCategory.addActionListener(al);
@@ -38,6 +43,9 @@ public class GuiCRUDProductCategory extends javax.swing.JInternalFrame {
         btnUpdateSubCategory.addActionListener(al);
     }
     
+    /**
+     * Define el estado en el que queda la interfaz luego clickear sobre los botones Nueva o Modificar del panel de categorias.
+     */
     public void stateNewAndUpdateCategory(){
         txtCategory.setEnabled(true);
         btnUpdateCategory.setEnabled(false);
@@ -46,36 +54,98 @@ public class GuiCRUDProductCategory extends javax.swing.JInternalFrame {
         btnDeleteCategory.setEnabled(true);
     }
     
-    public void stateInitialCategoryPanel(){
+    /**
+     * Define el estado inicial del panel de categorias.
+     */
+    public void initialStateCategoryPanel(){
         txtCategory.setEnabled(false);
-        btnNewCategory.setText("Nuevo");
+        btnNewCategory.setText("Nueva");
         btnDeleteCategory.setText("Eliminar");
         btnDeleteCategory.setEnabled(false);
         btnUpdateCategory.setEnabled(false);
     }
     
-    public void reClick(){
+    /**
+     * Define el estado en el que queda la interfaz luego de crear o modificar una categoria.
+     */
+    public void stateAfterUpdateCategory(){
+        txtCategory.setEnabled(false);
+        btnNewCategory.setText("Nueva");
+        btnDeleteCategory.setText("Eliminar");
+        btnDeleteCategory.setEnabled(true);
+        btnUpdateCategory.setEnabled(true);
+    }
+    
+    /**
+     * Define el estado en el que queda la interfaz al clickear sobre una categoria.
+     */
+    public void stateCategorySelected(){
+        txtCategory.setEnabled(false);
+        btnNewCategory.setText("Nueva");
+        btnDeleteCategory.setText("Eliminar");
+        btnDeleteCategory.setEnabled(true);
+        btnUpdateCategory.setEnabled(true);
         
     }
     
-    public void stateAfterUpdateCategory(){
-        txtCategory.setEnabled(false);
-        btnNewCategory.setText("Nuevo");
-        btnDeleteCategory.setText("Eliminar");
-        btnDeleteCategory.setEnabled(true);
-        btnUpdateCategory.setEnabled(true);
+    /**
+     * Define el estado en el que queda la interfaz luego clickear sobre los botones Nueva o Modificar del panel de subcategorias.
+     */
+    public void stateNewAndUpdateSubCategory(){
+        txtSubCategory.setEnabled(true);
+        btnUpdateSubCategory.setEnabled(false);
+        btnNewSubCategory.setText("Guardar");
+        btnDeleteSubCategory.setText("Cancelar");
+        btnDeleteSubCategory.setEnabled(true);
     }
     
-    public void stateCategorySelected(){
-        txtCategory.setEnabled(false);
-        btnNewCategory.setText("Nuevo");
-        btnDeleteCategory.setText("Eliminar");
-        btnDeleteCategory.setEnabled(true);
-        btnUpdateCategory.setEnabled(true);
+    /**
+     * Define el estado inicial del panel de subcategorias.
+     */
+    public void initialStateSubCategoryPanel(){
+        txtSubCategory.setEnabled(false);
+        btnNewSubCategory.setEnabled(false);
+        btnNewSubCategory.setText("Nueva");
+        btnDeleteSubCategory.setText("Eliminar");
+        btnDeleteSubCategory.setEnabled(false);
+        btnUpdateSubCategory.setEnabled(false);
     }
     
+    /**
+     * Define el estado en el que queda la interfaz luego de crear o modificar una subcategoria.
+     */
+   public void stateAfterUpdateSubCategory(){
+        txtSubCategory.setEnabled(false);
+        btnNewSubCategory.setText("Nueva");
+        btnDeleteSubCategory.setText("Eliminar");
+        btnDeleteSubCategory.setEnabled(true);
+        btnUpdateSubCategory.setEnabled(true);
+    }
+    
+   /**
+     * Define el estado en el que queda la interfaz luego de clickear sobre una subcategoria.
+     */
+    public void stateSubCategorySelected(){
+        txtSubCategory.setEnabled(false);
+        btnNewSubCategory.setText("Nueva");
+        btnDeleteSubCategory.setText("Eliminar");
+        btnDeleteSubCategory.setEnabled(true);
+        btnUpdateSubCategory.setEnabled(true);
+    }
+    
+    /**
+     * Limpia el panel de categorias.
+     */
     public void cleanFieldsCategoryPanel(){
         txtCategory.setText("");
+    }
+    
+    /**
+     * Limpia el panel de subcategorias.
+     */
+    public void cleanFieldsSubCategoryPanel(){
+        txtSubCategory.setText("");
+        
     }
     
     public DefaultTableModel getTableCategoryDefault() {
@@ -84,10 +154,6 @@ public class GuiCRUDProductCategory extends javax.swing.JInternalFrame {
 
     public DefaultTableModel getTableSubCategoryDefault() {
         return tableSubCategoryDefault;
-    }
-
-    public JComboBox getBoxCategory() {
-        return boxCategory;
     }
 
     public JButton getBtnDeleteCategory() {
@@ -130,12 +196,36 @@ public class GuiCRUDProductCategory extends javax.swing.JInternalFrame {
         return txtSubCategory;
     }
 
+    /**
+     * Retorna true en el caso en que el boton Modificar del panel de categorias ha sido seleccionado.
+     * @return boolean.
+     */
     public boolean isBtnUpdateCategorySelected() {
         return btnUpdateCategorySelected;
     }
-
+    
+    /**
+     * Permite modificar el valor del atributo que brinda informacion sobre si el boton Modificar del panel de categorias ha sido seleccionado.
+     * @param boolean
+     */
     public void setBtnUpdateCategorySelected(boolean btnUpdateCategorySelected) {
         this.btnUpdateCategorySelected = btnUpdateCategorySelected;
+    }
+
+    /**
+     * Retorna true en el caso en que el boton Modificar del panel de subcategorias ha sido seleccionado.
+     * @return boolean.
+     */
+    public boolean isBtnUpdateSubCategorySelected() {
+        return btnUpdateSubCategorySelected;
+    }
+
+    /**
+     * * Permite modificar el valor del atributo que brinda informacion sobre si el boton Modificar del panel de subcategorias ha sido seleccionado.
+     * @param btnUpdateSubCategorySelected 
+     */
+    public void setBtnUpdateSubCategorySelected(boolean btnUpdateSubCategorySelected) {
+        this.btnUpdateSubCategorySelected = btnUpdateSubCategorySelected;
     }
     
     
@@ -155,9 +245,7 @@ public class GuiCRUDProductCategory extends javax.swing.JInternalFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tableSubCategory = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         txtSubCategory = new javax.swing.JTextField();
-        boxCategory = new javax.swing.JComboBox();
         btnDeleteSubCategory = new javax.swing.JButton();
         btnUpdateSubCategory = new javax.swing.JButton();
         btnNewSubCategory = new javax.swing.JButton();
@@ -170,6 +258,13 @@ public class GuiCRUDProductCategory extends javax.swing.JInternalFrame {
         btnUpdateCategory = new javax.swing.JButton();
         btnDeleteCategory = new javax.swing.JButton();
 
+        setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+        setTitle("Gestion de categorias y subcategorias de productos");
+
         panelImage3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/black.jpg"))); // NOI18N
         panelImage3.setPreferredSize(new java.awt.Dimension(700, 426));
 
@@ -177,29 +272,27 @@ public class GuiCRUDProductCategory extends javax.swing.JInternalFrame {
 
         tableSubCategory.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Subcategoria"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(tableSubCategory);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Subcategoria");
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Categoria");
-
         txtSubCategory.setEnabled(false);
-
-        boxCategory.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        boxCategory.setEnabled(false);
 
         btnDeleteSubCategory.setText("Eliminar");
         btnDeleteSubCategory.setEnabled(false);
@@ -208,6 +301,7 @@ public class GuiCRUDProductCategory extends javax.swing.JInternalFrame {
         btnUpdateSubCategory.setEnabled(false);
 
         btnNewSubCategory.setText("Nueva");
+        btnNewSubCategory.setEnabled(false);
 
         javax.swing.GroupLayout panelTranslucido3Layout = new javax.swing.GroupLayout(panelTranslucido3);
         panelTranslucido3.setLayout(panelTranslucido3Layout);
@@ -217,15 +311,10 @@ public class GuiCRUDProductCategory extends javax.swing.JInternalFrame {
             .addGroup(panelTranslucido3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelTranslucido3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelTranslucido3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(panelTranslucido3Layout.createSequentialGroup()
-                            .addComponent(jLabel2)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(txtSubCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(panelTranslucido3Layout.createSequentialGroup()
-                            .addComponent(jLabel3)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(boxCategory, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(panelTranslucido3Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtSubCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelTranslucido3Layout.createSequentialGroup()
                         .addComponent(btnNewSubCategory)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -237,16 +326,12 @@ public class GuiCRUDProductCategory extends javax.swing.JInternalFrame {
         panelTranslucido3Layout.setVerticalGroup(
             panelTranslucido3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelTranslucido3Layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(panelTranslucido3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtSubCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panelTranslucido3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(boxCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(34, 34, 34)
                 .addGroup(panelTranslucido3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNewSubCategory)
                     .addComponent(btnUpdateSubCategory)
@@ -258,15 +343,27 @@ public class GuiCRUDProductCategory extends javax.swing.JInternalFrame {
 
         tableCategory.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Categoria"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane5.setViewportView(tableCategory);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -306,7 +403,7 @@ public class GuiCRUDProductCategory extends javax.swing.JInternalFrame {
         panelTranslucido4Layout.setVerticalGroup(
             panelTranslucido4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelTranslucido4Layout.createSequentialGroup()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(panelTranslucido4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
@@ -333,13 +430,11 @@ public class GuiCRUDProductCategory extends javax.swing.JInternalFrame {
         panelImage3Layout.setVerticalGroup(
             panelImage3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelImage3Layout.createSequentialGroup()
-                .addGap(43, 43, 43)
+                .addGap(52, 52, 52)
                 .addGroup(panelImage3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addGroup(panelImage3Layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(panelTranslucido4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panelTranslucido4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelTranslucido3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(35, 35, 35))
+                .addGap(26, 26, 26))
         );
 
         jScrollPane1.setViewportView(panelImage3);
@@ -362,7 +457,6 @@ public class GuiCRUDProductCategory extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox boxCategory;
     private javax.swing.JButton btnDeleteCategory;
     private javax.swing.JButton btnDeleteSubCategory;
     private javax.swing.JButton btnNewCategory;
@@ -371,7 +465,6 @@ public class GuiCRUDProductCategory extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnUpdateSubCategory;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane5;
