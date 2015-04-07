@@ -7,11 +7,8 @@ package gui;
 
 import interfaces.InterfaceCategory;
 import java.awt.event.ActionListener;
-import java.beans.PropertyVetoException;
 import java.rmi.RemoteException;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -36,11 +33,6 @@ public class GuiCRUDEProduct extends javax.swing.JInternalFrame {
         initComponents();
         tableProductsDefault = (DefaultTableModel) tableProducts.getModel(); //convierto la tabla
         tableReciperDefault = (DefaultTableModel) tableReciper.getModel();
-        try {
-            this.setMaximum(true);
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(GuiCRUDEProduct.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     /**
@@ -63,6 +55,7 @@ public class GuiCRUDEProduct extends javax.swing.JInternalFrame {
      * Limpia todos los campos.
      */
     public void clear() {
+        txtSearch.setText("");
         txtId.setText("");
         txtMeasureUnit.setText("");
         txtName.setText("");
@@ -70,13 +63,14 @@ public class GuiCRUDEProduct extends javax.swing.JInternalFrame {
         category.setSelectedIndex(-1);
         category.removeAllItems();
         tableProductsDefault.setRowCount(0);
+        tableReciperDefault.setRowCount(0);
     }
-    
-     /**
+
+    /**
      * carga las subcategorias en el select
      */
     public void loadCategory() throws RemoteException {
-        for (Map subC : CRUDCategory.getCategories()) {
+        for (Map subC : CRUDCategory.getSubcategoriesCategory()) {
             category.addItem(subC.get("name"));
         }
     }
@@ -123,7 +117,7 @@ public class GuiCRUDEProduct extends javax.swing.JInternalFrame {
      * @throws RemoteException
      */
     public void clicTableProducts() {
-        clear();
+        tableReciperDefault.setRowCount(0);
         btnNew.setEnabled(true);
         btnDelete.setEnabled(true);
         btnModify.setEnabled(true);
@@ -150,7 +144,6 @@ public class GuiCRUDEProduct extends javax.swing.JInternalFrame {
      *
      */
     public void clicModifyProduct() {
-        clear();
         txtMeasureUnit.setEnabled(true);
         txtName.setEnabled(true);
         txtStock.setEnabled(true);
@@ -217,8 +210,9 @@ public class GuiCRUDEProduct extends javax.swing.JInternalFrame {
         return tableReciper;
     }
 
-     /**
+    /**
      * cargae el producto elaborado en los txt
+     *
      * @param prod
      * @throws RemoteException
      */
@@ -229,13 +223,11 @@ public class GuiCRUDEProduct extends javax.swing.JInternalFrame {
         txtId.setText(prod.get("id").toString());
         txtStock.setText(prod.get("stock").toString());
         txtName.setText(prod.get("name").toString());
-        txtMeasureUnit.setText(prod.get("measure_unit").toString());;
-        Map<String, Object> subC = (Map<String, Object>) CRUDCategory.getSubcategoriesCategory(Integer.parseInt(prod.get("subcategory_id").toString()));
+        txtMeasureUnit.setText(prod.get("measure_unit").toString());
+        Map<String, Object> subC = CRUDCategory.getSubcategory(Integer.parseInt(prod.get("subcategory_id").toString()));
         category.setSelectedItem(subC.get("name").toString()); //CATEGORIA
     }
-    
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -310,6 +302,7 @@ public class GuiCRUDEProduct extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        tableProducts.setPreferredSize(new java.awt.Dimension(477, 209));
         jScrollPane2.setViewportView(tableProducts);
         tableProducts.getColumnModel().getColumn(3).setHeaderValue("Categoria");
         tableProducts.getColumnModel().getColumn(4).setHeaderValue("Unidad de medida");
@@ -438,8 +431,10 @@ public class GuiCRUDEProduct extends javax.swing.JInternalFrame {
             .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
+        jScrollPane3.setBorder(null);
+
         tableReciper.setAutoCreateRowSorter(true);
-        tableReciper.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Receta", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Schoolbook L", 1, 12), java.awt.Color.black)); // NOI18N
+        tableReciper.setBorder(null);
         tableReciper.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -464,6 +459,7 @@ public class GuiCRUDEProduct extends javax.swing.JInternalFrame {
             }
         });
         tableReciper.setEnabled(false);
+        tableReciper.setPreferredSize(new java.awt.Dimension(477, 209));
         jScrollPane3.setViewportView(tableReciper);
 
         javax.swing.GroupLayout panelImage2Layout = new javax.swing.GroupLayout(panelImage2);

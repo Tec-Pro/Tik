@@ -32,12 +32,13 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         initComponents();
         tableProductsDefault = (DefaultTableModel) tableProducts.getModel(); //convierto la tabla
     }
-    
+
     /**
      * setea el CRUDCategoria
+     *
      * @param CRUDCategory
      */
-    public void setCRUDCategory(InterfaceCategory CRUDCategory){
+    public void setCRUDCategory(InterfaceCategory CRUDCategory) {
         this.CRUDCategory = CRUDCategory;
     }
 
@@ -56,6 +57,7 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
      * Limpia todos los campos.
      */
     public void clear() {
+        txtSearch.setText("");
         txtId.setText("");
         txtMeasureUnit.setText("");
         txtPurchasePrice.setText("");
@@ -68,16 +70,19 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
 
     /**
      * Carga todas las subcategorias en el select de categoria
+     *
      * @throws RemoteException
      */
     public void loadCategory() throws RemoteException {
-        for (Map subC : CRUDCategory.getCategories()) {
-            category.addItem(subC.get("name"));
+        for (Map subC : CRUDCategory.getSubcategoriesCategory()) {
+            category.addItem(subC.get("name").toString());
         }
     }
 
     /**
-     * habilita y desabilita los campos y botones como sea necesario cuando haga clic en nuevo 
+     * habilita y desabilita los campos y botones como sea necesario cuando haga
+     * clic en nuevo
+     *
      * @throws RemoteException
      */
     public void clicNewProduct() throws RemoteException {
@@ -95,7 +100,8 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
     }
 
     /**
-     * habilita y desabilita los campos y botones como sea necesario cuando haga clic en guardar
+     * habilita y desabilita los campos y botones como sea necesario cuando haga
+     * clic en guardar
      */
     public void clicSaveProduct() {
         clear();
@@ -111,7 +117,9 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
     }
 
     /**
-     * habilita y desabilita los campos y botones como sea necesario cuando haga clic en la tabla producto
+     * habilita y desabilita los campos y botones como sea necesario cuando haga
+     * clic en la tabla producto
+     *
      * @throws RemoteException
      */
     public void clicTableProducts() throws RemoteException {
@@ -122,7 +130,8 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
     }
 
     /**
-     * habilita y desabilita los campos y botones como sea necesario cuando haga clic en eliminar
+     * habilita y desabilita los campos y botones como sea necesario cuando haga
+     * clic en eliminar
      */
     public void clicDeleteProduct() {
         clear();
@@ -138,7 +147,9 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
     }
 
     /**
-     * habilita y desabilita los campos y botones como sea necesario cuando haga clic en modificar
+     * habilita y desabilita los campos y botones como sea necesario cuando haga
+     * clic en modificar
+     *
      * @throws RemoteException
      */
     public void clicModifyProduct() throws RemoteException {
@@ -284,7 +295,7 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         txtPurchasePrice.setText(String.valueOf(purchasePrice));
         txtName.setText(prod.get("name").toString());
         txtMeasureUnit.setText(prod.get("measure_unit").toString());;
-        Map<String, Object> subC = (Map<String, Object>) CRUDCategory.getSubcategoriesCategory(Integer.parseInt(prod.get("subcategory_id").toString()));
+        Map<String, Object> subC = CRUDCategory.getSubcategory(Integer.parseInt(prod.get("subcategory_id").toString()));
         category.setSelectedItem(subC.get("name").toString()); //CATEGORIA
     }
 
@@ -336,9 +347,13 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
 
         panelImage2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/black.jpg"))); // NOI18N
 
-        txtSearch.setForeground(new java.awt.Color(130, 125, 120));
-        txtSearch.setText("Buscar...");
+        txtSearch.setForeground(java.awt.Color.black);
         txtSearch.setToolTipText("Búsqueda personalizada");
+        txtSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchActionPerformed(evt);
+            }
+        });
 
         tableProducts.setAutoCreateRowSorter(true);
         tableProducts.setModel(new javax.swing.table.DefaultTableModel(
@@ -581,6 +596,10 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
     private void btnModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnModifyActionPerformed
+
+    private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnModify;

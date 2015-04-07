@@ -51,23 +51,25 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
     }
 
     public void clear() {
+        txtSearch.setText("");
         txtId.setText("");
         txtName.setText("");
         category.setSelectedIndex(-1);
         category.removeAllItems();
         tableProductsDefault.setRowCount(0);
+        tableReciperDefault.setRowCount(0);
     }
 
     /**
      * carga las subcategorias en el select
      */
     public void loadCategory() throws RemoteException {
-        for (Map subC : CRUDCategory.getCategories()) {
+        for (Map subC : CRUDCategory.getSubcategoriesCategory()) {
             category.addItem(subC.get("name"));
         }
     }
 
-     /**
+    /**
      * habilita y desabilita los campos y botones como sea necesario cuando haga
      * clic en nuevo
      *
@@ -98,14 +100,14 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
         tableReciper.setEnabled(false);
     }
 
-     /**
+    /**
      * habilita y desabilita los campos y botones como sea necesario cuando haga
      * clic en la tabla producto
      *
      * @throws RemoteException
      */
     public void clicTableProducts() {
-        clear();
+        tableReciperDefault.setRowCount(0);
         btnNew.setEnabled(true);
         btnDelete.setEnabled(true);
         btnModify.setEnabled(true);
@@ -118,19 +120,20 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
         btnSave.setEnabled(false);
         btnDelete.setEnabled(false);
         btnModify.setEnabled(false);
+        tableReciper.setEnabled(false);
     }
 
-     /**
+    /**
      * habilita y desabilita los campos y botones como sea necesario cuando haga
      * clic en eliminar
      */
     public void clicModifyProduct() {
-        clear();
         txtName.setEnabled(true);
         category.setEnabled(true);
         btnSave.setEnabled(true);
         btnDelete.setEnabled(false);
         btnModify.setEnabled(false);
+        tableReciper.setEnabled(true);
     }
 
     public DefaultTableModel getTableProductsDefault() {
@@ -181,8 +184,9 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
         return txtSearch;
     }
 
-     /**
+    /**
      * cargae el producto final en los txt
+     *
      * @param prod
      * @throws RemoteException
      */
@@ -192,11 +196,10 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
         loadCategory();
         txtId.setText(prod.get("id").toString());
         txtName.setText(prod.get("name").toString());
-        Map<String, Object> subC = (Map<String, Object>) CRUDCategory.getSubcategoriesCategory(Integer.parseInt(prod.get("subcategory_id").toString()));
+        Map<String, Object> subC = CRUDCategory.getSubcategory(Integer.parseInt(prod.get("subcategory_id").toString()));
         category.setSelectedItem(subC.get("name").toString()); //CATEGORIA
     }
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -233,7 +236,10 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setTitle("Gestion Productos Elaborados");
-        setPreferredSize(new java.awt.Dimension(1095, 627));
+        setPreferredSize(new java.awt.Dimension(1105, 637));
+        setVisible(true);
+
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(1095, 627));
 
         panelImage1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/red.jpg"))); // NOI18N
 
@@ -267,6 +273,7 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        tableProducts.setPreferredSize(new java.awt.Dimension(477, 209));
         jScrollPane2.setViewportView(tableProducts);
         tableProducts.getColumnModel().getColumn(3).setHeaderValue("Categoria");
         tableProducts.getColumnModel().getColumn(4).setHeaderValue("Unidad de medida");
@@ -379,6 +386,8 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
                     .addComponent(jLabel10)))
         );
 
+        jScrollPane3.setPreferredSize(new java.awt.Dimension(477, 209));
+
         tableReciper.setAutoCreateRowSorter(true);
         tableReciper.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -404,6 +413,7 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
             }
         });
         tableReciper.setEnabled(false);
+        tableReciper.setPreferredSize(new java.awt.Dimension(477, 209));
         jScrollPane3.setViewportView(tableReciper);
 
         javax.swing.GroupLayout panelImage2Layout = new javax.swing.GroupLayout(panelImage2);
@@ -412,7 +422,7 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
             panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelImage2Layout.createSequentialGroup()
                 .addGap(580, 580, 580)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(25, 25, 25))
             .addGroup(panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(panelImage2Layout.createSequentialGroup()
@@ -431,8 +441,8 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
             panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelImage2Layout.createSequentialGroup()
                 .addGap(44, 44, 44)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
-                .addGap(227, 227, 227))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(230, Short.MAX_VALUE))
             .addGroup(panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(panelImage2Layout.createSequentialGroup()
                     .addContainerGap()
@@ -468,11 +478,11 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1084, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 599, Short.MAX_VALUE)
         );
 
         pack();

@@ -71,8 +71,8 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
         crudPproduct = (InterfacePproduct) Naming.lookup(ip + "CRUDPproduct");
         crudEproduct = (InterfaceEproduct) Naming.lookup(ip + "CRUDEproduct");
         crudFproduct = (InterfaceFproduct) Naming.lookup(ip + "CRUDFproduct");
-        //  category = (InterfaceCategory) Naming.lookup(ip + "CRUDCategory");
-        //   guiCRUDFProduct.setCRUDCategory(category);
+        category = (InterfaceCategory) Naming.lookup(ip + "CRUDCategory");
+        guiCRUDFProduct.setCRUDCategory(category);
         pproductList = crudPproduct.getPproducts();
         eproductList = crudEproduct.getEproducts();
         fproductList = crudFproduct.getFproducts();
@@ -110,8 +110,9 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
         });
     }
 
-   /**
+    /**
      * Key listener del buscador
+     *
      * @param evt
      * @throws RemoteException
      */
@@ -119,24 +120,36 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
         search();
     }
 
-       /**
-     * busca los productos con el parametro de la barra de busqueda, si se esta creando o ediando un producto final solo encontrara productos primarios y elaborados, si no solo econtrara productos finales
+    /**
+     * busca los productos con el parametro de la barra de busqueda, si se esta
+     * creando o ediando un producto final solo encontrara productos primarios y
+     * elaborados, si no solo econtrara productos finales
      *
      * @param evt
      * @throws RemoteException
      */
     private void search() throws RemoteException {
-        if (editingInformation) {
-            pproductList = crudPproduct.getPproducts(guiCRUDFProduct.getTxtSearch().getText());
-            eproductList = crudEproduct.getEproducts(guiCRUDFProduct.getTxtSearch().getText());
+        if (guiCRUDFProduct.getTxtSearch().getText().equals("") || guiCRUDFProduct.getTxtSearch().getText().equals(" ")) {
+            if (editingInformation) {
+                pproductList = crudPproduct.getPproducts();
+                eproductList = crudEproduct.getEproducts();
+            } else {
+                fproductList = crudFproduct.getFproducts();
+            }
         } else {
-            fproductList = crudFproduct.getFproducts(guiCRUDFProduct.getTxtSearch().getText());
+            if (editingInformation) {
+                pproductList = crudPproduct.getPproducts(guiCRUDFProduct.getTxtSearch().getText());
+                eproductList = crudEproduct.getEproducts(guiCRUDFProduct.getTxtSearch().getText());
+            } else {
+                fproductList = crudFproduct.getFproducts(guiCRUDFProduct.getTxtSearch().getText());
+            }
         }
         refreshList();
     }
 
-     /**
-     * refresca la lista de productos, diferenciando si son finales, elaborados o primarios
+    /**
+     * refresca la lista de productos, diferenciando si son finales, elaborados
+     * o primarios
      */
     private void refreshList() throws RemoteException {
         tableProductsDefault.setRowCount(0);
@@ -148,10 +161,10 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
                 row[0] = prod.get("id").toString();
                 row[1] = prod.get("name").toString(); //NOMBRE
                 row[2] = prod.get("stock").toString(); // STOCK 
-                Map<String, Object> subC = (Map<String, Object>) category.getSubcategoriesCategory(Integer.parseInt(prod.get("subcategory_id").toString()));
+                Map<String, Object> subC = category.getSubcategory(Integer.parseInt(prod.get("subcategory_id").toString()));
                 row[3] = subC.get("name").toString(); //CATEGORIA
                 row[4] = prod.get("measure_unit").toString(); // UNIDAD DE MEDIDA
-                row[5] = prod.get("Primario").toString(); // TIPO
+                row[5] = "Primario"; // TIPO
                 tableProductsDefault.addRow(row);
             }
             it = eproductList.iterator();
@@ -161,98 +174,98 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
                 row[0] = prod.get("id").toString();
                 row[1] = prod.get("name").toString(); //NOMBRE
                 row[2] = prod.get("stock").toString(); // STOCK 
-                Map<String, Object> subC = (Map<String, Object>) category.getSubcategoriesCategory(Integer.parseInt(prod.get("subcategory_id").toString()));
+                Map<String, Object> subC = category.getSubcategory(Integer.parseInt(prod.get("subcategory_id").toString()));
                 row[3] = subC.get("name").toString(); //CATEGORIA
                 row[4] = prod.get("measure_unit").toString(); // UNIDAD DE MEDIDA
-                row[5] = prod.get("Elaborado").toString(); // TIPO
+                row[5] = "Elaborado"; // TIPO
                 tableProductsDefault.addRow(row);
             }
         } else {
-            Iterator<Map> it = eproductList.iterator();
+            Iterator<Map> it = fproductList.iterator();
             while (it.hasNext()) {
                 Map<String, Object> prod = it.next();
                 Object row[] = new String[6];
                 row[0] = prod.get("id").toString();
                 row[1] = prod.get("name").toString(); //NOMBRE
                 row[2] = "-"; // STOCK 
-                Map<String, Object> subC = (Map<String, Object>) category.getSubcategoriesCategory(Integer.parseInt(prod.get("subcategory_id").toString()));
+                Map<String, Object> subC = category.getSubcategory(Integer.parseInt(prod.get("subcategory_id").toString()));
                 row[3] = subC.get("name").toString(); //CATEGORIA
                 row[4] = "-"; // UNIDAD DE MEDIDA
-                row[5] = prod.get("Final").toString(); // TIPO
+                row[5] = "Final"; // TIPO
                 tableProductsDefault.addRow(row);
             }
         }
     }
 
     /**
-     * Mouse Clicked listener en la tabla para cargar el producto en los txt, y los productos correspondientes en la receta (si es que se esta modificando o creando un producto final)
+     * Mouse Clicked listener en la tabla para cargar el producto en los txt, y
+     * los productos correspondientes en la receta (si es que se esta
+     * modificando o creando un producto final)
      *
      * @param evt
      * @throws RemoteException
      */
     public void tableProductsMouseClicked(java.awt.event.MouseEvent evt) throws RemoteException {
         if (evt.getClickCount() == 2) {
-            guiCRUDFProduct.clicTableProducts();
             if (!editingInformation) {
-                if (((String) tableProducts.getValueAt(tableProducts.getSelectedRow(), 0)).equals("Final")) {
-                    fproduct = crudFproduct.getFproduct(Integer.parseInt((String) tableProducts.getValueAt(tableProducts.getSelectedRow(), 0)));
-                    fproductPproductList = crudFproduct.getFproductPproduts(Integer.parseInt((String) tableProducts.getValueAt(tableProducts.getSelectedRow(), 0)));
-                    fproductEproductList = crudFproduct.getFproductEproduts(Integer.parseInt((String) tableProducts.getValueAt(tableProducts.getSelectedRow(), 0)));
-                    refreshReciperList();
-                    guiCRUDFProduct.loadProduct(fproduct);
-                } else {
-                    JOptionPane.showMessageDialog(guiCRUDFProduct, "Ocurrió un error, en esta ventana solo se pueden ver los detalles de  los productos finales", "Error!", JOptionPane.ERROR_MESSAGE);
-                }
+                guiCRUDFProduct.clicTableProducts();
+                int id = Integer.parseInt((String) tableProducts.getValueAt(tableProducts.getSelectedRow(), 0));
+                fproduct = crudFproduct.getFproduct(id);
+                fproductPproductList = crudFproduct.getFproductPproduts(id);
+                fproductEproductList = crudFproduct.getFproductEproduts(id);
+                guiCRUDFProduct.loadProduct(fproduct);
+                refreshReciperList();
             } else {
-                if (!((String) tableProducts.getValueAt(tableProducts.getSelectedRow(), 0)).equals("Final")) {
+                if (!(isRepeatedOnTableReciper(tableProducts.getValueAt(tableProducts.getSelectedRow(), 1)))) {
                     Object row[] = new String[4];
                     row[0] = tableProducts.getValueAt(tableProducts.getSelectedRow(), 0); //id
                     row[1] = tableProducts.getValueAt(tableProducts.getSelectedRow(), 1); //NOMBRE
-                    row[2] = "0"; // Cantidad  
-                    if (!((String) tableProducts.getValueAt(tableProducts.getSelectedRow(), 0)).equals("Primario")) {
+                    row[2] = "1"; // Cantidad  
+                    if (((String) tableProducts.getValueAt(tableProducts.getSelectedRow(), 5)).equals("Primario")) {
                         row[3] = "Primario"; // Tipo  
                     } else {
                         row[3] = "Elaborado";// Tipo  
                     }
                     tableReciperDefault.addRow(row);
-                } else {
-                    JOptionPane.showMessageDialog(guiCRUDFProduct, "Ocurrió un error, los productos finales solo pueden estar formados por productos primarios y/o elaborados", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
     }
 
     /**
-     * borra el elemenot que se cliclea dos veces 
+     * Retorna true si el elemento ya esta en la tabla receta
+     *
+     * @param id
+     * @return boolean
+     */
+    public boolean isRepeatedOnTableReciper(Object name) {
+        for (int i = 0; i < tableReciper.getRowCount(); i++) {
+            if (tableReciper.getValueAt(i, 1).equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * borra el elemenot que se cliclea dos veces
+     *
      * @param evt
      * @throws RemoteException
      */
     public void tableReciperMouseClicked(java.awt.event.MouseEvent evt) throws RemoteException {
         if (evt.getClickCount() == 2) {
-            int[] rows = tableReciper.getSelectedRows();
-            if (rows.length > 0) {
-                Integer[] idABorrar = new Integer[rows.length];
-                for (int i = 0; i < rows.length; i++) {
-                    idABorrar[i] = (Integer) tableReciper.getValueAt(rows[i], 0);
-                }
-                int i = 0;
-                int cantABorrar = 0;
-                while (cantABorrar < rows.length) {
-                    while (i < tableReciper.getRowCount()) {
-                        if ((Integer) tableReciper.getValueAt(i, 0) == idABorrar[cantABorrar]) {
-                            tableReciperDefault.removeRow(i);
-                            cantABorrar++;
-                        }
-                        i++;
-                    }
-                    i = 0;
-                }
+            int row = tableReciper.getSelectedRow();
+            if (row > -1 && row < tableReciper.getRowCount()) {
+                tableReciperDefault.removeRow(tableReciper.getSelectedRow());
             }
         }
     }
 
     /**
-     * refresca la lista de la reseta diferenciando si son productos primarios o elaborados
+     * refresca la lista de la reseta diferenciando si son productos primarios o
+     * elaborados
+     *
      * @throws RemoteException
      */
     public void refreshReciperList() throws RemoteException {
@@ -262,7 +275,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
             row[0] = fpPp.get("pproduct_id").toString();
             row[1] = crudPproduct.getPproduct(Integer.parseInt(fpPp.get("pproduct_id").toString())).get("name").toString(); //NOMBRE
             row[2] = fpPp.get("amount").toString(); // Cantidad     
-            row[2] = "Primario"; // Tipo  
+            row[3] = "Primario"; // Tipo  
             tableReciperDefault.addRow(row);
         }
         for (Map fpEp : fproductEproductList) {
@@ -270,21 +283,24 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
             row[0] = fpEp.get("eproduct_id").toString();
             row[1] = crudEproduct.getEproduct(Integer.parseInt(fpEp.get("eproduct_id").toString())).get("name").toString(); //NOMBRE
             row[2] = fpEp.get("amount").toString(); // Cantidad     
-            row[2] = "Elaborado"; // Tipo  
+            row[3] = "Elaborado"; // Tipo  
             tableReciperDefault.addRow(row);
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == guiCRUDFProduct.getBtnNew()) { //Boton nuevo
+        if (e.getSource() == guiCRUDFProduct.getBtnNew()) { //Boton nuevo            
+            isNew = true;
+            editingInformation = true;
             try {
                 guiCRUDFProduct.clicNewProduct();
+                pproductList = crudPproduct.getPproducts();
+                eproductList = crudEproduct.getEproducts();
+                refreshList();
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiCRUDEproduct.class.getName()).log(Level.SEVERE, null, ex);
             }
-            isNew = true;
-            editingInformation = true;
         }
         if (e.getSource() == guiCRUDFProduct.getBtnDelete()) {   //boton eliminar
             Integer resp = JOptionPane.showConfirmDialog(guiCRUDFProduct, "¿Desea borrar el producto " + guiCRUDFProduct.getTxtName().getText(), "Confirmar borrado", JOptionPane.YES_NO_OPTION);
@@ -295,6 +311,8 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
                         JOptionPane.showMessageDialog(guiCRUDFProduct, "¡Producto borrado exitosamente!");
                         guiCRUDFProduct.clicDeleteProduct();
                         editingInformation = false;
+                        fproductList = crudFproduct.getFproducts();
+                        refreshList();
                     } else {
                         JOptionPane.showMessageDialog(guiCRUDFProduct, "Ocurrió un error, no se borró el producto", "Error!", JOptionPane.ERROR_MESSAGE);
                     }
@@ -303,24 +321,30 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
                 }
             }
         }
-        if (e.getSource() == guiCRUDFProduct.getBtnModify()) {//boton modificar
-            guiCRUDFProduct.clicModifyProduct();
+        if (e.getSource() == guiCRUDFProduct.getBtnModify()) {//boton modificar            
             isNew = false;
             editingInformation = true;
+            guiCRUDFProduct.clicModifyProduct();
+            try {
+                pproductList = crudPproduct.getPproducts();
+                eproductList = crudEproduct.getEproducts();
+                refreshList();
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerGuiCRUDFproduct.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         if (e.getSource() == guiCRUDFProduct.getBtnSave() && editingInformation && isNew) {  //guardo un producto nuevo, boton guardar
-            guiCRUDFProduct.clicSaveProduct();
             try {
                 Map subC = category.getSubcategory(guiCRUDFProduct.getCategory().getSelectedItem().toString());
                 int subcategory_id = Integer.parseInt(subC.get("id").toString());//obtener categoria
-                List<Pair> listP = new LinkedList<Pair>(); 
+                List<Pair> listP = new LinkedList<Pair>();
                 List<Pair> listE = new LinkedList<Pair>();
                 for (int i = 0; i < tableReciper.getRowCount(); i++) { //cargo la lista de productos
-                    if (((String) tableReciper.getValueAt(i, 2)).equals("Primario")) {
-                        Pair p = new Pair((Integer) tableReciper.getValueAt(i, 0), Float.parseFloat((String) tableReciper.getValueAt(i, 2)));
+                    if (((String) tableReciper.getValueAt(i, 3)).equals("Primario")) {
+                        Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), Float.parseFloat((String) tableReciper.getValueAt(i, 2)));
                         listP.add(p);
                     } else {
-                        Pair p = new Pair((Integer) tableReciper.getValueAt(i, 0), Float.parseFloat((String) tableReciper.getValueAt(i, 2)));
+                        Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), Float.parseFloat((String) tableReciper.getValueAt(i, 2)));
                         listE.add(p);
                     }
                 }
@@ -329,6 +353,9 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
                     crudFproduct.create(name, subcategory_id, listP, listE);
                     JOptionPane.showMessageDialog(guiCRUDFProduct, "¡Producto creado exitosamente!");
                     editingInformation = false;
+                    guiCRUDFProduct.clicSaveProduct();
+                    fproductList = crudFproduct.getFproducts();
+                    refreshList();
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -337,18 +364,17 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
             }
         }
         if (e.getSource() == guiCRUDFProduct.getBtnSave() && editingInformation && !isNew) {  //modifico un producto, boton guardar
-            guiCRUDFProduct.clicSaveProduct();
             try {
                 Map subC = category.getSubcategory(guiCRUDFProduct.getCategory().getSelectedItem().toString());
                 int subcategory_id = Integer.parseInt(subC.get("id").toString());//obtener categoria
                 List<Pair> listP = new LinkedList<Pair>();
                 List<Pair> listE = new LinkedList<Pair>();
                 for (int i = 0; i < tableReciper.getRowCount(); i++) {
-                    if (((String) tableReciper.getValueAt(i, 2)).equals("Primario")) { //cargo la lista de productos
-                        Pair p = new Pair((Integer) tableReciper.getValueAt(i, 0), Float.parseFloat((String) tableReciper.getValueAt(i, 2)));
+                    if (((String) tableReciper.getValueAt(i, 3)).equals("Primario")) { //cargo la lista de productos
+                        Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), Float.parseFloat((String) tableReciper.getValueAt(i, 2)));
                         listP.add(p);
                     } else {
-                        Pair p = new Pair((Integer) tableReciper.getValueAt(i, 0), Float.parseFloat((String) tableReciper.getValueAt(i, 2)));
+                        Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), Float.parseFloat((String) tableReciper.getValueAt(i, 2)));
                         listE.add(p);
                     }
                 }
@@ -358,6 +384,9 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
                     crudFproduct.modify(id, name, subcategory_id, listP, listE);
                     JOptionPane.showMessageDialog(guiCRUDFProduct, "¡Producto modificado exitosamente!");
                     editingInformation = false;
+                    guiCRUDFProduct.clicSaveProduct();
+                    fproductList = crudFproduct.getFproducts();
+                    refreshList();
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
                 }

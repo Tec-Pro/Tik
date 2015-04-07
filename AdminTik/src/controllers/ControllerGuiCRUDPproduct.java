@@ -59,6 +59,7 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
                     searchKeyReleased(evt);
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
+
                 }
             }
         });
@@ -69,14 +70,15 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
                     tableMouseClicked(evt);
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
+                    ex.getMessage();
                 }
             }
         });
         tableProductsDefault = guiCRUDPProduct.getTableProductsDefault();
         pproduct = (InterfacePproduct) Naming.lookup(ip + "CRUDPproduct");
-        //  category = (InterfaceCategory) Naming.lookup(ip + "CRUDCategory");
+        category = (InterfaceCategory) Naming.lookup(ip + "CRUDCategory");
         productList = pproduct.getPproducts();
-        //   guiCRUDPProduct.setCRUDCategory(category);
+        guiCRUDPProduct.setCRUDCategory(category);
         refreshList();
     }
 
@@ -97,7 +99,11 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
      * @throws RemoteException
      */
     private void search() throws RemoteException {
-        productList = pproduct.getPproducts(guiCRUDPProduct.getTxtSearch().getText());
+        if (guiCRUDPProduct.getTxtSearch().getText().equals("") || guiCRUDPProduct.getTxtSearch().getText().equals(" ")) {
+            productList = pproduct.getPproducts();
+        } else {
+            productList = pproduct.getPproducts(guiCRUDPProduct.getTxtSearch().getText());
+        }
         refreshList();
     }
 
@@ -113,7 +119,7 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
             row[0] = prod.get("id").toString();
             row[1] = prod.get("name").toString(); //NOMBRE
             row[2] = prod.get("stock").toString(); // STOCK 
-            Map<String, Object> subC = (Map<String, Object>) category.getSubcategoriesCategory(Integer.parseInt(prod.get("subcategory_id").toString()));
+            Map<String, Object> subC = category.getSubcategory(Integer.parseInt(prod.get("subcategory_id").toString()));
             row[3] = subC.get("name").toString(); //CATEGORIA
             row[4] = prod.get("measure_unit").toString(); // UNIDAD DE MEDIDA
             row[5] = prod.get("unit_price").toString(); // PRECIO UNITARIO
@@ -163,6 +169,8 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
                     if (pproduct.delete(id)) {
                         JOptionPane.showMessageDialog(guiCRUDPProduct, "¡Producto borrado exitosamente!");
                         guiCRUDPProduct.clicDeleteProduct();
+                        productList = pproduct.getPproducts();
+                        refreshList();
                     } else {
                         JOptionPane.showMessageDialog(guiCRUDPProduct, "Ocurrió un error, no se borró el producto", "Error!", JOptionPane.ERROR_MESSAGE);
                     }
@@ -172,9 +180,8 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
             }
         }
         if (e.getSource() == guiCRUDPProduct.getBtnSave() && editingInformation && isNew) { //guardo un producto nuevo, boton guardar
-            guiCRUDPProduct.clicSaveProduct();
             try {
-                Map subC = category.getSubcategory(guiCRUDPProduct.getCategory().getSelectedItem().toString());
+                Map subC = category.getSubcategory((String) guiCRUDPProduct.getCategory().getItemAt(guiCRUDPProduct.getCategory().getSelectedIndex()));
                 int subcategory_id = Integer.parseInt(subC.get("id").toString());//obtener categoria
                 String name = guiCRUDPProduct.getTxtName().getText();
                 float stock = Float.parseFloat(guiCRUDPProduct.getTxtStock().getText());
@@ -185,7 +192,9 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
                 try {
                     pproduct.create(name, stock, measureUnit, unitPrice, subcategory_id, amount);
                     JOptionPane.showMessageDialog(guiCRUDPProduct, "¡Producto creado exitosamente!");
-
+                    guiCRUDPProduct.clicSaveProduct();
+                    productList = pproduct.getPproducts();
+                    refreshList();
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -195,7 +204,6 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
 
         }
         if (e.getSource() == guiCRUDPProduct.getBtnSave() && editingInformation && !isNew) { //modifico un producto, boton guardar
-            guiCRUDPProduct.clicSaveProduct();
             String name = guiCRUDPProduct.getTxtName().getText();
             float stock = Float.parseFloat(guiCRUDPProduct.getTxtStock().getText());
             float amount = Float.parseFloat(guiCRUDPProduct.getTxtQuantity().getText());
@@ -209,6 +217,9 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
                 try {
                     pproduct.modify(id, name, stock, measureUnit, unitPrice, subcategory_id, amount);
                     JOptionPane.showMessageDialog(guiCRUDPProduct, "¡Producto modificado exitosamente!");
+                    guiCRUDPProduct.clicSaveProduct();
+                    productList = pproduct.getPproducts();
+                    refreshList();
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -217,5 +228,6 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
             }
 
         }
+
     }
 }

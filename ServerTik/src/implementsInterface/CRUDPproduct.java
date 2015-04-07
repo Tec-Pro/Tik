@@ -12,7 +12,6 @@ import java.util.Map;
 import models.Eproduct;
 import models.Fproduct;
 import models.Pproduct;
-import models.Subcategory;
 import org.javalite.activejdbc.Base;
 import utils.Utils;
 
@@ -115,13 +114,13 @@ public class CRUDPproduct extends UnicastRemoteObject implements interfaces.Inte
         Utils.cerrarBase();
         return ret;
     }
-    
+
     @Override
-      public List<Map> getPproducts(String searchParams) throws java.rmi.RemoteException{
+    public List<Map> getPproducts(String searchParams) throws java.rmi.RemoteException {
         Utils.abrirBase();
-        List<Map> ret = Pproduct.where("removed = ? and (id = ? or nombre = ?)", 0,searchParams,searchParams).toMaps();
+        List<Map> ret = Pproduct.where("removed = ? and (id = ? or name = ?)", 0, searchParams, searchParams).toMaps();
         Utils.cerrarBase();
         return ret;
-          
-      }    
+
+    }
 }

@@ -13,7 +13,6 @@ import models.Eproduct;
 import models.EproductsPproducts;
 import models.Fproduct;
 import models.Pproduct;
-import models.Subcategory;
 import org.javalite.activejdbc.Base;
 import utils.Pair;
 import utils.Utils;
@@ -136,7 +135,7 @@ public class CRUDEproduct extends UnicastRemoteObject implements interfaces.Inte
     @Override
     public List<Map> getEproducts(String name) throws java.rmi.RemoteException {
         Utils.abrirBase();
-        List<Map> ret = Eproduct.where("removed = ? and (id = ? or nombre = ?)", 0, name, name).toMaps();
+        List<Map> ret = Eproduct.where("removed = ? and (id = ? or name = ?)", 0, name, name).toMaps();
         Utils.cerrarBase();
         return ret;
     }
@@ -144,7 +143,11 @@ public class CRUDEproduct extends UnicastRemoteObject implements interfaces.Inte
     @Override
     public List<Map> getEproductPproduts(int idEproduct) throws java.rmi.RemoteException {
         Utils.abrirBase();
-        List<Map> ret = EproductsPproducts.where("eproduct_id = ?)", idEproduct).toMaps();
+        Eproduct eProd = Eproduct.findById(idEproduct);
+        List<Map> ret = null;
+        if (eProd != null) {
+            ret = eProd.getAll(EproductsPproducts.class).toMaps();
+        }
         Utils.cerrarBase();
         return ret;
 
