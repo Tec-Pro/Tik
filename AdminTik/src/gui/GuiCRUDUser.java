@@ -5,17 +5,23 @@
  */
 package gui;
 
+import java.awt.event.ActionListener;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author xen
  */
 public class GuiCRUDUser extends javax.swing.JInternalFrame {
 
+    private final DefaultTableModel dtmUsers;
     /**
      * Creates new form GuiCRUDUser
      */
     public GuiCRUDUser() {
         initComponents();
+        cleanFields();
+        dtmUsers = (DefaultTableModel) tableUsers.getModel();
+        setVisible(true);
     }
 
     /**
@@ -30,63 +36,63 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableUsers = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        BtnModify = new javax.swing.JButton();
+        lblName = new javax.swing.JLabel();
+        lblPlaceOfBirth = new javax.swing.JLabel();
+        lblSurname = new javax.swing.JLabel();
+        lblDateOfBirth = new javax.swing.JLabel();
+        lblPass = new javax.swing.JLabel();
+        lblAddress = new javax.swing.JLabel();
+        lblTurn = new javax.swing.JLabel();
+        lblEntryDate = new javax.swing.JLabel();
+        lblExitDate = new javax.swing.JLabel();
+        lblPosition = new javax.swing.JLabel();
+        btnModify = new javax.swing.JButton();
         txtName = new javax.swing.JTextField();
         txtSurname = new javax.swing.JTextField();
         txtTurn = new javax.swing.JTextField();
-        txtDateOfBirth = new javax.swing.JTextField();
         txtPlaceOfBirth = new javax.swing.JTextField();
-        txtAdress = new javax.swing.JTextField();
-        txtEntryDate = new javax.swing.JTextField();
-        txtExitDate = new javax.swing.JTextField();
+        txtAddress = new javax.swing.JTextField();
         txtPosition = new javax.swing.JTextField();
-        BtnCreate = new javax.swing.JButton();
-        BtnDelete = new javax.swing.JButton();
-        txtPass = new javax.swing.JPasswordField();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
+        btnCreate = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        lblHomePhone = new javax.swing.JLabel();
+        lblEmergencyPhone = new javax.swing.JLabel();
+        lblMobilePhone = new javax.swing.JLabel();
         txtHomePhone = new javax.swing.JTextField();
         txtEmergencyPhone = new javax.swing.JTextField();
         txtMobilePhone = new javax.swing.JTextField();
         txtIdType = new javax.swing.JTextField();
-        jLabel14 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
+        lblIdType = new javax.swing.JLabel();
+        lblBloodType = new javax.swing.JLabel();
         txtBloodType = new javax.swing.JTextField();
         txtIdNumber = new javax.swing.JTextField();
         txtMaritalStatus = new javax.swing.JTextField();
-        jLabel16 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
+        lblIdNumber = new javax.swing.JLabel();
+        lblMaritalStatus = new javax.swing.JLabel();
+        txtPass = new javax.swing.JTextField();
+        txtExitDate = new javax.swing.JFormattedTextField();
+        txtDateOfBirth = new javax.swing.JFormattedTextField();
+        txtEntryDate = new javax.swing.JFormattedTextField();
 
         setMinimumSize(new java.awt.Dimension(600, 700));
         setPreferredSize(new java.awt.Dimension(600, 700));
 
         tableUsers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Nombre", "Apellido", "DNI", "Posicion"
+                "ID", "Name", "Apellido", "Numero ID", "Posicion"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -97,35 +103,36 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        tableUsers.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tableUsers);
 
         jScrollPane2.setViewportView(jScrollPane1);
 
-        jLabel1.setText("Nombre");
+        lblName.setText("Nombre");
 
-        jLabel2.setText("Lugar de Nac");
+        lblPlaceOfBirth.setText("Lugar de Nac");
 
-        jLabel3.setText("Apellido");
+        lblSurname.setText("Apellido");
 
-        jLabel4.setText("Fecha de Nac");
+        lblDateOfBirth.setText("Fecha de Nac");
 
-        jLabel5.setText("Contrasena");
+        lblPass.setText("Contrasena");
 
-        jLabel6.setText("Direccion");
+        lblAddress.setText("Direccion");
 
-        jLabel7.setText("Turno");
+        lblTurn.setText("Turno");
 
-        jLabel8.setText("Fecha de Ent");
+        lblEntryDate.setText("Fecha de Ent");
 
-        jLabel9.setText("Fecha de Salida");
+        lblExitDate.setText("Fecha de Salida");
 
-        jLabel10.setText("Posicion");
+        lblPosition.setText("Posicion");
 
-        BtnModify.setText("Modificar");
-        BtnModify.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        BtnModify.addActionListener(new java.awt.event.ActionListener() {
+        btnModify.setText("Modificar");
+        btnModify.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        btnModify.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnModifyActionPerformed(evt);
+                btnModifyActionPerformed(evt);
             }
         });
 
@@ -141,17 +148,15 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
             }
         });
 
-        BtnCreate.setText("Crear");
+        btnCreate.setText("Crear");
 
-        BtnDelete.setText("Borrar");
+        btnDelete.setText("Borrar");
 
-        txtPass.setText("jPasswordField1");
+        lblHomePhone.setText("Telefono Casa");
 
-        jLabel11.setText("Telefono Casa");
+        lblEmergencyPhone.setText("Tel Emergencia");
 
-        jLabel12.setText("Tel Emergencia");
-
-        jLabel13.setText("Telefono Mobil");
+        lblMobilePhone.setText("Telefono Mobil");
 
         txtIdType.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -159,9 +164,9 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel14.setText("Tipo de ID");
+        lblIdType.setText("Tipo de ID");
 
-        jLabel15.setText("Tipo Sanguineo");
+        lblBloodType.setText("Tipo Sanguineo");
 
         txtBloodType.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -181,9 +186,20 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel16.setText("ID");
+        lblIdNumber.setText("ID");
 
-        jLabel17.setText("Estado Civil");
+        lblMaritalStatus.setText("Estado Civil");
+
+        txtExitDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy/MM/dd"))));
+        txtExitDate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtExitDate.setToolTipText("Ano/Mes/Dia | aaaa/MM/dd");
+
+        txtDateOfBirth.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy/MM/dd"))));
+        txtDateOfBirth.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtDateOfBirth.setToolTipText("Ano/Mes/Dia | aaaa/MM/dd");
+
+        txtEntryDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy/MM/dd"))));
+        txtEntryDate.setToolTipText("Ano/Mes/Dia | aaaa/MM/dd");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -195,81 +211,38 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
                     .addComponent(jScrollPane2)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(21, 21, 21)
-                        .addComponent(jLabel2)
+                        .addComponent(lblPlaceOfBirth)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel4)
+                        .addComponent(lblDateOfBirth)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel6)
+                        .addComponent(lblAddress)
                         .addGap(44, 44, 44))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(BtnCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(44, 44, 44)
-                        .addComponent(BtnModify, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnModify, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(45, 45, 45)
-                        .addComponent(BtnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(36, 36, 36)
-                                .addComponent(jLabel1))
-                            .addComponent(txtName))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel5)
-                                .addGap(48, 48, 48))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtSurname)
-                                .addGap(29, 29, 29)
-                                .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(30, 30, 30)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtTurn, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addGap(38, 38, 38))))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtPlaceOfBirth, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
-                            .addComponent(txtEntryDate, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtPlaceOfBirth, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
                             .addComponent(txtHomePhone, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtIdType, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtEntryDate)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGap(31, 31, 31)
-                                .addComponent(jLabel14))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addComponent(jLabel11))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addComponent(jLabel8)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(30, 30, 30)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(txtDateOfBirth, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtExitDate, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addGap(3, 3, 3)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel17)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                            .addComponent(txtEmergencyPhone))))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(30, 30, 30)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(txtAdress, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
-                                            .addComponent(txtPosition)
-                                            .addComponent(txtMobilePhone, javax.swing.GroupLayout.Alignment.TRAILING)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addComponent(jLabel16))))
+                                        .addGap(31, 31, 31)
+                                        .addComponent(lblIdType))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addGap(12, 12, 12)
+                                        .addComponent(lblEntryDate))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addGap(12, 12, 12)
+                                        .addComponent(lblHomePhone)))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
                                 .addComponent(txtMaritalStatus)
@@ -278,32 +251,80 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
                                 .addGap(44, 44, 44)
                                 .addComponent(txtBloodType, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 286, Short.MAX_VALUE)
+                                .addComponent(lblBloodType))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(58, 58, 58)
+                                .addComponent(lblEmergencyPhone)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblMobilePhone)
+                                .addGap(33, 33, 33))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(33, 33, 33)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabel12)
-                                        .addGap(90, 90, 90)
-                                        .addComponent(jLabel13)
-                                        .addGap(33, 33, 33))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabel9)
-                                        .addGap(113, 113, 113)
-                                        .addComponent(jLabel10)
-                                        .addGap(56, 56, 56))
-                                    .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING))))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(txtExitDate)
+                                                    .addComponent(txtDateOfBirth))
+                                                .addGap(30, 30, 30))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(28, 28, 28)
+                                                .addComponent(lblExitDate)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(lblPosition)
+                                                .addGap(56, 56, 56))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(txtAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
+                                                .addComponent(txtPosition)
+                                                .addComponent(txtMobilePhone, javax.swing.GroupLayout.Alignment.TRAILING))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lblMaritalStatus)
+                                            .addComponent(txtEmergencyPhone))
+                                        .addGap(6, 6, 6)
+                                        .addComponent(lblIdNumber)
+                                        .addGap(171, 171, 171))))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(36, 36, 36)
+                                .addComponent(lblName))
+                            .addComponent(txtName))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(lblSurname)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblPass)
+                                .addGap(48, 48, 48))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtSurname)
+                                .addGap(28, 28, 28)
+                                .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(26, 26, 26)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtTurn, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(lblTurn)
+                                .addGap(38, 38, 38)))))
                 .addGap(30, 30, 30))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel7))
+                    .addComponent(lblName)
+                    .addComponent(lblSurname)
+                    .addComponent(lblPass)
+                    .addComponent(lblTurn))
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -311,30 +332,32 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
                     .addComponent(txtTurn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(12, 12, 12)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel2))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblDateOfBirth, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblAddress)
+                        .addComponent(lblPlaceOfBirth)))
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtAdress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtPlaceOfBirth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtDateOfBirth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(jLabel10)
-                    .addComponent(jLabel8))
+                    .addComponent(lblPosition)
+                    .addComponent(lblEntryDate)
+                    .addComponent(lblExitDate))
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtEntryDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPosition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtExitDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPosition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtEntryDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(12, 12, 12)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel13)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblHomePhone, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblEmergencyPhone))
+                    .addComponent(lblMobilePhone))
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtHomePhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -344,9 +367,9 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblIdType, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblBloodType, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblMaritalStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -354,14 +377,14 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
                                 .addComponent(txtMaritalStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(txtBloodType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblIdNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtIdNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(BtnCreate)
-                    .addComponent(BtnModify)
-                    .addComponent(BtnDelete))
+                    .addComponent(btnCreate)
+                    .addComponent(btnModify)
+                    .addComponent(btnDelete))
                 .addContainerGap())
         );
 
@@ -376,9 +399,9 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSurnameActionPerformed
 
-    private void BtnModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnModifyActionPerformed
+    private void btnModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_BtnModifyActionPerformed
+    }//GEN-LAST:event_btnModifyActionPerformed
 
     private void txtIdTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdTypeActionPerformed
         // TODO add your handling code here:
@@ -398,42 +421,42 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BtnCreate;
-    private javax.swing.JButton BtnDelete;
-    private javax.swing.JButton BtnModify;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
+    private javax.swing.JButton btnCreate;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnModify;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblAddress;
+    private javax.swing.JLabel lblBloodType;
+    private javax.swing.JLabel lblDateOfBirth;
+    private javax.swing.JLabel lblEmergencyPhone;
+    private javax.swing.JLabel lblEntryDate;
+    private javax.swing.JLabel lblExitDate;
+    private javax.swing.JLabel lblHomePhone;
+    private javax.swing.JLabel lblIdNumber;
+    private javax.swing.JLabel lblIdType;
+    private javax.swing.JLabel lblMaritalStatus;
+    private javax.swing.JLabel lblMobilePhone;
+    private javax.swing.JLabel lblName;
+    private javax.swing.JLabel lblPass;
+    private javax.swing.JLabel lblPlaceOfBirth;
+    private javax.swing.JLabel lblPosition;
+    private javax.swing.JLabel lblSurname;
+    private javax.swing.JLabel lblTurn;
     private javax.swing.JTable tableUsers;
-    private javax.swing.JTextField txtAdress;
+    private javax.swing.JTextField txtAddress;
     private javax.swing.JTextField txtBloodType;
-    private javax.swing.JTextField txtDateOfBirth;
+    private javax.swing.JFormattedTextField txtDateOfBirth;
     private javax.swing.JTextField txtEmergencyPhone;
-    private javax.swing.JTextField txtEntryDate;
-    private javax.swing.JTextField txtExitDate;
+    private javax.swing.JFormattedTextField txtEntryDate;
+    private javax.swing.JFormattedTextField txtExitDate;
     private javax.swing.JTextField txtHomePhone;
     private javax.swing.JTextField txtIdNumber;
     private javax.swing.JTextField txtIdType;
     private javax.swing.JTextField txtMaritalStatus;
     private javax.swing.JTextField txtMobilePhone;
     private javax.swing.JTextField txtName;
-    private javax.swing.JPasswordField txtPass;
+    private javax.swing.JTextField txtPass;
     private javax.swing.JTextField txtPlaceOfBirth;
     private javax.swing.JTextField txtPosition;
     private javax.swing.JTextField txtSurname;
@@ -444,21 +467,21 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
      * @return the BtnCreate
      */
     public javax.swing.JButton getBtnCreate() {
-        return BtnCreate;
+        return btnCreate;
     }
 
     /**
      * @return the BtnDelete
      */
     public javax.swing.JButton getBtnDelete() {
-        return BtnDelete;
+        return btnDelete;
     }
 
     /**
      * @return the BtnModify
      */
     public javax.swing.JButton getBtnModify() {
-        return BtnModify;
+        return btnModify;
     }
 
     /**
@@ -469,24 +492,10 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
     }
 
     /**
-     * @param tableUsers the tableUsers to set
-     */
-    public void setTableUsers(javax.swing.JTable tableUsers) {
-        this.tableUsers = tableUsers;
-    }
-
-    /**
      * @return the txtAdress
      */
-    public javax.swing.JTextField getTxtAdress() {
-        return txtAdress;
-    }
-
-    /**
-     * @param txtAdress the txtAdress to set
-     */
-    public void setTxtAdress(javax.swing.JTextField txtAdress) {
-        this.txtAdress = txtAdress;
+    public javax.swing.JTextField getTxtAddress() {
+        return txtAddress;
     }
 
     /**
@@ -497,66 +506,10 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
     }
 
     /**
-     * @param txtBloodType the txtBloodType to set
-     */
-    public void setTxtBloodType(javax.swing.JTextField txtBloodType) {
-        this.txtBloodType = txtBloodType;
-    }
-
-    /**
-     * @return the txtDateOfBirth
-     */
-    public javax.swing.JTextField getTxtDateOfBirth() {
-        return txtDateOfBirth;
-    }
-
-    /**
-     * @param txtDateOfBirth the txtDateOfBirth to set
-     */
-    public void setTxtDateOfBirth(javax.swing.JTextField txtDateOfBirth) {
-        this.txtDateOfBirth = txtDateOfBirth;
-    }
-
-    /**
      * @return the txtEmergencyPhone
      */
     public javax.swing.JTextField getTxtEmergencyPhone() {
         return txtEmergencyPhone;
-    }
-
-    /**
-     * @param txtEmergencyPhone the txtEmergencyPhone to set
-     */
-    public void setTxtEmergencyPhone(javax.swing.JTextField txtEmergencyPhone) {
-        this.txtEmergencyPhone = txtEmergencyPhone;
-    }
-
-    /**
-     * @return the txtEntryDate
-     */
-    public javax.swing.JTextField getTxtEntryDate() {
-        return txtEntryDate;
-    }
-
-    /**
-     * @param txtEntryDate the txtEntryDate to set
-     */
-    public void setTxtEntryDate(javax.swing.JTextField txtEntryDate) {
-        this.txtEntryDate = txtEntryDate;
-    }
-
-    /**
-     * @return the txtExitDate
-     */
-    public javax.swing.JTextField getTxtExitDate() {
-        return txtExitDate;
-    }
-
-    /**
-     * @param txtExitDate the txtExitDate to set
-     */
-    public void setTxtExitDate(javax.swing.JTextField txtExitDate) {
-        this.txtExitDate = txtExitDate;
     }
 
     /**
@@ -567,24 +520,10 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
     }
 
     /**
-     * @param txtHomePhone the txtHomePhone to set
-     */
-    public void setTxtHomePhone(javax.swing.JTextField txtHomePhone) {
-        this.txtHomePhone = txtHomePhone;
-    }
-
-    /**
      * @return the txtIdNumber
      */
     public javax.swing.JTextField getTxtIdNumber() {
         return txtIdNumber;
-    }
-
-    /**
-     * @param txtIdNumber the txtIdNumber to set
-     */
-    public void setTxtIdNumber(javax.swing.JTextField txtIdNumber) {
-        this.txtIdNumber = txtIdNumber;
     }
 
     /**
@@ -595,24 +534,10 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
     }
 
     /**
-     * @param txtIdType the txtIdType to set
-     */
-    public void setTxtIdType(javax.swing.JTextField txtIdType) {
-        this.txtIdType = txtIdType;
-    }
-
-    /**
      * @return the txtMaritalStatus
      */
     public javax.swing.JTextField getTxtMaritalStatus() {
         return txtMaritalStatus;
-    }
-
-    /**
-     * @param txtMaritalStatus the txtMaritalStatus to set
-     */
-    public void setTxtMaritalStatus(javax.swing.JTextField txtMaritalStatus) {
-        this.txtMaritalStatus = txtMaritalStatus;
     }
 
     /**
@@ -623,13 +548,6 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
     }
 
     /**
-     * @param txtMobilePhone the txtMobilePhone to set
-     */
-    public void setTxtMobilePhone(javax.swing.JTextField txtMobilePhone) {
-        this.txtMobilePhone = txtMobilePhone;
-    }
-
-    /**
      * @return the txtName
      */
     public javax.swing.JTextField getTxtName() {
@@ -637,24 +555,10 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
     }
 
     /**
-     * @param txtName the txtName to set
-     */
-    public void setTxtName(javax.swing.JTextField txtName) {
-        this.txtName = txtName;
-    }
-
-    /**
      * @return the txtPass
      */
-    public javax.swing.JPasswordField getTxtPass() {
+    public javax.swing.JTextField getTxtPass() {
         return txtPass;
-    }
-
-    /**
-     * @param txtPass the txtPass to set
-     */
-    public void setTxtPass(javax.swing.JPasswordField txtPass) {
-        this.txtPass = txtPass;
     }
 
     /**
@@ -665,24 +569,10 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
     }
 
     /**
-     * @param txtPlaceOfBirth the txtPlaceOfBirth to set
-     */
-    public void setTxtPlaceOfBirth(javax.swing.JTextField txtPlaceOfBirth) {
-        this.txtPlaceOfBirth = txtPlaceOfBirth;
-    }
-
-    /**
      * @return the txtPosition
      */
     public javax.swing.JTextField getTxtPosition() {
         return txtPosition;
-    }
-
-    /**
-     * @param txtPosition the txtPosition to set
-     */
-    public void setTxtPosition(javax.swing.JTextField txtPosition) {
-        this.txtPosition = txtPosition;
     }
 
     /**
@@ -693,23 +583,103 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
     }
 
     /**
-     * @param txtSurname the txtSurname to set
-     */
-    public void setTxtSurname(javax.swing.JTextField txtSurname) {
-        this.txtSurname = txtSurname;
-    }
-
-    /**
      * @return the txtTurn
      */
     public javax.swing.JTextField getTxtTurn() {
         return txtTurn;
     }
+    
+    /**
+     * @return the txtDateOfBirth
+     */
+    public javax.swing.JFormattedTextField getTxtDateOfBirth() {
+        return txtDateOfBirth;
+    }
 
     /**
-     * @param txtTurn the txtTurn to set
+     * @return the txtEntryDate
      */
-    public void setTxtTurn(javax.swing.JTextField txtTurn) {
-        this.txtTurn = txtTurn;
+    public javax.swing.JFormattedTextField getTxtEntryDate() {
+        return txtEntryDate;
     }
+
+    /**
+     * @return the txtExitDate
+     */
+    public javax.swing.JFormattedTextField getTxtExitDate() {
+        return txtExitDate;
+    }
+
+    /**
+     * @return the dtmUsers
+     */
+    public DefaultTableModel getDtmUsers() {
+        return dtmUsers;
+    }
+    
+    /**
+     * clean all the text fields
+     * 
+     */
+    public void cleanFields(){
+        txtName.setText("");
+        txtSurname.setText("");
+        txtPass.setText("");
+        getTxtEntryDate().setText("00/00/0000");
+        getTxtExitDate().setText("00/00/0000");
+        txtTurn.setText("");
+        getTxtDateOfBirth().setText("00/00/0000");
+        txtPlaceOfBirth.setText("");
+        txtIdType.setText("");
+        txtIdNumber.setText("");
+        txtAddress.setText("");
+        txtHomePhone.setText("");
+        txtEmergencyPhone.setText("");
+        txtMobilePhone.setText("");
+        txtMaritalStatus.setText("");
+        txtBloodType.setText("");
+        txtPosition.setText("");
+    }
+    public void updateFields(String name,
+            String surname,
+            String pass,
+            String entryDate,
+            String exitDate,
+            String turn,
+            String dateOfBirth,
+            String placeOfBirth,
+            String idType,
+            String idNumber,
+            String address,
+            String homePhone,
+            String emergencyPhone,
+            String mobilePhone,
+            String maritalStatus,
+            String bloodType,
+            String position){
+        txtName.setText(name);
+        txtSurname.setText(surname);
+        txtPass.setText(pass);
+        getTxtEntryDate().setText(entryDate);
+        getTxtExitDate().setText(exitDate);
+        txtTurn.setText(turn);
+        getTxtDateOfBirth().setText(dateOfBirth);
+        txtPlaceOfBirth.setText(placeOfBirth);
+        txtIdType.setText(idType);
+        txtIdNumber.setText(idNumber);
+        txtAddress.setText(address);
+        txtHomePhone.setText(homePhone);
+        txtEmergencyPhone.setText(emergencyPhone);
+        txtMobilePhone.setText(mobilePhone);
+        txtMaritalStatus.setText(maritalStatus);
+        txtBloodType.setText(bloodType);
+        txtPosition.setText(position);
+    }
+    
+    public void setActionListener(ActionListener ac){
+        btnCreate.addActionListener(ac);
+        btnModify.addActionListener(ac);
+        btnDelete.addActionListener(ac);
+    }
+
 }
