@@ -61,9 +61,9 @@ public class GuiNewCategory extends javax.swing.JInternalFrame {
         btnCancelCategory = new javax.swing.JButton();
         txtCategoryName = new javax.swing.JTextField();
 
-        setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setIconifiable(true);
+        setMaximizable(true);
         setTitle("Registro de Categoría");
 
         panelImage1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/images/red.jpg"))); // NOI18N
@@ -143,7 +143,7 @@ public class GuiNewCategory extends javax.swing.JInternalFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelImage1, javax.swing.GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
+            .addComponent(panelImage1, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(jPanel1);

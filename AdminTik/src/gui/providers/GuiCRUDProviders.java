@@ -17,12 +17,17 @@ import javax.swing.table.DefaultTableModel;
  * @author eze
  */
 public class GuiCRUDProviders extends javax.swing.JInternalFrame {
+    private final DefaultTableModel defaultTableProviders;
+    private final DefaultTableModel defaultTableProviderCategories;
 
     /**
      * Creates new form GuiCRUDProviders
      */
     public GuiCRUDProviders() {
         initComponents();
+        btnRemoveCategory.setEnabled(false);
+        defaultTableProviders = (DefaultTableModel) tableProviders.getModel();
+        defaultTableProviderCategories = (DefaultTableModel) tableProviderCategories.getModel();
     }
 
     /**
@@ -80,6 +85,7 @@ public class GuiCRUDProviders extends javax.swing.JInternalFrame {
         this.btnNewCategory.addActionListener(lis);
         this.btnNewProvider.addActionListener(lis);
         this.btnRemoveProvider.addActionListener(lis);
+        this.btnRemoveCategory.addActionListener(lis);
     }
     
     /**
@@ -105,6 +111,7 @@ public class GuiCRUDProviders extends javax.swing.JInternalFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         tableProviderCategories = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
+        btnRemoveCategory = new javax.swing.JButton();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -127,7 +134,7 @@ public class GuiCRUDProviders extends javax.swing.JInternalFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, true, true, true, true, false, true
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -183,6 +190,13 @@ public class GuiCRUDProviders extends javax.swing.JInternalFrame {
         jLabel6.setForeground(new java.awt.Color(144, 0, 0));
         jLabel6.setText("Categorías");
 
+        btnRemoveCategory.setText("ELIMINAR CATEGORIA");
+        btnRemoveCategory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveCategoryActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelImage2Layout = new javax.swing.GroupLayout(panelImage2);
         panelImage2.setLayout(panelImage2Layout);
         panelImage2Layout.setHorizontalGroup(
@@ -205,7 +219,8 @@ public class GuiCRUDProviders extends javax.swing.JInternalFrame {
                     .addComponent(btnNewCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(panelImage2Layout.createSequentialGroup()
                         .addGap(50, 50, 50)
-                        .addComponent(jLabel6)))
+                        .addComponent(jLabel6))
+                    .addComponent(btnRemoveCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(563, 563, 563))
         );
         panelImage2Layout.setVerticalGroup(
@@ -218,17 +233,18 @@ public class GuiCRUDProviders extends javax.swing.JInternalFrame {
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnRemoveProvider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(panelImage2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnNewCategory)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnRemoveProvider, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
-                            .addComponent(btnNewProvider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(panelImage2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnNewCategory)))
-                .addContainerGap(20, Short.MAX_VALUE))
+                        .addComponent(btnRemoveCategory)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(btnNewProvider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout panelImage1Layout = new javax.swing.GroupLayout(panelImage1);
@@ -253,7 +269,7 @@ public class GuiCRUDProviders extends javax.swing.JInternalFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelImage1, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE)
+            .addComponent(panelImage1, javax.swing.GroupLayout.DEFAULT_SIZE, 599, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(jPanel1);
@@ -280,10 +296,15 @@ public class GuiCRUDProviders extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtFindProviderActionPerformed
 
+    private void btnRemoveCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveCategoryActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRemoveCategoryActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNewCategory;
     private javax.swing.JButton btnNewProvider;
+    private javax.swing.JButton btnRemoveCategory;
     private javax.swing.JButton btnRemoveProvider;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel6;
@@ -304,4 +325,27 @@ public class GuiCRUDProviders extends javax.swing.JInternalFrame {
     public javax.swing.JTable getTableProviderCategories() {
         return tableProviderCategories;
     }
+
+    /**
+     * @return the btnRemoveCategory
+     */
+    public javax.swing.JButton getBtnRemoveCategory() {
+        return btnRemoveCategory;
+    }
+
+    /**
+     * @return the defaultTableProviders
+     */
+    public DefaultTableModel getDefaultTableProviders() {
+        return defaultTableProviders;
+    }
+
+    /**
+     * @return the defaultTableProviderCategories
+     */
+    public DefaultTableModel getDefaultTableProviderCategories() {
+        return defaultTableProviderCategories;
+    }
+    
+    
 }

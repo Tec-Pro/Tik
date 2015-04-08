@@ -28,6 +28,8 @@ public class ControllerGuiNewProvider implements ActionListener{
     private final InterfaceProvider provider;
     private final InterfaceProviderCategory providerCategory;
     private final GuiNewProvider guiNewProvider;
+    private boolean modify;
+    private int currentProviderId;
     
     /**
      *
@@ -37,6 +39,7 @@ public class ControllerGuiNewProvider implements ActionListener{
      * @throws RemoteException
      */
     public ControllerGuiNewProvider(GuiNewProvider guiNProv, InterfaceProvider prov, InterfaceProviderCategory provCategory) throws RemoteException {
+        this.modify = false;
         this.guiNewProvider = guiNProv;
         this.provider = prov;
         this.providerCategory = provCategory;
@@ -138,6 +141,7 @@ public class ControllerGuiNewProvider implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         //Si presiono el boton GUARDAR
         if(e.getSource().equals(this.guiNewProvider.getBtnSaveProvider())){
+            if (!isModify()){
             //Guardo el proveedor en la base de datos
             boolean result = false;//por defecto el proveedor no se creó aún
             try {
@@ -156,11 +160,78 @@ public class ControllerGuiNewProvider implements ActionListener{
             }else{//sino
                 JOptionPane.showMessageDialog(this.guiNewProvider, "Debe ingresar nombre de Proveedor como requisito mínimo.", "Error!", JOptionPane.ERROR_MESSAGE);
             }
+            } else {
+                try {
+                    if (provider.modify(getCurrentProviderId(), this.guiNewProvider.getTxtProviderName().getText(), this.guiNewProvider.getTxtProviderCuit().getText(), this.guiNewProvider.getTxtProviderAddress().getText(),
+                            this.guiNewProvider.getTxtProviderDescription().getText(), this.guiNewProvider.getTxtProviderPhone().getText()) != null){
+                        JOptionPane.showMessageDialog(this.guiNewProvider, "Proveedor modificado con éxito!", "", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(this.guiNewProvider, "Debe ingresar nombre de Proveedor como requisito mínimo.", "Error!", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiNewProvider.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                System.out.println("caca");
+                setModify(false);
+            }
         }
         //Si preciono el boton CANCELAR
         if(e.getSource().equals(this.guiNewProvider.getBtnCancelProvider())){
             this.guiNewProvider.hide();
+            setModify(false);
         }
+    }
+    
+    public void loadGUIWithData(int id) throws RemoteException{
+        Map<String, Object> p = provider.getProvider(id);
+        this.guiNewProvider.getTxtProviderAddress().setText((String) p.get("address"));
+        this.guiNewProvider.getTxtProviderCuit().setText((String) p.get("cuit"));
+        this.guiNewProvider.getTxtProviderDescription().setText((String) p.get("description"));
+        this.guiNewProvider.getTxtProviderName().setText((String) p.get("name"));
+        this.guiNewProvider.getTxtProviderPhone().setText((String) p.get("phones"));
+        setModify(true);
+        loadCategoriesOfProvider(id);
+        setCurrentProviderId(id);
+    }
+
+    private void loadCategoriesOfProvider(int id) throws RemoteException {
+        Object[] o = new Object[2];
+        DefaultTableModel categoriesTableModel = (DefaultTableModel) this.guiNewProvider.getTableCategoriesProviders().getModel();
+        categoriesTableModel.setRowCount(0);
+        for (Map<String,Object> m : provider.getCategoriesFromProvider(id)){
+            o[0] = m.get("id");
+            o[1] = m.get("name");
+            categoriesTableModel.addRow(o);
+        }
+        
+    }
+
+    /**
+     * @return the modify
+     */
+    public boolean isModify() {
+        return modify;
+    }
+
+    /**
+     * @return the currentProviderId
+     */
+    public int getCurrentProviderId() {
+        return currentProviderId;
+    }
+
+    /**
+     * @param modify the modify to set
+     */
+    public void setModify(boolean modify) {
+        this.modify = modify;
+    }
+
+    /**
+     * @param currentProviderId the currentProviderId to set
+     */
+    public void setCurrentProviderId(int currentProviderId) {
+        this.currentProviderId = currentProviderId;
     }
     
 }

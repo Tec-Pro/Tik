@@ -90,7 +90,8 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.prov
         boolean res = false;
         if (provider != null) {
             Base.openTransaction();
-            res = provider.delete();
+            provider.deleteCascadeShallow();
+            res = true;
             Base.commitTransaction();
         }
         return res;

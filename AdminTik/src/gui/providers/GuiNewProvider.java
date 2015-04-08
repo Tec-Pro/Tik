@@ -106,7 +106,6 @@ public class GuiNewProvider extends javax.swing.JInternalFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         tableFindProviderCategories = new javax.swing.JTable();
 
-        setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setIconifiable(true);
         setMaximizable(true);

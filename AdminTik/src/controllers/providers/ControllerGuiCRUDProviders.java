@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -65,6 +67,25 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                 }
             }
         });
+        
+        this.guiCRUDProviders.getTableProviders().addMouseListener(new java.awt.event.MouseAdapter() {
+        @Override
+        public void mouseClicked(java.awt.event.MouseEvent evt){
+             if (evt.getClickCount() == 2){
+                JTable target = (JTable) evt.getSource();
+                int row = target.getSelectedRow();
+                    try {
+                        guiNewProvider.cleanComponents();
+                        controllerGuiNewProvider.loadFindCategoryTable();
+                        controllerGuiNewProvider.loadGUIWithData((int) target.getValueAt(row, 0));
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                guiNewProvider.setVisible(true);
+            }
+        }
+        
+        });
         //reviso si se clickea alguna fila de la tabla categorias
         this.guiCRUDProviders.getTableProviderCategories().addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -91,6 +112,18 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                         Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
+            guiCRUDProviders.getBtnRemoveCategory().setEnabled(true);
+            if (evt.getClickCount() == 2){
+                JTable target = (JTable) evt.getSource();
+                int row = target.getSelectedRow();
+                    try {
+                        guiNewCategory.cleanComponents();
+                        controllerGuiNewCategory.loadGUIWithData((int) target.getValueAt(row, 0));
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                guiNewCategory.setVisible(true);
+            }
             }
         });
     }
@@ -143,12 +176,28 @@ public class ControllerGuiCRUDProviders implements ActionListener {
         if (e.getSource().equals(this.guiCRUDProviders.getBtnNewCategory())) {
             this.guiNewCategory.cleanComponents();
             this.guiNewCategory.setVisible(true);
+        } else if (e.getSource().equals(this.guiCRUDProviders.getBtnRemoveCategory())){
+            Integer resp = JOptionPane.showConfirmDialog(guiCRUDProviders, "¿Desea borrar la categoría seleccionada?", "Confirmar borrado", JOptionPane.YES_NO_OPTION);
+            if (resp == JOptionPane.YES_OPTION) {
+                int row = guiCRUDProviders.getTableProviderCategories().getSelectedRow();       
+                try {
+                    if (providerCategory.delete((int) guiCRUDProviders.getDefaultTableProviderCategories().getValueAt(row, 0))) {
+                        JOptionPane.showMessageDialog(guiCRUDProviders, "Categoría eliminada correctamente", "Operacion exitosa", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(guiCRUDProviders, "Ocurrio un error", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
         }
         //Si presiono el boton de agregar un nuevo proveedor
         if (e.getSource().equals(this.guiCRUDProviders.getBtnNewProvider())) {
             this.guiNewProvider.cleanComponents();
             try {
                 //cargo las categorias disponibles en la tabla correspondiente de la guiNewProvider
+                this.controllerGuiNewProvider.setModify(false);
                 this.controllerGuiNewProvider.loadFindCategoryTable();
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
@@ -159,7 +208,24 @@ public class ControllerGuiCRUDProviders implements ActionListener {
          * de la tabala de proveedores.
          */
         if (e.getSource().equals(this.guiCRUDProviders.getBtnRemoveProvider())) {
-
+            Integer resp = JOptionPane.showConfirmDialog(guiCRUDProviders, "¿Desea borrar el proveedor seleccionada?", "Confirmar borrado", JOptionPane.YES_NO_OPTION);
+            if (resp == JOptionPane.YES_OPTION) {
+                int row = guiCRUDProviders.getTableProviders().getSelectedRow();       
+                try {
+                    if (provider.delete((int) guiCRUDProviders.getDefaultTableProviders().getValueAt(row, 0))) {
+                        JOptionPane.showMessageDialog(guiCRUDProviders, "Proveedor eliminado correctamente", "Operacion exitosa", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(guiCRUDProviders, "Ocurrio un error", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        try {
+            loadProviderCategories();
+        } catch (RemoteException ex) {
+            Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

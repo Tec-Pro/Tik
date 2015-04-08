@@ -81,7 +81,8 @@ public class CrudProviderCategory extends UnicastRemoteObject implements interfa
         boolean res = false;
         if (pCategory != null) {
             Base.openTransaction();
-            res = pCategory.delete();
+            pCategory.deleteCascadeShallow();
+            res = true;
             Base.commitTransaction();
         }
         return res;
