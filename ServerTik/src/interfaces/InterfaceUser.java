@@ -62,5 +62,7 @@ public interface InterfaceUser extends Remote {
      
      public Map<String,Object> getUser(int id) throws java.rmi.RemoteException;
      
+    public String decryptPass(byte[] pass) throws Exception;
+     
      public  List<Map> getUsers() throws java.rmi.RemoteException;    
 }

@@ -154,14 +154,17 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
          Utils.cerrarBase();
          return ret;
      }
-    
+     
     public List<Map> getUsers() throws java.rmi.RemoteException {
         Utils.abrirBase();
         List<Map> ret = User.findAll().toMaps();
         Utils.cerrarBase();
         return ret;
     }
-    
-    
 
+    @Override
+    public String decryptPass(byte[] pass) throws Exception {
+        return Encryption.decrypt(pass);
+    }
+    
 }

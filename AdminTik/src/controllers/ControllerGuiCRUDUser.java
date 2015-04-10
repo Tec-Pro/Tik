@@ -6,12 +6,13 @@
 package controllers;
 
 import gui.GuiCRUDUser;
+import gui.GuiFrameUser;
 import interfaces.InterfaceUser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.util.Map;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Date;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -19,10 +20,11 @@ import java.rmi.RemoteException;
 import java.net.MalformedURLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
-import java.text.SimpleDateFormat;
+import javax.swing.event.ListSelectionListener;
+import java.util.Calendar;
+import javax.swing.event.ListSelectionEvent;
 
 /**
  *
@@ -30,89 +32,64 @@ import java.text.SimpleDateFormat;
  */
 public class ControllerGuiCRUDUser implements ActionListener{
     
+    private final GuiFrameUser guiFrame;
     private final GuiCRUDUser guiUser;
     private final InterfaceUser crudUser;
-    private final Map<String,Object> currentAdmin;
-    private final JTable tableUsers;
     private final DefaultTableModel dtmUsers;
-    private final List<Map> listUsers;
     
-    public ControllerGuiCRUDUser(Map<String,Object> admin, Map<String,Object> user, GuiCRUDUser gui) throws NotBoundException, MalformedURLException, RemoteException{
-        currentAdmin = admin;
-        crudUser = (InterfaceUser) Naming.lookup("//192.168.1.103/crudUser");
-        
+   public ControllerGuiCRUDUser(GuiFrameUser frame, GuiCRUDUser gui) throws NotBoundException, MalformedURLException, RemoteException{
+        crudUser = (InterfaceUser) Naming.lookup("//localhost/crudUser");
+        guiFrame = frame;
         guiUser = gui;
-        guiUser.cleanFields();
-        tableUsers = guiUser.getTableUsers();
-        tableUsers.addMouseListener(new java.awt.event.MouseAdapter(){
+        guiUser.getTableUsers().getSelectionModel().addListSelectionListener(new ListSelectionListener(){
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaMouseClicked(evt);
+            public void valueChanged(ListSelectionEvent e) {
+                if (guiUser.getTableUsers().getSelectedRow() != -1) {
+
+                    try {
+                        tableUserMouseClicked(null);
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (Exception ex) {
+                        Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    guiUser.cleanFields();
+                    guiUser.modifyMode(false);
+                }  
             }
         });
-        
         dtmUsers = guiUser.getDtmUsers();
-        listUsers = crudUser.getUsers();
         updateDtmUsers();
-        guiUser.setActionListener(this);
+        
         guiUser.setVisible(true);
+        guiFrame.getjDesktopPane1().add(guiUser);
+        guiFrame.setVisible(true);
+        guiUser.setActionListener(this);
+        guiUser.cleanFields();
+        guiUser.modifyMode(false);
     }
     
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if(e.getSource().equals(guiUser.getBtnCreate())){ //If the button pressed is Create
-            if(!dataIsValid()){
-                JOptionPane.showMessageDialog(guiUser, "Nombre, Apellido, Contrasena y Posicion no pueden eestar vacios!", "Error!", JOptionPane.ERROR_MESSAGE);
-            } else
-                try {
-                    
-                    Map<String,Object> user;
-                    user = crudUser.create(guiUser.getTxtName().getText(),
-                            guiUser.getTxtSurname().getText(),
-                            guiUser.getTxtPass().getText(),
-                            stringToDate(guiUser.getTxtEntryDate().getText()),
-                            stringToDate(guiUser.getTxtExitDate().getText()),
-                            guiUser.getTxtTurn().getText(),
-                            stringToDate(guiUser.getTxtDateOfBirth().getText()),
-                            guiUser.getTxtPlaceOfBirth().getText(),
-                            guiUser.getTxtIdType().getText(),
-                            guiUser.getTxtIdNumber().getText(),
-                            guiUser.getTxtAddress().getText(),
-                            guiUser.getTxtHomePhone().getText(),
-                            guiUser.getTxtEmergencyPhone().getText(),
-                            guiUser.getTxtMobilePhone().getText(),
-                            guiUser.getTxtMaritalStatus().getText(),
-                            guiUser.getTxtBloodType().getText(),
-                            guiUser.getTxtPosition().getText());
-                    if(user != null){
-                        JOptionPane.showMessageDialog(guiUser, "Nuevo usuario creado exitosamente!", "Usuario creado!", JOptionPane.INFORMATION_MESSAGE);
-                    }else{
-                        JOptionPane.showMessageDialog(guiUser, "Problemas! No se pudo crear!", "Error!", JOptionPane.ERROR_MESSAGE);
-                    }
-                } catch (RemoteException ex){
-                    Logger.getLogger(ControllerGuiCRUDAdmin.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (java.text.ParseException ex) {
-                Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, ex);
-                
-            }
-        }
+    private void tableUserMouseClicked(MouseEvent evt) throws RemoteException, Exception {
+        int r = guiUser.getTableUsers().getSelectedRow();
+        loadSelectedUser((int) guiUser.getDtmUsers().getValueAt(r, 0));
+        guiUser.modifyMode(true);
     }
     
-    public void tablaMouseClicked(java.awt.event.MouseEvent evt){ // I update the fields in GuiCRUDUser
-        int selectedRow = tableUsers.getSelectedRow();
-        int userID = (int) tableUsers.getValueAt(selectedRow,0); // IdNumber of the selected User
-        try {
-            Map<String,Object> user;
-            user = crudUser.getUser(userID);
-            if(user != null){
-                guiUser.updateFields(
+    public void loadSelectedUser(int id) throws RemoteException, Exception {
+        Map<String,Object> user;
+        user = crudUser.getUser(id);
+        String p = (String) user.get("pass");
+        byte[] pass = p.getBytes("UTF-8");
+        if (user != null) {
+            guiUser.updateFields(
                 (String) user.get("name"),
                 (String) user.get("surname"),
-                (String) user.get("pass"),
-                (String) user.get("entry_date").toString(),
-                (String) user.get("exit_date").toString(),
+                (String) "PassTrucha", // error de Decyptacion
+                (Date) user.get("entry_date"),
+                (Date) user.get("exit_date"),
                 (String) user.get("turn"),
-                (String) user.get("date_of_birth").toString(),
+                (Date) user.get("date_of_birth"),
                 (String) user.get("place_of_birth"),
                 (String) user.get("id_type"),
                 (String) user.get("id_number"),
@@ -123,59 +100,123 @@ public class ControllerGuiCRUDUser implements ActionListener{
                 (String) user.get("marital_status"),
                 (String) user.get("blood_type"),
                 (String) user.get("position"));
-            }
-        } catch (RemoteException ex) {
-            Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } else {
+            JOptionPane.showMessageDialog(guiUser, "Ups! Error! Intente de nuevo!", "Error", JOptionPane.ERROR_MESSAGE);
+        }        
+    }
+        
+    private boolean dataIsValid() {
+        return !(guiUser.getTxtName().getText().equals("") || guiUser.getTxtSurname().getText().equals("") || guiUser.getTxtPass().getText().equals("") || guiUser.getBoxPosition().getSelectedItem().equals(""));
+        // Name, Surname, Pass and Position cannot be empty
     }
     
-    private void updateDtmUsers() {
+    private void updateDtmUsers() throws RemoteException {
         dtmUsers.setRowCount(0);
-        Iterator<Map> it = listUsers.iterator();
+        Iterator<Map> it = crudUser.getUsers().iterator();
         while (it.hasNext()){
             Map<String,Object> user = it.next();
-            Object rowDtm[] = new Object[18];
+            Object rowDtm[] = new Object[4];
             rowDtm[0] = user.get("id");
             rowDtm[1] = user.get("name");
             rowDtm[2] = user.get("surname");
-            rowDtm[3] = user.get("pass");
-            rowDtm[4] = user.get("entry_date").toString();
-            rowDtm[5] = user.get("exit_date").toString();
-            rowDtm[6] = user.get("turn");
-            rowDtm[7] = user.get("date_of_birth").toString();
-            rowDtm[8] = user.get("place_of_birth");
-            rowDtm[9] = user.get("id_type");
-            rowDtm[10] = user.get("id_number");
-            rowDtm[11] = user.get("address");
-            rowDtm[12] = user.get("home_phone");
-            rowDtm[13] = user.get("emergency_phone");
-            rowDtm[14] = user.get("mobile_phone");
-            rowDtm[15] = user.get("marital_status");
-            rowDtm[16] = user.get("blood_type");
-            rowDtm[17] = user.get("position");
-            
-            dtmUsers.addRow(rowDtm);
-            
-            //Object rowTable[] = new Object[5];
-            //rowTable[0] = user.get("id");
-            //rowTable[1] = user.get("name");
-            //rowTable[2] = user.get("surname");
-            //rowTable[3] = user.get("position");
-            
+            rowDtm[3] = user.get("position");            
+            dtmUsers.addRow(rowDtm);                       
         }
     }
-    private Date stringToDate(String stringDate) throws java.text.ParseException{
-        SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");   
-        
-        Date date = new Date();
-        date = ft.parse(stringDate); //I parse the string to the established date format
-        
-        return date;
-    }
 
-    private boolean dataIsValid() {
-        return !(guiUser.getTxtName().getText().equals("") || guiUser.getTxtSurname().getText().equals("") || guiUser.getTxtPass().getText().equals("") || guiUser.getTxtPosition().getText().equals(""));
-        // Name, Surname, Pass and Position cannot be empty
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource().equals(guiUser.getBtnCreate())){ //If the button pressed is Create
+            if(!dataIsValid()){
+                JOptionPane.showMessageDialog(guiUser, "Nombre, Apellido, Contrasena y Posicion no pueden eestar vacios!", "Error!", JOptionPane.ERROR_MESSAGE);
+            } else{
+                try {
+                    Map<String,Object> user;
+                    user = crudUser.create(guiUser.getTxtName().getText(),
+                            guiUser.getTxtSurname().getText(),
+                            guiUser.getTxtPass().getText(),
+                            Calendar.getInstance().getTime(),
+                            Calendar.getInstance().getTime(),
+                            (String) guiUser.getBoxTurn().getSelectedItem(),
+                            Calendar.getInstance().getTime(),
+                            guiUser.getTxtPlaceOfBirth().getText(),
+                            (String) guiUser.getBoxIdType().getSelectedItem(),
+                            guiUser.getTxtIdNumber().getText(),
+                            guiUser.getTxtAddress().getText(),
+                            guiUser.getTxtHomePhone().getText(),
+                            guiUser.getTxtEmergencyPhone().getText(),
+                            guiUser.getTxtMobilePhone().getText(),
+                            (String) guiUser.getBoxMaritalStatus().getSelectedItem(),
+                            (String) guiUser.getBoxBloodType().getSelectedItem(),
+                            (String) guiUser.getBoxPosition().getSelectedItem());
+                    if(user != null){
+                        JOptionPane.showMessageDialog(guiUser, "Nuevo usuario creado exitosamente!", "Usuario creado!", JOptionPane.INFORMATION_MESSAGE);
+                        updateDtmUsers();
+                        guiUser.cleanFields();
+                    }else{
+                        JOptionPane.showMessageDialog(guiUser, "Problemas! No se pudo crear!", "Error!", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (RemoteException ex){
+                    Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        if(e.getSource().equals(guiUser.getBtnModify())){ //If the button pressed is Modify
+            if(!dataIsValid()){
+                JOptionPane.showMessageDialog(guiUser, "Nombre, Apellido, Contrasena y Posicion no pueden estar vacios!", "Error!", JOptionPane.ERROR_MESSAGE);
+            } else{
+                try {
+                    int row = guiUser.getTableUsers().getSelectedRow();
+                    int id = (int) dtmUsers.getValueAt(row, 0);
+                    Map<String,Object> user;
+                    user = crudUser.modify(id,
+                            guiUser.getTxtName().getText(),
+                            guiUser.getTxtSurname().getText(),
+                            guiUser.getTxtPass().getText(),
+                            Calendar.getInstance().getTime(),
+                            Calendar.getInstance().getTime(),
+                            (String) guiUser.getBoxTurn().getSelectedItem(),
+                            Calendar.getInstance().getTime(),
+                            guiUser.getTxtPlaceOfBirth().getText(),
+                            (String) guiUser.getBoxIdType().getSelectedItem(),
+                            guiUser.getTxtIdNumber().getText(),
+                            guiUser.getTxtAddress().getText(),
+                            guiUser.getTxtHomePhone().getText(),
+                            guiUser.getTxtEmergencyPhone().getText(),
+                            guiUser.getTxtMobilePhone().getText(),
+                            (String) guiUser.getBoxMaritalStatus().getSelectedItem(),
+                            (String) guiUser.getBoxBloodType().getSelectedItem(),
+                            (String) guiUser.getBoxPosition().getSelectedItem());
+                    if(user != null){
+                        JOptionPane.showMessageDialog(guiUser, "Usuario modificado con exito!", "Usuario creado!", JOptionPane.INFORMATION_MESSAGE);
+                        updateDtmUsers();
+                    }else{
+                        JOptionPane.showMessageDialog(guiUser, "Problemas! No se pudo modificar!", "Error!", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (RemoteException ex){
+                    Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }       
+        }
+        if(e.getSource().equals(guiUser.getBtnDelete())){ //If the button pressed is Delete
+            if(!dataIsValid()){
+                JOptionPane.showMessageDialog(guiUser, "Nombre, Apellido, Contrasena y Posicion no pueden eestar vacios!", "Error!", JOptionPane.ERROR_MESSAGE);
+            } else{
+                try {
+                    int row = guiUser.getTableUsers().getSelectedRow();
+                    boolean user;
+                    user = crudUser.delete( (int) dtmUsers.getValueAt(row, 0));
+                    if(user == true){
+                        JOptionPane.showMessageDialog(guiUser, "Usuario borrado exitosamente!", "Usuario borrado!", JOptionPane.INFORMATION_MESSAGE);
+                        updateDtmUsers();
+                    }else{
+                        JOptionPane.showMessageDialog(guiUser, "Problemas! No se pudo borrar!", "Error!", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (RemoteException ex){
+                    Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }       
+        }
     }
     
 }

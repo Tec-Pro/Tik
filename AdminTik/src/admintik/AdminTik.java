@@ -8,6 +8,9 @@ package admintik;
 
 
 import controllers.ControllerGuiAdminLogin;
+import controllers.ControllerGuiCRUDUser;
+import gui.GuiCRUDUser;
+import gui.GuiFrameUser;
 
 import interfaces.InterfaceServer;
 import java.net.MalformedURLException;
@@ -29,19 +32,20 @@ public class AdminTik{
      * @param args the command line arguments
      */
     public static void main(String[] args) throws NotBoundException, MalformedURLException, RemoteException {
-
         
+        /*
         if (System.getSecurityManager() == null){
             System.setSecurityManager(new RMISecurityManager());
         }
+        */
+        InterfaceServer server = (InterfaceServer) Naming.lookup("//localhost/Server");
         
-        
-        InterfaceServer server = (InterfaceServer) Naming.lookup("//192.168.1.26/Server");
-        
-       // InterfaceAdmin crudAdmin = (InterfaceAdmin)   Naming.lookup("//192.168.1.26/crudAdmin");
-        ControllerGuiAdminLogin controllerLogin = new ControllerGuiAdminLogin();
+       //InterfaceAdmin crudAdmin = (InterfaceAdmin)   Naming.lookup("//192.168.1.26/crudAdmin");
+       //ControllerGuiAdminLogin controllerLogin = new ControllerGuiAdminLogin();
        //ControllerGuiAdmin mainController = new ControllerGuiAdmin();
-     
+        GuiFrameUser guiFrame = new GuiFrameUser();
+        GuiCRUDUser guiUser = new GuiCRUDUser();
+        ControllerGuiCRUDUser controllerUser = new ControllerGuiCRUDUser(guiFrame, guiUser);
     }
 
 }
