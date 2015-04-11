@@ -10,9 +10,12 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import models.Admin;
 import org.javalite.activejdbc.Base;
 import utils.Utils;
+import utils.Encryption;
 
 /**
  *
@@ -25,28 +28,58 @@ public class CrudAdmin extends UnicastRemoteObject implements interfaces.Interfa
         
     }
     
+    private boolean adminExists(String name){
+        return Admin.first("name = ?", name) != null;
+    }
+    
     public Map<String,Object> create(String name, String pass) throws java.rmi.RemoteException{
         Utils.abrirBase();
         Base.openTransaction();
-        Map<String,Object> res =Admin.createIt("name",name,"pass",pass);
+        byte[] passEncrypted = {0};
+        try {
+            passEncrypted = Encryption.encrypt(pass);
+        } catch (Exception ex) {
+            Logger.getLogger(CrudAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Map<String,Object> res = null;
+       
+        if(!adminExists(name))
+             res = Admin.createIt("name",name,"pass", passEncrypted).toMap();
         Base.commitTransaction();
         Utils.cerrarBase();        
         return res;
+
     }
      
+    /**
+     * 
+     * @param id 
+     * @param name
+     * @param pass
+     * @return a map with the user modified or null if the user to be modified doesn't exists
+     * @throws RemoteException
+     */
+    @Override
      public Map<String,Object> modify(int id,String name, String pass) throws java.rmi.RemoteException{
         Utils.abrirBase();
         Admin admin= Admin.findById(id);
-        boolean res= false;
+        byte[] passEncrypted = {0};
+        try {
+            passEncrypted = Encryption.encrypt(pass);
+        } catch (Exception ex) {
+            Logger.getLogger(CrudAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
         if(admin!=null){
             admin.setString("name",name);
-            admin.setString("pass",pass);
+            admin.set("pass",passEncrypted);
             Base.openTransaction();
-            res = admin.saveIt();
+            admin.saveIt();
             Base.commitTransaction();
             Utils.cerrarBase();
-        }
-        return admin.toMap();
+            return admin.toMap();
+        }else
+            return null;
+   
      }
      
      public boolean delete(int id) throws java.rmi.RemoteException{
@@ -68,6 +101,20 @@ public class CrudAdmin extends UnicastRemoteObject implements interfaces.Interfa
          return ret;
      }
      
+     public Map<String,Object> loginAdmin(String name, String pass) throws java.rmi.RemoteException{
+        Utils.abrirBase();
+        Map<String,Object> ret = null;
+        byte[] passEncrypted = {0};
+        try {
+            passEncrypted = Encryption.encrypt(pass);
+        } catch (Exception ex) {
+            Logger.getLogger(CrudAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         if(Admin.first("name = ? and pass = ?", name,passEncrypted)!=null)
+            ret= Admin.first("name = ? and pass = ?", name,passEncrypted).toMap();
+         Utils.cerrarBase();
+         return ret;
+     }
      
      public  List<Map> getAdmins() throws java.rmi.RemoteException{
          Utils.abrirBase();

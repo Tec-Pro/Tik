@@ -12,11 +12,11 @@ import java.util.Map;
 
 /**
  *
- * @author nico
+ * @author agustin
  */
 public interface InterfaceAdmin extends Remote {
     
-    public Map<String,Object> create(String name, String pass) throws java.rmi.RemoteException;
+  public Map<String,Object> create(String name, String pass) throws java.rmi.RemoteException;
      
      public Map<String,Object> modify(int id,String name, String pass) throws java.rmi.RemoteException;
      
@@ -26,5 +26,5 @@ public interface InterfaceAdmin extends Remote {
           
      public  List<Map> getAdmins() throws java.rmi.RemoteException;
      
-      public int prueba(int a, int b)throws java.rmi.RemoteException;
+    public Map<String,Object> loginAdmin(String name, String pass) throws java.rmi.RemoteException;
 }
