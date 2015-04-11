@@ -27,6 +27,16 @@ public interface InterfaceProvider extends Remote {
      public  List<Map> getProviders() throws java.rmi.RemoteException; 
      
      public List<Map> getCategoriesFromProvider(int id) throws java.rmi.RemoteException;
-  
+     
+     /**
+     *Función que agrega una categoría a un proveedor. Recibe como parámetros
+     * el <code>id_proveedor</code> y el <code>id_categoría</code>. Devuelve un 
+     * Map conteniendo el proveedor.
+     * 
+     * @param provider_id
+     * @param category_id
+     * @return Un map con el proveedor.
+     * @throws java.rmi.RemoteException
+     */
      public Map<String,Object> addCategoryToProvider(int provider_id, int category_id) throws java.rmi.RemoteException;
 }

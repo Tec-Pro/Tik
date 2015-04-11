@@ -125,17 +125,22 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.prov
     }
 
     /**
-     *
+     *Función que agrega una categoría a un proveedor. Recibe como parámetros
+     * el <code>id_proveedor</code> y el <code>id_categoría</code>. Devuelve un 
+     * Map conteniendo el proveedor.
+     * 
      * @param provider_id
      * @param category_id
-     * @return
+     * @return Un map con el proveedor.
      * @throws RemoteException
      */
     @Override
     public Map<String, Object> addCategoryToProvider(int provider_id, int category_id) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
-        ProvidersProvidercategory.createIt("provider_id", provider_id, "providercategory_id", category_id);
+        Provider p = Provider.findById(provider_id);
+        Providercategory pc = Providercategory.findById(category_id);
+        p.add(pc);
         Base.commitTransaction();
         return getProvider(provider_id);
     }

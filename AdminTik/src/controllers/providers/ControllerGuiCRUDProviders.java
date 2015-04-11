@@ -12,6 +12,7 @@ import interfaces.providers.InterfaceProvidersSearch;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -28,23 +29,19 @@ import javax.swing.table.DefaultTableModel;
 public class ControllerGuiCRUDProviders implements ActionListener {
 
     private final GuiCRUDProviders guiCRUDProviders;
-    private final GuiNewCategory guiNewCategory;
     private final GuiNewProvider guiNewProvider;
-    private final ControllerGuiNewCategory controllerGuiNewCategory;
     private final ControllerGuiNewProvider controllerGuiNewProvider;
     private final InterfaceProviderCategory providerCategory;
     private final InterfaceProvider provider;
     private final InterfaceProvidersSearch providersSearch;
 
-    public ControllerGuiCRUDProviders(GuiCRUDProviders guiCProv, GuiNewCategory guiNCat, GuiNewProvider guiNProv,
+    public ControllerGuiCRUDProviders(GuiCRUDProviders guiCProv, GuiNewProvider guiNProv,
             InterfaceProvider prov, InterfaceProviderCategory provCategory, InterfaceProvidersSearch provSearch) throws RemoteException {
         this.guiCRUDProviders = guiCProv;
-        this.guiNewCategory = guiNCat;
         this.guiNewProvider = guiNProv;
         this.provider = prov;
         this.providerCategory = provCategory;
         this.providersSearch = provSearch;
-        this.controllerGuiNewCategory = new ControllerGuiNewCategory(this.guiNewCategory, this.providerCategory);
         this.controllerGuiNewProvider = new ControllerGuiNewProvider(this.guiNewProvider, this.provider, this.providerCategory);
         this.guiCRUDProviders.setActionListener(this);
         loadProviderCategories();
@@ -67,13 +64,13 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                 }
             }
         });
-        
+
         this.guiCRUDProviders.getTableProviders().addMouseListener(new java.awt.event.MouseAdapter() {
-        @Override
-        public void mouseClicked(java.awt.event.MouseEvent evt){
-             if (evt.getClickCount() == 2){
-                JTable target = (JTable) evt.getSource();
-                int row = target.getSelectedRow();
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (evt.getClickCount() == 2) {
+                    JTable target = (JTable) evt.getSource();
+                    int row = target.getSelectedRow();
                     try {
                         guiNewProvider.cleanComponents();
                         controllerGuiNewProvider.loadFindCategoryTable();
@@ -81,10 +78,10 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                     } catch (RemoteException ex) {
                         Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                guiNewProvider.setVisible(true);
+                    guiNewProvider.setVisible(true);
+                }
             }
-        }
-        
+
         });
         //reviso si se clickea alguna fila de la tabla categorias
         this.guiCRUDProviders.getTableProviderCategories().addMouseListener(new java.awt.event.MouseAdapter() {
@@ -93,7 +90,7 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                 //limpio la pantalla antes de cargar los datos nuevos
                 guiCRUDProviders.cleanComponents();
                 //saco el id de la categoria, de la fila seleccionada
-                DefaultTableModel categoryModel = ((DefaultTableModel)guiCRUDProviders.getTableProviderCategories().getModel());
+                DefaultTableModel categoryModel = ((DefaultTableModel) guiCRUDProviders.getTableProviderCategories().getModel());
                 int selectedRow = guiCRUDProviders.getTableProviderCategories().getSelectedRow();
                 int categoryId = Integer.parseInt(categoryModel.getValueAt(selectedRow, 0).toString());
                 List<Map> providersList = null;
@@ -104,7 +101,7 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                     Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 //si hay proveedores en la lista
-                if(providersList != null && !providersList.isEmpty()){
+                if (providersList != null && !providersList.isEmpty()) {
                     try {
                         //cargo los proveedores en la tabla
                         updateSearchProviderTable(providersList);
@@ -112,18 +109,25 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                         Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-            guiCRUDProviders.getBtnRemoveCategory().setEnabled(true);
-            if (evt.getClickCount() == 2){
-                JTable target = (JTable) evt.getSource();
-                int row = target.getSelectedRow();
-                    try {
-                        guiNewCategory.cleanComponents();
-                        controllerGuiNewCategory.loadGUIWithData((int) target.getValueAt(row, 0));
-                    } catch (RemoteException ex) {
-                        Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
+                guiCRUDProviders.getBtnRemoveCategory().setEnabled(true);
+                if (evt.getClickCount() == 2) {
+                    JTable target = (JTable) evt.getSource();
+                    int row = target.getSelectedRow();
+                    String categoryName = JOptionPane.showInputDialog(guiCRUDProviders, "Ingrese el nombre de la categoría.", "Modificar categoría", JOptionPane.PLAIN_MESSAGE);
+                    if (categoryName == null) {
+                        categoryName = "";
                     }
-                guiNewCategory.setVisible(true);
-            }
+                    if (categoryName.trim().isEmpty()) {
+                        JOptionPane.showMessageDialog(guiCRUDProviders, "Error: El nombre no puede ser nulo.", "Error", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        try {
+                            providerCategory.modify((int) target.getValueAt(row, 0), categoryName);
+                            loadProviderCategories();
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
             }
         });
     }
@@ -174,12 +178,23 @@ public class ControllerGuiCRUDProviders implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         //Si presiono el boton de agregar una nueva categoria
         if (e.getSource().equals(this.guiCRUDProviders.getBtnNewCategory())) {
-            this.guiNewCategory.cleanComponents();
-            this.guiNewCategory.setVisible(true);
-        } else if (e.getSource().equals(this.guiCRUDProviders.getBtnRemoveCategory())){
+            String categoryName = JOptionPane.showInputDialog(guiCRUDProviders, "Ingrese el nombre de la categoría.", "Modificar categoría", JOptionPane.PLAIN_MESSAGE);
+            if (categoryName == null) {
+                categoryName = "";
+            }
+            if (categoryName.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(guiCRUDProviders, "Error: El nombre no puede ser nulo.", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                try {
+                    providerCategory.create(categoryName);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } else if (e.getSource().equals(this.guiCRUDProviders.getBtnRemoveCategory())) {
             Integer resp = JOptionPane.showConfirmDialog(guiCRUDProviders, "¿Desea borrar la categoría seleccionada?", "Confirmar borrado", JOptionPane.YES_NO_OPTION);
             if (resp == JOptionPane.YES_OPTION) {
-                int row = guiCRUDProviders.getTableProviderCategories().getSelectedRow();       
+                int row = guiCRUDProviders.getTableProviderCategories().getSelectedRow();
                 try {
                     if (providerCategory.delete((int) guiCRUDProviders.getDefaultTableProviderCategories().getValueAt(row, 0))) {
                         JOptionPane.showMessageDialog(guiCRUDProviders, "Categoría eliminada correctamente", "Operacion exitosa", JOptionPane.INFORMATION_MESSAGE);
@@ -190,7 +205,7 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                     Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            
+
         }
         //Si presiono el boton de agregar un nuevo proveedor
         if (e.getSource().equals(this.guiCRUDProviders.getBtnNewProvider())) {
@@ -210,10 +225,15 @@ public class ControllerGuiCRUDProviders implements ActionListener {
         if (e.getSource().equals(this.guiCRUDProviders.getBtnRemoveProvider())) {
             Integer resp = JOptionPane.showConfirmDialog(guiCRUDProviders, "¿Desea borrar el proveedor seleccionada?", "Confirmar borrado", JOptionPane.YES_NO_OPTION);
             if (resp == JOptionPane.YES_OPTION) {
-                int row = guiCRUDProviders.getTableProviders().getSelectedRow();       
+                int row = guiCRUDProviders.getTableProviders().getSelectedRow();
                 try {
                     if (provider.delete((int) guiCRUDProviders.getDefaultTableProviders().getValueAt(row, 0))) {
                         JOptionPane.showMessageDialog(guiCRUDProviders, "Proveedor eliminado correctamente", "Operacion exitosa", JOptionPane.INFORMATION_MESSAGE);
+                        List<Map> providersList = Collections.EMPTY_LIST;
+                        //hago la busqueda de proveedores en base a ese texto
+                        providersList = providersSearch.searchProviders(guiCRUDProviders.getTxtFindProvider().getText());
+                        //cargo los proveedores en la tabla
+                        updateSearchProviderTable(providersList);
                     } else {
                         JOptionPane.showMessageDialog(guiCRUDProviders, "Ocurrio un error", "Error", JOptionPane.ERROR_MESSAGE);
                     }
