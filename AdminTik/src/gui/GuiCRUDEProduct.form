@@ -58,7 +58,7 @@
                               <Component id="jScrollPane5" alignment="0" min="-2" pref="470" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="502" max="-2" attributes="0"/>
+                      <EmptySpace pref="50" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -90,9 +90,6 @@
                   </Border>
                 </Property>
               </Properties>
-              <AccessibilityProperties>
-                <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Datos del producto elaborado"/>
-              </AccessibilityProperties>
 
               <Layout>
                 <DimensionLayout dim="0">
