@@ -6,8 +6,11 @@
 
 package servertik;
 
+import implementsInterface.CRUDCategory;
+import implementsInterface.CRUDEproduct;
+import implementsInterface.CRUDFproduct;
+import implementsInterface.CRUDPproduct;
 import implementsInterface.CrudAdmin;
-import implementsInterface.CrudCategory;
 import implementsInterface.CrudProdCategory;
 import implementsInterface.CrudProduct;
 import implementsInterface.CrudProvider;
@@ -43,19 +46,19 @@ public class ServerTik {
            //para saber que el servidor esta funcionando 
            System.out.println("<<<<<<<<< Servidor Andando >>>>>>>>>");
            CrudAdmin crudAdmin = new CrudAdmin();
-           CrudCategory crudCategory = new CrudCategory();
-           CrudProdCategory crudProdCategory = new CrudProdCategory();
-           CrudProduct crudProduct = new CrudProduct();
-           CrudProvider crudProvider = new CrudProvider();
-           CrudUser crudUser = new CrudUser();
            Server server= new Server();
+           CRUDEproduct CRUDEproduct = new CRUDEproduct();
+           CRUDPproduct CRUDPproduct = new CRUDPproduct();
+           CRUDFproduct CRUDFproduct = new CRUDFproduct();
+                      CRUDCategory crudCategory = new CRUDCategory();
+           CrudProdCategory crudProdCategory = new CrudProdCategory();
            //Asocio el objeto remoto 's' a la direccion de mi host seguida de un /nombreAsociado
            Naming.rebind("crudAdmin", crudAdmin); 
-           Naming.rebind("crudCategory", crudCategory);
-           Naming.rebind("crudProdCategory", crudProdCategory);  
-           Naming.rebind("crudProduct", crudProduct);
-           Naming.rebind("crudProvider", crudProvider);
-           Naming.rebind("crudUser", crudUser);  
+           Naming.rebind("CRUDPproduct", CRUDPproduct);
+           Naming.rebind("CRUDEproduct", CRUDEproduct);
+           Naming.rebind("CRUDFproduct", CRUDFproduct); 
+           Naming.rebind("CRUDCategory", crudCategory);
+           //Naming.rebind("crudProdCategory", crudProdCategory);  
            Naming.rebind("Server", server);  
            
         //   System.out.println("hice un usuario" + crudAdmin.create("agu", "aguasdasd"));
