@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -110,21 +111,21 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                     }
                 }
                 guiCRUDProviders.getBtnRemoveCategory().setEnabled(true);
+                //Si hago doble click en la tabla de categorías muestro un diálogo de edición.
                 if (evt.getClickCount() == 2) {
                     JTable target = (JTable) evt.getSource();
                     int row = target.getSelectedRow();
                     String categoryName = JOptionPane.showInputDialog(guiCRUDProviders, "Ingrese el nombre de la categoría.", "Modificar categoría", JOptionPane.PLAIN_MESSAGE);
-                    if (categoryName == null) {
-                        categoryName = "";
-                    }
-                    if (categoryName.trim().isEmpty()) {
-                        JOptionPane.showMessageDialog(guiCRUDProviders, "Error: El nombre no puede ser nulo.", "Error", JOptionPane.ERROR_MESSAGE);
-                    } else {
-                        try {
-                            providerCategory.modify((int) target.getValueAt(row, 0), categoryName);
-                            loadProviderCategories();
-                        } catch (RemoteException ex) {
-                            Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
+                    if (categoryName != null) {
+                        if (categoryName.trim().isEmpty()) {
+                            JOptionPane.showMessageDialog(guiCRUDProviders, "Error: Falta especificar un nombre.", "Error", JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            try {
+                                providerCategory.modify((int) target.getValueAt(row, 0), categoryName);
+                                loadProviderCategories();
+                            } catch (RemoteException ex) {
+                                Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                     }
                 }
@@ -179,11 +180,8 @@ public class ControllerGuiCRUDProviders implements ActionListener {
         //Si presiono el boton de agregar una nueva categoria
         if (e.getSource().equals(this.guiCRUDProviders.getBtnNewCategory())) {
             String categoryName = JOptionPane.showInputDialog(guiCRUDProviders, "Ingrese el nombre de la categoría.", "Modificar categoría", JOptionPane.PLAIN_MESSAGE);
-            if (categoryName == null) {
-                categoryName = "";
-            }
-            if (categoryName.trim().isEmpty()) {
-                JOptionPane.showMessageDialog(guiCRUDProviders, "Error: El nombre no puede ser nulo.", "Error", JOptionPane.ERROR_MESSAGE);
+            if (categoryName != null && categoryName.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(guiCRUDProviders, "Error: El nombre no puede ser vacío.", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
                 try {
                     providerCategory.create(categoryName);
