@@ -18,6 +18,7 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
+import utils.Config;
 
 /**
  *
@@ -36,14 +37,14 @@ public class AdminTik{
         }
         
         
-        InterfaceServer server = (InterfaceServer) Naming.lookup("//192.168.1.26/Server");
+        InterfaceServer server = (InterfaceServer) Naming.lookup("//"+Config.ip+"/Server");
         
-        InterfaceAdmin crudAdmin = (InterfaceAdmin)   Naming.lookup("//192.168.1.26/crudAdmin");
-        InterfaceCategory category = (InterfaceCategory)   Naming.lookup("//192.168.1.26/crudCategory");
-        InterfaceProdCategory prodCategory = (InterfaceProdCategory)   Naming.lookup("//192.168.1.26/crudProdCategory");
-        InterfaceProduct product = (InterfaceProduct)   Naming.lookup("//192.168.1.26/crudProduct");
-        InterfaceProvider provider = (InterfaceProvider)   Naming.lookup("//192.168.1.26/crudProvider");
-        InterfaceUser user = (InterfaceUser)   Naming.lookup("//192.168.1.26/crudUser");  
+        InterfaceAdmin crudAdmin = (InterfaceAdmin)   Naming.lookup("//"+Config.ip+"/crudAdmin");
+        InterfaceCategory category = (InterfaceCategory)   Naming.lookup("//"+Config.ip+"/crudCategory");
+        InterfaceProdCategory prodCategory = (InterfaceProdCategory)   Naming.lookup("//"+Config.ip+"/crudProdCategory");
+        InterfaceProduct product = (InterfaceProduct)   Naming.lookup("//"+Config.ip+"/crudProduct");
+        InterfaceProvider provider = (InterfaceProvider)   Naming.lookup("//"+Config.ip+"/crudProvider");
+        InterfaceUser user = (InterfaceUser)   Naming.lookup("//"+Config.ip+"/crudUser");  
        // System.setProperty("java.security.policy","/home/agustin/Documentos/ProyectosGithub/Tik/ServerTik/src/java.policy");
         Client client= new Client();
         server.registerClient(client,"mozo");

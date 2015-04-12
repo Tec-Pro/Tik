@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import utils.Config;
 import utils.Pair;
 
 /**
@@ -44,7 +45,6 @@ public class ControllerGuiCRUDEproduct implements ActionListener {
     InterfacePproduct crudPproduct;
     InterfaceEproduct crudEproduct;
     InterfaceCategory category;
-    private String ip;
     Map<String, Object> pproduct;
     Map<String, Object> eproduct;
 
@@ -58,14 +58,13 @@ public class ControllerGuiCRUDEproduct implements ActionListener {
     public ControllerGuiCRUDEproduct(GuiCRUDEProduct guiCRUDEProduct) throws NotBoundException, MalformedURLException, RemoteException {
         this.guiCRUDEProduct = guiCRUDEProduct;
         guiCRUDEProduct.setActionListener(this);
-        ip = "//192.168.1.16/";
         tableProducts = guiCRUDEProduct.getTableProducts();
         tableReciper = guiCRUDEProduct.getTableReciper();
         tableProductsDefault = guiCRUDEProduct.getTableProductsDefault();
         tableReciperDefault = guiCRUDEProduct.getTableReciperDefault();
-        crudPproduct = (InterfacePproduct) Naming.lookup(ip + "CRUDPproduct");
-        crudEproduct = (InterfaceEproduct) Naming.lookup(ip + "CRUDEproduct");
-        category = (InterfaceCategory) Naming.lookup(ip + "CRUDCategory");
+        crudPproduct = (InterfacePproduct) Naming.lookup("//" + Config.ip + "/CRUDPproduct");
+        crudEproduct = (InterfaceEproduct) Naming.lookup("//" + Config.ip + "/CRUDEproduct");
+        category = (InterfaceCategory) Naming.lookup("//" + Config.ip + "/CRUDCategory");
         guiCRUDEProduct.setCRUDCategory(category);
         pproductList = crudPproduct.getPproducts();
         eproductList = crudEproduct.getEproducts();

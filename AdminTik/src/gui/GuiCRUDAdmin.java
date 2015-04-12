@@ -25,9 +25,6 @@ public class GuiCRUDAdmin extends javax.swing.JInternalFrame{
      */
     public GuiCRUDAdmin() {
         initComponents();
-        cleanFields();
-        setTitle("Opciones de Administrador");
-        setVisible(true);
         setResizable(false);
     }
 
@@ -50,6 +47,10 @@ public class GuiCRUDAdmin extends javax.swing.JInternalFrame{
         lblMessage = new javax.swing.JLabel();
         btnConfirm = new javax.swing.JButton();
 
+        setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        setIconifiable(true);
+        setTitle("Opciones de Administrador");
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 formKeyTyped(evt);

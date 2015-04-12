@@ -186,6 +186,11 @@ public class GuiAdminLogin extends javax.swing.JFrame {
             }
         });
     }
+    
+    public void clearFields(){
+        txtName.setText("");
+        txtPassword.setText("");
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConfirm;

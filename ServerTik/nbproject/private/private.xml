@@ -3,10 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/nico/Trabajo/ServerTik/src/implementsInterface/CrudSubcategory.java</file>
-            <file>file:/home/nico/Trabajo/ServerTik/src/implementsInterface/CrudAdmin.java</file>
-            <file>file:/home/nico/Trabajo/ServerTik/src/interfaces/InterfaceSubcategory.java</file>
-            <file>file:/home/nico/Trabajo/ServerTik/src/interfaces/InterfaceAdmin.java</file>
+            <file>file:/home/nico/Trabajo/Tik/ServerTik/src/implementsInterface/CRUDEproduct.java</file>
+            <file>file:/home/nico/Trabajo/Tik/ServerTik/src/servertik/ServerTik.java</file>
         </group>
     </open-files>
 </project-private>

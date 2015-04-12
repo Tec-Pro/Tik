@@ -9,6 +9,7 @@ import gui.GuiAdminLogin;
 import interfaces.InterfaceAdmin;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -17,44 +18,77 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import utils.Config;
 
 /**
  *
  * @author agustin
  */
 public class ControllerGuiAdminLogin implements ActionListener {
-    
-    private final GuiAdminLogin guiAdminLogin;
-    private final InterfaceAdmin crudAdmin;
-    private ControllerGuiCRUDAdmin controllerGuiAdmin;
-    
+
+    private static GuiAdminLogin guiAdminLogin;
+    private static InterfaceAdmin crudAdmin;
+
+    private ControllerMain controllerMain; //controlador principal
+
     public ControllerGuiAdminLogin() throws NotBoundException, MalformedURLException, RemoteException {
         guiAdminLogin = new GuiAdminLogin();
-        crudAdmin = (InterfaceAdmin)   Naming.lookup("//192.168.1.26/crudAdmin");              
-        guiAdminLogin.setActionListener(this);
-        guiAdminLogin.setVisible(true);
-        if(crudAdmin.getAdmins().isEmpty()){
-            crudAdmin.create("admin", "admin");
-            JOptionPane.showMessageDialog(guiAdminLogin, "Se creó un un administrador por defecto \n Nombre: admin - Contraseña:admin", "NO HAY ADMINISTRADORES!", JOptionPane.INFORMATION_MESSAGE);
+        Config config = new Config(new javax.swing.JFrame(), true);
+        try {
+            config.loadProperties();
+        } catch (IOException ex) {
+            Logger.getLogger(ControllerGuiAdminLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
+        boolean connected = false;
+        while (!connected) {
+            try {
+                crudAdmin = (InterfaceAdmin) Naming.lookup("//" + Config.ip + "/crudAdmin");
+                connected = true;
+            } catch (RemoteException e) {
+                config = new Config(new javax.swing.JFrame(), true);
+                config.setVisible(true);
+                if (config.getReturnStatus() != Config.RET_OK) {
+                    System.exit(0);
+                }
+                connected = false;
+
+            }
+        }
+        guiAdminLogin.setActionListener(this);
+        guiAdminLogin.setLocationRelativeTo(null);
+        guiAdminLogin.setVisible(true);
+        getAllAdmins();
+        controllerMain = new ControllerMain(guiAdminLogin);
+       
+
     }
-    
+
+    public static void getAllAdmins() {
+        try {
+            if (crudAdmin.getAdmins().isEmpty()) {
+                crudAdmin.create("admin", "admin");
+                JOptionPane.showMessageDialog(guiAdminLogin, "Se creó un un administrador por defecto \n Nombre: admin - Contraseña:admin", "NO HAY ADMINISTRADORES!", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(ControllerGuiAdminLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        guiAdminLogin.clearFields();
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource().equals(guiAdminLogin.getBtnConfirm())){
+        if (e.getSource().equals(guiAdminLogin.getBtnConfirm())) {
             try {
-                Map<String,Object> newUser;
-                newUser = crudAdmin.loginAdmin(guiAdminLogin.getTxtName().getText(), guiAdminLogin.getTxtPassword().getText());                
-                if(newUser != null){
-                    guiAdminLogin.dispose();
-                    
-                    new ControllerTest(newUser); //aca deberia ir el controlador main.
-                   // controllerGuiAdmin = new ControllerGuiCRUDAdmin(newUser);
-                }
-                else
+                Map<String, Object> newUser;
+                newUser = crudAdmin.loginAdmin(guiAdminLogin.getTxtName().getText(), guiAdminLogin.getTxtPassword().getText());
+                if (newUser != null && controllerMain!=null) {
+                    guiAdminLogin.setVisible(false);
+                    controllerMain.initSession(newUser);
+                } else {
                     JOptionPane.showMessageDialog(guiAdminLogin, "Nombre de usuario o contraseña no valida!", "Error!", JOptionPane.ERROR_MESSAGE);
+                }
             } catch (RemoteException ex) {
-                 Logger.getLogger(ControllerGuiCRUDAdmin.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ControllerGuiCRUDAdmin.class.getName()).log(Level.SEVERE, null, ex);
             } catch (NotBoundException ex) {
                 Logger.getLogger(ControllerGuiAdminLogin.class.getName()).log(Level.SEVERE, null, ex);
             } catch (MalformedURLException ex) {
@@ -62,5 +96,5 @@ public class ControllerGuiAdminLogin implements ActionListener {
             }
         }
     }
-    
+
 }
