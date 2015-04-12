@@ -223,7 +223,6 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
         jLabel6 = new javax.swing.JLabel();
         category = new javax.swing.JComboBox();
         jLabel11 = new javax.swing.JLabel();
-        txtSearch1 = new javax.swing.JTextField();
         txtSearch = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableReciper = new javax.swing.JTable();
@@ -240,7 +239,7 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
 
         jScrollPane1.setPreferredSize(new java.awt.Dimension(1095, 627));
 
-        jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos del producto elaborado", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Schoolbook L", 1, 14))); // NOI18N
+        jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos del producto final", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Schoolbook L", 1, 14))); // NOI18N
 
         jPanel10.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -310,10 +309,6 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
 
         jLabel11.setText("Categoria");
 
-        txtSearch1.setForeground(new java.awt.Color(130, 125, 120));
-        txtSearch1.setText("Buscar producto...");
-        txtSearch1.setToolTipText("Búsqueda personalizada");
-
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
@@ -333,11 +328,6 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
                     .addComponent(txtName))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel9Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(txtSearch1, javax.swing.GroupLayout.PREFERRED_SIZE, 523, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -355,11 +345,6 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(category, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11)))
-            .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel9Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(txtSearch1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
         tableReciper.setModel(new javax.swing.table.DefaultTableModel(
@@ -470,7 +455,7 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 609, Short.MAX_VALUE)
         );
 
         pack();
@@ -504,6 +489,5 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtSearch;
-    private javax.swing.JTextField txtSearch1;
     // End of variables declaration//GEN-END:variables
 }

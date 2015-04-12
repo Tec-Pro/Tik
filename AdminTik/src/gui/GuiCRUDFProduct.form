@@ -35,7 +35,7 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jScrollPane1" alignment="0" pref="561" max="32767" attributes="0"/>
+          <Component id="jScrollPane1" alignment="0" pref="609" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -93,7 +93,7 @@
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder title="Datos del producto elaborado">
+                    <TitledBorder title="Datos del producto final">
                       <Font PropertyName="font" name="Century Schoolbook L" size="14" style="1"/>
                     </TitledBorder>
                   </Border>
@@ -126,13 +126,6 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jPanel10" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              <Component id="txtSearch1" min="-2" pref="523" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
@@ -153,13 +146,6 @@
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="category" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              <Component id="txtSearch1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -279,15 +265,6 @@
                 <Component class="javax.swing.JLabel" name="jLabel11">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Categoria"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JTextField" name="txtSearch1">
-                  <Properties>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="78" green="7d" red="82" type="rgb"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="Buscar producto..."/>
-                    <Property name="toolTipText" type="java.lang.String" value="B&#xfa;squeda personalizada"/>
                   </Properties>
                 </Component>
               </SubComponents>
