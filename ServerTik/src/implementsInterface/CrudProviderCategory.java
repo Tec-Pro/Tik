@@ -41,7 +41,7 @@ public class CrudProviderCategory extends UnicastRemoteObject implements interfa
         Base.openTransaction();
         Map<String, Object> ret = Providercategory.createIt("name", name).toMap();
         Base.commitTransaction();
-        Utils.cerrarBase();
+         
         return ret;
     }
 
@@ -63,7 +63,7 @@ public class CrudProviderCategory extends UnicastRemoteObject implements interfa
             pCategory.saveIt();
             res = pCategory.toMap();
             Base.commitTransaction();
-            Utils.cerrarBase();
+             
         }
         return res;
     }
@@ -98,7 +98,7 @@ public class CrudProviderCategory extends UnicastRemoteObject implements interfa
     public Map<String, Object> getProviderCategory(int id) throws RemoteException {
         Utils.abrirBase();
         Map<String, Object> ret = Providercategory.findById(id).toMap();
-        Utils.cerrarBase();
+         
         return ret;
     }
 
@@ -111,7 +111,7 @@ public class CrudProviderCategory extends UnicastRemoteObject implements interfa
     public List<Map> getProviderCategories() throws RemoteException {
         Utils.abrirBase();
         List<Map> ret = Providercategory.findAll().toMaps();
-        Utils.cerrarBase();
+         
         return ret;
     }
 

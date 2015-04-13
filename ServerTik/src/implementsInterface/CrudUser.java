@@ -67,7 +67,7 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
                 "position", position
                 );
         Base.commitTransaction();
-        Utils.cerrarBase();
+         
         return ret;
     }
 
@@ -116,7 +116,7 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
             user.saveIt();
             res = user.toMap();
             Base.commitTransaction();
-            Utils.cerrarBase();
+             
         }
         return res;
     }
@@ -137,14 +137,14 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
      public Map<String,Object> getUser(int id) throws java.rmi.RemoteException{
          Utils.abrirBase();
          Map<String,Object> ret= User.findById(id).toMap();
-         Utils.cerrarBase();
+          
          return ret;
      }
     
     public List<Map> getUsers() throws java.rmi.RemoteException {
         Utils.abrirBase();
         List<Map> ret = User.findAll().toMaps();
-        Utils.cerrarBase();
+         
         return ret;
     }
     

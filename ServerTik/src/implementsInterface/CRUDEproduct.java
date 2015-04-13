@@ -45,7 +45,7 @@ public class CRUDEproduct extends UnicastRemoteObject implements interfaces.Inte
             EproductsPproducts.create("eproduct_id", ret.getId(), "pproduct_id", prod.first(), "amount", amount).saveIt();
         }
         Base.commitTransaction();
-        Utils.cerrarBase();
+         
         return ret.toMap();
     }
 
@@ -72,11 +72,11 @@ public class CRUDEproduct extends UnicastRemoteObject implements interfaces.Inte
             }
             ret.saveIt();
             Base.commitTransaction();
-            Utils.cerrarBase();
+             
             return ret.toMap();
         } else {
             Base.commitTransaction();
-            Utils.cerrarBase();
+             
             return null;
         }
     }
@@ -96,7 +96,7 @@ public class CRUDEproduct extends UnicastRemoteObject implements interfaces.Inte
             }
             Base.commitTransaction();
         }
-        Utils.cerrarBase();
+         
         return res;
     }
 
@@ -108,7 +108,7 @@ public class CRUDEproduct extends UnicastRemoteObject implements interfaces.Inte
         if (eProd != null) {
             ret = eProd.toMap();
         }
-        Utils.cerrarBase();
+         
         return ret;
     }
 
@@ -116,7 +116,7 @@ public class CRUDEproduct extends UnicastRemoteObject implements interfaces.Inte
     public List<Map> getEproducts() throws RemoteException {
         Utils.abrirBase();
         List<Map> ret = Eproduct.where("removed = ?", 0).toMaps();
-        Utils.cerrarBase();
+         
         return ret;
     }
 
@@ -128,7 +128,7 @@ public class CRUDEproduct extends UnicastRemoteObject implements interfaces.Inte
         if (eProd != null) {
             ret = eProd.getAll(Pproduct.class).toMaps();
         }
-        Utils.cerrarBase();
+         
         return ret;
     }
 
@@ -136,7 +136,7 @@ public class CRUDEproduct extends UnicastRemoteObject implements interfaces.Inte
     public List<Map> getEproducts(String name) throws java.rmi.RemoteException {
         Utils.abrirBase();
         List<Map> ret = Eproduct.where("removed = ? and (id = ? or name = ?)", 0, name, name).toMaps();
-        Utils.cerrarBase();
+         
         return ret;
     }
 
@@ -148,7 +148,7 @@ public class CRUDEproduct extends UnicastRemoteObject implements interfaces.Inte
         if (eProd != null) {
             ret = eProd.getAll(EproductsPproducts.class).toMaps();
         }
-        Utils.cerrarBase();
+         
         return ret;
 
     }

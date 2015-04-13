@@ -20,9 +20,5 @@ public class Utils {
         }
     }
 
-    public static void cerrarBase() {
-        if (Base.hasConnection()) {
-            Base.close();
-        }
-    }
+
 }

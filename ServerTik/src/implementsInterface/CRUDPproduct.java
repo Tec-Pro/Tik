@@ -39,7 +39,7 @@ public class CRUDPproduct extends UnicastRemoteObject implements interfaces.Inte
         String unitP = String.valueOf(unitPrice).replace(',', '.');
         Pproduct ret = Pproduct.createIt("name", name, "stock", st, "measure_unit", measureUnit, "unit_price", unitPrice, "subcategory_id", subcategory_id, "amount", amnt);
         Base.commitTransaction();
-        Utils.cerrarBase();
+         
         return ret.toMap();
     }
 
@@ -63,7 +63,7 @@ public class CRUDPproduct extends UnicastRemoteObject implements interfaces.Inte
             res = product.toMap();
             Base.commitTransaction();
         }
-        Utils.cerrarBase();
+         
         return res;
     }
 
@@ -91,7 +91,7 @@ public class CRUDPproduct extends UnicastRemoteObject implements interfaces.Inte
             }
             Base.commitTransaction();
         }
-        Utils.cerrarBase();
+         
         return res;
     }
 
@@ -103,7 +103,7 @@ public class CRUDPproduct extends UnicastRemoteObject implements interfaces.Inte
         if (product != null) {
             ret = product.toMap();
         }
-        Utils.cerrarBase();
+         
         return ret;
     }
 
@@ -111,7 +111,7 @@ public class CRUDPproduct extends UnicastRemoteObject implements interfaces.Inte
     public List<Map> getPproducts() throws java.rmi.RemoteException {
         Utils.abrirBase();
         List<Map> ret = Pproduct.where("removed = ?", 0).toMaps();
-        Utils.cerrarBase();
+         
         return ret;
     }
 
@@ -119,7 +119,7 @@ public class CRUDPproduct extends UnicastRemoteObject implements interfaces.Inte
     public List<Map> getPproducts(String searchParams) throws java.rmi.RemoteException {
         Utils.abrirBase();
         List<Map> ret = Pproduct.where("removed = ? and (id = ? or name = ?)", 0, searchParams, searchParams).toMaps();
-        Utils.cerrarBase();
+         
         return ret;
 
     }
