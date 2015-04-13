@@ -85,7 +85,7 @@ public class ControllerGuiCRUDUser implements ActionListener{
             guiUser.updateFields(
                 (String) user.get("name"),
                 (String) user.get("surname"),
-                (String) "PassTrucha", // error de Decyptacion
+                (String) "******", 
                 (Date) user.get("entry_date"),
                 (Date) user.get("exit_date"),
                 (String) user.get("turn"),
