@@ -5,6 +5,8 @@
  */
 package controllers;
 
+import controllers.providers.ControllerGuiCRUDProviders;
+import controllers.providers.ControllerGuiNewProvider;
 import gui.GuiAdminLogin;
 import gui.GuiCRUDAdmin;
 import gui.GuiCRUDEProduct;
@@ -12,15 +14,22 @@ import gui.GuiCRUDFProduct;
 import gui.GuiCRUDPProduct;
 import gui.GuiCRUDProductCategory;
 import gui.main.GuiMain;
+import gui.providers.GuiCRUDProviders;
+import gui.providers.GuiNewProvider;
+import interfaces.providers.InterfaceProvider;
+import interfaces.providers.InterfaceProviderCategory;
+import interfaces.providers.InterfaceProvidersSearch;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
+import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import utils.Config;
 
 /**
  *
@@ -38,6 +47,8 @@ public class ControllerMain implements ActionListener {
     private static GuiCRUDPProduct guiCRUDPProduct; //gui productos primarios
     private static GuiCRUDFProduct guiCRUDFProduct; //gui productos finales
     private static GuiCRUDProductCategory guiCRUDProductCategory; //gui categoria productos
+    private static GuiCRUDProviders guiCRUDProviders; 
+    private static GuiNewProvider guiNewProvider;
 
     //controladores
     private static ControllerGuiCRUDAdmin controllerCRUDAdmin; //controlador de la gui para admin
@@ -45,7 +56,9 @@ public class ControllerMain implements ActionListener {
     private ControllerGuiCRUDPproduct controllerCRUDPProduct; //controlador productos primarios
     private ControllerGuiCRUDFproduct controllerCRUDFProduct; //controlador productos finales
     private ControllerGuiProductCategory controllerCRUDProductCategory; //controlador categorias de productos
-
+    private ControllerGuiCRUDProviders controllerCRUDProviders;
+    private ControllerGuiNewProvider controllerNewProvider;
+    
     public ControllerMain(GuiAdminLogin guiAdminLogin) throws NotBoundException, MalformedURLException, RemoteException {
         this.guiAdminLogin = guiAdminLogin; //hago esto, así si cierra sesión pongo en visible la ventana
         guiMain = new GuiMain();
@@ -65,23 +78,34 @@ public class ControllerMain implements ActionListener {
         guiCRUDEProduct = new GuiCRUDEProduct();
         guiCRUDFProduct = new GuiCRUDFProduct();
         guiCRUDPProduct = new GuiCRUDPProduct();
-  //      guiCRUDProductCategory = new GuiCRUDProductCategory();
-
+        guiCRUDProductCategory = new GuiCRUDProductCategory();
+        guiCRUDProviders = new GuiCRUDProviders();
+        guiNewProvider = new GuiNewProvider();
+        
         //agrego las gui al desktop
         guiMain.getDesktop().add(guiCRUDAdmin);
         guiMain.getDesktop().add(guiCRUDEProduct);
         guiMain.getDesktop().add(guiCRUDFProduct);
         guiMain.getDesktop().add(guiCRUDPProduct);
-     //   guiMain.getDesktop().add(guiCRUDProductCategory);
+        guiMain.getDesktop().add(guiCRUDProductCategory);
+        guiMain.getDesktop().add(guiCRUDProviders);
+        guiMain.getDesktop().add(guiNewProvider);
+        
+        InterfaceProvider provider = (InterfaceProvider) Naming.lookup("//" + Config.ip + "/crudProvider");
+        InterfaceProviderCategory providerCategory = (InterfaceProviderCategory ) Naming.lookup("//" + Config.ip + "/crudProviderCategory");
+        InterfaceProvidersSearch providersSearch = (InterfaceProvidersSearch) Naming.lookup("//" + Config.ip + "/providersSearch");
 
+        
         //creo los controladores 
         controllerCRUDAdmin = new ControllerGuiCRUDAdmin(userLogged, guiCRUDAdmin);
         controllerCRUDEProduct = new ControllerGuiCRUDEproduct(guiCRUDEProduct);
         controllerCRUDFProduct = new ControllerGuiCRUDFproduct(guiCRUDFProduct);
         controllerCRUDPProduct = new ControllerGuiCRUDPproduct(guiCRUDPProduct);
-      //  controllerCRUDProductCategory = new ControllerGuiProductCategory(guiCRUDProductCategory);
-
-        //restauro el puntero asi ya se que termino de cargar todo
+        controllerCRUDProductCategory = new ControllerGuiProductCategory(guiCRUDProductCategory);
+        controllerCRUDProviders = new ControllerGuiCRUDProviders(guiCRUDProviders, guiNewProvider, provider, providerCategory, providersSearch);
+         controllerNewProvider = new ControllerGuiNewProvider(guiNewProvider, provider, providerCategory);
+         
+                //restauro el puntero asi ya se que termino de cargar todo
         guiMain.setCursor(Cursor.DEFAULT_CURSOR);
 
     }
@@ -96,7 +120,9 @@ public class ControllerMain implements ActionListener {
         guiCRUDEProduct.dispose();
         guiCRUDFProduct.dispose();
         guiCRUDPProduct.dispose();
-     //   guiCRUDProductCategory.dispose();
+        guiCRUDProductCategory.dispose();
+        guiCRUDProviders.dispose();
+        guiNewProvider.dispose();
     }
 
     @Override
@@ -139,6 +165,11 @@ public class ControllerMain implements ActionListener {
             guiCRUDProductCategory.setVisible(true);
             guiCRUDProductCategory.toFront();
         }
+        //boton proveedores
+        if (ae.getSource() == guiMain.getBtnProviders()) {
+            guiCRUDProviders.setVisible(true);
+            guiCRUDProviders.toFront();
+        }        
     }
 
 }

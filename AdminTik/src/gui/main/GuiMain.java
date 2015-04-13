@@ -38,8 +38,19 @@ public class GuiMain extends javax.swing.JFrame {
         this.btnPProduct.addActionListener(lis);
         this.btnEProduct.addActionListener(lis);
         this.btnProductCategory.addActionListener(lis);
+        this.btnProviders.addActionListener(lis);
+        this.btnEmployes.addActionListener(lis);
     }
 
+    public JMenuItem getBtnProviders() {
+        return btnProviders;
+    }
+
+    public JMenuItem getBtnEmployes() {
+        return btnEmployes;
+    }
+
+    
     public JMenuItem getBtnEProduct() {
         return btnEProduct;
     }
@@ -110,6 +121,10 @@ public class GuiMain extends javax.swing.JFrame {
         btnFProduct = new javax.swing.JMenuItem();
         btnPProduct = new javax.swing.JMenuItem();
         btnProductCategory = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        btnProviders = new javax.swing.JMenuItem();
+        jMenu5 = new javax.swing.JMenu();
+        btnEmployes = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         btnAbout = new javax.swing.JMenuItem();
 
@@ -160,6 +175,20 @@ public class GuiMain extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu3);
 
+        jMenu4.setText("Proveedores");
+
+        btnProviders.setText("Gestión de proveedores");
+        jMenu4.add(btnProviders);
+
+        jMenuBar1.add(jMenu4);
+
+        jMenu5.setText("Empleados");
+
+        btnEmployes.setText("Gestión de empleados");
+        jMenu5.add(btnEmployes);
+
+        jMenuBar1.add(jMenu5);
+
         jMenu2.setText("Acerca de");
 
         btnAbout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/acerca.png"))); // NOI18N
@@ -194,14 +223,18 @@ public class GuiMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem btnAdmins;
     private javax.swing.JMenuItem btnDisconnect;
     private javax.swing.JMenuItem btnEProduct;
+    private javax.swing.JMenuItem btnEmployes;
     private javax.swing.JMenuItem btnExit;
     private javax.swing.JMenuItem btnFProduct;
     private javax.swing.JMenuItem btnPProduct;
     private javax.swing.JMenuItem btnProductCategory;
+    private javax.swing.JMenuItem btnProviders;
     private javax.swing.JMenu jMenu;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     // End of variables declaration//GEN-END:variables
 }

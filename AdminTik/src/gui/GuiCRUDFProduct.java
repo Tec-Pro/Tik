@@ -32,6 +32,7 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
         initComponents();
         tableProductsDefault = (DefaultTableModel) tableProducts.getModel(); //convierto la tabla
         tableReciperDefault = (DefaultTableModel) tableReciper.getModel();
+        this.setVisible(false);
     }
 
     public void setActionListener(ActionListener lis) {
@@ -374,10 +375,12 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
             }
         });
         jScrollPane2.setViewportView(tableReciper);
-        tableReciper.getColumnModel().getColumn(0).setResizable(false);
-        tableReciper.getColumnModel().getColumn(1).setResizable(false);
-        tableReciper.getColumnModel().getColumn(2).setResizable(false);
-        tableReciper.getColumnModel().getColumn(3).setResizable(false);
+        if (tableReciper.getColumnModel().getColumnCount() > 0) {
+            tableReciper.getColumnModel().getColumn(0).setResizable(false);
+            tableReciper.getColumnModel().getColumn(1).setResizable(false);
+            tableReciper.getColumnModel().getColumn(2).setResizable(false);
+            tableReciper.getColumnModel().getColumn(3).setResizable(false);
+        }
 
         tableProducts.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -406,12 +409,14 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
             }
         });
         jScrollPane3.setViewportView(tableProducts);
-        tableProducts.getColumnModel().getColumn(0).setResizable(false);
-        tableProducts.getColumnModel().getColumn(1).setResizable(false);
-        tableProducts.getColumnModel().getColumn(2).setResizable(false);
-        tableProducts.getColumnModel().getColumn(3).setResizable(false);
-        tableProducts.getColumnModel().getColumn(4).setResizable(false);
-        tableProducts.getColumnModel().getColumn(5).setResizable(false);
+        if (tableProducts.getColumnModel().getColumnCount() > 0) {
+            tableProducts.getColumnModel().getColumn(0).setResizable(false);
+            tableProducts.getColumnModel().getColumn(1).setResizable(false);
+            tableProducts.getColumnModel().getColumn(2).setResizable(false);
+            tableProducts.getColumnModel().getColumn(3).setResizable(false);
+            tableProducts.getColumnModel().getColumn(4).setResizable(false);
+            tableProducts.getColumnModel().getColumn(5).setResizable(false);
+        }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

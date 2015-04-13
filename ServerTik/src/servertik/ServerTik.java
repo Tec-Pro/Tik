@@ -14,6 +14,7 @@ import implementsInterface.CrudAdmin;
 import implementsInterface.CrudProdCategory;
 import implementsInterface.CrudProduct;
 import implementsInterface.CrudProvider;
+import implementsInterface.CrudProviderCategory;
 import implementsInterface.CrudUser;
 import implementsInterface.Server;
 import java.net.MalformedURLException;
@@ -21,6 +22,7 @@ import java.rmi.Naming;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import search.providersSearch.ProvidersSearch;
 
 /**
  *
@@ -50,15 +52,21 @@ public class ServerTik {
            CRUDEproduct CRUDEproduct = new CRUDEproduct();
            CRUDPproduct CRUDPproduct = new CRUDPproduct();
            CRUDFproduct CRUDFproduct = new CRUDFproduct();
-                      CRUDCategory crudCategory = new CRUDCategory();
+           CRUDCategory crudCategory = new CRUDCategory();
            CrudProdCategory crudProdCategory = new CrudProdCategory();
+           CrudProvider crudProvider= new CrudProvider();
+           CrudProviderCategory crudProviderCategory= new CrudProviderCategory();
+           ProvidersSearch providerSearch = new ProvidersSearch();
            //Asocio el objeto remoto 's' a la direccion de mi host seguida de un /nombreAsociado
            Naming.rebind("crudAdmin", crudAdmin); 
            Naming.rebind("CRUDPproduct", CRUDPproduct);
            Naming.rebind("CRUDEproduct", CRUDEproduct);
            Naming.rebind("CRUDFproduct", CRUDFproduct); 
            Naming.rebind("CRUDCategory", crudCategory);
-           //Naming.rebind("crudProdCategory", crudProdCategory);  
+           Naming.rebind("crudProvider", crudProvider);
+           Naming.rebind("crudProviderCategory", crudProviderCategory);
+           Naming.rebind("providersSearch", providerSearch);
+           Naming.rebind("crudProdCategory", crudProdCategory);  
            Naming.rebind("Server", server);  
            
         //   System.out.println("hice un usuario" + crudAdmin.create("agu", "aguasdasd"));
