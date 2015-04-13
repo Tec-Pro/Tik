@@ -167,6 +167,7 @@ public class ControllerMain implements ActionListener {
         }
         //boton proveedores
         if (ae.getSource() == guiMain.getBtnProviders()) {
+            guiCRUDProviders.cleanComponents();
             guiCRUDProviders.setVisible(true);
             guiCRUDProviders.toFront();
         }        
