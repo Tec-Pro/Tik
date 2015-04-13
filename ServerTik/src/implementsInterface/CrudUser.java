@@ -10,8 +10,11 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import models.User;
 import org.javalite.activejdbc.Base;
+import utils.Encryption;
 import utils.Utils;
 
 /**
@@ -36,7 +39,7 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
             String placeOfBirth,
             String idType,
             String idNumber,
-            String adress,
+            String address,
             String homePhone,
             String emergencyPhone,
             String mobilePhone,
@@ -47,10 +50,16 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
         
         Utils.abrirBase();
         Base.openTransaction();
-        Map<String,Object> ret= User.createIt(
+        byte[] passEncrypted = {0};
+        try {
+            passEncrypted = Encryption.encrypt(pass);
+        } catch (Exception ex) {
+            Logger.getLogger(CrudUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Map<String,Object> res= User.createIt(
                 "name", name,
                 "surname", surname,
-                "pass", pass,
+                "pass", passEncrypted,
                 "entry_date", entryDate,
                 "exit_date", exitDate,
                 "turn", turn,
@@ -58,17 +67,16 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
                 "place_of_birth", placeOfBirth,
                 "id_type", idType,
                 "id_number", idNumber,
-                "adress", adress,
+                "address", address,
                 "home_phone", homePhone,
                 "emergency_phone", emergencyPhone,
                 "mobile_phone", mobilePhone,
                 "marital_status", maritalStatus,
                 "blood_type", bloodType,
                 "position", position
-                );
+                ).toMap();
         Base.commitTransaction();
-         
-        return ret;
+        return res;
     }
 
     public Map<String,Object> modify(
@@ -83,7 +91,7 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
             String placeOfBirth,
             String idType,
             String idNumber,
-            String adress,
+            String address,
             String homePhone,
             String emergencyPhone,
             String mobilePhone,
@@ -94,10 +102,16 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
         Utils.abrirBase();
         User user = User.findById(id);
         Map<String,Object> res = null;
+        byte[] passEncrypted = {0};
+        try {
+            passEncrypted = Encryption.encrypt(pass);
+        } catch (Exception ex) {
+            Logger.getLogger(CrudUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
         if (user != null) {
             user.setString("name", name);
             user.setString("surname", surname);
-            user.setString("pass", pass);
+            user.setString("pass", passEncrypted);
             user.setDate("entry_date", entryDate);
             user.setDate("exit_date", exitDate);
             user.setString("turn", turn);
@@ -105,18 +119,17 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
             user.setString("place_of_birth", placeOfBirth);
             user.setString("id_type", idType);
             user.setString("id_number", idNumber);
-            user.setString("adress", adress);
+            user.setString("address", address);
             user.setString("home_phone", homePhone);
             user.setString("emergency_phone", emergencyPhone);
             user.setString("mobile_phone", mobilePhone);
             user.setString("marital_status", maritalStatus);
             user.setString("blood_type", bloodType);
             user.setString("position", position);
+            res = user.toMap();
             Base.openTransaction();
             user.saveIt();
-            res = user.toMap();
             Base.commitTransaction();
-             
         }
         return res;
     }
@@ -129,7 +142,6 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
             Base.openTransaction();
             res = user.delete();
             Base.commitTransaction();
-            res = true;
         }
         return res;
     }
@@ -137,17 +149,18 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
      public Map<String,Object> getUser(int id) throws java.rmi.RemoteException{
          Utils.abrirBase();
          Map<String,Object> ret= User.findById(id).toMap();
-          
          return ret;
      }
-    
+     
     public List<Map> getUsers() throws java.rmi.RemoteException {
         Utils.abrirBase();
         List<Map> ret = User.findAll().toMaps();
-         
         return ret;
     }
-    
-    
 
+    @Override
+    public String decryptPass(byte[] pass) throws Exception {
+        return Encryption.decrypt(pass);
+    }
+    
 }

@@ -28,7 +28,7 @@ public interface InterfaceUser extends Remote {
             String placeOfBirth,
             String idType,
             String idNumber,
-            String adress,
+            String address,
             String homePhone,
             String emergencyPhone,
             String mobilePhone,
@@ -49,7 +49,7 @@ public interface InterfaceUser extends Remote {
             String placeOfBirth,
             String idType,
             String idNumber,
-            String adress,
+            String address,
             String homePhone,
             String emergencyPhone,
             String mobilePhone,
@@ -57,10 +57,12 @@ public interface InterfaceUser extends Remote {
             String bloodType,
             String position
             ) throws java.rmi.RemoteException ;
+    
+     public boolean delete(int id) throws java.rmi.RemoteException;
      
-    public boolean delete(int id) throws java.rmi.RemoteException;
+     public Map<String,Object> getUser(int id) throws java.rmi.RemoteException;
      
-    public Map<String,Object> getUser(int id) throws java.rmi.RemoteException;
+    public String decryptPass(byte[] pass) throws Exception;
      
-    public  List<Map> getUsers() throws java.rmi.RemoteException;    
+     public  List<Map> getUsers() throws java.rmi.RemoteException;    
 }
