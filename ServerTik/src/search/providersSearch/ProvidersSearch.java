@@ -31,7 +31,7 @@ public class ProvidersSearch extends UnicastRemoteObject implements InterfacePro
         Base.openTransaction();
         List<Map> result = Provider.where("name like ? or cuit like ? or address like ? or description like ? or phones like ?","%" + search + "%","%" + search + "%","%" + search + "%","%" + search + "%","%" + search + "%").toMaps();
         Base.commitTransaction();
-        Utils.cerrarBase();
+         
         return result;
     
     }

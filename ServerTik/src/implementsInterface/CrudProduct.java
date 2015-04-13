@@ -28,7 +28,7 @@ public class CrudProduct extends UnicastRemoteObject implements interfaces.Inter
         Base.openTransaction();
         Map<String,Object>  ret= Product.createIt("name", name,"stock", stock,"measure_unit", measureUnit,"unit_price", unitPrice);
         Base.commitTransaction();
-        Utils.cerrarBase();
+         
         return ret;
     }
 
@@ -45,7 +45,7 @@ public class CrudProduct extends UnicastRemoteObject implements interfaces.Inter
             product.saveIt();
             res= product.toMap();
             Base.commitTransaction();
-            Utils.cerrarBase();
+             
         }
         return res;
     }
@@ -65,13 +65,13 @@ public class CrudProduct extends UnicastRemoteObject implements interfaces.Inter
      public Map<String,Object> getProduct(int id) throws java.rmi.RemoteException{
          Utils.abrirBase();
          Map<String,Object> ret= Product.findById(id).toMap();
-         Utils.cerrarBase();
+          
          return ret;
      }    
     public List<Map> getProducts() throws java.rmi.RemoteException {
         Utils.abrirBase();
         List<Map> ret = Product.findAll().toMaps();
-        Utils.cerrarBase();
+         
         return ret;
     }
 

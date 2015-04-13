@@ -29,7 +29,7 @@ public class CrudProdCategory extends UnicastRemoteObject implements interfaces.
         Base.openTransaction();
         Map<String, Object> ret = PCategory.createIt("name", name);
         Base.commitTransaction();
-        Utils.cerrarBase();
+         
         return ret;
     }
 
@@ -43,7 +43,7 @@ public class CrudProdCategory extends UnicastRemoteObject implements interfaces.
             pCategory.saveIt();
             res = pCategory.toMap();
             Base.commitTransaction();
-            Utils.cerrarBase();
+             
         }
         return res;
     }
@@ -63,14 +63,14 @@ public class CrudProdCategory extends UnicastRemoteObject implements interfaces.
     public Map<String, Object> getProdCategory(int id) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Map<String, Object> ret = PCategory.findById(id).toMap();
-        Utils.cerrarBase();
+         
         return ret;
     }
 
     public List<Map> getPCategories() throws java.rmi.RemoteException {
         Utils.abrirBase();
         List<Map> ret = PCategory.findAll().toMaps();
-        Utils.cerrarBase();
+         
         return ret;
     }
 

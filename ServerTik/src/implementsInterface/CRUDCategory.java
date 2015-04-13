@@ -34,7 +34,7 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
         if(c != null){
             res = true;
         }
-        Utils.cerrarBase();
+         
         return res;
     }
     
@@ -45,7 +45,7 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
         if(c != null){
             res = true;
         }
-        Utils.cerrarBase();
+         
         return res;
     }
     
@@ -56,7 +56,7 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
         if(!categoryExists(name))
             res = Category.createIt("name", name).toMap();
         Base.commitTransaction();
-        Utils.cerrarBase();
+         
         return res;
     }
 
@@ -68,7 +68,7 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
             Base.openTransaction();
             category.saveIt();
             Base.commitTransaction();
-            Utils.cerrarBase();
+             
         }
         return category.toMap();
     }
@@ -91,21 +91,21 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
     public List<Map> getCategories() throws java.rmi.RemoteException {
         Utils.abrirBase();
         List<Map> ret = Category.findAll().toMaps();
-        Utils.cerrarBase();
+         
         return ret;
     }
 
     public Map<String, Object> getCategory(int id) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Map<String, Object> ret = Category.findById(id).toMap();
-        Utils.cerrarBase();
+         
         return ret;
     }
     
     public Map<String, Object> getCategoryByName(String name) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Map<String, Object> ret = Category.first("name = ?",name).toMap();
-        Utils.cerrarBase();
+         
         return ret;
     }
 
@@ -120,7 +120,7 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
             ret = subcategory.toMap();
         }
         Base.commitTransaction();
-        Utils.cerrarBase();
+         
         return ret;
     }
 
@@ -133,7 +133,7 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
             ret = subcategory.delete();
         }
         Base.commitTransaction();
-        Utils.cerrarBase();
+         
         return ret;
     }
 
@@ -148,7 +148,7 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
             ret = subcategory.toMap();
         }
         Base.commitTransaction();
-        Utils.cerrarBase();
+         
         return ret;
     }
 
@@ -159,14 +159,14 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
         if (category != null) {
             ret = category.getAll(Subcategory.class).toMaps();
         }
-        Utils.cerrarBase();
+         
         return ret;
     }
 
     public List<Map> getSubcategoriesCategory() throws java.rmi.RemoteException {
         Utils.abrirBase();
         List<Map> ret = Subcategory.findAll().toMaps();
-        Utils.cerrarBase();
+         
         return ret;
     }
 
@@ -177,14 +177,14 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
         if (subcategory != null) {
             ret = subcategory.toMap();
         }
-        Utils.cerrarBase();
+         
         return ret;
     }
 
     public Map<String, Object> getSubcategory(String name) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Map<String, Object> ret = Subcategory.findFirst("name = ?", name).toMap();
-        Utils.cerrarBase();
+         
         return ret;
     }
 }

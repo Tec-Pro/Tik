@@ -46,7 +46,7 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.prov
         Base.openTransaction();
         Provider ret = Provider.createIt("name", name, "cuit", cuit, "address", address, "description", description, "phones", phones);
         Base.commitTransaction();
-        Utils.cerrarBase();
+         
         return ret.toMap();
     }
 
@@ -72,7 +72,7 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.prov
             Base.openTransaction();
             provider.saveIt();
             Base.commitTransaction();
-            Utils.cerrarBase();
+             
         }
         return res;
     }
@@ -107,7 +107,7 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.prov
     public Map<String, Object> getProvider(int id) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Map<String, Object> ret = Provider.findById(id).toMap();
-        Utils.cerrarBase();
+         
         return ret;
     }
 
@@ -120,7 +120,7 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.prov
     public List<Map> getProviders() throws java.rmi.RemoteException {
         Utils.abrirBase();
         List<Map> ret = Provider.findAll().toMaps();
-        Utils.cerrarBase();
+         
         return ret;
     }
 

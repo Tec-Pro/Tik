@@ -48,7 +48,7 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
             FproductsEproducts.create("fproduct_id", ret.getId(), "eproduct_id", prod.first(), "amount", amount).saveIt();
         }
         Base.commitTransaction();
-        Utils.cerrarBase();
+         
         return ret.toMap();
     }
 
@@ -76,11 +76,11 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
             }
             ret.saveIt();
             Base.commitTransaction();
-            Utils.cerrarBase();
+             
             return ret.toMap();
         } else {
             Base.commitTransaction();
-            Utils.cerrarBase();
+             
             return null;
         }
     }
@@ -96,7 +96,7 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
             res = res && product.saveIt();
             Base.commitTransaction();
         }
-        Utils.cerrarBase();
+         
         return res;
     }
 
@@ -108,7 +108,7 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
         if (product != null) {
             ret = product.toMap();
         }
-        Utils.cerrarBase();
+         
         return ret;
     }
 
@@ -116,7 +116,7 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
     public List<Map> getFproducts() throws RemoteException {
         Utils.abrirBase();
         List<Map> ret = Fproduct.where("removed = ?", 0).toMaps();
-        Utils.cerrarBase();
+         
         return ret;
     }
 
@@ -128,7 +128,7 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
         if (fProd != null) {
             ret = fProd.getAll(Pproduct.class).toMaps();
         }
-        Utils.cerrarBase();
+         
         return ret;
     }
 
@@ -140,7 +140,7 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
         if (fProd != null) {
             ret = fProd.getAll(Eproduct.class).toMaps();
         }
-        Utils.cerrarBase();
+         
         return ret;
     }
 
@@ -148,7 +148,7 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
     public List<Map> getFproducts(String name) throws java.rmi.RemoteException {
         Utils.abrirBase();
         List<Map> ret = Fproduct.where("removed = ? and (id = ? or name = ?)", 0, name, name).toMaps();
-        Utils.cerrarBase();
+         
         return ret;
     }
 
@@ -160,7 +160,7 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
         if (fProd != null) {
             ret = fProd.getAll(FproductsPproducts.class).toMaps();
         }
-        Utils.cerrarBase();
+         
         return ret;
     }
 
@@ -172,7 +172,7 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
         if (fProd != null) {
             ret = fProd.getAll(FproductsEproducts.class).toMaps();
         }
-        Utils.cerrarBase();
+         
         return ret;
     }
 }
