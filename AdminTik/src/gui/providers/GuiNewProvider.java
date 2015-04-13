@@ -130,28 +130,28 @@ public class GuiNewProvider extends javax.swing.JInternalFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Century Schoolbook L", 3, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(144, 0, 0));
+        jLabel1.setForeground(new java.awt.Color(1, 1, 1));
         jLabel1.setText("Nombre:");
 
         jLabel2.setFont(new java.awt.Font("Century Schoolbook L", 3, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(144, 0, 0));
+        jLabel2.setForeground(new java.awt.Color(1, 1, 1));
         jLabel2.setText("Teléfonos:");
 
         jLabel3.setFont(new java.awt.Font("Century Schoolbook L", 3, 24)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(144, 0, 0));
+        jLabel3.setForeground(new java.awt.Color(1, 1, 1));
         jLabel3.setText("CUIT:");
 
         jLabel4.setFont(new java.awt.Font("Century Schoolbook L", 3, 24)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(144, 0, 0));
+        jLabel4.setForeground(new java.awt.Color(1, 1, 1));
         jLabel4.setText("Dirección:");
 
         jLabel5.setFont(new java.awt.Font("Century Schoolbook L", 3, 24)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(144, 0, 0));
+        jLabel5.setForeground(new java.awt.Color(1, 1, 1));
         jLabel5.setText("Categorías");
 
         jLabel6.setFont(new java.awt.Font("Century Schoolbook L", 3, 24)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(144, 0, 0));
-        jLabel6.setText("Descripcion:");
+        jLabel6.setForeground(new java.awt.Color(1, 1, 1));
+        jLabel6.setText("Descripción:");
 
         btnSaveProvider.setText("GUARDAR");
 
@@ -254,7 +254,7 @@ public class GuiNewProvider extends javax.swing.JInternalFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(39, 39, 39)
                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(47, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -291,7 +291,7 @@ public class GuiNewProvider extends javax.swing.JInternalFrame {
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(80, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jScrollPane1.setViewportView(jPanel1);
