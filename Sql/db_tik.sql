@@ -49,6 +49,15 @@ CREATE TABLE `users` (
 
 delimiter $$
 
+CREATE TABLE `categories` (
+`id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1$$
+
+
+delimiter $$
+
 CREATE TABLE `providers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
