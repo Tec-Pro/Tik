@@ -49,7 +49,7 @@ public class ControllerMain implements ActionListener {
     private static GuiCRUDFProduct guiCRUDFProduct; //gui productos finales
     private static GuiCRUDProductCategory guiCRUDProductCategory; //gui categoria productos
     private static GuiCRUDProviders guiCRUDProviders; 
-    private static GuiCRUDUser guiCRUDUser;
+    private static GuiCRUDUser guiCRUDUser; //gui usuarios
     private static GuiNewProvider guiNewProvider;
 
     //controladores
