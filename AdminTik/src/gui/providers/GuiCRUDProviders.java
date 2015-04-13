@@ -26,6 +26,7 @@ public class GuiCRUDProviders extends javax.swing.JInternalFrame {
     public GuiCRUDProviders() {
         initComponents();
         btnRemoveCategory.setEnabled(false);
+        btnRemoveProvider.setEnabled(false);
         defaultTableProviders = (DefaultTableModel) tableProviders.getModel();
         defaultTableProviderCategories = (DefaultTableModel) tableProviderCategories.getModel();
     }
@@ -74,6 +75,8 @@ public class GuiCRUDProviders extends javax.swing.JInternalFrame {
     
     public void cleanComponents(){
         this.txtFindProvider.setText("");
+        this.btnRemoveCategory.setEnabled(false);
+        this.btnRemoveProvider.setEnabled(false);
         ((DefaultTableModel)this.tableProviders.getModel()).setRowCount(0);
     }
     
@@ -134,6 +137,7 @@ public class GuiCRUDProviders extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        tableProviders.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane2.setViewportView(tableProviders);
 
         tableProviderCategories.setModel(new javax.swing.table.DefaultTableModel(
@@ -152,6 +156,7 @@ public class GuiCRUDProviders extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        tableProviderCategories.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane3.setViewportView(tableProviderCategories);
 
         jLabel1.setFont(new java.awt.Font("Century Schoolbook L", 3, 24)); // NOI18N

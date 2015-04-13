@@ -66,6 +66,7 @@ public class ControllerGuiNewProvider implements ActionListener {
 
     /**
      * Función que carga la tabla de categorías.
+     *
      * @throws RemoteException
      */
     public void loadFindCategoryTable() throws RemoteException {
@@ -86,6 +87,7 @@ public class ControllerGuiNewProvider implements ActionListener {
     private void removeRowCategoryTable() {
         int selectedRow = guiNewProvider.getTableCategoriesProviders().getSelectedRow();
         DefaultTableModel categoryModel = ((DefaultTableModel) guiNewProvider.getTableCategoriesProviders().getModel());
+        System.out.println("selecRow: "+selectedRow);
         categoryModel.removeRow(selectedRow);
     }
 
@@ -112,7 +114,7 @@ public class ControllerGuiNewProvider implements ActionListener {
         }
     }
 
-    private boolean saveProviderCategories(int id) throws RemoteException {
+    private void saveProviderCategories(int id) throws RemoteException {
         DefaultTableModel categoryModel = ((DefaultTableModel) guiNewProvider.getTableCategoriesProviders().getModel());
         int rowCount = categoryModel.getRowCount(), i = 0;
         Map<String, Object> providerMap = Collections.EMPTY_MAP;
@@ -123,7 +125,6 @@ public class ControllerGuiNewProvider implements ActionListener {
             }
             i++;
         }
-        return providerMap != Collections.EMPTY_MAP;
     }
 
     private boolean saveProvider() throws RemoteException {
@@ -150,50 +151,6 @@ public class ControllerGuiNewProvider implements ActionListener {
             return false;
         }
 
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        //Si presiono el boton GUARDAR
-        if (e.getSource().equals(this.guiNewProvider.getBtnSaveProvider())) {
-            if (!isModify()) {
-                //Guardo el proveedor en la base de datos
-                boolean result = false;//por defecto el proveedor no se creó aún
-                try {
-                    result = saveProvider();
-                } catch (RemoteException ex) {
-                    Logger.getLogger(ControllerGuiNewProvider.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                if (result) {//si se guardo el proveedor
-                    JOptionPane.showMessageDialog(this.guiNewProvider, "Proveedor almacenado con éxito!", "", JOptionPane.INFORMATION_MESSAGE);
-                    this.guiNewProvider.cleanComponents();
-                    try {
-                        loadFindCategoryTable();
-                    } catch (RemoteException ex) {
-                        Logger.getLogger(ControllerGuiNewProvider.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {//sino
-                    JOptionPane.showMessageDialog(this.guiNewProvider, "Debe ingresar nombre de Proveedor como requisito mínimo.", "Error!", JOptionPane.ERROR_MESSAGE);
-                }
-            } else {
-                try {
-                    if (provider.modify(getCurrentProviderId(), this.guiNewProvider.getTxtProviderName().getText(), this.guiNewProvider.getTxtProviderCuit().getText(), this.guiNewProvider.getTxtProviderAddress().getText(),
-                            this.guiNewProvider.getTxtProviderDescription().getText(), this.guiNewProvider.getTxtProviderPhone().getText()) != null && saveProviderCategories(getCurrentProviderId())) {
-                        JOptionPane.showMessageDialog(this.guiNewProvider, "Proveedor modificado con éxito!", "", JOptionPane.INFORMATION_MESSAGE);
-                    } else {
-                        JOptionPane.showMessageDialog(this.guiNewProvider, "Debe ingresar nombre de Proveedor como requisito mínimo.", "Error!", JOptionPane.ERROR_MESSAGE);
-                    }
-                } catch (RemoteException ex) {
-                    Logger.getLogger(ControllerGuiNewProvider.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                setModify(false);
-            }
-        }
-        //Si preciono el boton CANCELAR
-        if (e.getSource().equals(this.guiNewProvider.getBtnCancelProvider())) {
-            this.guiNewProvider.hide();
-            setModify(false);
-        }
     }
 
     public void loadGUIWithData(int id) throws RemoteException {
@@ -246,6 +203,54 @@ public class ControllerGuiNewProvider implements ActionListener {
      */
     public void setCurrentProviderId(int currentProviderId) {
         this.currentProviderId = currentProviderId;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        //Si presiono el boton GUARDAR
+        if (e.getSource().equals(this.guiNewProvider.getBtnSaveProvider())) {
+            if (!isModify()) {
+                //Guardo el proveedor en la base de datos
+                boolean result = false;//por defecto el proveedor no se creó aún
+                try {
+                    result = saveProvider();
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiNewProvider.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                if (result) {//si se guardo el proveedor
+                    JOptionPane.showMessageDialog(this.guiNewProvider, "Proveedor almacenado con éxito!", "", JOptionPane.INFORMATION_MESSAGE);
+                    this.guiNewProvider.cleanComponents();
+                    try {
+                        loadFindCategoryTable();
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(ControllerGuiNewProvider.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {//sino
+                    JOptionPane.showMessageDialog(this.guiNewProvider, "Debe ingresar nombre de Proveedor como requisito mínimo.", "Error!", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                
+                try {
+                    boolean result = provider.modify(getCurrentProviderId(), this.guiNewProvider.getTxtProviderName().getText(), this.guiNewProvider.getTxtProviderCuit().getText(), this.guiNewProvider.getTxtProviderAddress().getText(),
+                            this.guiNewProvider.getTxtProviderDescription().getText(), this.guiNewProvider.getTxtProviderPhone().getText()) != null;
+                    if (result) {
+                        saveProviderCategories(getCurrentProviderId());
+                        JOptionPane.showMessageDialog(this.guiNewProvider, "Proveedor modificado con éxito!", "", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(this.guiNewProvider, "Debe ingresar nombre de Proveedor como requisito mínimo.", "Error!", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiNewProvider.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                setModify(false);
+                this.guiNewProvider.hide();
+            }
+        }
+        //Si preciono el boton CANCELAR
+        if (e.getSource().equals(this.guiNewProvider.getBtnCancelProvider())) {
+            this.guiNewProvider.hide();
+            setModify(false);
+        }
     }
 
 }

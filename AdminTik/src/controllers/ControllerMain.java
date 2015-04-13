@@ -103,7 +103,6 @@ public class ControllerMain implements ActionListener {
         controllerCRUDPProduct = new ControllerGuiCRUDPproduct(guiCRUDPProduct);
         controllerCRUDProductCategory = new ControllerGuiProductCategory(guiCRUDProductCategory);
         controllerCRUDProviders = new ControllerGuiCRUDProviders(guiCRUDProviders, guiNewProvider, provider, providerCategory, providersSearch);
-         controllerNewProvider = new ControllerGuiNewProvider(guiNewProvider, provider, providerCategory);
          
                 //restauro el puntero asi ya se que termino de cargar todo
         guiMain.setCursor(Cursor.DEFAULT_CURSOR);

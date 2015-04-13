@@ -52,7 +52,7 @@ public class ControllerGuiCRUDProviders implements ActionListener {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 //saco el texto ingresado en txtFindProvider
                 String txtFindProvider = guiCRUDProviders.getTxtFindProvider().getText();
-                if (txtFindProvider != null && !"".equals(txtFindProvider)) {
+                if (txtFindProvider != null) {
                     List<Map> providersList;
                     try {
                         //hago la busqueda de proveedores en base a ese texto
@@ -65,7 +65,7 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                 }
             }
         });
-
+        //Si hace doble click en una fila de la tabla de proveedores, abre la edicion de los datos del mismo
         this.guiCRUDProviders.getTableProviders().addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -79,10 +79,19 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                     } catch (RemoteException ex) {
                         Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                    guiCRUDProviders.cleanComponents();
                     guiNewProvider.setVisible(true);
                 }
             }
 
+        });
+         //reviso si se clickea alguna fila de la tabla proveedores
+        this.guiCRUDProviders.getTableProviders().addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                //habilito el boton de eliminar proveedor
+                guiCRUDProviders.getBtnRemoveProvider().setEnabled(true);
+            }
         });
         //reviso si se clickea alguna fila de la tabla categorias
         this.guiCRUDProviders.getTableProviderCategories().addMouseListener(new java.awt.event.MouseAdapter() {
@@ -115,7 +124,7 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                 if (evt.getClickCount() == 2) {
                     JTable target = (JTable) evt.getSource();
                     int row = target.getSelectedRow();
-                    String categoryName = JOptionPane.showInputDialog(guiCRUDProviders, "Ingrese el nombre de la categoría.", "Modificar categoría", JOptionPane.PLAIN_MESSAGE);
+                    String categoryName = JOptionPane.showInputDialog(guiCRUDProviders, "Ingrese el nuevo nombre de la categoría.", "Modificar categoría", JOptionPane.PLAIN_MESSAGE);
                     if (categoryName != null) {
                         if (categoryName.trim().isEmpty()) {
                             JOptionPane.showMessageDialog(guiCRUDProviders, "Error: Falta especificar un nombre.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -189,7 +198,8 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                     Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        } else if (e.getSource().equals(this.guiCRUDProviders.getBtnRemoveCategory())) {
+        }
+        if (e.getSource().equals(this.guiCRUDProviders.getBtnRemoveCategory())) {
             Integer resp = JOptionPane.showConfirmDialog(guiCRUDProviders, "¿Desea borrar la categoría seleccionada?", "Confirmar borrado", JOptionPane.YES_NO_OPTION);
             if (resp == JOptionPane.YES_OPTION) {
                 int row = guiCRUDProviders.getTableProviderCategories().getSelectedRow();
@@ -208,6 +218,7 @@ public class ControllerGuiCRUDProviders implements ActionListener {
         //Si presiono el boton de agregar un nuevo proveedor
         if (e.getSource().equals(this.guiCRUDProviders.getBtnNewProvider())) {
             this.guiNewProvider.cleanComponents();
+            this.guiCRUDProviders.cleanComponents();
             try {
                 //cargo las categorias disponibles en la tabla correspondiente de la guiNewProvider
                 this.controllerGuiNewProvider.setModify(false);
