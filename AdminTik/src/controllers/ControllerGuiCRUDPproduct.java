@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import utils.Config;
 
 /**
  *
@@ -36,7 +37,6 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
     private List<Map> productList;
     InterfacePproduct pproduct;
     InterfaceCategory category;
-    private String ip;
     Map<String, Object> product;
     //private CRUDPproduct crudPproduct;
 
@@ -49,7 +49,6 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
      */
     public ControllerGuiCRUDPproduct(GuiCRUDPProduct guiCRUDPProduct) throws NotBoundException, MalformedURLException, RemoteException {
         this.guiCRUDPProduct = guiCRUDPProduct;
-        ip = "//192.168.1.16/";
         this.guiCRUDPProduct.setActionListener(this);
         tableProducts = guiCRUDPProduct.getTableProducts();
         this.guiCRUDPProduct.getTxtSearch().addKeyListener(new java.awt.event.KeyAdapter() {
@@ -75,8 +74,8 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
             }
         });
         tableProductsDefault = guiCRUDPProduct.getTableProductsDefault();
-        pproduct = (InterfacePproduct) Naming.lookup(ip + "CRUDPproduct");
-        category = (InterfaceCategory) Naming.lookup(ip + "CRUDCategory");
+        pproduct = (InterfacePproduct) Naming.lookup("//" + Config.ip + "/CRUDPproduct");
+        category = (InterfaceCategory) Naming.lookup("//" + Config.ip + "/CRUDCategory");
         productList = pproduct.getPproducts();
         guiCRUDPProduct.setCRUDCategory(category);
         refreshList();

@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import utils.Config;
 
 /**
  *
@@ -32,7 +33,7 @@ public class ControllerGuiProductCategory implements ActionListener {
     private final InterfaceCategory crudProductCategory;
 
     public ControllerGuiProductCategory(GuiCRUDProductCategory gui) throws NotBoundException, MalformedURLException, RemoteException {
-        crudProductCategory = (InterfaceCategory) Naming.lookup("//localhost/crudProductCategory");
+        crudProductCategory = (InterfaceCategory) Naming.lookup("//" + Config.ip + "/CRUDCategory");
         guiProductCategory = gui;
         guiProductCategory.setActionListener(this);
         refreshListCategory();

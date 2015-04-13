@@ -15,29 +15,6 @@ CREATE TABLE `admins` (
 
 delimiter $$
 
-CREATE TABLE `providers` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) DEFAULT NULL,
-  `cuit` varchar(45) DEFAULT '-1',
-  `address` varchar(45) DEFAULT NULL,
-  `description` varchar(200) DEFAULT NULL,
-  `phones` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1$$
-
-
-delimiter $$
-
-CREATE TABLE `providers_p_categories` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `provider_id` int(11) NOT NULL,
-  `p_category_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1$$
-
-
-delimiter $$
-
 CREATE TABLE `providers_products` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `provider_id` int(11) NOT NULL,
@@ -70,11 +47,36 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1$$
 
-CREATE TABLE `categories` (
+delimiter $$
+
+CREATE TABLE `providers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) DEFAULT NULL,
+  `cuit` varchar(45) DEFAULT '-1',
+  `address` varchar(45) DEFAULT NULL,
+  `description` varchar(200) DEFAULT NULL,
+  `phones` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1$$
+
+delimiter $$
+
+CREATE TABLE `providercategories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1$$
+
+delimiter $$
+
+CREATE TABLE `providers_providercategories` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `provider_id` int(11) NOT NULL,
+  `providercategory_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1$$
+
+delimiter $$
 
 ## PARTE DE JAZU Y ALAN.
 delimiter $$
