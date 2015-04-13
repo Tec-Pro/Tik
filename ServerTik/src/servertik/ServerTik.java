@@ -53,6 +53,7 @@ public class ServerTik {
            CRUDPproduct CRUDPproduct = new CRUDPproduct();
            CRUDFproduct CRUDFproduct = new CRUDFproduct();
            CRUDCategory crudCategory = new CRUDCategory();
+           CrudUser crudUser = new CrudUser();
            CrudProdCategory crudProdCategory = new CrudProdCategory();
            CrudProvider crudProvider= new CrudProvider();
            CrudProviderCategory crudProviderCategory= new CrudProviderCategory();
@@ -63,6 +64,7 @@ public class ServerTik {
            Naming.rebind("CRUDEproduct", CRUDEproduct);
            Naming.rebind("CRUDFproduct", CRUDFproduct); 
            Naming.rebind("CRUDCategory", crudCategory);
+           Naming.rebind("crudUser", crudUser);
            Naming.rebind("crudProvider", crudProvider);
            Naming.rebind("crudProviderCategory", crudProviderCategory);
            Naming.rebind("providersSearch", providerSearch);

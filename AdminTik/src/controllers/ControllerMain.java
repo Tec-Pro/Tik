@@ -13,6 +13,7 @@ import gui.GuiCRUDEProduct;
 import gui.GuiCRUDFProduct;
 import gui.GuiCRUDPProduct;
 import gui.GuiCRUDProductCategory;
+import gui.GuiCRUDUser;
 import gui.main.GuiMain;
 import gui.providers.GuiCRUDProviders;
 import gui.providers.GuiNewProvider;
@@ -48,6 +49,7 @@ public class ControllerMain implements ActionListener {
     private static GuiCRUDFProduct guiCRUDFProduct; //gui productos finales
     private static GuiCRUDProductCategory guiCRUDProductCategory; //gui categoria productos
     private static GuiCRUDProviders guiCRUDProviders; 
+    private static GuiCRUDUser guiCRUDUser;
     private static GuiNewProvider guiNewProvider;
 
     //controladores
@@ -57,6 +59,7 @@ public class ControllerMain implements ActionListener {
     private ControllerGuiCRUDFproduct controllerCRUDFProduct; //controlador productos finales
     private ControllerGuiProductCategory controllerCRUDProductCategory; //controlador categorias de productos
     private ControllerGuiCRUDProviders controllerCRUDProviders;
+    private ControllerGuiCRUDUser controllerCRUDUser;
     private ControllerGuiNewProvider controllerNewProvider;
     
     public ControllerMain(GuiAdminLogin guiAdminLogin) throws NotBoundException, MalformedURLException, RemoteException {
@@ -80,6 +83,7 @@ public class ControllerMain implements ActionListener {
         guiCRUDPProduct = new GuiCRUDPProduct();
         guiCRUDProductCategory = new GuiCRUDProductCategory();
         guiCRUDProviders = new GuiCRUDProviders();
+        guiCRUDUser = new GuiCRUDUser();
         guiNewProvider = new GuiNewProvider();
         
         //agrego las gui al desktop
@@ -89,6 +93,7 @@ public class ControllerMain implements ActionListener {
         guiMain.getDesktop().add(guiCRUDPProduct);
         guiMain.getDesktop().add(guiCRUDProductCategory);
         guiMain.getDesktop().add(guiCRUDProviders);
+        guiMain.getDesktop().add(guiCRUDUser);        
         guiMain.getDesktop().add(guiNewProvider);
         
         InterfaceProvider provider = (InterfaceProvider) Naming.lookup("//" + Config.ip + "/crudProvider");
@@ -103,8 +108,9 @@ public class ControllerMain implements ActionListener {
         controllerCRUDPProduct = new ControllerGuiCRUDPproduct(guiCRUDPProduct);
         controllerCRUDProductCategory = new ControllerGuiProductCategory(guiCRUDProductCategory);
         controllerCRUDProviders = new ControllerGuiCRUDProviders(guiCRUDProviders, guiNewProvider, provider, providerCategory, providersSearch);
-         
-                //restauro el puntero asi ya se que termino de cargar todo
+        controllerCRUDUser = new ControllerGuiCRUDUser(guiCRUDUser);
+        controllerNewProvider = new ControllerGuiNewProvider(guiNewProvider, provider, providerCategory);
+        //restauro el puntero asi ya se que termino de cargar todo
         guiMain.setCursor(Cursor.DEFAULT_CURSOR);
 
     }
@@ -113,7 +119,7 @@ public class ControllerMain implements ActionListener {
         guiMain.setVisible(false); //finalizo la ventana entera
         guiAdminLogin.setVisible(true);//hago visible la del login
         //debo finaliar todas las INTERNALFRAME!
-        //para evitar que quede abierta y el otro admin vea que  hizo
+        //para evitar que quede abierta y el otro admin vea que hizo
         ControllerGuiAdminLogin.getAllAdmins();
         guiCRUDAdmin.dispose();
         guiCRUDEProduct.dispose();
@@ -122,6 +128,7 @@ public class ControllerMain implements ActionListener {
         guiCRUDProductCategory.dispose();
         guiCRUDProviders.dispose();
         guiNewProvider.dispose();
+        guiCRUDUser.dispose();
     }
 
     @Override
@@ -169,7 +176,12 @@ public class ControllerMain implements ActionListener {
             guiCRUDProviders.cleanComponents();
             guiCRUDProviders.setVisible(true);
             guiCRUDProviders.toFront();
-        }        
+        }
+        //boton empleados
+        if(ae.getSource() == guiMain.getBtnEmployes()){
+            guiCRUDUser.setVisible(true);
+            guiCRUDUser.toFront();
+        }
     }
 
 }
