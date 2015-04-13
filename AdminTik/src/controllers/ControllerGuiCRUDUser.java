@@ -36,7 +36,7 @@ public class ControllerGuiCRUDUser implements ActionListener{
     private final DefaultTableModel dtmUsers;
     
    public ControllerGuiCRUDUser(GuiCRUDUser gui) throws NotBoundException, MalformedURLException, RemoteException{
-        crudUser = (InterfaceUser) Naming.lookup("//" + Config.ip + "/CRUDPproduct");
+        crudUser = (InterfaceUser) Naming.lookup("//" + Config.ip + "/crudUser");
         guiUser = gui;
         guiUser.getTableUsers().getSelectionModel().addListSelectionListener(new ListSelectionListener(){
             @Override
