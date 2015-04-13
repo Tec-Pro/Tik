@@ -60,7 +60,6 @@ public class ControllerMain implements ActionListener {
     private ControllerGuiProductCategory controllerCRUDProductCategory; //controlador categorias de productos
     private ControllerGuiCRUDProviders controllerCRUDProviders;
     private ControllerGuiCRUDUser controllerCRUDUser;
-    private ControllerGuiNewProvider controllerNewProvider;
     
     public ControllerMain(GuiAdminLogin guiAdminLogin) throws NotBoundException, MalformedURLException, RemoteException {
         this.guiAdminLogin = guiAdminLogin; //hago esto, así si cierra sesión pongo en visible la ventana
@@ -109,7 +108,6 @@ public class ControllerMain implements ActionListener {
         controllerCRUDProductCategory = new ControllerGuiProductCategory(guiCRUDProductCategory);
         controllerCRUDProviders = new ControllerGuiCRUDProviders(guiCRUDProviders, guiNewProvider, provider, providerCategory, providersSearch);
         controllerCRUDUser = new ControllerGuiCRUDUser(guiCRUDUser);
-        controllerNewProvider = new ControllerGuiNewProvider(guiNewProvider, provider, providerCategory);
         //restauro el puntero asi ya se que termino de cargar todo
         guiMain.setCursor(Cursor.DEFAULT_CURSOR);
 
