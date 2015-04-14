@@ -8,6 +8,7 @@ package gui;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -42,7 +43,7 @@ public class GuiAdminLogin extends javax.swing.JFrame {
         return lblPassword;
     }
 
-    public JTextField getTxtName() {
+    public JComboBox<String> getTxtName() {
         return txtName;
     }
 
@@ -68,20 +69,14 @@ public class GuiAdminLogin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        txtName = new javax.swing.JTextField();
         txtPassword = new javax.swing.JPasswordField();
         lblName = new javax.swing.JLabel();
         lblPassword = new javax.swing.JLabel();
         btnConfirm = new javax.swing.JButton();
         lblMessage = new javax.swing.JLabel();
+        txtName = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        txtName.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtNameKeyTyped(evt);
-            }
-        });
 
         txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -100,6 +95,8 @@ public class GuiAdminLogin extends javax.swing.JFrame {
         lblMessage.setFont(new java.awt.Font("Droid Sans", 1, 24)); // NOI18N
         lblMessage.setText("TIK Administrador");
 
+        txtName.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -112,10 +109,10 @@ public class GuiAdminLogin extends javax.swing.JFrame {
                             .addComponent(lblPassword)
                             .addComponent(lblName))
                         .addGap(32, 32, 32)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
+                            .addComponent(txtName, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(88, 88, 88)
                         .addComponent(lblMessage)))
@@ -128,8 +125,8 @@ public class GuiAdminLogin extends javax.swing.JFrame {
                 .addComponent(lblMessage)
                 .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblName))
+                    .addComponent(lblName)
+                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblPassword)
@@ -141,11 +138,6 @@ public class GuiAdminLogin extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void txtNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNameKeyTyped
-         if(evt.getKeyChar() == KeyEvent.VK_ENTER)
-            btnConfirm.doClick();
-    }//GEN-LAST:event_txtNameKeyTyped
 
     private void txtPasswordKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyTyped
         if(evt.getKeyChar() == KeyEvent.VK_ENTER)
@@ -188,7 +180,7 @@ public class GuiAdminLogin extends javax.swing.JFrame {
     }
     
     public void clearFields(){
-        txtName.setText("");
+        txtName.removeAllItems();
         txtPassword.setText("");
     }
 
@@ -197,7 +189,7 @@ public class GuiAdminLogin extends javax.swing.JFrame {
     private javax.swing.JLabel lblMessage;
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblPassword;
-    private javax.swing.JTextField txtName;
+    private javax.swing.JComboBox txtName;
     private javax.swing.JPasswordField txtPassword;
     // End of variables declaration//GEN-END:variables
 }

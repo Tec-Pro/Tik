@@ -68,12 +68,15 @@ public class ControllerGuiCRUDAdmin implements ActionListener {
                 try {
                     Map<String, Object> modifiedUser;
                     modifiedUser = crudAdmin.modify((int) currentAdmin.get("id"), guiAdmin.getTxtName().getText(), guiAdmin.getPassField().getText());
-                    currentAdmin = modifiedUser;
+
+                    
                     if (modifiedUser != null) {
                         setDefault();
+                        currentAdmin = modifiedUser;
                         JOptionPane.showMessageDialog(guiAdmin, "Datos modificados correctamente!", "Modificacion exitosa!", JOptionPane.INFORMATION_MESSAGE);
                     } else {
-                        JOptionPane.showMessageDialog(guiAdmin, "No se pudo modificar!", "Error!", JOptionPane.ERROR_MESSAGE);
+                        setDefault();
+                        JOptionPane.showMessageDialog(guiAdmin, "No se pudo modificar! \n Ese nombre ya existe", "Error!", JOptionPane.ERROR_MESSAGE);
                     }
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiCRUDAdmin.class.getName()).log(Level.SEVERE, null, ex);
