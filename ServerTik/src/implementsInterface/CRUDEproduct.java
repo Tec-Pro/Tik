@@ -33,11 +33,10 @@ public class CRUDEproduct extends UnicastRemoteObject implements interfaces.Inte
     }
 
     @Override
-    public Map<String, Object> create(String name, float stock, String measureUnit, int subcategory_id, List<Pair> pProducts) throws RemoteException {
+    public Map<String, Object> create(String name, List<Pair> pProducts) throws RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
-        String st = String.valueOf(stock).replace(',', '.');
-        Eproduct ret = Eproduct.createIt("name", name, "stock", st, "measure_unit", measureUnit, "subcategory_id", subcategory_id);
+        Eproduct ret = Eproduct.createIt("name", name);
         Iterator it = pProducts.iterator();
         while (it.hasNext()) { //creo la relacion Pproduct Eproduct
             Pair<Integer, Float> prod = (Pair<Integer, Float>) it.next();
@@ -50,16 +49,12 @@ public class CRUDEproduct extends UnicastRemoteObject implements interfaces.Inte
     }
 
     @Override
-    public Map<String, Object> modify(int id, String name, float stock, String measureUnit, int subcategory_id, List<Pair> pProducts) throws RemoteException {
+    public Map<String, Object> modify(int id, String name, List<Pair> pProducts) throws RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
         Eproduct ret = Eproduct.findById(id);
         if (ret != null) {
             ret.setString("name", name);
-            String st = String.valueOf(stock).replace(',', '.');
-            ret.set("stock", st);
-            ret.setString("measure_unit", measureUnit);
-            ret.set("subcategory_id", subcategory_id);
             Iterator it = EproductsPproducts.find("eproduct_id = ?", id).iterator();
             while (it.hasNext()) { //elimino relaciones pre existenes
                 ((EproductsPproducts) it.next()).delete();

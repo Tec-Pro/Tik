@@ -235,7 +235,7 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setTitle("Gestion Productos Elaborados");
-        setPreferredSize(new java.awt.Dimension(1105, 637));
+        setPreferredSize(new java.awt.Dimension(1105, 559));
         setVisible(true);
 
         jScrollPane1.setPreferredSize(new java.awt.Dimension(1095, 627));
@@ -375,29 +375,25 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
             }
         });
         jScrollPane2.setViewportView(tableReciper);
-        if (tableReciper.getColumnModel().getColumnCount() > 0) {
-            tableReciper.getColumnModel().getColumn(0).setResizable(false);
-            tableReciper.getColumnModel().getColumn(1).setResizable(false);
-            tableReciper.getColumnModel().getColumn(2).setResizable(false);
-            tableReciper.getColumnModel().getColumn(3).setResizable(false);
-        }
+        tableReciper.getColumnModel().getColumn(2).setResizable(false);
+        tableReciper.getColumnModel().getColumn(3).setResizable(false);
 
         tableProducts.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Id", "Nombre", "Stock", "Categoria", "Unidad de medida", "Tipo"
+                "Id", "Nombre", "Categoria", "Tipo"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, false, true, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -409,14 +405,6 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
             }
         });
         jScrollPane3.setViewportView(tableProducts);
-        if (tableProducts.getColumnModel().getColumnCount() > 0) {
-            tableProducts.getColumnModel().getColumn(0).setResizable(false);
-            tableProducts.getColumnModel().getColumn(1).setResizable(false);
-            tableProducts.getColumnModel().getColumn(2).setResizable(false);
-            tableProducts.getColumnModel().getColumn(3).setResizable(false);
-            tableProducts.getColumnModel().getColumn(4).setResizable(false);
-            tableProducts.getColumnModel().getColumn(5).setResizable(false);
-        }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -437,7 +425,7 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(10, 10, 10)
                 .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -445,7 +433,7 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(140, Short.MAX_VALUE))
+                .addGap(10, 10, 10))
         );
 
         jScrollPane1.setViewportView(jPanel1);
@@ -458,7 +446,9 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 609, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 531, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();

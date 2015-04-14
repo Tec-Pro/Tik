@@ -75,9 +75,7 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
         });
         tableProductsDefault = guiCRUDPProduct.getTableProductsDefault();
         pproduct = (InterfacePproduct) Naming.lookup("//" + Config.ip + "/CRUDPproduct");
-        category = (InterfaceCategory) Naming.lookup("//" + Config.ip + "/CRUDCategory");
         productList = pproduct.getPproducts();
-        guiCRUDPProduct.setCRUDCategory(category);
         refreshList();
     }
 
@@ -114,14 +112,12 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
         Iterator<Map> it = productList.iterator();
         while (it.hasNext()) {
             Map<String, Object> prod = it.next();
-            Object row[] = new String[6];
+            Object row[] = new String[5];
             row[0] = prod.get("id").toString();
             row[1] = prod.get("name").toString(); //NOMBRE
             row[2] = prod.get("stock").toString(); // STOCK 
-            Map<String, Object> subC = category.getSubcategory(Integer.parseInt(prod.get("subcategory_id").toString()));
-            row[3] = subC.get("name").toString(); //CATEGORIA
-            row[4] = prod.get("measure_unit").toString(); // UNIDAD DE MEDIDA
-            row[5] = prod.get("unit_price").toString(); // PRECIO UNITARIO
+            row[3] = prod.get("measure_unit").toString(); // UNIDAD DE MEDIDA
+            row[4] = prod.get("unit_price").toString(); // PRECIO UNITARIO
             tableProductsDefault.addRow(row);
         }
     }
@@ -179,54 +175,35 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
             }
         }
         if (e.getSource() == guiCRUDPProduct.getBtnSave() && editingInformation && isNew) { //guardo un producto nuevo, boton guardar
+            String name = guiCRUDPProduct.getTxtName().getText();
+            float stock = Float.parseFloat(guiCRUDPProduct.getTxtStock().getText());
+            float unitPrice = Float.parseFloat(guiCRUDPProduct.getTxtPrice().getText());
+            String measureUnit = guiCRUDPProduct.getCboxMeasureUnit().getSelectedItem().toString();
             try {
-                Map subC = category.getSubcategory((String) guiCRUDPProduct.getCategory().getItemAt(guiCRUDPProduct.getCategory().getSelectedIndex()));
-                int subcategory_id = Integer.parseInt(subC.get("id").toString());//obtener categoria
-                String name = guiCRUDPProduct.getTxtName().getText();
-                float stock = Float.parseFloat(guiCRUDPProduct.getTxtStock().getText());
-                float amount = Float.parseFloat(guiCRUDPProduct.getTxtQuantity().getText());
-                String measureUnit = guiCRUDPProduct.getTxtMeasureUnit().getText();
-                String purchasePricea = guiCRUDPProduct.getTxtPurchasePrice().getText();
-                float unitPrice = amount / Float.parseFloat(purchasePricea);
-                try {
-                    pproduct.create(name, stock, measureUnit, unitPrice, subcategory_id, amount);
-                    JOptionPane.showMessageDialog(guiCRUDPProduct, "¡Producto creado exitosamente!");
-                    guiCRUDPProduct.clicSaveProduct();
-                    productList = pproduct.getPproducts();
-                    refreshList();
-                } catch (RemoteException ex) {
-                    Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                pproduct.create(name, stock, measureUnit, unitPrice);
+                JOptionPane.showMessageDialog(guiCRUDPProduct, "¡Producto creado exitosamente!");
+                guiCRUDPProduct.clicSaveProduct();
+                productList = pproduct.getPproducts();
+                refreshList();
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         }
         if (e.getSource() == guiCRUDPProduct.getBtnSave() && editingInformation && !isNew) { //modifico un producto, boton guardar
             String name = guiCRUDPProduct.getTxtName().getText();
             float stock = Float.parseFloat(guiCRUDPProduct.getTxtStock().getText());
-            float amount = Float.parseFloat(guiCRUDPProduct.getTxtQuantity().getText());
+            float unitPrice = Float.parseFloat(guiCRUDPProduct.getTxtPrice().getText());
+            String measureUnit = guiCRUDPProduct.getCboxMeasureUnit().getSelectedItem().toString();
+            int id = Integer.parseInt(guiCRUDPProduct.getTxtId().getText());
             try {
-                Map subC = category.getSubcategory(guiCRUDPProduct.getCategory().getSelectedItem().toString());
-                int subcategory_id = Integer.parseInt(subC.get("id").toString());//obtener categoria
-                String measureUnit = guiCRUDPProduct.getTxtMeasureUnit().getText();
-                String purchasePricea = guiCRUDPProduct.getTxtPurchasePrice().getText();
-                int id = Integer.parseInt(guiCRUDPProduct.getTxtId().getText());
-                float unitPrice = amount / Float.parseFloat(purchasePricea);
-                try {
-                    pproduct.modify(id, name, stock, measureUnit, unitPrice, subcategory_id, amount);
-                    JOptionPane.showMessageDialog(guiCRUDPProduct, "¡Producto modificado exitosamente!");
-                    guiCRUDPProduct.clicSaveProduct();
-                    productList = pproduct.getPproducts();
-                    refreshList();
-                } catch (RemoteException ex) {
-                    Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                pproduct.modify(id, name, stock, measureUnit, unitPrice);
+                JOptionPane.showMessageDialog(guiCRUDPProduct, "¡Producto modificado exitosamente!");
+                guiCRUDPProduct.clicSaveProduct();
+                productList = pproduct.getPproducts();
+                refreshList();
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         }
-
     }
 }

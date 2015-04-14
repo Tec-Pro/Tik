@@ -44,7 +44,6 @@ public class ControllerGuiCRUDEproduct implements ActionListener {
     private List<Map> eproductPproductList;
     InterfacePproduct crudPproduct;
     InterfaceEproduct crudEproduct;
-    InterfaceCategory category;
     Map<String, Object> pproduct;
     Map<String, Object> eproduct;
 
@@ -64,8 +63,6 @@ public class ControllerGuiCRUDEproduct implements ActionListener {
         tableReciperDefault = guiCRUDEProduct.getTableReciperDefault();
         crudPproduct = (InterfacePproduct) Naming.lookup("//" + Config.ip + "/CRUDPproduct");
         crudEproduct = (InterfaceEproduct) Naming.lookup("//" + Config.ip + "/CRUDEproduct");
-        category = (InterfaceCategory) Naming.lookup("//" + Config.ip + "/CRUDCategory");
-        guiCRUDEProduct.setCRUDCategory(category);
         pproductList = crudPproduct.getPproducts();
         eproductList = crudEproduct.getEproducts();
         editingInformation = false;
@@ -147,28 +144,20 @@ public class ControllerGuiCRUDEproduct implements ActionListener {
             Iterator<Map> it = pproductList.iterator();
             while (it.hasNext()) {
                 Map<String, Object> prod = it.next();
-                Object row[] = new String[6];
+                Object row[] = new String[3];
                 row[0] = prod.get("id").toString();
                 row[1] = prod.get("name").toString(); //NOMBRE
-                row[2] = prod.get("stock").toString(); // STOCK 
-                Map<String, Object> subC = category.getSubcategory(Integer.parseInt(prod.get("subcategory_id").toString()));
-                row[3] = subC.get("name").toString(); //CATEGORIA
-                row[4] = prod.get("measure_unit").toString(); // UNIDAD DE MEDIDA
-                row[5] = "Primario"; // TIPO
+                row[2] = "Primario"; // TIPO
                 tableProductsDefault.addRow(row);
             }
         } else {
             Iterator<Map> it = eproductList.iterator();
             while (it.hasNext()) {
                 Map<String, Object> prod = it.next();
-                Object row[] = new String[6];
+                Object row[] = new String[3];
                 row[0] = prod.get("id").toString();
                 row[1] = prod.get("name").toString(); //NOMBRE
-                row[2] = prod.get("stock").toString(); // STOCK 
-                Map<String, Object> subC = category.getSubcategory(Integer.parseInt(prod.get("subcategory_id").toString()));
-                row[3] = subC.get("name").toString(); //CATEGORIA
-                row[4] = prod.get("measure_unit").toString(); // UNIDAD DE MEDIDA
-                row[5] = "Elaborado"; // TIPO
+                row[2] = "Elaborado"; // TIPO
                 tableProductsDefault.addRow(row);
             }
         }
@@ -293,54 +282,41 @@ public class ControllerGuiCRUDEproduct implements ActionListener {
             }
         }
         if (e.getSource() == guiCRUDEProduct.getBtnSave() && editingInformation && isNew) {  //guardo un producto nuevo, boton guardar
+
+            List<Pair> listP = new LinkedList<Pair>();
+            for (int i = 0; i < tableReciper.getRowCount(); i++) { //cargo la lista de productos
+                Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), Float.parseFloat((String) tableReciper.getValueAt(i, 2)));
+                listP.add(p);
+            }
+            String name = guiCRUDEProduct.getTxtName().getText();
             try {
-                Map subC = category.getSubcategory(guiCRUDEProduct.getCategory().getSelectedItem().toString());
-                int subcategory_id = Integer.parseInt(subC.get("id").toString());//obtener categoria
-                String measureUnit = guiCRUDEProduct.getTxtMeasureUnit().getText();
-                List<Pair> listP = new LinkedList<Pair>();
-                for (int i = 0; i < tableReciper.getRowCount(); i++) { //cargo la lista de productos
-                    Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), Float.parseFloat((String) tableReciper.getValueAt(i, 2)));
-                    listP.add(p);
-                }
-                String name = guiCRUDEProduct.getTxtName().getText();
-                float stock = Float.parseFloat(guiCRUDEProduct.getTxtStock().getText());
-                try {
-                    crudEproduct.create(name, stock, measureUnit, subcategory_id, listP);
-                    JOptionPane.showMessageDialog(guiCRUDEProduct, "¡Producto creado exitosamente!");
-                    editingInformation = false;
-                    guiCRUDEProduct.clicSaveProduct();
-                    eproductList = crudEproduct.getEproducts();
-                    refreshList();
-                } catch (RemoteException ex) {
-                    Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                crudEproduct.create(name, listP);
+                JOptionPane.showMessageDialog(guiCRUDEProduct, "¡Producto creado exitosamente!");
+                editingInformation = false;
+                guiCRUDEProduct.clicSaveProduct();
+                eproductList = crudEproduct.getEproducts();
+                refreshList();
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
             }
+
         }
         if (e.getSource() == guiCRUDEProduct.getBtnSave() && editingInformation && !isNew) {  //modifico un producto, boton guardar
+
+            List<Pair> listP = new LinkedList<Pair>();
+            for (int i = 0; i < tableReciper.getRowCount(); i++) { //cargo la lista de productos
+                Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), Float.parseFloat((String) tableReciper.getValueAt(i, 2)));
+                listP.add(p);
+            }
+            String name = guiCRUDEProduct.getTxtName().getText();
+            int id = Integer.parseInt(guiCRUDEProduct.getTxtId().getText());
             try {
-                Map subC = category.getSubcategory(guiCRUDEProduct.getCategory().getSelectedItem().toString());
-                int subcategory_id = Integer.parseInt(subC.get("id").toString());//obtener categoria
-                String measureUnit = guiCRUDEProduct.getTxtMeasureUnit().getText();
-                List<Pair> listP = new LinkedList<Pair>();
-                for (int i = 0; i < tableReciper.getRowCount(); i++) { //cargo la lista de productos
-                    Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), Float.parseFloat((String) tableReciper.getValueAt(i, 2)));
-                    listP.add(p);
-                }
-                String name = guiCRUDEProduct.getTxtName().getText();
-                float stock = Float.parseFloat(guiCRUDEProduct.getTxtStock().getText());
-                int id = Integer.parseInt(guiCRUDEProduct.getTxtId().getText());
-                try {
-                    crudEproduct.modify(id, name, stock, measureUnit, subcategory_id, listP);
-                    JOptionPane.showMessageDialog(guiCRUDEProduct, "¡Producto modificado exitosamente!");
-                    editingInformation = false;
-                    guiCRUDEProduct.clicSaveProduct();
-                    eproductList = crudEproduct.getEproducts();
-                    refreshList();
-                } catch (RemoteException ex) {
-                    Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                crudEproduct.modify(id, name, listP);
+                JOptionPane.showMessageDialog(guiCRUDEProduct, "¡Producto modificado exitosamente!");
+                editingInformation = false;
+                guiCRUDEProduct.clicSaveProduct();
+                eproductList = crudEproduct.getEproducts();
+                refreshList();
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
             }

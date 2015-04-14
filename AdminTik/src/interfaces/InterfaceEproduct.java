@@ -18,27 +18,21 @@ public interface InterfaceEproduct extends Remote {
     /**
      * Crea un producto elaborado.
      * @param name
-     * @param stock
-     * @param measureUnit
-     * @param subcategory_id
      * @param pProducts es una List<Pair<Integer,Float> con todos los id de productos primarios y cantidades que forman al producto elaborado
      * @return Map<String,Object> 
      * @throws java.rmi.RemoteException
      */
-    public Map<String,Object> create(String name, float stock, String measureUnit, int subcategory_id, List<Pair> pProducts) throws java.rmi.RemoteException;
+    public Map<String,Object> create(String name, List<Pair> pProducts) throws java.rmi.RemoteException;
      
     /**
      * Modifica un producto elaborado.
      * @param id
      * @param name
-     * @param stock
-     * @param measureUnit
-     * @param subcategory_id
      * @param pProducts es una List<Pair<Integer,Float> con todos los id de productos primarios y cantidades que forman al producto elaborado
      * @return Map<String,Object>
      * @throws java.rmi.RemoteException
      */
-     public Map<String,Object> modify(int id,String name, float stock, String measureUnit, int subcategory_id, List<Pair> pProducts) throws java.rmi.RemoteException;
+     public Map<String,Object> modify(int id,String name, List<Pair> pProducts) throws java.rmi.RemoteException;
          /**
      * Elimina un producto elaborado de manera logica, setea al atributo removed en 1 como asi tambien a todos sus relacionados.
      * @param id

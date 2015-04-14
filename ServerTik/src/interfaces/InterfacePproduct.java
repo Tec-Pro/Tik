@@ -22,26 +22,47 @@ public interface InterfacePproduct extends Remote {
      * @param stock
      * @param measureUnit
      * @param unitPrice
-     * @param subcategory_id
-     * @param amount
      * @return Map<String,Object> 
      * @throws java.rmi.RemoteException
      */
-    public Map<String,Object> create(String name, float stock, String measureUnit, float unitPrice, int subcategory_id, float amount) throws java.rmi.RemoteException;
-         /**
+    public Map<String,Object> create(String name, float stock, String measureUnit, float unitPrice) throws java.rmi.RemoteException;
+     
+    
+    /**
      * Modifica un producto primario.
      * @param id
      * @param name
      * @param stock
      * @param measureUnit
      * @param unitPrice
-     * @param subcategory_id
+     * @return Map<String,Object>
+     * @throws java.rmi.RemoteException
+     */
+     public Map<String,Object> modify(int id,String name, float stock, String measureUnit, float unitPrice) throws java.rmi.RemoteException;
+    
+     /**
+     * Carga una compra.
+     * @param id
+     * @param measureUnit
+     * @param price
      * @param amount
      * @return Map<String,Object>
      * @throws java.rmi.RemoteException
      */
-     public Map<String,Object> modify(int id,String name, float stock, String measureUnit, float unitPrice, int subcategory_id, float amount) throws java.rmi.RemoteException;
-         /**
+     public Map<String,Object> loadPurchase(int id, String measureUnit, float price, float amount) throws java.rmi.RemoteException;
+     
+     /**
+     * calcula preico unitario.
+     * @param id
+     * @param measureUnit
+     * @param price
+     * @param amount
+     * @return Map<String,Object>
+     * @throws java.rmi.RemoteException
+     */
+     public Map<String,Object> calculateUnitPrice(int id, String measureUnit, float price, float amount) throws java.rmi.RemoteException;
+     
+     /**
      * Elimina un producto primario de manera logica, setea al atributo removed en 1 como asi tambien a todos sus relacionados.
      * @param id
      * @return boolean

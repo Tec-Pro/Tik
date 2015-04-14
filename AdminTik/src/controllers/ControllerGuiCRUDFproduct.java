@@ -156,41 +156,33 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
             Iterator<Map> it = pproductList.iterator();
             while (it.hasNext()) {
                 Map<String, Object> prod = it.next();
-                Object row[] = new String[6];
+                Object row[] = new String[4];
                 row[0] = prod.get("id").toString();
                 row[1] = prod.get("name").toString(); //NOMBRE
-                row[2] = prod.get("stock").toString(); // STOCK 
-                Map<String, Object> subC = category.getSubcategory(Integer.parseInt(prod.get("subcategory_id").toString()));
-                row[3] = subC.get("name").toString(); //CATEGORIA
-                row[4] = prod.get("measure_unit").toString(); // UNIDAD DE MEDIDA
-                row[5] = "Primario"; // TIPO
+                row[2] = "-"; //CATEGORIA
+                row[3] = "Primario"; // TIPO
                 tableProductsDefault.addRow(row);
             }
             it = eproductList.iterator();
             while (it.hasNext()) {
                 Map<String, Object> prod = it.next();
-                Object row[] = new String[6];
+                Object row[] = new String[4];
                 row[0] = prod.get("id").toString();
                 row[1] = prod.get("name").toString(); //NOMBRE
-                row[2] = prod.get("stock").toString(); // STOCK 
-                Map<String, Object> subC = category.getSubcategory(Integer.parseInt(prod.get("subcategory_id").toString()));
-                row[3] = subC.get("name").toString(); //CATEGORIA
-                row[4] = prod.get("measure_unit").toString(); // UNIDAD DE MEDIDA
-                row[5] = "Elaborado"; // TIPO
+                row[2] = "-"; //CATEGORIA
+                row[3] = "Elaborado"; // TIPO
                 tableProductsDefault.addRow(row);
             }
         } else {
             Iterator<Map> it = fproductList.iterator();
             while (it.hasNext()) {
                 Map<String, Object> prod = it.next();
-                Object row[] = new String[6];
+                Object row[] = new String[4];
                 row[0] = prod.get("id").toString();
                 row[1] = prod.get("name").toString(); //NOMBRE
-                row[2] = "-"; // STOCK 
                 Map<String, Object> subC = category.getSubcategory(Integer.parseInt(prod.get("subcategory_id").toString()));
-                row[3] = subC.get("name").toString(); //CATEGORIA
-                row[4] = "-"; // UNIDAD DE MEDIDA
-                row[5] = "Final"; // TIPO
+                row[2] = subC.get("name").toString(); //CATEGORIA
+                row[3] = "Final"; // TIPO
                 tableProductsDefault.addRow(row);
             }
         }
@@ -220,7 +212,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
                     row[0] = tableProducts.getValueAt(tableProducts.getSelectedRow(), 0); //id
                     row[1] = tableProducts.getValueAt(tableProducts.getSelectedRow(), 1); //NOMBRE
                     row[2] = "1"; // Cantidad  
-                    if (((String) tableProducts.getValueAt(tableProducts.getSelectedRow(), 5)).equals("Primario")) {
+                    if (((String) tableProducts.getValueAt(tableProducts.getSelectedRow(), 3)).equals("Primario")) {
                         row[3] = "Primario"; // Tipo  
                     } else {
                         row[3] = "Elaborado";// Tipo  
