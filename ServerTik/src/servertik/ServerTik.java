@@ -11,8 +11,6 @@ import implementsInterface.CRUDEproduct;
 import implementsInterface.CRUDFproduct;
 import implementsInterface.CRUDPproduct;
 import implementsInterface.CrudAdmin;
-import implementsInterface.CrudProdCategory;
-import implementsInterface.CrudProduct;
 import implementsInterface.CrudProvider;
 import implementsInterface.CrudProviderCategory;
 import implementsInterface.CrudUser;
@@ -54,7 +52,6 @@ public class ServerTik {
            CRUDFproduct CRUDFproduct = new CRUDFproduct();
            CRUDCategory crudCategory = new CRUDCategory();
            CrudUser crudUser = new CrudUser();
-           CrudProdCategory crudProdCategory = new CrudProdCategory();
            CrudProvider crudProvider= new CrudProvider();
            CrudProviderCategory crudProviderCategory= new CrudProviderCategory();
            ProvidersSearch providerSearch = new ProvidersSearch();
@@ -68,7 +65,6 @@ public class ServerTik {
            Naming.rebind("crudProvider", crudProvider);
            Naming.rebind("crudProviderCategory", crudProviderCategory);
            Naming.rebind("providersSearch", providerSearch);
-           Naming.rebind("crudProdCategory", crudProdCategory);  
            Naming.rebind("Server", server);  
            
         //   System.out.println("hice un usuario" + crudAdmin.create("agu", "aguasdasd"));

@@ -5,6 +5,7 @@
 package controllers;
 
 import gui.GuiCRUDPProduct;
+import gui.GuiLoadPurchase;
 import interfaces.InterfaceCategory;
 import interfaces.InterfacePproduct;
 import java.awt.event.ActionEvent;
@@ -20,6 +21,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import utils.Config;
 
@@ -30,6 +33,7 @@ import utils.Config;
 public class ControllerGuiCRUDPproduct implements ActionListener {
 
     private GuiCRUDPProduct guiCRUDPProduct;
+    private GuiLoadPurchase guiLoadPurchase;
     private JTable tableProducts;
     private DefaultTableModel tableProductsDefault;
     private Boolean isNew;
@@ -47,9 +51,11 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
      * @throws MalformedURLException
      * @throws RemoteException
      */
-    public ControllerGuiCRUDPproduct(GuiCRUDPProduct guiCRUDPProduct) throws NotBoundException, MalformedURLException, RemoteException {
+    public ControllerGuiCRUDPproduct(GuiCRUDPProduct guiCRUDPProduct, GuiLoadPurchase guiLoadPurchase) throws NotBoundException, MalformedURLException, RemoteException {
         this.guiCRUDPProduct = guiCRUDPProduct;
         this.guiCRUDPProduct.setActionListener(this);
+        this.guiLoadPurchase = guiLoadPurchase;
+        this.guiLoadPurchase.setActionListener(this);
         tableProducts = guiCRUDPProduct.getTableProducts();
         this.guiCRUDPProduct.getTxtSearch().addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
@@ -62,17 +68,28 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
                 }
             }
         });
-        this.guiCRUDPProduct.getTableProducts().addMouseListener(new java.awt.event.MouseAdapter() {
+//        this.guiCRUDPProduct.getTableProducts().addMouseListener(new java.awt.event.MouseAdapter() {
+//            @Override
+//            public void mouseClicked(java.awt.event.MouseEvent evt) {
+//                try {
+//                    tableMouseClicked(evt);
+//                } catch (RemoteException ex) {
+//                    Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
+//                    ex.getMessage();
+//                }
+//            }
+//        });
+        this.guiCRUDPProduct.getTableProducts().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            public void valueChanged(ListSelectionEvent e) {
                 try {
-                    tableMouseClicked(evt);
+                    tableValueChanged();
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
-                    ex.getMessage();
                 }
             }
         });
+
         tableProductsDefault = guiCRUDPProduct.getTableProductsDefault();
         pproduct = (InterfacePproduct) Naming.lookup("//" + Config.ip + "/CRUDPproduct");
         productList = pproduct.getPproducts();
@@ -123,17 +140,17 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
     }
 
     /**
-     * Mouse Clicked listener en la tabla para cargar el producto en los txt
+     * ListSelectionListener en la tabla para cargar el producto en los txt
      *
-     * @param evt
      * @throws RemoteException
      */
-    public void tableMouseClicked(java.awt.event.MouseEvent evt) throws RemoteException {
-        if (evt.getClickCount() == 2) {
+    public void tableValueChanged() throws RemoteException {
+        if (guiCRUDPProduct.getTableProducts().getSelectedRow() != -1) {
             guiCRUDPProduct.clicTableProducts();
             product = pproduct.getPproduct(Integer.parseInt((String) tableProducts.getValueAt(tableProducts.getSelectedRow(), 0)));
             guiCRUDPProduct.loadProduct(product);
         }
+
     }
 
     @Override
@@ -178,7 +195,10 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
             String name = guiCRUDPProduct.getTxtName().getText();
             float stock = Float.parseFloat(guiCRUDPProduct.getTxtStock().getText());
             float unitPrice = Float.parseFloat(guiCRUDPProduct.getTxtPrice().getText());
-            String measureUnit = guiCRUDPProduct.getCboxMeasureUnit().getSelectedItem().toString();
+            String measureUnit = "";
+            if (guiCRUDPProduct.getCboxMeasureUnit().getSelectedItem() != -1) {
+                measureUnit = guiCRUDPProduct.getCboxMeasureUnit().getSelectedItem().toString();
+            }
             try {
                 pproduct.create(name, stock, measureUnit, unitPrice);
                 JOptionPane.showMessageDialog(guiCRUDPProduct, "¡Producto creado exitosamente!");
@@ -204,6 +224,63 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+        if (e.getSource() == guiCRUDPProduct.getBtnCancel() && editingInformation && !isNew) {  //modifico un producto pero cancelo 
+            try {
+                guiCRUDPProduct.clicSaveProduct();
+                guiCRUDPProduct.clicTableProducts();
+                guiCRUDPProduct.loadProduct(product);
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (e.getSource() == guiCRUDPProduct.getBtnCancel() && editingInformation && isNew) { //creo un producto pero cancel0          
+            guiCRUDPProduct.clicSaveProduct();
+        }
+        if (e.getSource() == guiCRUDPProduct.getBtnPurchase()) {
+            guiLoadPurchase.getTxtId().setText(guiCRUDPProduct.getTxtId().getText());
+            guiLoadPurchase.setVisible(true);
+            guiLoadPurchase.show();
+            guiCRUDPProduct.setVisible(false);
+        }
+        if (e.getSource() == guiLoadPurchase.getBtnCancel()) { //cancelo la carga de una compra  
+            guiLoadPurchase.setVisible(false);
+            guiLoadPurchase.clear();
+            guiCRUDPProduct.setVisible(true);
+            guiCRUDPProduct.show();
+            guiCRUDPProduct.clicSaveProduct();
+            try {
+                guiCRUDPProduct.clicTableProducts();
+                guiCRUDPProduct.loadProduct(product);
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (e.getSource() == guiLoadPurchase.getBtnSave()) { //guardo la compra
+            int idx = Integer.parseInt(guiLoadPurchase.getTxtId().getText());
+            String measureU = guiLoadPurchase.getcBoxMeasureUnit().getSelectedItem().toString();
+            float price = Float.parseFloat(guiLoadPurchase.getTxtPrice().getText());
+            float amount = Float.parseFloat(guiLoadPurchase.getTxtAmount().getText());
+            if (guiLoadPurchase.getCheckBoxOnlyCalculate().isSelected()) { //me fijo si solo hay que calcular el precio
+                try {
+                    pproduct.loadPurchase(idx, measureU, price, amount);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                JOptionPane.showMessageDialog(guiLoadPurchase, "¡Compra registrada exitosamente!");
+            } else {
+                try {
+                    pproduct.calculateUnitPrice(idx, measureU, price, amount);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                JOptionPane.showMessageDialog(guiLoadPurchase, "¡Precio calculado exitosamente!");
+            }
+            guiLoadPurchase.setVisible(false);
+            guiLoadPurchase.clear();
+            guiCRUDPProduct.setVisible(true);
+            guiCRUDPProduct.show();
+            guiCRUDPProduct.clicSaveProduct();
         }
     }
 }
