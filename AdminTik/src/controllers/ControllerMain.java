@@ -122,6 +122,7 @@ public class ControllerMain implements ActionListener {
         guiAdminLogin.setVisible(true);//hago visible la del login
         //debo finaliar todas las INTERNALFRAME!
         //para evitar que quede abierta y el otro admin vea que hizo
+        guiAdminLogin.clearFields();
         ControllerGuiAdminLogin.getAllAdmins();
         guiCRUDAdmin.dispose();
         guiCRUDEProduct.dispose();

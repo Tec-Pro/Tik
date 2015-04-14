@@ -63,6 +63,7 @@ public class CrudAdmin extends UnicastRemoteObject implements interfaces.Interfa
      public Map<String,Object> modify(int id,String name, String pass) throws java.rmi.RemoteException{
         Utils.abrirBase();
         Admin admin= Admin.findById(id);
+        
         byte[] passEncrypted = {0};
         try {
             passEncrypted = Encryption.encrypt(pass);
@@ -70,6 +71,9 @@ public class CrudAdmin extends UnicastRemoteObject implements interfaces.Interfa
             Logger.getLogger(CrudAdmin.class.getName()).log(Level.SEVERE, null, ex);
         }
         if(admin!=null){
+            if(!admin.getString("name").equals(name))
+                if(adminExists(name))
+                    return null;
             admin.setString("name",name);
             admin.set("pass",passEncrypted);
             Base.openTransaction();

@@ -14,6 +14,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,6 +55,7 @@ public class ControllerGuiAdminLogin implements ActionListener {
 
             }
         }
+        guiAdminLogin.clearFields();
         guiAdminLogin.setActionListener(this);
         guiAdminLogin.setLocationRelativeTo(null);
         guiAdminLogin.setVisible(true);
@@ -65,14 +67,22 @@ public class ControllerGuiAdminLogin implements ActionListener {
 
     public static void getAllAdmins() {
         try {
-            if (crudAdmin.getAdmins().isEmpty()) {
+            List<Map> admins = crudAdmin.getAdmins();
+            if (admins.isEmpty()) {
                 crudAdmin.create("admin", "admin");
-                JOptionPane.showMessageDialog(guiAdminLogin, "Se creó un un administrador por defecto \n Nombre: admin - Contraseña:admin", "NO HAY ADMINISTRADORES!", JOptionPane.INFORMATION_MESSAGE);
+                guiAdminLogin.getTxtName().addItem("admin");
+                
+                JOptionPane.showMessageDialog(guiAdminLogin, "Se creó un un administrador por defecto \nNombre: admin - Contraseña:admin", "NO HAY ADMINISTRADORES!", JOptionPane.INFORMATION_MESSAGE);
+            }else{
+                for (Map admin : admins) {
+                    System.out.println(admin.get("name"));
+                    guiAdminLogin.getTxtName().addItem((String)admin.get("name"));
+                }
             }
         } catch (RemoteException ex) {
             Logger.getLogger(ControllerGuiAdminLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
-        guiAdminLogin.clearFields();
+       guiAdminLogin.getTxtPassword().setText("");
     }
 
     @Override
@@ -80,7 +90,8 @@ public class ControllerGuiAdminLogin implements ActionListener {
         if (e.getSource().equals(guiAdminLogin.getBtnConfirm())) {
             try {
                 Map<String, Object> newUser;
-                newUser = crudAdmin.loginAdmin(guiAdminLogin.getTxtName().getText(), guiAdminLogin.getTxtPassword().getText());
+                String adminName =  (String) guiAdminLogin.getTxtName().getSelectedItem();
+                newUser = crudAdmin.loginAdmin(adminName, guiAdminLogin.getTxtPassword().getText());
                 if (newUser != null && controllerMain!=null) {
                     guiAdminLogin.setVisible(false);
                     controllerMain.initSession(newUser);
