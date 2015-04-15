@@ -21,6 +21,8 @@ import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -85,14 +87,8 @@ public class ControllerGuiCRUDProviders implements ActionListener {
             }
 
         });
-         //reviso si se clickea alguna fila de la tabla proveedores
-        this.guiCRUDProviders.getTableProviders().addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                //habilito el boton de eliminar proveedor
-                guiCRUDProviders.getBtnRemoveProvider().setEnabled(true);
-            }
-        });
+        //reviso si se clickea alguna fila de la tabla proveedores
+        
         //reviso si se clickea alguna fila de la tabla categorias
         this.guiCRUDProviders.getTableProviderCategories().addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -119,7 +115,7 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                         Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-                guiCRUDProviders.getBtnRemoveCategory().setEnabled(true);
+                //guiCRUDProviders.getBtnRemoveCategory().setEnabled(true);
                 //Si hago doble click en la tabla de categorías muestro un diálogo de edición.
                 if (evt.getClickCount() == 2) {
                     JTable target = (JTable) evt.getSource();
@@ -137,6 +133,29 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                             }
                         }
                     }
+                }
+            }
+        });
+        guiCRUDProviders.getTableProviders().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                int row = guiCRUDProviders.getTableProviders().getSelectedRow();
+                if (row == -1){
+                    guiCRUDProviders.getBtnRemoveProvider().setEnabled(false);
+                } else {
+                    guiCRUDProviders.getBtnRemoveProvider().setEnabled(true);
+                }
+            }
+        });
+        
+        guiCRUDProviders.getTableProviderCategories().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                int row = guiCRUDProviders.getTableProviderCategories().getSelectedRow();
+                if (row != -1){
+                    guiCRUDProviders.getBtnRemoveCategory().setEnabled(false);
                 }
             }
         });
@@ -189,13 +208,15 @@ public class ControllerGuiCRUDProviders implements ActionListener {
         //Si presiono el boton de agregar una nueva categoria
         if (e.getSource().equals(this.guiCRUDProviders.getBtnNewCategory())) {
             String categoryName = JOptionPane.showInputDialog(guiCRUDProviders, "Ingrese el nombre de la categoría.", "Modificar categoría", JOptionPane.PLAIN_MESSAGE);
-            if (categoryName != null && categoryName.trim().isEmpty()) {
-                JOptionPane.showMessageDialog(guiCRUDProviders, "Error: El nombre no puede ser vacío.", "Error", JOptionPane.ERROR_MESSAGE);
-            } else {
-                try {
-                    providerCategory.create(categoryName);
-                } catch (RemoteException ex) {
-                    Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
+            if (categoryName != null) {
+                if (categoryName.trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(guiCRUDProviders, "Error: El nombre no puede ser vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    try {
+                        providerCategory.create(categoryName);
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
         }
