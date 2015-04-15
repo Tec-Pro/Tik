@@ -14,6 +14,7 @@ import gui.GuiCRUDFProduct;
 import gui.GuiCRUDPProduct;
 import gui.GuiCRUDProductCategory;
 import gui.GuiCRUDUser;
+import gui.GuiJTree;
 import gui.GuiLoadPurchase;
 import gui.main.GuiMain;
 import gui.providers.GuiCRUDProviders;
@@ -53,6 +54,7 @@ public class ControllerMain implements ActionListener {
     private static GuiCRUDUser guiCRUDUser; //gui usuarios
     private static GuiNewProvider guiNewProvider;
     private static GuiLoadPurchase guiLoadPurchase;
+    private static GuiJTree guiJTree;
 
     //controladores
     private static ControllerGuiCRUDAdmin controllerCRUDAdmin; //controlador de la gui para admin
@@ -62,6 +64,7 @@ public class ControllerMain implements ActionListener {
     private ControllerGuiProductCategory controllerCRUDProductCategory; //controlador categorias de productos
     private ControllerGuiCRUDProviders controllerCRUDProviders;
     private ControllerGuiCRUDUser controllerCRUDUser;
+    private ControllerGuiJTree controllerGuiJTree;
     
     public ControllerMain(GuiAdminLogin guiAdminLogin) throws NotBoundException, MalformedURLException, RemoteException {
         this.guiAdminLogin = guiAdminLogin; //hago esto, así si cierra sesión pongo en visible la ventana
@@ -87,6 +90,7 @@ public class ControllerMain implements ActionListener {
         guiCRUDUser = new GuiCRUDUser();
         guiNewProvider = new GuiNewProvider();
         guiLoadPurchase = new GuiLoadPurchase();
+        guiJTree = new GuiJTree();
         
         //agrego las gui al desktop
         guiMain.getDesktop().add(guiCRUDAdmin);
@@ -98,6 +102,7 @@ public class ControllerMain implements ActionListener {
         guiMain.getDesktop().add(guiCRUDUser);        
         guiMain.getDesktop().add(guiNewProvider);
         guiMain.getDesktop().add(guiLoadPurchase);
+        guiMain.getDesktop().add(guiJTree);
         
         InterfaceProvider provider = (InterfaceProvider) Naming.lookup("//" + Config.ip + "/crudProvider");
         InterfaceProviderCategory providerCategory = (InterfaceProviderCategory ) Naming.lookup("//" + Config.ip + "/crudProviderCategory");
@@ -112,6 +117,7 @@ public class ControllerMain implements ActionListener {
         controllerCRUDProviders = new ControllerGuiCRUDProviders(guiCRUDProviders, guiNewProvider, provider, providerCategory, providersSearch);
         controllerCRUDUser = new ControllerGuiCRUDUser(guiCRUDUser);
         controllerCRUDPProduct = new ControllerGuiCRUDPproduct(guiCRUDPProduct,guiLoadPurchase);
+        controllerGuiJTree = new ControllerGuiJTree(guiJTree);
         //restauro el puntero asi ya se que termino de cargar todo
         guiMain.setCursor(Cursor.DEFAULT_CURSOR);
 
@@ -185,6 +191,11 @@ public class ControllerMain implements ActionListener {
         if(ae.getSource() == guiMain.getBtnEmployes()){
             guiCRUDUser.setVisible(true);
             guiCRUDUser.toFront();
+        }
+        //boton jtree
+        if(ae.getSource() == guiMain.getBtnJTree()){
+            guiJTree.setVisible(true);
+            guiJTree.toFront();
         }
     }
 

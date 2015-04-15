@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import models.Subcategory;
 import models.Category;
+import models.Fproduct;
 import org.javalite.activejdbc.Base;
 import utils.Utils;
 
@@ -185,6 +186,14 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
         Utils.abrirBase();
         Map<String, Object> ret = Subcategory.findFirst("name = ?", name).toMap();
          
+        return ret;
+    }
+
+    @Override
+    public List<Map> getFProductsSubcategory(int id) throws RemoteException {
+        Utils.abrirBase();
+        Subcategory subcategory = Subcategory.findById(id);
+        List<Map> ret =  subcategory.getAll(Fproduct.class).toMaps();
         return ret;
     }
 }

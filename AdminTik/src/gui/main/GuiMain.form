@@ -74,6 +74,14 @@
                 <Property name="text" type="java.lang.String" value="Categorias de los productos"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="btnJTree">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="JTree"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnJTreeActionPerformed"/>
+              </Events>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu4">

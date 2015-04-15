@@ -138,4 +138,13 @@ public interface InterfaceCategory extends Remote {
      * @throws RemoteException
      */
     public Map<String,Object> getSubcategory(String name)throws java.rmi.RemoteException;
+    
+    /**
+     * Retorna los FProducts pertenecientes a la subcategoria cuyo id es pasado como parametro.
+     * @param id de la subcategoria
+     * @return Map<String,Object>
+     * @throws RemoteException
+     */
+    public List<Map> getFProductsSubcategory(int id)throws java.rmi.RemoteException;
+    
 }
