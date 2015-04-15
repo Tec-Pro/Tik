@@ -145,4 +145,12 @@ public interface InterfaceCategory extends Remote {
      * @throws RemoteException
      */
     public List<Map> getFProductsSubcategory(int id)throws java.rmi.RemoteException;
+
+	/**
+     * Retorna la categoria padre de la subcategoria
+     * @param name de la subcategoria
+     * @return Map<String,Object>
+     * @throws RemoteException
+     */
+    public Map<String,Object> getCategoryOfSubcategory(int id)throws java.rmi.RemoteException;
 }

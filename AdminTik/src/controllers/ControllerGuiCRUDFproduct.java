@@ -23,6 +23,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import utils.Config;
 import utils.Pair;
@@ -87,11 +89,11 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
                 }
             }
         });
-        this.guiCRUDFProduct.getTableProducts().addMouseListener(new java.awt.event.MouseAdapter() {
+        this.guiCRUDFProduct.getTableProducts().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            public void valueChanged(ListSelectionEvent e) {
                 try {
-                    tableProductsMouseClicked(evt);
+                    tableProductsValueChanged();
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -189,15 +191,15 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
     }
 
     /**
-     * Mouse Clicked listener en la tabla para cargar el producto en los txt, y
+     * ListSelectionListener en la tabla para cargar el producto en los txt, y
      * los productos correspondientes en la receta (si es que se esta
      * modificando o creando un producto final)
      *
      * @param evt
      * @throws RemoteException
      */
-    public void tableProductsMouseClicked(java.awt.event.MouseEvent evt) throws RemoteException {
-        if (evt.getClickCount() == 2) {
+    public void tableProductsValueChanged() throws RemoteException {
+        if (tableProducts.getSelectedRow() != -1) {
             if (!editingInformation) {
                 guiCRUDFProduct.clicTableProducts();
                 int id = Integer.parseInt((String) tableProducts.getValueAt(tableProducts.getSelectedRow(), 0));
@@ -219,6 +221,10 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
                     }
                     tableReciperDefault.addRow(row);
                 }
+            }
+        } else {
+            if (!editingInformation) {
+                tableReciperDefault.setRowCount(0);
             }
         }
     }
@@ -325,64 +331,79 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
             }
         }
         if (e.getSource() == guiCRUDFProduct.getBtnSave() && editingInformation && isNew) {  //guardo un producto nuevo, boton guardar
-            try {
-                Map subC = category.getSubcategory(guiCRUDFProduct.getCategory().getSelectedItem().toString());
-                int subcategory_id = Integer.parseInt(subC.get("id").toString());//obtener categoria
-                List<Pair> listP = new LinkedList<Pair>();
-                List<Pair> listE = new LinkedList<Pair>();
-                for (int i = 0; i < tableReciper.getRowCount(); i++) { //cargo la lista de productos
-                    if (((String) tableReciper.getValueAt(i, 3)).equals("Primario")) {
-                        Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), Float.parseFloat((String) tableReciper.getValueAt(i, 2)));
-                        listP.add(p);
-                    } else {
-                        Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), Float.parseFloat((String) tableReciper.getValueAt(i, 2)));
-                        listE.add(p);
-                    }
-                }
-                String name = guiCRUDFProduct.getTxtName().getText();
+            if (guiCRUDFProduct.checkFields()) {
                 try {
-                    crudFproduct.create(name, subcategory_id, listP, listE);
-                    JOptionPane.showMessageDialog(guiCRUDFProduct, "¡Producto creado exitosamente!");
-                    editingInformation = false;
-                    guiCRUDFProduct.clicSaveProduct();
-                    fproductList = crudFproduct.getFproducts();
-                    refreshList();
+                    Map subC = category.getSubcategory(guiCRUDFProduct.getSubcategory().getSelectedItem().toString());
+                    int subcategory_id = Integer.parseInt(subC.get("id").toString());//obtener categoria
+                    List<Pair> listP = new LinkedList<Pair>();
+                    List<Pair> listE = new LinkedList<Pair>();
+                    for (int i = 0; i < tableReciper.getRowCount(); i++) { //cargo la lista de productos
+                        if (((String) tableReciper.getValueAt(i, 3)).equals("Primario")) {
+                            Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), Float.parseFloat((String) tableReciper.getValueAt(i, 2)));
+                            listP.add(p);
+                        } else {
+                            Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), Float.parseFloat((String) tableReciper.getValueAt(i, 2)));
+                            listE.add(p);
+                        }
+                    }
+                    String name = guiCRUDFProduct.getTxtName().getText();
+                    try {
+                        crudFproduct.create(name, subcategory_id, listP, listE);
+                        JOptionPane.showMessageDialog(guiCRUDFProduct, "¡Producto creado exitosamente!");
+                        editingInformation = false;
+                        guiCRUDFProduct.clicSaveProduct();
+                        fproductList = crudFproduct.getFproducts();
+                        refreshList();
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } catch (RemoteException ex) {
-                Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         if (e.getSource() == guiCRUDFProduct.getBtnSave() && editingInformation && !isNew) {  //modifico un producto, boton guardar
-            try {
-                Map subC = category.getSubcategory(guiCRUDFProduct.getCategory().getSelectedItem().toString());
-                int subcategory_id = Integer.parseInt(subC.get("id").toString());//obtener categoria
-                List<Pair> listP = new LinkedList<Pair>();
-                List<Pair> listE = new LinkedList<Pair>();
-                for (int i = 0; i < tableReciper.getRowCount(); i++) {
-                    if (((String) tableReciper.getValueAt(i, 3)).equals("Primario")) { //cargo la lista de productos
-                        Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), Float.parseFloat((String) tableReciper.getValueAt(i, 2)));
-                        listP.add(p);
-                    } else {
-                        Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), Float.parseFloat((String) tableReciper.getValueAt(i, 2)));
-                        listE.add(p);
-                    }
-                }
-                String name = guiCRUDFProduct.getTxtName().getText();
-                int id = Integer.parseInt(guiCRUDFProduct.getTxtId().getText());
+            if (guiCRUDFProduct.checkFields()) {
                 try {
-                    crudFproduct.modify(id, name, subcategory_id, listP, listE);
-                    JOptionPane.showMessageDialog(guiCRUDFProduct, "¡Producto modificado exitosamente!");
-                    editingInformation = false;
-                    guiCRUDFProduct.clicSaveProduct();
-                    fproductList = crudFproduct.getFproducts();
-                    refreshList();
+                    Map subC = category.getSubcategory(guiCRUDFProduct.getSubcategory().getSelectedItem().toString());
+                    int subcategory_id = Integer.parseInt(subC.get("id").toString());//obtener categoria
+                    List<Pair> listP = new LinkedList<Pair>();
+                    List<Pair> listE = new LinkedList<Pair>();
+                    for (int i = 0; i < tableReciper.getRowCount(); i++) {
+                        if (((String) tableReciper.getValueAt(i, 3)).equals("Primario")) { //cargo la lista de productos
+                            Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), Float.parseFloat((String) tableReciper.getValueAt(i, 2)));
+                            listP.add(p);
+                        } else {
+                            Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), Float.parseFloat((String) tableReciper.getValueAt(i, 2)));
+                            listE.add(p);
+                        }
+                    }
+                    String name = guiCRUDFProduct.getTxtName().getText();
+                    int id = Integer.parseInt(guiCRUDFProduct.getTxtId().getText());
+                    try {
+                        crudFproduct.modify(id, name, subcategory_id, listP, listE);
+                        JOptionPane.showMessageDialog(guiCRUDFProduct, "¡Producto modificado exitosamente!");
+                        editingInformation = false;
+                        guiCRUDFProduct.clicSaveProduct();
+                        fproductList = crudFproduct.getFproducts();
+                        refreshList();
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            }
+        }      
+        if (e.getSource() == guiCRUDFProduct.getBtnCancel()) { //creo un producto pero cancel0          
+            isNew = false;
+            editingInformation = false;
+            guiCRUDFProduct.clicSaveProduct();
+            try {
+                eproductList = crudEproduct.getEproducts();
+                refreshList();
             } catch (RemoteException ex) {
-                Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ControllerGuiCRUDEproduct.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 

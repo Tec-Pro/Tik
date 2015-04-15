@@ -68,17 +68,6 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
                 }
             }
         });
-//        this.guiCRUDPProduct.getTableProducts().addMouseListener(new java.awt.event.MouseAdapter() {
-//            @Override
-//            public void mouseClicked(java.awt.event.MouseEvent evt) {
-//                try {
-//                    tableMouseClicked(evt);
-//                } catch (RemoteException ex) {
-//                    Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
-//                    ex.getMessage();
-//                }
-//            }
-//        });
         this.guiCRUDPProduct.getTableProducts().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -192,62 +181,89 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
             }
         }
         if (e.getSource() == guiCRUDPProduct.getBtnSave() && editingInformation && isNew) { //guardo un producto nuevo, boton guardar
-            String name = guiCRUDPProduct.getTxtName().getText();
-            float stock = Float.parseFloat(guiCRUDPProduct.getTxtStock().getText());
-            float unitPrice = Float.parseFloat(guiCRUDPProduct.getTxtPrice().getText());
-            String measureUnit = "";
-            if (guiCRUDPProduct.getCboxMeasureUnit().getSelectedItem() != -1) {
-                measureUnit = guiCRUDPProduct.getCboxMeasureUnit().getSelectedItem().toString();
-            }
-            try {
-                pproduct.create(name, stock, measureUnit, unitPrice);
-                JOptionPane.showMessageDialog(guiCRUDPProduct, "¡Producto creado exitosamente!");
-                guiCRUDPProduct.clicSaveProduct();
-                productList = pproduct.getPproducts();
-                refreshList();
-            } catch (RemoteException ex) {
-                Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
+            if (guiCRUDPProduct.checkFields()) {
+                String name = guiCRUDPProduct.getTxtName().getText();
+                float stock = Float.parseFloat(guiCRUDPProduct.getTxtStock().getText().replace(',', '.'));
+                float unitPrice = Float.parseFloat(guiCRUDPProduct.getTxtPrice().getText().replace(',', '.'));
+                String measureUnit = "";
+                if (guiCRUDPProduct.getCboxMeasureUnit().getSelectedIndex() != -1) {
+                    measureUnit = guiCRUDPProduct.getCboxMeasureUnit().getSelectedItem().toString();
+                }
+                try {
+                    pproduct.create(name, stock, measureUnit, unitPrice);
+                    JOptionPane.showMessageDialog(guiCRUDPProduct, "¡Producto creado exitosamente!");
+                    guiCRUDPProduct.clicSaveProduct();
+                    productList = pproduct.getPproducts();
+                    refreshList();
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
         if (e.getSource() == guiCRUDPProduct.getBtnSave() && editingInformation && !isNew) { //modifico un producto, boton guardar
-            String name = guiCRUDPProduct.getTxtName().getText();
-            float stock = Float.parseFloat(guiCRUDPProduct.getTxtStock().getText());
-            float unitPrice = Float.parseFloat(guiCRUDPProduct.getTxtPrice().getText());
-            String measureUnit = guiCRUDPProduct.getCboxMeasureUnit().getSelectedItem().toString();
-            int id = Integer.parseInt(guiCRUDPProduct.getTxtId().getText());
-            try {
-                pproduct.modify(id, name, stock, measureUnit, unitPrice);
-                JOptionPane.showMessageDialog(guiCRUDPProduct, "¡Producto modificado exitosamente!");
-                guiCRUDPProduct.clicSaveProduct();
-                productList = pproduct.getPproducts();
-                refreshList();
-            } catch (RemoteException ex) {
-                Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
+            if (guiCRUDPProduct.checkFields()) {
+                String name = guiCRUDPProduct.getTxtName().getText();
+                float stock = Float.parseFloat(guiCRUDPProduct.getTxtStock().getText().replace(',', '.'));
+                float unitPrice = Float.parseFloat(guiCRUDPProduct.getTxtPrice().getText().replace(',', '.'));
+                String measureUnit = guiCRUDPProduct.getCboxMeasureUnit().getSelectedItem().toString();
+                int id = Integer.parseInt(guiCRUDPProduct.getTxtId().getText());
+                try {
+                    pproduct.modify(id, name, stock, measureUnit, unitPrice);
+                    JOptionPane.showMessageDialog(guiCRUDPProduct, "¡Producto modificado exitosamente!");
+                    guiCRUDPProduct.clicSaveProduct();
+                    productList = pproduct.getPproducts();
+                    refreshList();
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
         if (e.getSource() == guiCRUDPProduct.getBtnCancel() && editingInformation && !isNew) {  //modifico un producto pero cancelo 
             try {
+                editingInformation = false;
                 guiCRUDPProduct.clicSaveProduct();
                 guiCRUDPProduct.clicTableProducts();
                 guiCRUDPProduct.loadProduct(product);
+                productList = pproduct.getPproducts();
+                refreshList();
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         if (e.getSource() == guiCRUDPProduct.getBtnCancel() && editingInformation && isNew) { //creo un producto pero cancel0          
             guiCRUDPProduct.clicSaveProduct();
+            isNew = false;
+            editingInformation = false;
+            try {
+                productList = pproduct.getPproducts();
+                refreshList();
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         if (e.getSource() == guiCRUDPProduct.getBtnPurchase()) {
             guiLoadPurchase.getTxtId().setText(guiCRUDPProduct.getTxtId().getText());
+            if (product.get("measure_unit").toString().equals("unitario")) {
+                guiLoadPurchase.getcBoxMeasureUnit().removeAllItems();
+                guiLoadPurchase.getcBoxMeasureUnit().addItem("unitario");
+            }
+            if (product.get("measure_unit").toString().equals("ml")) {
+                guiLoadPurchase.getcBoxMeasureUnit().removeAllItems();
+                guiLoadPurchase.getcBoxMeasureUnit().addItem("ml");
+                guiLoadPurchase.getcBoxMeasureUnit().addItem("L");
+            }
+            if (product.get("measure_unit").toString().equals("gr")) {
+                guiLoadPurchase.getcBoxMeasureUnit().removeAllItems();
+                guiLoadPurchase.getcBoxMeasureUnit().addItem("gr");
+                guiLoadPurchase.getcBoxMeasureUnit().addItem("Kg");
+            }
             guiLoadPurchase.setVisible(true);
+            guiLoadPurchase.toFront();
             guiLoadPurchase.show();
-            guiCRUDPProduct.setVisible(false);
         }
         if (e.getSource() == guiLoadPurchase.getBtnCancel()) { //cancelo la carga de una compra  
             guiLoadPurchase.setVisible(false);
             guiLoadPurchase.clear();
-            guiCRUDPProduct.setVisible(true);
-            guiCRUDPProduct.show();
             guiCRUDPProduct.clicSaveProduct();
             try {
                 guiCRUDPProduct.clicTableProducts();
@@ -257,30 +273,39 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
             }
         }
         if (e.getSource() == guiLoadPurchase.getBtnSave()) { //guardo la compra
-            int idx = Integer.parseInt(guiLoadPurchase.getTxtId().getText());
-            String measureU = guiLoadPurchase.getcBoxMeasureUnit().getSelectedItem().toString();
-            float price = Float.parseFloat(guiLoadPurchase.getTxtPrice().getText());
-            float amount = Float.parseFloat(guiLoadPurchase.getTxtAmount().getText());
-            if (guiLoadPurchase.getCheckBoxOnlyCalculate().isSelected()) { //me fijo si solo hay que calcular el precio
-                try {
-                    pproduct.loadPurchase(idx, measureU, price, amount);
-                } catch (RemoteException ex) {
-                    Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
+            if (guiLoadPurchase.checkFields()) {
+                int idx = Integer.parseInt(guiLoadPurchase.getTxtId().getText());
+                String measureU = guiLoadPurchase.getcBoxMeasureUnit().getItemAt(guiLoadPurchase.getcBoxMeasureUnit().getSelectedIndex()).toString();
+                float price = Float.parseFloat(guiLoadPurchase.getTxtPrice().getText().replace(',', '.'));
+                float amount = Float.parseFloat(guiLoadPurchase.getTxtAmount().getText().replace(',', '.'));
+                if (guiLoadPurchase.getCheckBoxOnlyCalculate().isSelected()) { //me fijo si solo hay que calcular el precio
+                    try {
+                        pproduct.calculateUnitPrice(idx, measureU, price, amount);
+                        productList = pproduct.getPproducts();
+                        refreshList();
+                        product = pproduct.getPproduct(Integer.parseInt(guiLoadPurchase.getTxtId().getText()));
+                        guiCRUDPProduct.loadProduct(product);
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    JOptionPane.showMessageDialog(guiLoadPurchase, "¡Compra registrada exitosamente!");
+                } else {
+                    try {
+                        pproduct.loadPurchase(idx, measureU, price, amount);
+                        productList = pproduct.getPproducts();
+                        refreshList();
+                        product = pproduct.getPproduct(Integer.parseInt(guiLoadPurchase.getTxtId().getText()));
+                        guiCRUDPProduct.loadProduct(product);
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    JOptionPane.showMessageDialog(guiLoadPurchase, "¡Precio calculado exitosamente!");
                 }
-                JOptionPane.showMessageDialog(guiLoadPurchase, "¡Compra registrada exitosamente!");
-            } else {
-                try {
-                    pproduct.calculateUnitPrice(idx, measureU, price, amount);
-                } catch (RemoteException ex) {
-                    Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                JOptionPane.showMessageDialog(guiLoadPurchase, "¡Precio calculado exitosamente!");
+                guiLoadPurchase.setVisible(false);
+                guiLoadPurchase.clear();
+                guiCRUDPProduct.clicSaveProduct();
+
             }
-            guiLoadPurchase.setVisible(false);
-            guiLoadPurchase.clear();
-            guiCRUDPProduct.setVisible(true);
-            guiCRUDPProduct.show();
-            guiCRUDPProduct.clicSaveProduct();
         }
     }
 }

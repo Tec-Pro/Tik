@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 /**
@@ -74,8 +75,25 @@ public class GuiLoadPurchase extends javax.swing.JInternalFrame {
     public JCheckBox getCheckBoxOnlyCalculate() {
         return checkBoxOnlyCalculate;
     }
-
     
+    /**
+     * chequea que los campos no esten vacios
+     */
+    public boolean checkFields(){        
+        if (txtPrice.getText().isEmpty()){
+          JOptionPane.showMessageDialog(this, "Precio vacio, por favor complete el campo");  
+          return false;
+        }
+        if (txtAmount.getText().isEmpty()){
+          JOptionPane.showMessageDialog(this, "Cantidad vacia, por favor complete el campo");  
+          return false;
+        }
+        if(cBoxMeasureUnit.getSelectedIndex() == -1 ){
+           JOptionPane.showMessageDialog(this, "No hay unidad de medida seleccionada, por favor seleccione una");  
+          return false; 
+        }        
+        return true;
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.

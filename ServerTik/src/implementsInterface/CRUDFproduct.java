@@ -147,7 +147,7 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
     @Override
     public List<Map> getFproducts(String name) throws java.rmi.RemoteException {
         Utils.abrirBase();
-        List<Map> ret = Fproduct.where("removed = ? and (id = ? or name = ?)", 0, name, name).toMaps();
+        List<Map> ret = Fproduct.where("removed = ? and (id like ? or name like ?)", 0, "%"+name+"%", "%"+name+"%").toMaps();
          
         return ret;
     }

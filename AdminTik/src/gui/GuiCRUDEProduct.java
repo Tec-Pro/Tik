@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 import java.util.Map;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -37,6 +38,7 @@ public class GuiCRUDEProduct extends javax.swing.JInternalFrame {
         this.btnModify.addActionListener(lis);
         this.btnNew.addActionListener(lis);
         this.btnSave.addActionListener(lis);
+        this.btnCancel.addActionListener(lis);
     }
 
     /**
@@ -63,6 +65,7 @@ public class GuiCRUDEProduct extends javax.swing.JInternalFrame {
         btnDelete.setEnabled(false);
         btnModify.setEnabled(false);
         tableReciper.setEnabled(true);
+        btnCancel.setEnabled(true);
     }
 
     /**
@@ -76,6 +79,7 @@ public class GuiCRUDEProduct extends javax.swing.JInternalFrame {
         btnDelete.setEnabled(false);
         btnModify.setEnabled(false);
         tableReciper.setEnabled(false);
+        btnCancel.setEnabled(false);
     }
 
     /**
@@ -101,6 +105,7 @@ public class GuiCRUDEProduct extends javax.swing.JInternalFrame {
         btnSave.setEnabled(false);
         btnDelete.setEnabled(false);
         btnModify.setEnabled(false);
+        btnCancel.setEnabled(false);
     }
 
     /**
@@ -114,6 +119,7 @@ public class GuiCRUDEProduct extends javax.swing.JInternalFrame {
         btnDelete.setEnabled(false);
         btnModify.setEnabled(false);
         tableReciper.setEnabled(true);
+        btnCancel.setEnabled(true);
     }
 
     public JButton getBtnDelete() {
@@ -160,6 +166,10 @@ public class GuiCRUDEProduct extends javax.swing.JInternalFrame {
         return tableReciper;
     }
 
+    public JButton getBtnCancel() {
+        return btnCancel;
+    }
+
     /**
      * cargae el producto elaborado en los txt
      *
@@ -169,6 +179,21 @@ public class GuiCRUDEProduct extends javax.swing.JInternalFrame {
     public void loadProduct(Map<String, Object> prod) throws RemoteException {
         txtId.setText(prod.get("id").toString());
         txtName.setText(prod.get("name").toString());
+    }
+
+    /**
+     * chequea que los campos no esten vacios
+     */
+    public boolean checkFields() {
+        if (txtName.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Nombre vacio, por favor complete el campo");
+            return false;
+        }
+        if (tableReciper.getRowCount() < 1) {
+            JOptionPane.showMessageDialog(this, "No se cargo ningun producto primario");
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -188,6 +213,7 @@ public class GuiCRUDEProduct extends javax.swing.JInternalFrame {
         btnNew = new javax.swing.JButton();
         btnModify = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
+        btnCancel = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
         txtName = new javax.swing.JTextField();
@@ -232,6 +258,10 @@ public class GuiCRUDEProduct extends javax.swing.JInternalFrame {
         btnSave.setToolTipText("Guardar cambios realizados");
         btnSave.setEnabled(false);
 
+        btnCancel.setText("Cancelar");
+        btnCancel.setToolTipText("Cancelar");
+        btnCancel.setEnabled(false);
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
@@ -244,6 +274,8 @@ public class GuiCRUDEProduct extends javax.swing.JInternalFrame {
                 .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0))
         );
         jPanel8Layout.setVerticalGroup(
@@ -253,7 +285,8 @@ public class GuiCRUDEProduct extends javax.swing.JInternalFrame {
                     .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnNew, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnModify, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, 0))
         );
 
@@ -264,7 +297,7 @@ public class GuiCRUDEProduct extends javax.swing.JInternalFrame {
         txtId.setDisabledTextColor(new java.awt.Color(16, 2, 245));
         txtId.setEnabled(false);
 
-        txtName.setToolTipText("Precio de compra");
+        txtName.setToolTipText("Nombre");
         txtName.setDisabledTextColor(new java.awt.Color(16, 2, 245));
         txtName.setEnabled(false);
 
@@ -274,10 +307,6 @@ public class GuiCRUDEProduct extends javax.swing.JInternalFrame {
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
@@ -290,6 +319,10 @@ public class GuiCRUDEProduct extends javax.swing.JInternalFrame {
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))))
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -301,13 +334,11 @@ public class GuiCRUDEProduct extends javax.swing.JInternalFrame {
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addGap(18, 18, 18)
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         txtSearch.setForeground(new java.awt.Color(130, 125, 120));
-        txtSearch.setText("Buscar producto...");
         txtSearch.setToolTipText("Búsqueda personalizada");
 
         tableProducts.setModel(new javax.swing.table.DefaultTableModel(
@@ -357,15 +388,18 @@ public class GuiCRUDEProduct extends javax.swing.JInternalFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(20, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addGap(0, 0, 0)
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(13, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -391,7 +425,7 @@ public class GuiCRUDEProduct extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
         );
 
         pack();
@@ -400,8 +434,8 @@ public class GuiCRUDEProduct extends javax.swing.JInternalFrame {
     private void btnModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnModifyActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnModify;
     private javax.swing.JButton btnNew;

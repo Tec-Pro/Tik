@@ -196,4 +196,14 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
         List<Map> ret =  subcategory.getAll(Fproduct.class).toMaps();
         return ret;
     }
+
+	public Map<String, Object> getCategoryOfSubcategory(int id) throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        Subcategory subcategory = Subcategory.findById(id);
+        Map<String, Object> ret = null;
+        if (subcategory != null) {
+            ret = subcategory.parent(Category.class).toMap();
+        }
+        return ret;
+    }
 }
