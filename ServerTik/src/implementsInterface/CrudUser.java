@@ -157,10 +157,4 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
         List<Map> ret = User.findAll().toMaps();
         return ret;
     }
-
-    @Override
-    public String decryptPass(byte[] pass) throws Exception {
-        return Encryption.decrypt(pass);
-    }
-    
 }

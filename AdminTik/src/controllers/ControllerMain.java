@@ -46,25 +46,25 @@ public class ControllerMain implements ActionListener {
     //guis
     private static GuiAdminLogin guiAdminLogin; //para poder cerrar sesión
     private static GuiCRUDAdmin guiCRUDAdmin; //gui del crud de admin
-    private static GuiCRUDEProduct guiCRUDEProduct; //gui productos elaborados
-    private static GuiCRUDPProduct guiCRUDPProduct; //gui productos primarios
-    private static GuiCRUDFProduct guiCRUDFProduct; //gui productos finales
-    private static GuiCRUDProductCategory guiCRUDProductCategory; //gui categoria productos
-    private static GuiCRUDProviders guiCRUDProviders; 
+    //private static GuiCRUDEProduct guiCRUDEProduct; //gui productos elaborados
+    //private static GuiCRUDPProduct guiCRUDPProduct; //gui productos primarios
+    //private static GuiCRUDFProduct guiCRUDFProduct; //gui productos finales
+    //private static GuiCRUDProductCategory guiCRUDProductCategory; //gui categoria productos
+    //private static GuiCRUDProviders guiCRUDProviders; 
     private static GuiCRUDUser guiCRUDUser; //gui usuarios
-    private static GuiNewProvider guiNewProvider;
-    private static GuiLoadPurchase guiLoadPurchase;
-    private static GuiJTree guiJTree;
+    //private static GuiNewProvider guiNewProvider;
+    //private static GuiLoadPurchase guiLoadPurchase;
+    //private static GuiJTree guiJTree;
 
     //controladores
     private static ControllerGuiCRUDAdmin controllerCRUDAdmin; //controlador de la gui para admin
-    private ControllerGuiCRUDEproduct controllerCRUDEProduct; //controlador productos elaborados
-    private ControllerGuiCRUDPproduct controllerCRUDPProduct; //controlador productos primarios
-    private ControllerGuiCRUDFproduct controllerCRUDFProduct; //controlador productos finales
-    private ControllerGuiProductCategory controllerCRUDProductCategory; //controlador categorias de productos
-    private ControllerGuiCRUDProviders controllerCRUDProviders;
+    //private ControllerGuiCRUDEproduct controllerCRUDEProduct; //controlador productos elaborados
+    //private ControllerGuiCRUDPproduct controllerCRUDPProduct; //controlador productos primarios
+    //private ControllerGuiCRUDFproduct controllerCRUDFProduct; //controlador productos finales
+    //private ControllerGuiProductCategory controllerCRUDProductCategory; //controlador categorias de productos
+   // private ControllerGuiCRUDProviders controllerCRUDProviders;
     private ControllerGuiCRUDUser controllerCRUDUser;
-    private ControllerGuiJTree controllerGuiJTree;
+    //private ControllerGuiJTree controllerGuiJTree;
     
     public ControllerMain(GuiAdminLogin guiAdminLogin) throws NotBoundException, MalformedURLException, RemoteException {
         this.guiAdminLogin = guiAdminLogin; //hago esto, así si cierra sesión pongo en visible la ventana
@@ -82,42 +82,42 @@ public class ControllerMain implements ActionListener {
          */
         //creo las gui
         guiCRUDAdmin = new GuiCRUDAdmin();
-        guiCRUDEProduct = new GuiCRUDEProduct();
-        guiCRUDFProduct = new GuiCRUDFProduct();
-        guiCRUDPProduct = new GuiCRUDPProduct();
-        guiCRUDProductCategory = new GuiCRUDProductCategory();
-        guiCRUDProviders = new GuiCRUDProviders();
+        //guiCRUDEProduct = new GuiCRUDEProduct();
+        //guiCRUDFProduct = new GuiCRUDFProduct();
+        //guiCRUDPProduct = new GuiCRUDPProduct();
+        //guiCRUDProductCategory = new GuiCRUDProductCategory();
+        //guiCRUDProviders = new GuiCRUDProviders();
         guiCRUDUser = new GuiCRUDUser();
-        guiNewProvider = new GuiNewProvider();
-        guiLoadPurchase = new GuiLoadPurchase();
-        guiJTree = new GuiJTree();
+        //guiNewProvider = new GuiNewProvider();
+       // guiLoadPurchase = new GuiLoadPurchase();
+        //guiJTree = new GuiJTree();
         
         //agrego las gui al desktop
         guiMain.getDesktop().add(guiCRUDAdmin);
-        guiMain.getDesktop().add(guiCRUDEProduct);
-        guiMain.getDesktop().add(guiCRUDFProduct);
-        guiMain.getDesktop().add(guiCRUDPProduct);
-        guiMain.getDesktop().add(guiCRUDProductCategory);
-        guiMain.getDesktop().add(guiCRUDProviders);
+        //guiMain.getDesktop().add(guiCRUDEProduct);
+       // guiMain.getDesktop().add(guiCRUDFProduct);
+        //guiMain.getDesktop().add(guiCRUDPProduct);
+       // guiMain.getDesktop().add(guiCRUDProductCategory);
+       // guiMain.getDesktop().add(guiCRUDProviders);
         guiMain.getDesktop().add(guiCRUDUser);        
-        guiMain.getDesktop().add(guiNewProvider);
-        guiMain.getDesktop().add(guiLoadPurchase);
-        guiMain.getDesktop().add(guiJTree);
+       // guiMain.getDesktop().add(guiNewProvider);
+       // guiMain.getDesktop().add(guiLoadPurchase);
+       // guiMain.getDesktop().add(guiJTree);
         
-        InterfaceProvider provider = (InterfaceProvider) Naming.lookup("//" + Config.ip + "/crudProvider");
-        InterfaceProviderCategory providerCategory = (InterfaceProviderCategory ) Naming.lookup("//" + Config.ip + "/crudProviderCategory");
-        InterfaceProvidersSearch providersSearch = (InterfaceProvidersSearch) Naming.lookup("//" + Config.ip + "/providersSearch");
+        //InterfaceProvider provider = (InterfaceProvider) Naming.lookup("//" + Config.ip + "/crudProvider");
+        //InterfaceProviderCategory providerCategory = (InterfaceProviderCategory ) Naming.lookup("//" + Config.ip + "/crudProviderCategory");
+        //InterfaceProvidersSearch providersSearch = (InterfaceProvidersSearch) Naming.lookup("//" + Config.ip + "/providersSearch");
 
         
         //creo los controladores 
         controllerCRUDAdmin = new ControllerGuiCRUDAdmin(userLogged, guiCRUDAdmin);
-        controllerCRUDEProduct = new ControllerGuiCRUDEproduct(guiCRUDEProduct);
-        controllerCRUDFProduct = new ControllerGuiCRUDFproduct(guiCRUDFProduct);
-        controllerCRUDProductCategory = new ControllerGuiProductCategory(guiCRUDProductCategory);
-        controllerCRUDProviders = new ControllerGuiCRUDProviders(guiCRUDProviders, guiNewProvider, provider, providerCategory, providersSearch);
+      //  controllerCRUDEProduct = new ControllerGuiCRUDEproduct(guiCRUDEProduct);
+      //  controllerCRUDFProduct = new ControllerGuiCRUDFproduct(guiCRUDFProduct);
+       // controllerCRUDProductCategory = new ControllerGuiProductCategory(guiCRUDProductCategory);
+      //  controllerCRUDProviders = new ControllerGuiCRUDProviders(guiCRUDProviders, guiNewProvider, provider, providerCategory, providersSearch);
         controllerCRUDUser = new ControllerGuiCRUDUser(guiCRUDUser);
-        controllerCRUDPProduct = new ControllerGuiCRUDPproduct(guiCRUDPProduct,guiLoadPurchase);
-        controllerGuiJTree = new ControllerGuiJTree(guiJTree);
+      //  controllerCRUDPProduct = new ControllerGuiCRUDPproduct(guiCRUDPProduct,guiLoadPurchase);
+      //  controllerGuiJTree = new ControllerGuiJTree(guiJTree);
         //restauro el puntero asi ya se que termino de cargar todo
         guiMain.setCursor(Cursor.DEFAULT_CURSOR);
 
@@ -131,14 +131,14 @@ public class ControllerMain implements ActionListener {
         guiAdminLogin.clearFields();
         ControllerGuiAdminLogin.getAllAdmins();
         guiCRUDAdmin.dispose();
-        guiCRUDEProduct.dispose();
-        guiCRUDFProduct.dispose();
-        guiCRUDPProduct.dispose();
-        guiCRUDProductCategory.dispose();
-        guiCRUDProviders.dispose();
-        guiNewProvider.dispose();
+      //  guiCRUDEProduct.dispose();
+       // guiCRUDFProduct.dispose();
+       // guiCRUDPProduct.dispose();
+      //  guiCRUDProductCategory.dispose();
+       // guiCRUDProviders.dispose();
+      //  guiNewProvider.dispose();
         guiCRUDUser.dispose();
-        guiLoadPurchase.dispose();
+      //  guiLoadPurchase.dispose();
     }
 
     @Override
@@ -163,29 +163,29 @@ public class ControllerMain implements ActionListener {
         }
         //boton producto elaborado
         if (ae.getSource() == guiMain.getBtnEProduct()) {
-            guiCRUDEProduct.setVisible(true);
-            guiCRUDEProduct.toFront();
+      //      guiCRUDEProduct.setVisible(true);
+     //       guiCRUDEProduct.toFront();
         }
         //boton producto final
         if (ae.getSource() == guiMain.getBtnFProduct()) {
-            guiCRUDFProduct.setVisible(true);
-            guiCRUDFProduct.toFront();
+      //      guiCRUDFProduct.setVisible(true);
+       //     guiCRUDFProduct.toFront();
         }
         //boton producto primario
         if (ae.getSource() == guiMain.getBtnPProduct()) {
-            guiCRUDPProduct.setVisible(true);
-            guiCRUDPProduct.toFront();
+       //     guiCRUDPProduct.setVisible(true);
+       //     guiCRUDPProduct.toFront();
         }
         //boton categoria producto
         if (ae.getSource() == guiMain.getBtnProductCategory()) {
-            guiCRUDProductCategory.setVisible(true);
-            guiCRUDProductCategory.toFront();
+        //   guiCRUDProductCategory.setVisible(true);
+      //      guiCRUDProductCategory.toFront();
         }
         //boton proveedores
         if (ae.getSource() == guiMain.getBtnProviders()) {
-            guiCRUDProviders.cleanComponents();
-            guiCRUDProviders.setVisible(true);
-            guiCRUDProviders.toFront();
+      //      guiCRUDProviders.cleanComponents();
+      //      guiCRUDProviders.setVisible(true);
+       //     guiCRUDProviders.toFront();
         }
         //boton empleados
         if(ae.getSource() == guiMain.getBtnEmployes()){
@@ -194,8 +194,8 @@ public class ControllerMain implements ActionListener {
         }
         //boton jtree
         if(ae.getSource() == guiMain.getBtnJTree()){
-            guiJTree.setVisible(true);
-            guiJTree.toFront();
+       //     guiJTree.setVisible(true);
+       //     guiJTree.toFront();
         }
     }
 

@@ -34,6 +34,8 @@ public class ControllerGuiCRUDUser implements ActionListener{
     private final GuiCRUDUser guiUser;
     private final InterfaceUser crudUser;
     private final DefaultTableModel dtmUsers;
+    private boolean modifyMode = false;
+    private boolean createMode = false;
     
    public ControllerGuiCRUDUser(GuiCRUDUser gui) throws NotBoundException, MalformedURLException, RemoteException{
         crudUser = (InterfaceUser) Naming.lookup("//" + Config.ip + "/crudUser");
@@ -51,22 +53,31 @@ public class ControllerGuiCRUDUser implements ActionListener{
                         Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 } else {
-                    guiUser.cleanFields();
-                    guiUser.modifyMode(false);
+                    if (createMode){
+                        //doNothing();
+                    }else{ //selectionMode or modifyMode
+                        modifyMode = false;
+                        guiUser.initialMode(true);
+                    }
                 }  
             }
         });
         dtmUsers = guiUser.getDtmUsers();
         updateDtmUsers();
         guiUser.setActionListener(this);
-        guiUser.cleanFields();
-        guiUser.modifyMode(false);
+        guiUser.initialMode(true);
     }
     
     private void tableUserMouseClicked(MouseEvent evt) throws RemoteException, Exception {
-        int r = guiUser.getTableUsers().getSelectedRow();
-        loadSelectedUser((int) guiUser.getDtmUsers().getValueAt(r, 0));
-        guiUser.modifyMode(true);
+        if (createMode){
+            //doNothing();
+        }else{ //selectionMode or modifyMode
+            if (!modifyMode){
+                guiUser.selectionMode(true);
+            }    
+            int r = guiUser.getTableUsers().getSelectedRow();
+            loadSelectedUser((int) guiUser.getDtmUsers().getValueAt(r, 0));
+        }
     }
     
     public void loadSelectedUser(int id) throws RemoteException, Exception {
@@ -120,6 +131,11 @@ public class ControllerGuiCRUDUser implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource().equals(guiUser.getBtnCreate())){ //If the button pressed is Create
+            createMode = true;
+            guiUser.cleanFields();
+            guiUser.createMode(createMode);
+        }
+        if(e.getSource().equals(guiUser.getBtnSave()) && createMode ){ // If the button pressed is Save and is in createMode
             if(!dataIsValid()){
                 JOptionPane.showMessageDialog(guiUser, "Nombre, Apellido, Contrasena y Posicion no pueden eestar vacios!", "Error!", JOptionPane.ERROR_MESSAGE);
             } else{
@@ -152,9 +168,11 @@ public class ControllerGuiCRUDUser implements ActionListener{
                 } catch (RemoteException ex){
                     Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                createMode = false;
+                guiUser.initialMode(true);
             }
         }
-        if(e.getSource().equals(guiUser.getBtnModify())){ //If the button pressed is Modify
+        if(e.getSource().equals(guiUser.getBtnSave()) && modifyMode ){ // If the button pressed is Save and is in modifyMode
             if(!dataIsValid()){
                 JOptionPane.showMessageDialog(guiUser, "Nombre, Apellido, Contrasena y Posicion no pueden estar vacios!", "Error!", JOptionPane.ERROR_MESSAGE);
             } else{
@@ -189,26 +207,43 @@ public class ControllerGuiCRUDUser implements ActionListener{
                 } catch (RemoteException ex){
                     Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }       
+                modifyMode = false;
+                guiUser.initialMode(true);
+            }
         }
-        if(e.getSource().equals(guiUser.getBtnDelete())){ //If the button pressed is Delete
-            if(!dataIsValid()){
-                JOptionPane.showMessageDialog(guiUser, "Nombre, Apellido, Contrasena y Posicion no pueden eestar vacios!", "Error!", JOptionPane.ERROR_MESSAGE);
-            } else{
-                try {
+        
+        if(e.getSource().equals(guiUser.getBtnModify())){ //If the button pressed is Modify
+            modifyMode = true;
+            guiUser.modifyMode(modifyMode);
+        }
+        if(e.getSource().equals(guiUser.getBtnDelete()) && !modifyMode && !createMode ){ //If the button pressed is Delete and I'm not in modifyMode or createMode
+            try {
+                int option = JOptionPane.showConfirmDialog(null,"Estas seguro que desea borrar el empleado: ", "Warning", JOptionPane.YES_NO_OPTION);
+                if(option == 0){
                     int row = guiUser.getTableUsers().getSelectedRow();
                     boolean user;
                     user = crudUser.delete( (int) dtmUsers.getValueAt(row, 0));
                     if(user == true){
-                        JOptionPane.showMessageDialog(guiUser, "Usuario borrado exitosamente!", "Usuario borrado!", JOptionPane.INFORMATION_MESSAGE);
-                        updateDtmUsers();
+                            JOptionPane.showMessageDialog(guiUser, "Usuario borrado exitosamente!", "Usuario borrado!", JOptionPane.INFORMATION_MESSAGE);
+                           updateDtmUsers();   
                     }else{
                         JOptionPane.showMessageDialog(guiUser, "Problemas! No se pudo borrar!", "Error!", JOptionPane.ERROR_MESSAGE);
                     }
-                } catch (RemoteException ex){
-                    Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            } catch (RemoteException ex){
+                Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, ex);
+                
             }       
+        }
+        
+        if(e.getSource().equals(guiUser.getBtnDelete()) && createMode ){ //If the button pressed is Delete and I'm in createMode
+            createMode = false;
+            guiUser.initialMode(true);
+        }
+        
+        if(e.getSource().equals(guiUser.getBtnDelete()) && modifyMode ){ //If the button pressed is Delete and I'm in modifyMode
+            modifyMode = false;
+            guiUser.initialMode(true);
         }
     }
     
