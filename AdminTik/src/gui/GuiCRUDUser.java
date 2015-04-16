@@ -76,10 +76,11 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         panelEmployeeSchedule = new javax.swing.JPanel();
         scrollEmployeeSchedule = new javax.swing.JScrollPane();
         tableEmployeeSchedule = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
         btnCreate = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
         btnModify = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
-        btnDelete = new javax.swing.JButton();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -87,8 +88,8 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setResizable(true);
         setTitle("Empleados");
-        setMinimumSize(new java.awt.Dimension(900, 700));
-        setPreferredSize(new java.awt.Dimension(900, 700));
+        setMinimumSize(new java.awt.Dimension(1200, 700));
+        setPreferredSize(new java.awt.Dimension(1200, 700));
 
         tableUsers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -210,7 +211,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         panelFieldsLayout.setHorizontalGroup(
             panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelFieldsLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelFieldsLayout.createSequentialGroup()
                         .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -281,7 +282,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
                         .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblExitDate1)
                             .addComponent(dateExitDate, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(boxPosition, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblPosition))
@@ -365,23 +366,23 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
 
         tableEmployeeSchedule.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Entrada", "Salida"
+                "ID", "Dia Entrada", "Hora Entrada", "Dia Salida", "Hora Salida"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -393,6 +394,9 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
             }
         });
         scrollEmployeeSchedule.setViewportView(tableEmployeeSchedule);
+        if (tableEmployeeSchedule.getColumnModel().getColumnCount() > 0) {
+            tableEmployeeSchedule.getColumnModel().getColumn(0).setPreferredWidth(30);
+        }
 
         javax.swing.GroupLayout panelEmployeeScheduleLayout = new javax.swing.GroupLayout(panelEmployeeSchedule);
         panelEmployeeSchedule.setLayout(panelEmployeeScheduleLayout);
@@ -400,7 +404,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
             panelEmployeeScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelEmployeeScheduleLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(scrollEmployeeSchedule, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
+                .addComponent(scrollEmployeeSchedule)
                 .addContainerGap())
         );
         panelEmployeeScheduleLayout.setVerticalGroup(
@@ -411,19 +415,25 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
+        jPanel1.setLayout(new java.awt.GridLayout(2, 2));
+
         btnCreate.setText("Nuevo");
+        jPanel1.add(btnCreate);
+
+        btnDelete.setText("Borrar");
+        jPanel1.add(btnDelete);
 
         btnModify.setText("Modificar");
-        btnModify.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        btnModify.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnModify.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnModifyActionPerformed(evt);
             }
         });
+        jPanel1.add(btnModify);
 
         btnSave.setText("Guardar");
-
-        btnDelete.setText("Borrar");
+        jPanel1.add(btnSave);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -432,43 +442,28 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addGap(30, 30, 30))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(panelFields, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(panelFields, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(panelEmployeeSchedule, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnModify, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(30, 30, 30))))
+                            .addComponent(panelEmployeeSchedule, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(30, 30, 30))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
                 .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(panelEmployeeSchedule, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnCreate)
-                            .addComponent(btnModify))
-                        .addGap(27, 27, 27)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnSave)
-                            .addComponent(btnDelete)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(panelFields, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18))
         );
 
         pack();
@@ -512,6 +507,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
     private com.toedter.calendar.JDateChooser dateBirthDate;
     private com.toedter.calendar.JDateChooser dateEntryDate;
     private com.toedter.calendar.JDateChooser dateExitDate;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAddress;
     private javax.swing.JLabel lblBloodType;
