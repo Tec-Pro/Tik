@@ -25,11 +25,14 @@ import interfaces.providers.InterfaceProvidersSearch;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyVetoException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import utils.Config;
@@ -163,32 +166,62 @@ public class ControllerMain implements ActionListener {
         }
         //boton producto elaborado
         if (ae.getSource() == guiMain.getBtnEProduct()) {
+            try {
+                guiCRUDEProduct.setMaximum(true);
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
             guiCRUDEProduct.setVisible(true);
             guiCRUDEProduct.toFront();
         }
         //boton producto final
         if (ae.getSource() == guiMain.getBtnFProduct()) {
+            try {
+                guiCRUDFProduct.setMaximum(true);
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
             guiCRUDFProduct.setVisible(true);
             guiCRUDFProduct.toFront();
         }
         //boton producto primario
         if (ae.getSource() == guiMain.getBtnPProduct()) {
+            try {
+                guiCRUDPProduct.setMaximum(true);
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
             guiCRUDPProduct.setVisible(true);
             guiCRUDPProduct.toFront();
         }
         //boton categoria producto
         if (ae.getSource() == guiMain.getBtnProductCategory()) {
-           guiCRUDProductCategory.setVisible(true);
+            try {
+                guiCRUDProductCategory.setMaximum(true);
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            guiCRUDProductCategory.setVisible(true);
             guiCRUDProductCategory.toFront();
         }
         //boton proveedores
         if (ae.getSource() == guiMain.getBtnProviders()) {
             guiCRUDProviders.cleanComponents();
+            try {
+                guiCRUDProviders.setMaximum(true);
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
             guiCRUDProviders.setVisible(true);
             guiCRUDProviders.toFront();
         }
         //boton empleados
         if(ae.getSource() == guiMain.getBtnEmployes()){
+            try {
+                guiCRUDUser.setMaximum(true);
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
             guiCRUDUser.setVisible(true);
             guiCRUDUser.toFront();
         }
