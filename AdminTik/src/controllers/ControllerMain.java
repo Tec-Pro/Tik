@@ -44,7 +44,7 @@ import utils.Config;
 public class ControllerMain implements ActionListener {
 
     private static GuiMain guiMain; //interfaz principal con el desktpp
-    private Map<String, Object> userLogged; //usuario logeado
+    private static Map<String, Object> userLogged; //usuario logeado
 
     //guis
     private static GuiAdminLogin guiAdminLogin; //para poder cerrar sesión
@@ -144,6 +144,10 @@ public class ControllerMain implements ActionListener {
       //  guiLoadPurchase.dispose();
     }
 
+    public static boolean isAdmin(){
+        return (boolean)userLogged.get("is_admin");
+    }
+    
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == guiMain.getBtnDisconnect()) {//cerrar sesion

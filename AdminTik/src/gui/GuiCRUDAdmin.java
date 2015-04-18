@@ -6,9 +6,13 @@
 package gui;
 
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -24,7 +28,10 @@ public class GuiCRUDAdmin extends javax.swing.JInternalFrame{
      * Creates new form GuiCRUDAdmin2
      */
     public GuiCRUDAdmin() {
+        
         initComponents();
+        comboBoxAdmins.removeAllItems();
+        comboBoxAdmins.setVisible(false);
         setResizable(false);
     }
 
@@ -46,6 +53,8 @@ public class GuiCRUDAdmin extends javax.swing.JInternalFrame{
         passField = new javax.swing.JPasswordField();
         lblMessage = new javax.swing.JLabel();
         btnConfirm = new javax.swing.JButton();
+        checkBoxIsAdmin = new javax.swing.JCheckBox();
+        comboBoxAdmins = new javax.swing.JComboBox();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -102,58 +111,77 @@ public class GuiCRUDAdmin extends javax.swing.JInternalFrame{
             }
         });
 
+        checkBoxIsAdmin.setFont(new java.awt.Font("Droid Sans", 1, 14)); // NOI18N
+        checkBoxIsAdmin.setText("Es Administrador");
+
+        comboBoxAdmins.setFont(new java.awt.Font("Droid Sans", 1, 12)); // NOI18N
+        comboBoxAdmins.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lblMessage, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(33, 33, 33)
                         .addComponent(btnCreate))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblPass)
-                            .addComponent(lblName))
-                        .addGap(17, 17, 17)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblName, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblPass, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(18, 18, 18)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
-                        .addComponent(btnModify, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
-                        .addComponent(btnDelete))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(passField, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(26, 26, 26))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(1, 1, 1)
+                                    .addComponent(passField, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtName, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(checkBoxIsAdmin))
+                        .addGap(75, 75, 75)
+                        .addComponent(btnConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(40, 40, 40)
+                            .addComponent(btnModify, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(51, 51, 51)
+                            .addComponent(btnDelete))
+                        .addComponent(comboBoxAdmins, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addGap(13, 13, 13)
                 .addComponent(lblMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGap(17, 17, 17)
+                .addComponent(comboBoxAdmins, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(checkBoxIsAdmin)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(lblName)
                             .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(40, 40, 40)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(passField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblPass)))
-                    .addComponent(btnConfirm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnModify, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(22, 22, 22))
+                            .addComponent(lblPass))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnModify, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(22, 22, 22))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(btnConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         pack();
@@ -184,7 +212,14 @@ public class GuiCRUDAdmin extends javax.swing.JInternalFrame{
            btnConfirm.doClick();
     }//GEN-LAST:event_btnConfirmKeyTyped
 
+    public JComboBox getComboBoxAdmins() {
+        return comboBoxAdmins;
+    }
+
     
+    public JCheckBox getCheckBoxIsAdmin() {
+        return checkBoxIsAdmin;
+    }
     
     public JButton getBtnConfirm() {
         return btnConfirm;
@@ -236,8 +271,10 @@ public class GuiCRUDAdmin extends javax.swing.JInternalFrame{
      * 
      */
     public void cleanFields(){
+        checkBoxIsAdmin.setEnabled(false);
         passField.setText("");
         txtName.setText("");
+       
     }
     
     /**
@@ -249,14 +286,24 @@ public class GuiCRUDAdmin extends javax.swing.JInternalFrame{
         btnConfirm.addActionListener(ac);
         btnDelete.addActionListener(ac);
         btnModify.addActionListener(ac);
+        comboBoxAdmins.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                txtName.setText(e.getItem().toString());
+            }
+        });
  
     }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConfirm;
     private javax.swing.JToggleButton btnCreate;
     private javax.swing.JToggleButton btnDelete;
     private javax.swing.JToggleButton btnModify;
+    private javax.swing.JCheckBox checkBoxIsAdmin;
+    private javax.swing.JComboBox comboBoxAdmins;
     private javax.swing.JLabel lblMessage;
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblPass;

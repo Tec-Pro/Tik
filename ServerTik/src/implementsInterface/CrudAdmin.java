@@ -32,7 +32,7 @@ public class CrudAdmin extends UnicastRemoteObject implements interfaces.Interfa
         return Admin.first("name = ?", name) != null;
     }
     
-    public Map<String,Object> create(String name, String pass) throws java.rmi.RemoteException{
+    public Map<String,Object> create(String name, String pass, boolean isAdmin) throws java.rmi.RemoteException{
         Utils.abrirBase();
         Base.openTransaction();
         byte[] passEncrypted = {0};
@@ -43,8 +43,12 @@ public class CrudAdmin extends UnicastRemoteObject implements interfaces.Interfa
         }
         Map<String,Object> res = null;
        
-        if(!adminExists(name))
-             res = Admin.createIt("name",name,"pass", passEncrypted).toMap();
+        if(!adminExists(name)){
+             int access = 0;
+             if(isAdmin)
+                 access = 1;
+             res = Admin.createIt("name",name,"pass", passEncrypted,"is_admin",access).toMap();
+        }
         Base.commitTransaction();
                  
         return res;

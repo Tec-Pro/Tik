@@ -68,16 +68,16 @@ public class ControllerGuiAdminLogin implements ActionListener {
     public static void getAllAdmins() {
         try {
             List<Map> admins = crudAdmin.getAdmins();
-            if (admins.isEmpty()) {
-                crudAdmin.create("admin", "admin");
-                guiAdminLogin.getTxtName().addItem("admin");
-                
+            boolean fullAccessAdmin = false;
+            for (Map admin : admins) { //busco todos los admins para listarlos en el jcombobox
+                fullAccessAdmin = (boolean)admin.get("is_admin") || fullAccessAdmin;  
+                guiAdminLogin.getTxtName().addItem((String)admin.get("name"));
+            }
+            
+            if (!fullAccessAdmin) { //si no hay ningun administrador con acceso total al sistema, creo uno nuevo
+                crudAdmin.create("admin", "admin",true);
+                guiAdminLogin.getTxtName().addItem("admin"); 
                 JOptionPane.showMessageDialog(guiAdminLogin, "Se creó un un administrador por defecto \nNombre: admin - Contraseña:admin", "NO HAY ADMINISTRADORES!", JOptionPane.INFORMATION_MESSAGE);
-            }else{
-                for (Map admin : admins) {
-                    System.out.println(admin.get("name"));
-                    guiAdminLogin.getTxtName().addItem((String)admin.get("name"));
-                }
             }
         } catch (RemoteException ex) {
             Logger.getLogger(ControllerGuiAdminLogin.class.getName()).log(Level.SEVERE, null, ex);
@@ -85,6 +85,8 @@ public class ControllerGuiAdminLogin implements ActionListener {
        guiAdminLogin.getTxtPassword().setText("");
     }
 
+   
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(guiAdminLogin.getBtnConfirm())) {

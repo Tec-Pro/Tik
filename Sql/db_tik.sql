@@ -10,6 +10,7 @@ CREATE TABLE `admins` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
   `pass` varchar(45) DEFAULT NULL,
+  `is_admin` TINYINT(1) NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1$$
 

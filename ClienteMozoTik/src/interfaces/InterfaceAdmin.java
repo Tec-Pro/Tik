@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public interface InterfaceAdmin extends Remote {
     
-  public Map<String,Object> create(String name, String pass) throws java.rmi.RemoteException;
+  public Map<String,Object> create(String name, String pass, boolean isAdmin) throws java.rmi.RemoteException;
      
      public Map<String,Object> modify(int id,String name, String pass) throws java.rmi.RemoteException;
      
