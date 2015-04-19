@@ -183,11 +183,20 @@ public class ControllerGuiCRUDEproduct implements ActionListener {
                 refreshReciperList();
             } else {
                 if (!(isRepeatedOnTableReciper(tableProducts.getValueAt(tableProducts.getSelectedRow(), 0)))) {
-                    Object row[] = new String[3];
-                    row[0] = tableProducts.getValueAt(tableProducts.getSelectedRow(), 0); //id
-                    row[1] = tableProducts.getValueAt(tableProducts.getSelectedRow(), 1); //NOMBRE
-                    row[2] = "1"; // Cantidad            
-                    tableReciperDefault.addRow(row);
+                    Object row[] = new String[4];
+                    String idxs = tableProducts.getValueAt(tableProducts.getSelectedRow(), 0).toString();
+                    int idx = Integer.valueOf(idxs);
+                    String measureU = crudPproduct.getPproduct(idx).get("measure_unit").toString();
+                    String quantity = JOptionPane.showInputDialog(guiCRUDEProduct, "Cantidad en " + measureU);
+                    if (quantity != null) {
+                        if (!quantity.isEmpty()) {
+                            row[0] = tableProducts.getValueAt(tableProducts.getSelectedRow(), 0); //id
+                            row[1] = tableProducts.getValueAt(tableProducts.getSelectedRow(), 1); //NOMBRE
+                            row[2] = quantity; // Cantidad        
+                            row[3] = measureU; // Unidad de medida
+                            tableReciperDefault.addRow(row);
+                        }
+                    }
                 }
             }
         } else {
@@ -235,10 +244,14 @@ public class ControllerGuiCRUDEproduct implements ActionListener {
     public void refreshReciperList() throws RemoteException {
         tableReciperDefault.setRowCount(0);
         for (Map epPp : eproductPproductList) {
-            Object row[] = new String[3];
-            row[0] = epPp.get("pproduct_id").toString();
+            Object row[] = new String[4];
+            String idxs = epPp.get("pproduct_id").toString();
+            int idx = Integer.valueOf(idxs);
+            String measureU = crudPproduct.getPproduct(idx).get("measure_unit").toString();
+            row[0] = idxs;
             row[1] = crudPproduct.getPproduct(Integer.parseInt(epPp.get("pproduct_id").toString())).get("name").toString(); //NOMBRE
-            row[2] = epPp.get("amount").toString().replace(',', '.'); // Cantidad            
+            row[2] = epPp.get("amount").toString().replace(',', '.'); // Cantidad    
+            row[3] = measureU;
             tableReciperDefault.addRow(row);
         }
     }
@@ -331,7 +344,7 @@ public class ControllerGuiCRUDEproduct implements ActionListener {
         if (e.getSource() == guiCRUDEProduct.getBtnCancel()) { //creo un producto         
             isNew = false;
             editingInformation = false;
-            guiCRUDEProduct.clicSaveProduct();            
+            guiCRUDEProduct.clicSaveProduct();
             try {
                 eproductList = crudEproduct.getEproducts();
                 refreshList();

@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -45,6 +46,8 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
         this.btnNew.addActionListener(lis);
         this.btnSave.addActionListener(lis);
         this.btnCancel.addActionListener(lis);
+        this.btnAddSubcategory.addActionListener(lis);
+        this.btnAddCategory.addActionListener(lis);
     }
 
     /**
@@ -66,13 +69,18 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
         subcategory.removeAllItems();
         tableProductsDefault.setRowCount(0);
         tableReciperDefault.setRowCount(0);
+        txtSellPrice.setText("");
+        txtSuggestedPrice.setText("");
+        txtProductionPrice.setText("");
     }
 
     /**
      * carga las categorias en el select
      */
     public void loadCategory() throws RemoteException {
-        for (Map cat: CRUDCategory.getCategories()) {
+        category.setSelectedIndex(-1);
+        category.removeAllItems();
+        for (Map cat : CRUDCategory.getCategories()) {
             category.addItem(cat.get("name"));
         }
     }
@@ -80,14 +88,14 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
     /**
      * carga las subcategorias en el select
      */
-    public void loadSubCategory(String name) throws RemoteException {        
+    public void loadSubCategory(String name) throws RemoteException {
         subcategory.setSelectedIndex(-1);
         subcategory.removeAllItems();
         Map cat = CRUDCategory.getCategoryByName(name);
         for (Iterator<Map> it = CRUDCategory.getSubcategoriesCategory(Integer.parseInt(cat.get("id").toString())).iterator(); it.hasNext();) {
             Map subC = it.next();
             subcategory.addItem(subC.get("name"));
-        }        
+        }
     }
 
     /**
@@ -107,6 +115,9 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
         btnModify.setEnabled(false);
         tableReciper.setEnabled(true);
         btnCancel.setEnabled(true);
+        txtSellPrice.setEnabled(true);
+        btnAddCategory.setEnabled(true);
+        btnAddSubcategory.setEnabled(true);
     }
 
     /**
@@ -123,6 +134,9 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
         tableReciper.setEnabled(false);
         subcategory.setEnabled(false);
         btnCancel.setEnabled(false);
+        txtSellPrice.setEnabled(false);
+        btnAddCategory.setEnabled(false);
+        btnAddSubcategory.setEnabled(false);
     }
 
     /**
@@ -148,6 +162,9 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
         tableReciper.setEnabled(false);
         subcategory.setEnabled(false);
         btnCancel.setEnabled(false);
+        txtSellPrice.setEnabled(false);
+        btnAddCategory.setEnabled(false);
+        btnAddSubcategory.setEnabled(false);
     }
 
     /**
@@ -163,6 +180,9 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
         tableReciper.setEnabled(true);
         btnCancel.setEnabled(true);
         subcategory.setEnabled(true);
+        txtSellPrice.setEnabled(true);
+        btnAddCategory.setEnabled(true);
+        btnAddSubcategory.setEnabled(true);
     }
 
     public DefaultTableModel getTableProductsDefault() {
@@ -221,6 +241,26 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
         return subcategory;
     }
 
+    public JButton getBtnAddCategory() {
+        return btnAddCategory;
+    }
+
+    public JButton getBtnAddSubcategory() {
+        return btnAddSubcategory;
+    }
+
+    public JFormattedTextField getTxtProductionPrice() {
+        return txtProductionPrice;
+    }
+
+    public JFormattedTextField getTxtSellPrice() {
+        return txtSellPrice;
+    }
+
+    public JFormattedTextField getTxtSuggestedPrice() {
+        return txtSuggestedPrice;
+    }
+
     /**
      * cargae el producto final en los txt
      *
@@ -237,7 +277,8 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
         Map<String, Object> subC = CRUDCategory.getSubcategory(Integer.parseInt(prod.get("subcategory_id").toString()));
         category.setSelectedItem(cat.get("name").toString()); //CATEGORIA
         loadSubCategory(cat.get("name").toString());
-        subcategory.setSelectedItem(subC.get("name").toString()); //SubCATEGORIA     
+        subcategory.setSelectedItem(subC.get("name").toString()); //SubCATEGORIA  
+        txtSellPrice.setText(prod.get("sell_price").toString());
     }
 
     /**
@@ -258,6 +299,10 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
         }
         if (subcategory.getSelectedIndex() == -1) {
             JOptionPane.showMessageDialog(this, "No hay subcategoria seleccionada, por favor seleccione una");
+            return false;
+        }
+        if (txtSellPrice.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Precio de venta vacio, por favor complete el campo");
             return false;
         }
         return true;
@@ -289,6 +334,14 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
         btnModify = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        txtProductionPrice = new javax.swing.JFormattedTextField();
+        txtSuggestedPrice = new javax.swing.JFormattedTextField();
+        txtSellPrice = new javax.swing.JFormattedTextField();
+        btnAddCategory = new javax.swing.JButton();
+        btnAddSubcategory = new javax.swing.JButton();
         txtSearch = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableReciper = new javax.swing.JTable();
@@ -300,7 +353,7 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setTitle("Gestion Productos Finales");
-        setPreferredSize(new java.awt.Dimension(1103, 613));
+        setPreferredSize(new java.awt.Dimension(1103, 633));
         setVisible(true);
 
         jScrollPane1.setPreferredSize(new java.awt.Dimension(1095, 627));
@@ -395,6 +448,29 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
                 .addGap(0, 0, 0))
         );
 
+        jLabel3.setText("Costo de produccion");
+
+        jLabel4.setText("Precio sugerido");
+
+        jLabel5.setText("Precio de venta");
+
+        txtProductionPrice.setEditable(false);
+        txtProductionPrice.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        txtProductionPrice.setEnabled(false);
+
+        txtSuggestedPrice.setEditable(false);
+        txtSuggestedPrice.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        txtSuggestedPrice.setEnabled(false);
+
+        txtSellPrice.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        txtSellPrice.setEnabled(false);
+
+        btnAddCategory.setText("+");
+        btnAddCategory.setEnabled(false);
+
+        btnAddSubcategory.setText("+");
+        btnAddSubcategory.setEnabled(false);
+
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
@@ -410,22 +486,47 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(category, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtName)
-                    .addComponent(subcategory, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                .addGap(0, 245, Short.MAX_VALUE)
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(260, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3)
+                        .addGap(3, 3, 3)
+                        .addComponent(txtProductionPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtSuggestedPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtSellPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(jPanel9Layout.createSequentialGroup()
+                                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(199, 199, 199))
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(subcategory, javax.swing.GroupLayout.Alignment.LEADING, 0, 882, Short.MAX_VALUE)
+                                    .addComponent(category, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(txtName))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnAddCategory)
+                            .addComponent(btnAddSubcategory))))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
-                .addGap(12, 12, 12)
+                .addContainerGap()
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5)
+                    .addComponent(txtProductionPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtSuggestedPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtSellPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -433,31 +534,33 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(category, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11))
+                    .addComponent(jLabel11)
+                    .addComponent(btnAddCategory))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(subcategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12))
+                    .addComponent(jLabel12)
+                    .addComponent(btnAddSubcategory))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         tableReciper.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Id", "Nombre", "Cantidad", "Tipo"
+                "Id", "Nombre", "Cantidad", "Unidad de medida", "Tipo"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, false
+                false, false, true, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -469,10 +572,6 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
             }
         });
         jScrollPane2.setViewportView(tableReciper);
-        if (tableReciper.getColumnModel().getColumnCount() > 0) {
-            tableReciper.getColumnModel().getColumn(2).setResizable(false);
-            tableReciper.getColumnModel().getColumn(3).setResizable(false);
-        }
 
         tableProducts.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -511,9 +610,9 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 532, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 494, Short.MAX_VALUE)
+                        .addComponent(jScrollPane3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE))
+                        .addComponent(jScrollPane2))
                     .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, 0))
         );
@@ -524,7 +623,7 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
                 .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -538,14 +637,14 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1021, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1092, Short.MAX_VALUE)
                 .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(12, 12, 12)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE)
                 .addGap(0, 0, 0))
         );
 
@@ -570,6 +669,8 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_categoryActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddCategory;
+    private javax.swing.JButton btnAddSubcategory;
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnModify;
@@ -579,6 +680,9 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel8;
@@ -591,6 +695,9 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
     private javax.swing.JTable tableReciper;
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtName;
+    private javax.swing.JFormattedTextField txtProductionPrice;
     private javax.swing.JTextField txtSearch;
+    private javax.swing.JFormattedTextField txtSellPrice;
+    private javax.swing.JFormattedTextField txtSuggestedPrice;
     // End of variables declaration//GEN-END:variables
 }

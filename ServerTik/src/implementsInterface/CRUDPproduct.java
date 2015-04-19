@@ -35,7 +35,12 @@ public class CRUDPproduct extends UnicastRemoteObject implements interfaces.Inte
         Utils.abrirBase();
         Base.openTransaction();
         String st = String.valueOf(stock).replace(',', '.');
-        String unitP = String.valueOf(unitPrice).replace(',', '.');
+        String unitP = "";
+        if (measureUnit.equals("unitario")) {
+            unitP = String.valueOf(unitPrice).replace(',', '.');
+        } else {
+            unitP = String.valueOf(unitPrice / 1000).replace(',', '.');
+        }
         Pproduct ret = Pproduct.createIt("name", name, "stock", st, "measure_unit", measureUnit, "unit_price", unitP);
         Base.commitTransaction();
         return ret.toMap();
@@ -49,10 +54,16 @@ public class CRUDPproduct extends UnicastRemoteObject implements interfaces.Inte
         if (product != null) {
             Base.openTransaction();
             String st = String.valueOf(stock).replace(',', '.');
-            String unitP = String.valueOf(unitPrice).replace(',', '.');
+            String unitP = "";
+            if (measureUnit.equals("unitario")) {
+                unitP = String.valueOf(unitPrice).replace(',', '.');
+            } else {
+                unitP = String.valueOf(unitPrice / 1000).replace(',', '.');
+            }
             product.setString("name", name);
             product.setFloat("stock", st);
             product.setString("measure_unit", measureUnit);
+
             product.setFloat("unit_price", unitP);
             product.saveIt();
             res = product.toMap();
@@ -109,7 +120,7 @@ public class CRUDPproduct extends UnicastRemoteObject implements interfaces.Inte
     @Override
     public List<Map> getPproducts(String searchParams) throws java.rmi.RemoteException {
         Utils.abrirBase();
-        List<Map> ret = Pproduct.where("removed = ? and (id like ? or name like ?)", 0, "%"+searchParams+"%", "%"+searchParams+"%").toMaps();
+        List<Map> ret = Pproduct.where("removed = ? and (id like ? or name like ?)", 0, "%" + searchParams + "%", "%" + searchParams + "%").toMaps();
         return ret;
     }
 
@@ -120,11 +131,11 @@ public class CRUDPproduct extends UnicastRemoteObject implements interfaces.Inte
         Map<String, Object> res = null;
         if (product != null) {
             Base.openTransaction();
-            if (measureUnit.equals("Kg") || measureUnit.equals("L")){
-                amount = amount*1000;
+            if (measureUnit.equals("Kg") || measureUnit.equals("L")) {
+                amount = amount * 1000;
             }
             String st = String.valueOf(product.getFloat("stock") + amount).replace(',', '.');
-            String unitP = String.valueOf(amount / price ).replace(',', '.');
+            String unitP = String.valueOf(price / amount).replace(',', '.');
             product.setFloat("stock", st);
             product.setFloat("unit_price", unitP);
             product.saveIt();
@@ -136,15 +147,15 @@ public class CRUDPproduct extends UnicastRemoteObject implements interfaces.Inte
 
     @Override
     public Map<String, Object> calculateUnitPrice(int id, String measureUnit, float price, float amount) throws java.rmi.RemoteException {
-         Utils.abrirBase();
+        Utils.abrirBase();
         Pproduct product = Pproduct.findById(id);
         Map<String, Object> res = null;
         if (product != null) {
             Base.openTransaction();
-            if (measureUnit.equals("Kg") || measureUnit.equals("L")){
-                amount = amount*1000;
+            if (measureUnit.equals("Kg") || measureUnit.equals("L")) {
+                amount = amount * 1000;
             }
-            String unitP = String.valueOf(amount / price ).replace(',', '.');
+            String unitP = String.valueOf(price / amount).replace(',', '.');
             product.setFloat("unit_price", unitP);
             product.saveIt();
             res = product.toMap();

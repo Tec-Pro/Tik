@@ -207,19 +207,41 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
                 fproductPproductList = crudFproduct.getFproductPproduts(id);
                 fproductEproductList = crudFproduct.getFproductEproduts(id);
                 guiCRUDFProduct.loadProduct(fproduct);
+                float productionPrice = crudFproduct.calculateProductionPrice(id);
+                guiCRUDFProduct.getTxtProductionPrice().setText(String.valueOf(productionPrice));
+                guiCRUDFProduct.getTxtSuggestedPrice().setText("ACA VA LA MULTIPLICACION PARA PRECIO SUGERIDO");
                 refreshReciperList();
             } else {
                 if (!(isRepeatedOnTableReciper(tableProducts.getValueAt(tableProducts.getSelectedRow(), 1)))) {
-                    Object row[] = new String[4];
+                    Object row[] = new String[5];
                     row[0] = tableProducts.getValueAt(tableProducts.getSelectedRow(), 0); //id
-                    row[1] = tableProducts.getValueAt(tableProducts.getSelectedRow(), 1); //NOMBRE
-                    row[2] = "1"; // Cantidad  
+                    row[1] = tableProducts.getValueAt(tableProducts.getSelectedRow(), 1); //NOMBRE                    
+                    String idxs = tableProducts.getValueAt(tableProducts.getSelectedRow(), 0).toString();
+                    int idx = Integer.valueOf(idxs);
                     if (((String) tableProducts.getValueAt(tableProducts.getSelectedRow(), 3)).equals("Primario")) {
-                        row[3] = "Primario"; // Tipo  
+                        String measureU = crudPproduct.getPproduct(idx).get("measure_unit").toString();
+                        String quantity = JOptionPane.showInputDialog(guiCRUDFProduct, "Cantidad en " + measureU);
+                        if (quantity != null) {
+                            if (!quantity.isEmpty()) {
+                                row[2] = quantity; // Cantidad  
+                                row[3] = measureU; //unidad de medida
+                                row[4] = "Primario"; // Tipo 
+                                tableReciperDefault.addRow(row);
+                                dinamicProductionPrice();
+                            }
+                        }
                     } else {
-                        row[3] = "Elaborado";// Tipo  
+                        String quantity = JOptionPane.showInputDialog(guiCRUDFProduct, "Cantidad en unidades");
+                        if (quantity != null) {
+                            if (!quantity.isEmpty()) {
+                                row[2] = quantity; // Cantidad  
+                                row[3] = "unitario"; //unidad de medida
+                                row[4] = "Elaborado";// Tipo  
+                                tableReciperDefault.addRow(row);
+                                dinamicProductionPrice();
+                            }
+                        }
                     }
-                    tableReciperDefault.addRow(row);
                 }
             }
         } else {
@@ -255,6 +277,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
             int row = tableReciper.getSelectedRow();
             if (row > -1 && row < tableReciper.getRowCount()) {
                 tableReciperDefault.removeRow(tableReciper.getSelectedRow());
+                dinamicProductionPrice();
             }
         }
     }
@@ -268,21 +291,49 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
     public void refreshReciperList() throws RemoteException {
         tableReciperDefault.setRowCount(0);
         for (Map fpPp : fproductPproductList) {
-            Object row[] = new String[4];
+            Object row[] = new String[5];
             row[0] = fpPp.get("pproduct_id").toString();
             row[1] = crudPproduct.getPproduct(Integer.parseInt(fpPp.get("pproduct_id").toString())).get("name").toString(); //NOMBRE
             row[2] = fpPp.get("amount").toString(); // Cantidad     
-            row[3] = "Primario"; // Tipo  
+            row[3] = crudPproduct.getPproduct(Integer.parseInt(fpPp.get("pproduct_id").toString())).get("measure_unit").toString(); //UNidad de medida
+            row[4] = "Primario"; // Tipo  
             tableReciperDefault.addRow(row);
         }
         for (Map fpEp : fproductEproductList) {
-            Object row[] = new String[4];
+            Object row[] = new String[5];
             row[0] = fpEp.get("eproduct_id").toString();
             row[1] = crudEproduct.getEproduct(Integer.parseInt(fpEp.get("eproduct_id").toString())).get("name").toString(); //NOMBRE
             row[2] = fpEp.get("amount").toString(); // Cantidad     
-            row[3] = "Elaborado"; // Tipo  
+            row[3] = "unitario"; //Unidad de medida
+            row[4] = "Elaborado"; // Tipo  
             tableReciperDefault.addRow(row);
         }
+    }
+
+    /**
+     * Calcula dinamicamente el precio de produccion del producto;
+     *
+     */
+    public void dinamicProductionPrice() throws RemoteException {
+        int i = tableReciper.getRowCount();
+        float price = 0;
+        if (i > 0) {
+            for (int j = 0; j < i; j++) {
+                if (tableReciper.getValueAt(j, 4).toString().equals("Primario")) {
+                    Map pp = crudPproduct.getPproduct(Integer.parseInt(tableReciper.getValueAt(j, 0).toString()));
+                    price += Float.parseFloat(pp.get("unit_price").toString()) * Float.parseFloat(tableReciper.getValueAt(j, 2).toString());
+                } else {
+                    List<Map> leppp = crudEproduct.getEproductPproduts(Integer.parseInt(tableReciper.getValueAt(j, 0).toString()));
+                    float priceEp = 0;
+                    for (Map m : leppp){
+                       Map pp2 = crudPproduct.getPproduct(Integer.parseInt(m.get("pproduct_id").toString()));
+                       priceEp += Float.parseFloat(pp2.get("unit_price").toString()) * Float.parseFloat(m.get("amount").toString());
+                    }
+                     price += priceEp * Float.parseFloat(tableReciper.getValueAt(j, 2).toString());
+                }
+            }
+        }
+        guiCRUDFProduct.getTxtProductionPrice().setText(String.valueOf(price));
     }
 
     @Override
@@ -338,7 +389,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
                     List<Pair> listP = new LinkedList<Pair>();
                     List<Pair> listE = new LinkedList<Pair>();
                     for (int i = 0; i < tableReciper.getRowCount(); i++) { //cargo la lista de productos
-                        if (((String) tableReciper.getValueAt(i, 3)).equals("Primario")) {
+                        if (((String) tableReciper.getValueAt(i, 4)).equals("Primario")) {
                             Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), Float.parseFloat((String) tableReciper.getValueAt(i, 2)));
                             listP.add(p);
                         } else {
@@ -347,8 +398,9 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
                         }
                     }
                     String name = guiCRUDFProduct.getTxtName().getText();
+                    float sellPrice = Float.parseFloat(guiCRUDFProduct.getTxtSellPrice().getText().replace(',', '.'));
                     try {
-                        crudFproduct.create(name, subcategory_id, listP, listE);
+                        crudFproduct.create(name, subcategory_id, listP, listE, sellPrice);
                         JOptionPane.showMessageDialog(guiCRUDFProduct, "¡Producto creado exitosamente!");
                         editingInformation = false;
                         guiCRUDFProduct.clicSaveProduct();
@@ -370,7 +422,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
                     List<Pair> listP = new LinkedList<Pair>();
                     List<Pair> listE = new LinkedList<Pair>();
                     for (int i = 0; i < tableReciper.getRowCount(); i++) {
-                        if (((String) tableReciper.getValueAt(i, 3)).equals("Primario")) { //cargo la lista de productos
+                        if (((String) tableReciper.getValueAt(i, 4)).equals("Primario")) { //cargo la lista de productos
                             Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), Float.parseFloat((String) tableReciper.getValueAt(i, 2)));
                             listP.add(p);
                         } else {
@@ -380,8 +432,9 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
                     }
                     String name = guiCRUDFProduct.getTxtName().getText();
                     int id = Integer.parseInt(guiCRUDFProduct.getTxtId().getText());
+                    float sellPrice = Float.parseFloat(guiCRUDFProduct.getTxtSellPrice().getText().replace(',', '.'));
                     try {
-                        crudFproduct.modify(id, name, subcategory_id, listP, listE);
+                        crudFproduct.modify(id, name, subcategory_id, listP, listE, sellPrice);
                         JOptionPane.showMessageDialog(guiCRUDFProduct, "¡Producto modificado exitosamente!");
                         editingInformation = false;
                         guiCRUDFProduct.clicSaveProduct();
@@ -394,7 +447,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
                     Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        }      
+        }
         if (e.getSource() == guiCRUDFProduct.getBtnCancel()) { //creo un producto pero cancel0          
             isNew = false;
             editingInformation = false;
@@ -404,6 +457,35 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
                 refreshList();
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiCRUDEproduct.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (e.getSource() == guiCRUDFProduct.getBtnAddCategory()) { //crear una categoria nueva  
+            String quantity = JOptionPane.showInputDialog(guiCRUDFProduct, "Nombre de la categoria:");
+            if (quantity != null) {
+                if (!quantity.isEmpty()) {
+                    try {
+                        category.create(quantity);
+                        guiCRUDFProduct.loadCategory();
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(ControllerGuiCRUDFproduct.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }
+        if (e.getSource() == guiCRUDFProduct.getBtnAddSubcategory()) { //crear una subcategoria nueva  
+            if (guiCRUDFProduct.getCategory().getSelectedIndex() != -1) {
+                String quantity = JOptionPane.showInputDialog(guiCRUDFProduct, "Nombre de la subcategoria:");
+                if (quantity != null) {
+                    if (!quantity.isEmpty()) {
+                        try {
+                            int id = Integer.valueOf(category.getCategoryByName(guiCRUDFProduct.getCategory().getSelectedItem().toString()).get("id").toString());
+                            category.addSubcategory(id, quantity);
+                            guiCRUDFProduct.loadSubCategory(guiCRUDFProduct.getCategory().getSelectedItem().toString());
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(ControllerGuiCRUDFproduct.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
             }
         }
 

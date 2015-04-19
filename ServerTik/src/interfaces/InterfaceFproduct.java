@@ -21,10 +21,11 @@ public interface InterfaceFproduct extends Remote {
      * @param subcategory_id
      * @param pProducts es una List<Pair<Integer,Float> con todos los id de productos primarios y cantidades que forman al producto elaborado
      * @param eProducts es una List<Pair<Integer,Float> con todos los id de productos elaborados y cantidades que forman al producto elaborado
+     * @param sellPrice
      * @return Map<String,Object> 
      * @throws java.rmi.RemoteException
      */
-    public Map<String,Object> create(String name, int subcategory_id, List<Pair> pProducts, List<Pair> eProducts) throws java.rmi.RemoteException;
+    public Map<String,Object> create(String name, int subcategory_id, List<Pair> pProducts, List<Pair> eProducts, float sellPrice) throws java.rmi.RemoteException;
          /**
      * Modifica un producto final.
      * @param id
@@ -32,10 +33,11 @@ public interface InterfaceFproduct extends Remote {
      * @param subcategory_id
      * @param pProducts es una List<Pair<Integer,Float> con todos los id de productos primarios y cantidades que forman al producto elaborado
      * @param eProducts es una List<Pair<Integer,Float> con todos los id de productos elaborados y cantidades que forman al producto elaborado
+     * @param sellPrice
      * @return Map<String,Object>
      * @throws java.rmi.RemoteException
      */
-     public Map<String,Object> modify(int id,String name, int subcategory_id, List<Pair> pProducts, List<Pair> eProducts) throws java.rmi.RemoteException;
+     public Map<String,Object> modify(int id,String name, int subcategory_id, List<Pair> pProducts, List<Pair> eProducts, float sellPrice) throws java.rmi.RemoteException;
          /**
      * Elimina un producto final.
      * @param id
@@ -96,4 +98,12 @@ public interface InterfaceFproduct extends Remote {
      * @throws java.rmi.RemoteException
      */
      public  List<Map> getFproductEproduts(int idFproduct) throws java.rmi.RemoteException;
+     
+       /**
+     * calcula el precio de produccion de un producto final
+     * @param idFproduct
+     * @return float
+     * @throws java.rmi.RemoteException
+     */
+     public float calculateProductionPrice(int idFproduct) throws java.rmi.RemoteException;
 }

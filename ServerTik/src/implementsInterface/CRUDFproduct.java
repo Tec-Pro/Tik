@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import models.Eproduct;
+import models.EproductsPproducts;
 import models.Fproduct;
 import models.FproductsEproducts;
 import models.FproductsPproducts;
@@ -34,10 +35,10 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
     }
 
     @Override
-    public Map<String, Object> create(String name, int subcategory_id, List<Pair> pProducts, List<Pair> eProducts) throws RemoteException {
+    public Map<String, Object> create(String name, int subcategory_id, List<Pair> pProducts, List<Pair> eProducts, float sellPrice) throws RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
-        Fproduct ret = Fproduct.createIt("name", name, "subcategory_id", subcategory_id);
+        Fproduct ret = Fproduct.createIt("name", name, "subcategory_id", subcategory_id, "sell_price",sellPrice);
         Iterator it = pProducts.iterator();
         for (Pair<Integer, Float> prod : pProducts) {
             String amount = prod.second().toString().replace(',', '.');
@@ -48,18 +49,19 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
             FproductsEproducts.create("fproduct_id", ret.getId(), "eproduct_id", prod.first(), "amount", amount).saveIt();
         }
         Base.commitTransaction();
-         
+
         return ret.toMap();
     }
 
     @Override
-    public Map<String, Object> modify(int id, String name, int subcategory_id, List<Pair> pProducts, List<Pair> eProducts) throws RemoteException {
+    public Map<String, Object> modify(int id, String name, int subcategory_id, List<Pair> pProducts, List<Pair> eProducts,float sellPrice) throws RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
         Fproduct ret = Fproduct.findById(id);
         if (ret != null) {
             ret.setString("name", name);
             ret.set("subcategory_id", subcategory_id);
+            ret.set("sell_price",sellPrice);
             for (FproductsPproducts fp : ret.getAll(FproductsPproducts.class)) {
                 fp.delete();
             }
@@ -76,11 +78,11 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
             }
             ret.saveIt();
             Base.commitTransaction();
-             
+
             return ret.toMap();
         } else {
             Base.commitTransaction();
-             
+
             return null;
         }
     }
@@ -96,7 +98,7 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
             res = res && product.saveIt();
             Base.commitTransaction();
         }
-         
+
         return res;
     }
 
@@ -108,7 +110,7 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
         if (product != null) {
             ret = product.toMap();
         }
-         
+
         return ret;
     }
 
@@ -116,7 +118,7 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
     public List<Map> getFproducts() throws RemoteException {
         Utils.abrirBase();
         List<Map> ret = Fproduct.where("removed = ?", 0).toMaps();
-         
+
         return ret;
     }
 
@@ -128,7 +130,7 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
         if (fProd != null) {
             ret = fProd.getAll(Pproduct.class).toMaps();
         }
-         
+
         return ret;
     }
 
@@ -140,15 +142,15 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
         if (fProd != null) {
             ret = fProd.getAll(Eproduct.class).toMaps();
         }
-         
+
         return ret;
     }
 
     @Override
     public List<Map> getFproducts(String name) throws java.rmi.RemoteException {
         Utils.abrirBase();
-        List<Map> ret = Fproduct.where("removed = ? and (id like ? or name like ?)", 0, "%"+name+"%", "%"+name+"%").toMaps();
-         
+        List<Map> ret = Fproduct.where("removed = ? and (id like ? or name like ?)", 0, "%" + name + "%", "%" + name + "%").toMaps();
+
         return ret;
     }
 
@@ -160,7 +162,7 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
         if (fProd != null) {
             ret = fProd.getAll(FproductsPproducts.class).toMaps();
         }
-         
+
         return ret;
     }
 
@@ -172,7 +174,30 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
         if (fProd != null) {
             ret = fProd.getAll(FproductsEproducts.class).toMaps();
         }
-         
+        return ret;
+    }
+
+    @Override
+    public float calculateProductionPrice(int idFproduct) throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        Fproduct fProd = Fproduct.findById(idFproduct);
+        float ret = 0;
+        float epPrice = 0;
+        if (fProd != null) {
+            for (FproductsPproducts fp : fProd.getAll(FproductsPproducts.class)) {
+                Pproduct pp = Pproduct.findById(fp.getInteger("pproduct_id"));
+                ret += pp.getFloat("unit_price") * fp.getFloat("amount");
+            }
+            for (FproductsEproducts fe : fProd.getAll(FproductsEproducts.class)) {
+                Eproduct pp = Eproduct.findById(fe.getInteger("eproduct_id"));
+                epPrice = 0;
+                for (EproductsPproducts ep : pp.getAll(EproductsPproducts.class)) {
+                    Pproduct pp2 = Pproduct.findById(ep.getInteger("pproduct_id"));
+                    epPrice += pp2.getFloat("unit_price") * ep.getFloat("amount");
+                }
+                ret += epPrice * fe.getFloat("amount");
+            }
+        }
         return ret;
     }
 }
