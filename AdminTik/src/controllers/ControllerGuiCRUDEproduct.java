@@ -250,7 +250,7 @@ public class ControllerGuiCRUDEproduct implements ActionListener {
             String measureU = crudPproduct.getPproduct(idx).get("measure_unit").toString();
             row[0] = idxs;
             row[1] = crudPproduct.getPproduct(Integer.parseInt(epPp.get("pproduct_id").toString())).get("name").toString(); //NOMBRE
-            row[2] = epPp.get("amount").toString().replace(',', '.'); // Cantidad    
+            row[2] = epPp.get("amount").toString(); // Cantidad    
             row[3] = measureU;
             tableReciperDefault.addRow(row);
         }

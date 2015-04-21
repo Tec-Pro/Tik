@@ -40,7 +40,7 @@ public class CRUDEproduct extends UnicastRemoteObject implements interfaces.Inte
         Iterator it = pProducts.iterator();
         while (it.hasNext()) { //creo la relacion Pproduct Eproduct
             Pair<Integer, Float> prod = (Pair<Integer, Float>) it.next();
-            String amount = prod.second().toString().replace(',', '.');
+            float amount = Float.parseFloat(prod.second().toString());
             EproductsPproducts.create("eproduct_id", ret.getId(), "pproduct_id", prod.first(), "amount", amount).saveIt();
         }
         Base.commitTransaction();
@@ -62,7 +62,7 @@ public class CRUDEproduct extends UnicastRemoteObject implements interfaces.Inte
             it = pProducts.iterator();
             while (it.hasNext()) { //creo relacion entre primarios y elaborados nuevamente
                 Pair<Integer, Float> prod = (Pair<Integer, Float>) it.next();
-                String amount = prod.second().toString().replace(',', '.');
+                float amount = Float.parseFloat(prod.second().toString());
                 EproductsPproducts.create("eproduct_id", ret.getId(), "pproduct_id", prod.first(), "amount", amount).saveIt();
             }
             ret.saveIt();

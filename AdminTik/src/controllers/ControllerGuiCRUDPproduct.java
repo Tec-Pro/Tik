@@ -194,8 +194,8 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
         if (e.getSource() == guiCRUDPProduct.getBtnSave() && editingInformation && isNew) { //guardo un producto nuevo, boton guardar
             if (guiCRUDPProduct.checkFields()) {
                 String name = guiCRUDPProduct.getTxtName().getText();
-                float stock = Float.parseFloat(guiCRUDPProduct.getTxtStock().getText().replace(',', '.'));
-                float unitPrice = Float.parseFloat(guiCRUDPProduct.getTxtPrice().getText().replace(',', '.'));
+                float stock = Float.parseFloat(guiCRUDPProduct.getTxtStock().getText());
+                float unitPrice = Float.parseFloat(guiCRUDPProduct.getTxtPrice().getText());
                 String measureUnit = "";
                 if (guiCRUDPProduct.getCboxMeasureUnit().getSelectedIndex() != -1) {
                     measureUnit = guiCRUDPProduct.getCboxMeasureUnit().getSelectedItem().toString();
@@ -214,8 +214,8 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
         if (e.getSource() == guiCRUDPProduct.getBtnSave() && editingInformation && !isNew) { //modifico un producto, boton guardar
             if (guiCRUDPProduct.checkFields()) {
                 String name = guiCRUDPProduct.getTxtName().getText();
-                float stock = Float.parseFloat(guiCRUDPProduct.getTxtStock().getText().replace(',', '.'));
-                float unitPrice = Float.parseFloat(guiCRUDPProduct.getTxtPrice().getText().replace(',', '.'));
+                float stock = Float.parseFloat(guiCRUDPProduct.getTxtStock().getText());
+                float unitPrice = Float.parseFloat(guiCRUDPProduct.getTxtPrice().getText());
                 String measureUnit = guiCRUDPProduct.getCboxMeasureUnit().getSelectedItem().toString();
                 int id = Integer.parseInt(guiCRUDPProduct.getTxtId().getText());
                 try {
@@ -287,8 +287,8 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
             if (guiLoadPurchase.checkFields()) {
                 int idx = Integer.parseInt(guiLoadPurchase.getTxtId().getText());
                 String measureU = guiLoadPurchase.getcBoxMeasureUnit().getItemAt(guiLoadPurchase.getcBoxMeasureUnit().getSelectedIndex()).toString();
-                float price = Float.parseFloat(guiLoadPurchase.getTxtPrice().getText().replace(',', '.'));
-                float amount = Float.parseFloat(guiLoadPurchase.getTxtAmount().getText().replace(',', '.'));
+                float price = Float.parseFloat(guiLoadPurchase.getTxtPrice().getText());
+                float amount = Float.parseFloat(guiLoadPurchase.getTxtAmount().getText());
                 if (guiLoadPurchase.getCheckBoxOnlyCalculate().isSelected()) { //me fijo si solo hay que calcular el precio
                     try {
                         pproduct.calculateUnitPrice(idx, measureU, price, amount);

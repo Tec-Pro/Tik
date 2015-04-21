@@ -41,11 +41,11 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
         Fproduct ret = Fproduct.createIt("name", name, "subcategory_id", subcategory_id, "sell_price",sellPrice);
         Iterator it = pProducts.iterator();
         for (Pair<Integer, Float> prod : pProducts) {
-            String amount = prod.second().toString().replace(',', '.');
+            float amount = Float.parseFloat(prod.second().toString());
             FproductsPproducts.create("fproduct_id", ret.getId(), "pproduct_id", prod.first(), "amount", amount).saveIt();
         }
         for (Pair<Integer, Float> prod : eProducts) {
-            String amount = prod.second().toString().replace(',', '.');
+            float amount = Float.parseFloat(prod.second().toString());
             FproductsEproducts.create("fproduct_id", ret.getId(), "eproduct_id", prod.first(), "amount", amount).saveIt();
         }
         Base.commitTransaction();
@@ -69,11 +69,11 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
                 fe.delete();
             }
             for (Pair<Integer, Float> prod : pProducts) {
-                String amount = prod.second().toString().replace(',', '.');
+                float amount = Float.parseFloat(prod.second().toString());
                 FproductsPproducts.create("fproduct_id", ret.getId(), "pproduct_id", prod.first(), "amount", amount).saveIt();
             }
             for (Pair<Integer, Float> prod : eProducts) {
-                String amount = prod.second().toString().replace(',', '.');
+                float amount = Float.parseFloat(prod.second().toString());
                 FproductsEproducts.create("fproduct_id", ret.getId(), "eproduct_id", prod.first(), "amount", amount).saveIt();
             }
             ret.saveIt();

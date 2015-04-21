@@ -398,7 +398,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
                         }
                     }
                     String name = guiCRUDFProduct.getTxtName().getText();
-                    float sellPrice = Float.parseFloat(guiCRUDFProduct.getTxtSellPrice().getText().replace(',', '.'));
+                    float sellPrice = Float.parseFloat(guiCRUDFProduct.getTxtSellPrice().getText());
                     try {
                         crudFproduct.create(name, subcategory_id, listP, listE, sellPrice);
                         JOptionPane.showMessageDialog(guiCRUDFProduct, "¡Producto creado exitosamente!");
@@ -432,7 +432,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
                     }
                     String name = guiCRUDFProduct.getTxtName().getText();
                     int id = Integer.parseInt(guiCRUDFProduct.getTxtId().getText());
-                    float sellPrice = Float.parseFloat(guiCRUDFProduct.getTxtSellPrice().getText().replace(',', '.'));
+                    float sellPrice = Float.parseFloat(guiCRUDFProduct.getTxtSellPrice().getText());
                     try {
                         crudFproduct.modify(id, name, subcategory_id, listP, listE, sellPrice);
                         JOptionPane.showMessageDialog(guiCRUDFProduct, "¡Producto modificado exitosamente!");
