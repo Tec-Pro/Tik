@@ -147,6 +147,9 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
      */
     public void tableValueChanged() throws RemoteException {
         if (guiCRUDPProduct.getTableProducts().getSelectedRow() != -1) {
+            isNew = false;
+            editingInformation = false;
+            guiCRUDPProduct.clicSaveProduct();
             guiCRUDPProduct.clicTableProducts();
             product = pproduct.getPproduct(Integer.parseInt((String) tableProducts.getValueAt(tableProducts.getSelectedRow(), 0)));
             guiCRUDPProduct.loadProduct(product);
