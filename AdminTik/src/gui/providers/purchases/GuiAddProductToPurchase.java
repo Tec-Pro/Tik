@@ -41,9 +41,11 @@ public class GuiAddProductToPurchase extends javax.swing.JDialog {
         switch(unit){
                             case "gr":
                                  unit = "Kg";
+                                 cost=cost*1000;
                                  break;
                             case "ml":
                                  unit = "L";
+                                 cost=cost*1000;
                                  break;   
                             case "u":
                                  unit = "U";
@@ -51,7 +53,7 @@ public class GuiAddProductToPurchase extends javax.swing.JDialog {
                         }
         lblUnit.setText("(" + unit + ")");
         lblUnit1.setText("(" + unit + ")");
-        txtCost.setText(ParserFloat.floatToString(cost*1000));
+        txtCost.setText(ParserFloat.floatToString(cost));
         txtAmount.setText(ParserFloat.floatToString(new Float (1)));
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";

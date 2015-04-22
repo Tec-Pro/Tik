@@ -20,7 +20,10 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.text.DecimalFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -31,6 +34,7 @@ import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.table.DefaultTableModel;
 import utils.Config;
+import utils.Pair;
 import utils.ParserFloat;
 
 /**
@@ -54,7 +58,6 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
 
     private List<Map> productsList;
     private List<Map> providersList;
-    
 
     public ControllerGuiPurchase(final GuiPurchase guiPurchase) throws NotBoundException, MalformedURLException, RemoteException {
         this.interfacePurchase = (InterfacePurchase) Naming.lookup("//" + Config.ip + "/CRUDPurchase");
@@ -129,43 +132,42 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
             int row = guiPurchase.getTblProduct().getSelectedRow();
             if (row > -1) {
                 Integer id = (Integer) tblProduct.getValueAt(row, 0);
-                if(noExistsInPurchase(id)){
-                Map<String, Object> product = interfacePproduct.getPproduct(id);
-                if (product != null) {
-                    String measureUnit = (String) product.get("measure_unit");
-                    Float unitPrice = (float) product.get("unit_price");
-                    Float amount = new Float(1);
-                    GuiAddProductToPurchase guiAdd = new GuiAddProductToPurchase(null, true, measureUnit, unitPrice * 1000);
-                    guiAdd.setLocationRelativeTo(guiPurchase);
-                    guiAdd.setVisible(true);
-                    if (guiAdd.getReturnStatus() == GuiAddProductToPurchase.RET_OK) {
-                        unitPrice = guiAdd.getReturnCost();
-                        amount = guiAdd.getReturnAmount();
-                        Object[] o = new Object[6];
-                        o[0] = (product.get("id"));
-                        o[1] = (product.get("name"));
-                        o[2] = ParserFloat.floatToString(amount);
-                        switch(measureUnit){
-                            case "gr":
-                                 o[3] = "Kg";
-                                 break;
-                            case "ml":
-                                 o[3] = "L";
-                                 break;   
-                            case "u":
-                                 o[3] = "U";
-                                 break;                                
-                        }
-                        o[4] = ParserFloat.floatToString(unitPrice);
-                        o[5] = ParserFloat.floatToString(unitPrice*amount);
-                        tblDefaultPurchase.addRow(o);
-                        guiPurchase.getTxtCost().setText(ParserFloat.floatToString(calculateCost()));
-                                            setCellEditor();
+                if (noExistsInPurchase(id)) {
+                    Map<String, Object> product = interfacePproduct.getPproduct(id);
+                    if (product != null) {
+                        String measureUnit = (String) product.get("measure_unit");
+                        Float unitPrice = (float) product.get("unit_price");
+                        Float amount = new Float(1);
+                        GuiAddProductToPurchase guiAdd = new GuiAddProductToPurchase(null, true, measureUnit, unitPrice );
+                        guiAdd.setLocationRelativeTo(guiPurchase);
+                        guiAdd.setVisible(true);
+                        if (guiAdd.getReturnStatus() == GuiAddProductToPurchase.RET_OK) {
+                            unitPrice = guiAdd.getReturnCost();
+                            amount = guiAdd.getReturnAmount();
+                            Object[] o = new Object[6];
+                            o[0] = (product.get("id"));
+                            o[1] = (product.get("name"));
+                            o[2] = ParserFloat.floatToString(amount);
+                            switch (measureUnit) {
+                                case "gr":
+                                    o[3] = "Kg";
+                                    break;
+                                case "ml":
+                                    o[3] = "L";
+                                    break;
+                                case "u":
+                                    o[3] = "U";
+                                    break;
+                            }
+                            o[4] = ParserFloat.floatToString(unitPrice);
+                            o[5] = ParserFloat.floatToString(unitPrice * amount);
+                            tblDefaultPurchase.addRow(o);
+                            guiPurchase.getTxtCost().setText(ParserFloat.floatToString(calculateCost()));
+                            setCellEditor();
 
+                        }
                     }
-                }
-            }
-                else{
+                } else {
                     JOptionPane.showMessageDialog(guiPurchase, "¡Producto ya cargado!", "", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
@@ -180,8 +182,8 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
         productsList = interfacePproduct.getPproducts("");
         loadProductsTable(productsList);
     }
-    
-        public void setCellEditor() {
+
+    public void setCellEditor() {
         for (int i = 0; i < tblPurchase.getRowCount(); i++) {
             tblPurchase.getCellEditor(i, 2).addCellEditorListener(this);
             tblPurchase.getCellEditor(i, 4).addCellEditorListener(this);
@@ -204,24 +206,24 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
         }
 
     }
-    
-    private boolean noExistsInPurchase(Integer id){
-        boolean noExists= true;
-        for(int i=0 ; i<tblPurchase.getRowCount()&& noExists;i++){
-            noExists=!tblPurchase.getValueAt(i, 0).equals(id);
+
+    private boolean noExistsInPurchase(Integer id) {
+        boolean noExists = true;
+        for (int i = 0; i < tblPurchase.getRowCount() && noExists; i++) {
+            noExists = !tblPurchase.getValueAt(i, 0).equals(id);
         }
         return noExists;
     }
-    
-        private float calculateCost(){
-            float result=0;
-        for(int i=0 ; i<tblPurchase.getRowCount();i++){
-            float amount=ParserFloat.stringToFloat((String)tblPurchase.getValueAt(i, 2));
-            float cost=ParserFloat.stringToFloat((String)tblPurchase.getValueAt(i, 4));
-            tblPurchase.setValueAt(ParserFloat.floatToString(amount),i, 2);
-            tblPurchase.setValueAt(ParserFloat.floatToString(cost),i, 4);
-            tblPurchase.setValueAt(ParserFloat.floatToString(amount*cost),i, 5);
-            result+=amount*cost;
+
+    private float calculateCost() {
+        float result = 0;
+        for (int i = 0; i < tblPurchase.getRowCount(); i++) {
+            float amount = ParserFloat.stringToFloat((String) tblPurchase.getValueAt(i, 2));
+            float cost = ParserFloat.stringToFloat((String) tblPurchase.getValueAt(i, 4));
+            tblPurchase.setValueAt(ParserFloat.floatToString(amount), i, 2);
+            tblPurchase.setValueAt(ParserFloat.floatToString(cost), i, 4);
+            tblPurchase.setValueAt(ParserFloat.floatToString(amount * cost), i, 5);
+            result += amount * cost;
         }
         return result;
     }
@@ -241,13 +243,39 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
         }
     }
 
-    /**
-     * busca los productos con el parametro de la barra de busqueda
-     *
-     * @param evt
-     * @throws RemoteException
-     */
-    private void searchProduct() throws RemoteException {
+    /*va true si se quiere usar para mostrarla por pantalla es decir 12/12/2014 y false si va 
+     para la base de datos, es decir 2014/12/12*/
+    public String dateToMySQLDate(Date fecha, boolean paraMostrar) {
+        if (paraMostrar) {
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
+            return sdf.format(fecha);
+        } else {
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+            return sdf.format(fecha);
+        }
+    }
+
+    private Integer makePurchase() throws RemoteException {
+        float cost = ParserFloat.stringToFloat(guiPurchase.getTxtCost().getText());
+        float paid = 0;
+        String datePaid = null;
+        if (guiPurchase.getBoxPay().isSelected()) {//paga el total de la factura
+            paid = cost;
+            datePaid = dateToMySQLDate(Calendar.getInstance().getTime(), false);
+            //Aca deberia ir el pago
+        }
+        String datePurchase = dateToMySQLDate(guiPurchase.getDatePurchase().getDate(), false);
+        Integer providerId = Integer.valueOf(guiPurchase.getLblIdProvider().getText());
+        LinkedList<Pair<Integer, Pair<Float, Float>>> products = new LinkedList<>();
+        for (int i = 0; i < tblPurchase.getRowCount(); i++) {
+            float amount = ParserFloat.stringToFloat((String) tblPurchase.getValueAt(i, 2));
+            float costProduct = ParserFloat.stringToFloat((String) tblPurchase.getValueAt(i, 4));
+            Integer idProduct = (Integer) tblPurchase.getValueAt(i, 0);
+            Pair<Float, Float> amountPrice = new Pair(amount, costProduct);
+            Pair<Integer, Pair<Float, Float>> pair = new Pair<>(idProduct, amountPrice);
+            products.add(pair);
+        }
+        return interfacePurchase.create(cost, paid, datePaid, providerId, datePurchase, products);//retorna el id
 
     }
 
@@ -261,9 +289,29 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
                 Logger.getLogger(ControllerGuiPurchase.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
         if (ae.getSource().equals(guiPurchase.getBtnCancel())) {
             guiPurchase.clickCancel();
         }
+        
+        if (ae.getSource().equals(guiPurchase.getBtnPurchase())) {
+            if (!guiPurchase.getLblIdProvider().getText().equals("")) {
+                try {
+                    if (makePurchase() != null) {
+                        JOptionPane.showMessageDialog(guiPurchase, "Se ha cargado la compra correctamente", "¡exito!", JOptionPane.INFORMATION_MESSAGE);
+                        guiPurchase.clickCancel();
+                    } else {
+                        JOptionPane.showMessageDialog(guiPurchase, "Ocurrio un error, revise los datos", "¡Error!", JOptionPane.ERROR_MESSAGE);
+                    }
+
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiPurchase.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }else {
+            JOptionPane.showMessageDialog(guiPurchase, "Proveedor vacio, seleccione uno", "¡Error!", JOptionPane.ERROR_MESSAGE);
+        }
+        } 
+
     }
 
     @Override

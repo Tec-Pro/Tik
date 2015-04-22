@@ -280,7 +280,7 @@ public class GuiPurchase extends javax.swing.JInternalFrame {
         jLabel3.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
         jLabel3.setText("Fecha");
 
-        datePurchase.setDateFormatString("yyyy-MM-dd");
+        datePurchase.setDateFormatString("dd/MM/yyyy");
 
         jLabel5.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
         jLabel5.setText("Abona");

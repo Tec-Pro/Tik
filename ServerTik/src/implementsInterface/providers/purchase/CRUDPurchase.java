@@ -51,9 +51,22 @@ public class CRUDPurchase extends UnicastRemoteObject implements InterfacePurcha
                         "final_price", pair.second().second()
                 );
                 if (pproductPurchase != null) {
-                    Pproduct pproduct = Pproduct.findById(pair.first());
-                    pproduct.setFloat("stock", pair.second().first());
-                    pproduct.setFloat("amount", pair.second().second());
+                                        Pproduct pproduct = Pproduct.findById(pair.first());
+                                        float stock= pair.second().first();
+                                        float unitPrice= pair.second().second();
+                    switch(pproduct.getString("measure_unit")){
+                         case "gr":
+                                    stock*=1000;
+                                    unitPrice/=1000;
+                                    break;
+                                case "ml":
+                                                                        stock*=1000;
+                                    unitPrice/=1000;
+                                    break;
+
+                            }
+                    pproduct.setFloat("stock",stock+pproduct.getFloat("stock") );
+                    pproduct.setFloat("unit_price",unitPrice );
                     pproduct.saveIt();
                 }
             }
