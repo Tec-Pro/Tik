@@ -41,6 +41,11 @@ public class GuiMain extends javax.swing.JFrame {
         this.btnProviders.addActionListener(lis);
         this.btnEmployes.addActionListener(lis);
         this.btnMenu.addActionListener(lis);
+        this.btnPurchase.addActionListener(lis);
+    }
+
+    public JMenuItem getBtnPurchase() {
+        return btnPurchase;
     }
 
     public JMenuItem getBtnProviders() {
@@ -129,6 +134,7 @@ public class GuiMain extends javax.swing.JFrame {
         btnMenu = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         btnProviders = new javax.swing.JMenuItem();
+        btnPurchase = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         btnEmployes = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
@@ -194,6 +200,9 @@ public class GuiMain extends javax.swing.JFrame {
         btnProviders.setText("Gestión de proveedores");
         jMenu4.add(btnProviders);
 
+        btnPurchase.setText("Realizar compra");
+        jMenu4.add(btnPurchase);
+
         jMenuBar1.add(jMenu4);
 
         jMenu5.setText("Empleados");
@@ -248,6 +257,7 @@ public class GuiMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem btnPProduct;
     private javax.swing.JMenuItem btnProductCategory;
     private javax.swing.JMenuItem btnProviders;
+    private javax.swing.JMenuItem btnPurchase;
     private javax.swing.JMenu jMenu;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
