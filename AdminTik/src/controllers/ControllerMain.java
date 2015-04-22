@@ -236,8 +236,8 @@ public class ControllerMain implements ActionListener {
             guiCRUDUser.setVisible(true);
             guiCRUDUser.toFront();
         }
-        //boton jtree
-        if(ae.getSource() == guiMain.getBtnJTree()){
+        //boton menu
+        if(ae.getSource() == guiMain.getBtnMenu()){
             guiMenu.setVisible(true);
             try {
                 controllerGuiMenu.CreateTree();
