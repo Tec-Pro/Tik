@@ -6,7 +6,6 @@
 package controllers;
 
 import controllers.providers.ControllerGuiCRUDProviders;
-import controllers.providers.ControllerGuiNewProvider;
 import gui.GuiAdminLogin;
 import gui.GuiCRUDAdmin;
 import gui.GuiCRUDEProduct;
@@ -19,6 +18,7 @@ import gui.GuiLoadPurchase;
 import gui.main.GuiMain;
 import gui.providers.GuiCRUDProviders;
 import gui.providers.GuiNewProvider;
+import gui.providers.GuiProviderCurrentAccount;
 import interfaces.providers.InterfaceProvider;
 import interfaces.providers.InterfaceProviderCategory;
 import interfaces.providers.InterfaceProvidersSearch;
@@ -58,6 +58,7 @@ public class ControllerMain implements ActionListener {
     private static GuiNewProvider guiNewProvider;
     private static GuiLoadPurchase guiLoadPurchase;
     private static GuiMenu guiMenu;
+    private static GuiProviderCurrentAccount guiProviderCurrentAccount;
 
     //controladores
     private static ControllerGuiCRUDAdmin controllerCRUDAdmin; //controlador de la gui para admin
@@ -94,6 +95,7 @@ public class ControllerMain implements ActionListener {
         guiNewProvider = new GuiNewProvider();
         guiLoadPurchase = new GuiLoadPurchase();
         guiMenu = new GuiMenu();
+        guiProviderCurrentAccount = new GuiProviderCurrentAccount();
         
         //agrego las gui al desktop
         guiMain.getDesktop().add(guiCRUDAdmin);
@@ -106,6 +108,7 @@ public class ControllerMain implements ActionListener {
         guiMain.getDesktop().add(guiNewProvider);
         guiMain.getDesktop().add(guiLoadPurchase);
         guiMain.getDesktop().add(guiMenu);
+        guiMain.getDesktop().add(guiProviderCurrentAccount);
         
         InterfaceProvider provider = (InterfaceProvider) Naming.lookup("//" + Config.ip + "/crudProvider");
         InterfaceProviderCategory providerCategory = (InterfaceProviderCategory ) Naming.lookup("//" + Config.ip + "/crudProviderCategory");
@@ -117,7 +120,7 @@ public class ControllerMain implements ActionListener {
         controllerCRUDEProduct = new ControllerGuiCRUDEproduct(guiCRUDEProduct);
         controllerCRUDFProduct = new ControllerGuiCRUDFproduct(guiCRUDFProduct);
         controllerCRUDProductCategory = new ControllerGuiProductCategory(guiCRUDProductCategory);
-        controllerCRUDProviders = new ControllerGuiCRUDProviders(guiCRUDProviders, guiNewProvider, provider, providerCategory, providersSearch);
+        controllerCRUDProviders = new ControllerGuiCRUDProviders(guiCRUDProviders, guiNewProvider, guiProviderCurrentAccount, provider, providerCategory, providersSearch);
         controllerCRUDUser = new ControllerGuiCRUDUser(guiCRUDUser);
         controllerCRUDPProduct = new ControllerGuiCRUDPproduct(guiCRUDPProduct,guiLoadPurchase);
         controllerGuiMenu = new ControllerGuiMenu(guiMenu,guiMain);

@@ -31,16 +31,19 @@ public class ControllerGuiNewProvider implements ActionListener {
     private final GuiNewProvider guiNewProvider;
     private boolean modify;
     private int currentProviderId;
+    private final GuiProviderCurrentAccount guiProviderCurrentAccount;
 
     /**
      *
      * @param guiNProv
+     * @param guiPCA
      * @param prov
      * @param provCategory
      * @throws RemoteException
      */
-    public ControllerGuiNewProvider(GuiNewProvider guiNProv, InterfaceProvider prov, InterfaceProviderCategory provCategory) throws RemoteException {
+    public ControllerGuiNewProvider(GuiNewProvider guiNProv, GuiProviderCurrentAccount guiPCA, InterfaceProvider prov, InterfaceProviderCategory provCategory) throws RemoteException {
         this.modify = false;
+        this.guiProviderCurrentAccount = guiPCA;
         this.guiNewProvider = guiNProv;
         this.provider = prov;
         this.providerCategory = provCategory;
@@ -250,6 +253,10 @@ public class ControllerGuiNewProvider implements ActionListener {
         if (e.getSource().equals(this.guiNewProvider.getBtnCancelProvider())) {
             this.guiNewProvider.hide();
             setModify(false);
+        }
+        //si presiono el boton LISTADO DE PAGOS REALIZADOS
+        if(e.getSource().equals(this.guiNewProvider.getBtnPayments())){
+            guiProviderCurrentAccount.setVisible(true);
         }
     }
 
