@@ -1,4 +1,4 @@
-CREATE TABLE `tik`.`purchase` (
+CREATE TABLE `tik`.`purchases` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `cost` FLOAT NULL,
   `paid` FLOAT NULL,
