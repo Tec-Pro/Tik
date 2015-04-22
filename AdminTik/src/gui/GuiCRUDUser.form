@@ -60,7 +60,7 @@
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jScrollPane1" pref="277" max="32767" attributes="0"/>
-                  <Component id="jPanel2" pref="277" max="32767" attributes="0"/>
+                  <Component id="jPanel2" pref="299" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -167,66 +167,60 @@
                               <Component id="dateDischargedDate" min="-2" pref="140" max="-2" attributes="0"/>
                               <Component id="lblDischargedDate" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="txtName" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                              <Component id="txtPlaceOfBirth" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                              <Component id="lblPlaceOfBirth" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblName" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="txtName" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
-                                      <Component id="txtPlaceOfBirth" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
-                                      <Component id="lblPlaceOfBirth" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lblName" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtSurname" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                                      <Component id="lblSurname" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="txtSurname" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
-                                              <Component id="lblSurname" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="lblTurn" min="-2" max="-2" attributes="0"/>
-                                              <Component id="boxTurn" min="-2" pref="110" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="txtPass" alignment="0" min="-2" pref="140" max="-2" attributes="0"/>
-                                              <Component id="lblPass" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="lblAddress" min="-2" max="-2" attributes="0"/>
-                                              <Component id="txtAddress" min="-2" pref="159" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
+                                      <Component id="lblTurn" min="-2" max="-2" attributes="0"/>
+                                      <Component id="boxTurn" min="-2" pref="110" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="boxIdType" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lblIdType" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtPass" alignment="0" min="-2" pref="140" max="-2" attributes="0"/>
+                                      <Component id="lblPass" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="txtIdNumber" alignment="0" min="-2" pref="160" max="-2" attributes="0"/>
-                                      <Component id="lblIdNumber" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="boxMaritalStatus" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
-                                      <Component id="lblMaritalStatus" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="lblBloodType" min="-2" max="-2" attributes="0"/>
-                                      <Component id="boxBloodType" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblAddress" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtAddress" min="-2" pref="159" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="boxIdType" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblIdType" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="txtIdNumber" alignment="0" min="-2" pref="160" max="-2" attributes="0"/>
+                              <Component id="lblIdNumber" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="boxMaritalStatus" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
+                              <Component id="lblMaritalStatus" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="lblBloodType" min="-2" max="-2" attributes="0"/>
+                              <Component id="boxBloodType" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -245,9 +239,9 @@
                           </Group>
                           <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                           <Component id="checkBoxDischarged" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
                       </Group>
                   </Group>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -285,9 +279,9 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="lblHiredDate" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="lblDischargedDate" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblHiredDate" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
@@ -746,7 +740,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="lblPhoto" pref="384" max="32767" attributes="0"/>
+                  <Component id="lblPhoto" pref="388" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
