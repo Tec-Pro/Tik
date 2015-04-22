@@ -257,11 +257,11 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
      */
     public void loadProduct(Map<String, Object> prod) throws RemoteException {
         txtId.setText(prod.get("id").toString());
-        txtStock.setText(prod.get("stock").toString());
+        txtStock.setText(ParserFloat.floatToString((float) prod.get("stock")));
         if (prod.get("measure_unit").toString().equals("unitario")) {
-            txtPrice.setText(prod.get("unit_price").toString());
+            txtPrice.setText(ParserFloat.floatToString((float)prod.get("unit_price")));
         } else {
-            txtPrice.setText(ParserFloat.floatToString(ParserFloat.stringToFloat(prod.get("unit_price").toString()) * 1000));
+            txtPrice.setText(ParserFloat.floatToString( (float) prod.get("unit_price") * 1000));
         }
         txtName.setText(prod.get("name").toString());
         cboxMeasureUnit.setSelectedItem(prod.get("measure_unit").toString());

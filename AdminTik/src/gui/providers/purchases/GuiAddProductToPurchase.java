@@ -75,11 +75,11 @@ public class GuiAddProductToPurchase extends javax.swing.JDialog {
     }
 
     public float getReturnCost() {
-        return Float.valueOf(txtCost.getText());
+        return ParserFloat.stringToFloat(txtCost.getText());
     }
 
     public float getReturnAmount() {
-        return Float.valueOf(txtAmount.getText());
+        return ParserFloat.stringToFloat(txtAmount.getText());
     }
 
     /**
