@@ -31,19 +31,22 @@ public class ControllerGuiNewProvider implements ActionListener {
     private final GuiNewProvider guiNewProvider;
     private boolean modify;
     private int currentProviderId;
-    private final GuiProviderCurrentAccount guiProviderCurrentAccount;
+    private final GuiInvoicesPaid guiInvoicesPaid;
+    private final GuiPaymentsToProviders guiPaymentsToProviders;
 
     /**
      *
      * @param guiNProv
-     * @param guiPCA
+     * @param guiPTP
+     * @param guiIP
      * @param prov
      * @param provCategory
      * @throws RemoteException
      */
-    public ControllerGuiNewProvider(GuiNewProvider guiNProv, GuiProviderCurrentAccount guiPCA, InterfaceProvider prov, InterfaceProviderCategory provCategory) throws RemoteException {
+    public ControllerGuiNewProvider(GuiNewProvider guiNProv, GuiPaymentsToProviders guiPTP, GuiInvoicesPaid guiIP, InterfaceProvider prov, InterfaceProviderCategory provCategory) throws RemoteException {
         this.modify = false;
-        this.guiProviderCurrentAccount = guiPCA;
+        this.guiPaymentsToProviders = guiPTP;
+        this.guiInvoicesPaid = guiIP;
         this.guiNewProvider = guiNProv;
         this.provider = prov;
         this.providerCategory = provCategory;
@@ -256,7 +259,11 @@ public class ControllerGuiNewProvider implements ActionListener {
         }
         //si presiono el boton LISTADO DE PAGOS REALIZADOS
         if(e.getSource().equals(this.guiNewProvider.getBtnPayments())){
-            guiProviderCurrentAccount.setVisible(true);
+            guiPaymentsToProviders.setVisible(true);
+        }
+        //si presiono el boton LISTADO DE FACTURACIÓN
+        if(e.getSource().equals(this.guiNewProvider.getBtnInvoicesPaid())){
+            guiInvoicesPaid.setVisible(true);
         }
     }
 

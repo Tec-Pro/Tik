@@ -12,12 +12,12 @@ import javax.swing.JTable;
  *
  * @author eze
  */
-public class GuiProviderCurrentAccount extends javax.swing.JInternalFrame {
+public class GuiInvoicesPaid extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form NewJInternalFrame
      */
-    public GuiProviderCurrentAccount() {
+    public GuiInvoicesPaid() {
         initComponents();
     }
 
@@ -30,7 +30,7 @@ public class GuiProviderCurrentAccount extends javax.swing.JInternalFrame {
     }
 
     public JTable getTableProviderCurrentAccount() {
-        return tableProviderCurrentAccount;
+        return tableInvoicesPaid;
     }
 
     
@@ -50,13 +50,13 @@ public class GuiProviderCurrentAccount extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tableProviderCurrentAccount = new javax.swing.JTable();
+        tableInvoicesPaid = new javax.swing.JTable();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setMaximizable(true);
 
-        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Pagos realizados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Schoolbook L", 3, 14))); // NOI18N
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Facturas Pagadas", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Schoolbook L", 3, 14))); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Century Schoolbook L", 3, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(1, 1, 1));
@@ -79,7 +79,7 @@ public class GuiProviderCurrentAccount extends javax.swing.JInternalFrame {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(dateUntil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(348, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -93,24 +93,31 @@ public class GuiProviderCurrentAccount extends javax.swing.JInternalFrame {
                 .addContainerGap(453, Short.MAX_VALUE))
         );
 
-        tableProviderCurrentAccount.setModel(new javax.swing.table.DefaultTableModel(
+        tableInvoicesPaid.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Fecha", "Monto", "Descripción"
+                "Id", "Fecha de Factura", "Fecha ult. Pago", "Monto", "Cant. Entregada", "Debe", "Pagada"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                true, false, true
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        tableProviderCurrentAccount.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane2.setViewportView(tableProviderCurrentAccount);
+        tableInvoicesPaid.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane2.setViewportView(tableInvoicesPaid);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -118,8 +125,8 @@ public class GuiProviderCurrentAccount extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 789, Short.MAX_VALUE)
+                .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -144,6 +151,6 @@ public class GuiProviderCurrentAccount extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable tableProviderCurrentAccount;
+    private javax.swing.JTable tableInvoicesPaid;
     // End of variables declaration//GEN-END:variables
 }

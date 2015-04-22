@@ -9,9 +9,9 @@ package controllers.providers;
  *
  * @author eze
  */
-public class ControllerGuiProviderCurrentAccount {
+public class ControllerGuiInvoicesPaid {
     
-    public ControllerGuiProviderCurrentAccount () {
+    public ControllerGuiInvoicesPaid () {
     
 }
 }

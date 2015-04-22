@@ -27,6 +27,10 @@ public class GuiNewProvider extends javax.swing.JInternalFrame {
     public JButton getBtnPayments() {
         return btnPayments;
     }
+
+    public JButton getBtnInvoicesPaid() {
+        return btnInvoicesPaid;
+    }
     
     public JButton getBtnCancelProvider() {
         return btnCancelProvider;
@@ -83,6 +87,7 @@ public class GuiNewProvider extends javax.swing.JInternalFrame {
         this.btnCancelProvider.addActionListener(lis);
         this.btnSaveProvider.addActionListener(lis);
         this.btnPayments.addActionListener(lis);
+        this.btnInvoicesPaid.addActionListener(lis);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -118,6 +123,7 @@ public class GuiNewProvider extends javax.swing.JInternalFrame {
         btnCancelProvider = new javax.swing.JButton();
         btnSaveProvider = new javax.swing.JButton();
         btnPayments = new javax.swing.JButton();
+        btnInvoicesPaid = new javax.swing.JButton();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -308,6 +314,13 @@ public class GuiNewProvider extends javax.swing.JInternalFrame {
             }
         });
 
+        btnInvoicesPaid.setText("LISTADO DE FACTURACiÓN");
+        btnInvoicesPaid.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInvoicesPaidActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -315,11 +328,11 @@ public class GuiNewProvider extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 599, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(btnPayments, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnPayments, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnInvoicesPaid, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(39, 39, 39)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -336,7 +349,9 @@ public class GuiNewProvider extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(10, 10, 10)
-                        .addComponent(btnPayments)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnPayments)
+                            .addComponent(btnInvoicesPaid))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -388,9 +403,14 @@ public class GuiNewProvider extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnPaymentsActionPerformed
 
+    private void btnInvoicesPaidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInvoicesPaidActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnInvoicesPaidActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelProvider;
+    private javax.swing.JButton btnInvoicesPaid;
     private javax.swing.JButton btnPayments;
     private javax.swing.JButton btnSaveProvider;
     private javax.swing.JLabel jLabel1;
