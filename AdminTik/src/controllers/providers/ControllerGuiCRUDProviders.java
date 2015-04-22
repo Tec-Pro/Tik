@@ -38,14 +38,14 @@ public class ControllerGuiCRUDProviders implements ActionListener {
     private final InterfaceProvider provider;
     private final InterfaceProvidersSearch providersSearch;
 
-    public ControllerGuiCRUDProviders(GuiCRUDProviders guiCProv, GuiNewProvider guiNProv,
+    public ControllerGuiCRUDProviders(GuiCRUDProviders guiCProv, GuiNewProvider guiNProv, GuiPaymentsToProviders guiPTP, GuiInvoicesPaid guiIP,
             InterfaceProvider prov, InterfaceProviderCategory provCategory, InterfaceProvidersSearch provSearch) throws RemoteException {
         this.guiCRUDProviders = guiCProv;
         this.guiNewProvider = guiNProv;
         this.provider = prov;
         this.providerCategory = provCategory;
         this.providersSearch = provSearch;
-        this.controllerGuiNewProvider = new ControllerGuiNewProvider(this.guiNewProvider, this.provider, this.providerCategory);
+        this.controllerGuiNewProvider = new ControllerGuiNewProvider(this.guiNewProvider, guiPTP, guiIP, this.provider, this.providerCategory);
         this.guiCRUDProviders.setActionListener(this);
         loadProviderCategories();
         //escucho en el txtFindProvider lo que se va ingresando para buscar un proveedor

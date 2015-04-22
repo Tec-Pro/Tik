@@ -40,7 +40,7 @@ public class GuiMain extends javax.swing.JFrame {
         this.btnProductCategory.addActionListener(lis);
         this.btnProviders.addActionListener(lis);
         this.btnEmployes.addActionListener(lis);
-        this.btnJTree.addActionListener(lis);
+        this.btnMenu.addActionListener(lis);
         this.btnPurchase.addActionListener(lis);
     }
 
@@ -73,8 +73,8 @@ public class GuiMain extends javax.swing.JFrame {
         return btnProductCategory;
     }
 
-    public JMenuItem getBtnJTree() {
-        return btnJTree;
+    public JMenuItem getBtnMenu() {
+        return btnMenu;
     }
     
     
@@ -131,7 +131,7 @@ public class GuiMain extends javax.swing.JFrame {
         btnFProduct = new javax.swing.JMenuItem();
         btnPProduct = new javax.swing.JMenuItem();
         btnProductCategory = new javax.swing.JMenuItem();
-        btnJTree = new javax.swing.JMenuItem();
+        btnMenu = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         btnProviders = new javax.swing.JMenuItem();
         btnPurchase = new javax.swing.JMenuItem();
@@ -185,13 +185,13 @@ public class GuiMain extends javax.swing.JFrame {
         btnProductCategory.setText("Categorias de los productos");
         jMenu3.add(btnProductCategory);
 
-        btnJTree.setText("JTree");
-        btnJTree.addActionListener(new java.awt.event.ActionListener() {
+        btnMenu.setText("Menu");
+        btnMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnJTreeActionPerformed(evt);
+                btnMenuActionPerformed(evt);
             }
         });
-        jMenu3.add(btnJTree);
+        jMenu3.add(btnMenu);
 
         jMenuBar1.add(jMenu3);
 
@@ -240,9 +240,9 @@ public class GuiMain extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAdminsActionPerformed
 
-    private void btnJTreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJTreeActionPerformed
+    private void btnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnJTreeActionPerformed
+    }//GEN-LAST:event_btnMenuActionPerformed
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -253,7 +253,7 @@ public class GuiMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem btnEmployes;
     private javax.swing.JMenuItem btnExit;
     private javax.swing.JMenuItem btnFProduct;
-    private javax.swing.JMenuItem btnJTree;
+    private javax.swing.JMenuItem btnMenu;
     private javax.swing.JMenuItem btnPProduct;
     private javax.swing.JMenuItem btnProductCategory;
     private javax.swing.JMenuItem btnProviders;
