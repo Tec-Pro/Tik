@@ -15,6 +15,7 @@ import implementsInterface.CrudProvider;
 import implementsInterface.CrudProviderCategory;
 import implementsInterface.CrudUser;
 import implementsInterface.Server;
+import implementsInterface.providers.purchase.CRUDPurchase;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RMISecurityManager;
@@ -51,6 +52,7 @@ public class ServerTik {
            CRUDPproduct CRUDPproduct = new CRUDPproduct();
            CRUDFproduct CRUDFproduct = new CRUDFproduct();
            CRUDCategory crudCategory = new CRUDCategory();
+           CRUDPurchase CRUDPurchase = new CRUDPurchase();
            CrudUser crudUser = new CrudUser();
            CrudProvider crudProvider= new CrudProvider();
            CrudProviderCategory crudProviderCategory= new CrudProviderCategory();
@@ -61,6 +63,7 @@ public class ServerTik {
            Naming.rebind("CRUDEproduct", CRUDEproduct);
            Naming.rebind("CRUDFproduct", CRUDFproduct); 
            Naming.rebind("CRUDCategory", crudCategory);
+           Naming.rebind("CRUDPurchase", CRUDPurchase);
            Naming.rebind("crudUser", crudUser);
            Naming.rebind("crudProvider", crudProvider);
            Naming.rebind("crudProviderCategory", crudProviderCategory);
