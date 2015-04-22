@@ -38,7 +38,7 @@ public class ControllerGuiCRUDProviders implements ActionListener {
     private final InterfaceProvider provider;
     private final InterfaceProvidersSearch providersSearch;
 
-    public ControllerGuiCRUDProviders(GuiCRUDProviders guiCProv, GuiNewProvider guiNProv, GuiPaymentsToProviders guiPTP, GuiInvoicesPaid guiIP,
+    public ControllerGuiCRUDProviders(GuiCRUDProviders guiCProv, GuiNewProvider guiNProv, GuiPaymentsToProviders guiPTP, GuiTicketsPaid guiIP,
             InterfaceProvider prov, InterfaceProviderCategory provCategory, InterfaceProvidersSearch provSearch) throws RemoteException {
         this.guiCRUDProviders = guiCProv;
         this.guiNewProvider = guiNProv;

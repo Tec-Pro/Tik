@@ -31,7 +31,7 @@ public class ControllerGuiNewProvider implements ActionListener {
     private final GuiNewProvider guiNewProvider;
     private boolean modify;
     private int currentProviderId;
-    private final GuiInvoicesPaid guiInvoicesPaid;
+    private final GuiTicketsPaid guiInvoicesPaid;
     private final GuiPaymentsToProviders guiPaymentsToProviders;
 
     /**
@@ -43,7 +43,7 @@ public class ControllerGuiNewProvider implements ActionListener {
      * @param provCategory
      * @throws RemoteException
      */
-    public ControllerGuiNewProvider(GuiNewProvider guiNProv, GuiPaymentsToProviders guiPTP, GuiInvoicesPaid guiIP, InterfaceProvider prov, InterfaceProviderCategory provCategory) throws RemoteException {
+    public ControllerGuiNewProvider(GuiNewProvider guiNProv, GuiPaymentsToProviders guiPTP, GuiTicketsPaid guiIP, InterfaceProvider prov, InterfaceProviderCategory provCategory) throws RemoteException {
         this.modify = false;
         this.guiPaymentsToProviders = guiPTP;
         this.guiInvoicesPaid = guiIP;
