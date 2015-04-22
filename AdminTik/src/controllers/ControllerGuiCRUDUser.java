@@ -10,6 +10,7 @@ import interfaces.InterfaceUser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.Map;
 import java.util.Iterator;
 import java.util.Date;
@@ -25,6 +26,8 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.JFileChooser;
 import javax.swing.ImageIcon;
 import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.event.ListSelectionEvent;
 import utils.Config;
 import utils.ImageFilter;
@@ -71,7 +74,11 @@ public class ControllerGuiCRUDUser implements ActionListener {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 if (evt.getClickCount() == 2) {
-                    panelPhotoDobleClicked(null);
+                    try {
+                        panelPhotoDobleClicked(null);
+                    } catch (IOException ex) {
+                        Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
         });
@@ -82,7 +89,7 @@ public class ControllerGuiCRUDUser implements ActionListener {
         guiUser.initialMode(true);
     }
 
-    private void panelPhotoDobleClicked(MouseEvent evt) {
+    private void panelPhotoDobleClicked(MouseEvent evt) throws IOException {
         if (createMode || modifyMode) { //If I'm either creating a new user or modifying an old one, I can change the photo
             final JFileChooser fc = new JFileChooser();
             fc.setAcceptAllFileFilterUsed(false);
@@ -94,10 +101,15 @@ public class ControllerGuiCRUDUser implements ActionListener {
 //          if(!savedSuccesful){
 //              ERROR!
 //          }else{
-                byte[] imagedata = file.toString().getBytes();
-                ImageIcon format = new ImageIcon(imagedata);
+                BufferedImage s;
+                s = ImageIO.read(file);
+                ImageIcon format = new ImageIcon(s);
                 photo = format;
                 guiUser.getLblPhoto().setIcon(format);
+                guiUser.getLblPhoto().setText("");
+//                guiUser.updateUI();
+                                guiUser.getLblPhoto().updateUI();
+
 //          }
             } else {
                 //Nothing
