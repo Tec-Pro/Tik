@@ -6,6 +6,7 @@
 package controllers;
 
 import gui.GuiAddUpdateProductCategory;
+import gui.GuiAddUpdateProductSubcategory;
 import gui.GuiCRUDProductCategory;
 import gui.GuiMenu;
 import gui.main.GuiMain;
@@ -48,7 +49,9 @@ public class ControllerGuiMenu implements ActionListener {
     private List<Map> fproductPproductList;
     private List<Map> fproductEproductList;
     private GuiAddUpdateProductCategory guiAddUpdateProductCategory;
+    private GuiAddUpdateProductSubcategory guiAddUpdateProductSubcategory;
     String currentSelectedNodeName = "";
+    DefaultMutableTreeNode currentNode = null;
 
     public ControllerGuiMenu(GuiMenu gt, GuiMain gm) throws NotBoundException, MalformedURLException, RemoteException {
         crudProductCategory = (InterfaceCategory) Naming.lookup("//localhost/CRUDCategory");
@@ -59,6 +62,9 @@ public class ControllerGuiMenu implements ActionListener {
         guiAddUpdateProductCategory = new GuiAddUpdateProductCategory(gm, true);
         guiAddUpdateProductCategory.setLocationRelativeTo(guiMenu);
         guiAddUpdateProductCategory.setActionListener(this);
+        guiAddUpdateProductSubcategory = new GuiAddUpdateProductSubcategory(gm, true);
+        guiAddUpdateProductSubcategory.setLocationRelativeTo(guiMenu);
+        guiAddUpdateProductSubcategory.setActionListener(this);
         guiMenu.setActionListener(this);
 
         guiMenu.getTreeMenu().addMouseListener(new MouseAdapter() {
@@ -69,7 +75,14 @@ public class ControllerGuiMenu implements ActionListener {
         guiMenu.getTreeMenu().getSelectionModel().addTreeSelectionListener(new TreeSelectionListener() {
 
             public void valueChanged(TreeSelectionEvent e) {
-                //changeSelection(e);
+                if(currentNode!=null){
+                    if (currentNode.getLevel() == 0) {
+                        guiMenu.getBtnDelete().setEnabled(false);
+                        guiMenu.getBtnUpdate().setEnabled(false);
+                    }
+                }
+                
+
             }
 
         });
@@ -80,25 +93,36 @@ public class ControllerGuiMenu implements ActionListener {
         guiMenu.getBtnUpdate().setEnabled(true);
         TreePath currentSelection = guiMenu.getTreeMenu().getSelectionPath();
         if (currentSelection != null) {
-            DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) currentSelection.getLastPathComponent();
+            currentNode = (DefaultMutableTreeNode) currentSelection.getLastPathComponent();
             currentSelectedNodeName = currentNode.toString();// nombre de la hoja seleccionada
             if (currentNode.isLeaf()) {
-                if (me.getClickCount() == 2) {
-                    switch (currentSelectedNodeName) {
-                        case "AGREGAR CATEGORIA":
+                switch (currentSelectedNodeName) {
+                    case "AGREGAR CATEGORIA":
+                        guiMenu.getBtnDelete().setEnabled(false);
+                        guiMenu.getBtnUpdate().setEnabled(false);
+                        if (me.getClickCount() == 2) {
                             guiAddUpdateProductCategory.addCategoryState();
                             guiAddUpdateProductCategory.setVisible(true);
-                            break;
-                        case "AGREGAR SUBCATEGORIA":
-
-                            break;
-                        case "AGREGAR PRODUCTO":
-
-                            break;
-                        default:
-                            fProductSelected(currentSelectedNodeName);
-                            break;
-                    }
+                        }
+                        break;
+                    case "AGREGAR SUBCATEGORIA":
+                        guiMenu.getBtnDelete().setEnabled(false);
+                        guiMenu.getBtnUpdate().setEnabled(false);
+                        if (me.getClickCount() == 2) {
+                            guiAddUpdateProductSubcategory.addSucategoryState();
+                            guiAddUpdateProductSubcategory.setVisible(true);
+                        }
+                        break;
+                    case "AGREGAR PRODUCTO":
+                        guiMenu.getBtnDelete().setEnabled(false);
+                        guiMenu.getBtnUpdate().setEnabled(false);
+                        if (me.getClickCount() == 2) {
+                            
+                        }
+                        break;
+                    default:
+                        fProductSelected(currentSelectedNodeName);
+                        break;
                 }
             }
         }
@@ -140,8 +164,8 @@ public class ControllerGuiMenu implements ActionListener {
                         }
                         subcategory.add(new DefaultMutableTreeNode("AGREGAR PRODUCTO"));
                     }
-                    category.add(new DefaultMutableTreeNode("AGREGAR SUBCATEGORIA"));
                 }
+                category.add(new DefaultMutableTreeNode("AGREGAR SUBCATEGORIA"));
             }
             root.add(new DefaultMutableTreeNode("AGREGAR CATEGORIA"));
         }
@@ -166,9 +190,11 @@ public class ControllerGuiMenu implements ActionListener {
                 fproductPproductList = crudFproduct.getFproductPproduts(id);
                 fproductEproductList = crudFproduct.getFproductEproduts(id);
                 refreshReciperList();
+
             }
         } catch (RemoteException ex) {
-            Logger.getLogger(ControllerGuiMenu.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ControllerGuiMenu.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -194,6 +220,15 @@ public class ControllerGuiMenu implements ActionListener {
         return !guiAddUpdateProductCategory.getTxtCategory().getText().equals("");
     }
 
+    private boolean dataSubcategoryIsValid() {
+        return !guiAddUpdateProductSubcategory.getTxtSubcategory().getText().equals("");
+    }
+
+    private int getIdCategory() throws RemoteException {
+        Map<String, Object> category = crudProductCategory.getCategoryByName(currentNode.getParent().toString());
+        return (int) category.get("id");
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         /**
@@ -212,9 +247,11 @@ public class ControllerGuiMenu implements ActionListener {
                         CreateTree();
                     } else {
                         JOptionPane.showMessageDialog(guiMenu, "El nombre ya existe!", "Error!", JOptionPane.ERROR_MESSAGE);
+
                     }
                 } catch (RemoteException ex) {
-                    Logger.getLogger(ControllerGuiCRUDAdmin.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ControllerGuiCRUDAdmin.class
+                            .getName()).log(Level.SEVERE, null, ex);
                 }
 
             }
@@ -239,13 +276,17 @@ public class ControllerGuiMenu implements ActionListener {
                                         CreateTree();
                                     } else {
                                         JOptionPane.showMessageDialog(guiMenu, "No se pudo modificar!", "Error!", JOptionPane.ERROR_MESSAGE);
+
                                     }
                                 } catch (RemoteException ex) {
-                                    Logger.getLogger(ControllerGuiCRUDAdmin.class.getName()).log(Level.SEVERE, null, ex);
+                                    Logger.getLogger(ControllerGuiCRUDAdmin.class
+                                            .getName()).log(Level.SEVERE, null, ex);
                                 }
+
                             }
                         } catch (RemoteException ex) {
-                            Logger.getLogger(ControllerGuiProductCategory.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(ControllerGuiProductCategory.class
+                                    .getName()).log(Level.SEVERE, null, ex);
                         }
                     } else {
                         JOptionPane.showMessageDialog(guiMenu, "No se detecto cambio en el nombre de la categoria.", "Informacion", JOptionPane.INFORMATION_MESSAGE);
@@ -259,14 +300,93 @@ public class ControllerGuiMenu implements ActionListener {
         }
 
         /**
+         * ************Botones GuiAddUpdateProductSubcategory***************
+         */
+        if (e.getSource().equals(guiAddUpdateProductSubcategory.getBtnSave()) && !guiMenu.isBtnUpdateSelected()) {
+            if (!dataSubcategoryIsValid()) {
+                JOptionPane.showMessageDialog(guiMenu, "Los campos no pueden estar vacios!", "Error!", JOptionPane.ERROR_MESSAGE);
+            } else {
+                try {
+                    Map<String, Object> newSubcategory;
+                    newSubcategory = crudProductCategory.addSubcategory(getIdCategory(), guiAddUpdateProductSubcategory.getTxtSubcategory().getText());
+                    if (newSubcategory != null) {
+                        JOptionPane.showMessageDialog(guiMenu, "Nueva subcategoria creada exitosamente!", "Subcategoria creada!", JOptionPane.INFORMATION_MESSAGE);
+                        guiAddUpdateProductSubcategory.setVisible(false);
+                        CreateTree();
+                    } else {
+                        JOptionPane.showMessageDialog(guiMenu, "El nombre ya existe!", "Error!", JOptionPane.ERROR_MESSAGE);
+
+                    }
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiCRUDAdmin.class
+                            .getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        } else {
+            if (e.getSource().equals(guiAddUpdateProductSubcategory.getBtnSave()) && guiMenu.isBtnUpdateSelected()) {
+                if (!dataSubcategoryIsValid()) {
+                    JOptionPane.showMessageDialog(guiAddUpdateProductSubcategory, "Los campos no pueden estar vacios!", "Error!", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    if (!currentSelectedNodeName.equals(guiAddUpdateProductSubcategory.getTxtSubcategory().getText())) {
+                        try {
+                            if (crudProductCategory.subCategoryExists(guiAddUpdateProductSubcategory.getTxtSubcategory().getText())) {
+                                JOptionPane.showMessageDialog(guiMenu, "El nombre ya existe!", "Error!", JOptionPane.ERROR_MESSAGE);
+                            } else {
+                                try {
+                                    Map<String, Object> modifiedSubcategory;
+                                    Map<String, Object> subcategory = crudProductCategory.getSubcategory(currentSelectedNodeName);
+                                    int id = (int) subcategory.get("id");
+                                    modifiedSubcategory = crudProductCategory.modifySubcategory(id, guiAddUpdateProductSubcategory.getTxtSubcategory().getText());
+                                    if (modifiedSubcategory != null) {
+                                        JOptionPane.showMessageDialog(guiMenu, "Datos modificados correctamente!", "Modificacion exitosa!", JOptionPane.INFORMATION_MESSAGE);
+                                        guiAddUpdateProductSubcategory.setVisible(false);
+                                        CreateTree();
+                                    } else {
+                                        JOptionPane.showMessageDialog(guiMenu, "No se pudo modificar!", "Error!", JOptionPane.ERROR_MESSAGE);
+
+                                    }
+                                } catch (RemoteException ex) {
+                                    Logger.getLogger(ControllerGuiCRUDAdmin.class
+                                            .getName()).log(Level.SEVERE, null, ex);
+                                }
+
+                            }
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(ControllerGuiProductCategory.class
+                                    .getName()).log(Level.SEVERE, null, ex);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(guiMenu, "No se detecto cambio en el nombre de la subcategoria.", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+            }
+        }
+        if (e.getSource().equals(guiAddUpdateProductSubcategory.getBtnCancel())) {
+            guiAddUpdateProductSubcategory.setVisible(false);
+            guiMenu.setBtnUpdateSelected(false);
+        }
+        /**
          * *********Botones GuiMenu***********
          */
         if (e.getSource().equals(guiMenu.getBtnUpdate())) {
             guiMenu.setBtnUpdateSelected(true);
-            guiAddUpdateProductCategory.UpdateCategoryState();
-            guiAddUpdateProductCategory.setVisible(true);
+            switch (currentNode.getLevel()) {
+                case 0:
+                    break;
+                case 1:
+                    guiAddUpdateProductCategory.UpdateCategoryState();
+                    guiAddUpdateProductCategory.getTxtCategory().setText(currentSelectedNodeName);
+                    guiAddUpdateProductCategory.setVisible(true);
+                    break;
+                case 2:
+                    guiAddUpdateProductSubcategory.UpdateSubcategoryState();
+                    guiAddUpdateProductSubcategory.getTxtSubcategory().setText(currentSelectedNodeName);
+                    guiAddUpdateProductSubcategory.setVisible(true);
+            }
+
         }
-        
+
     }
 
 }
