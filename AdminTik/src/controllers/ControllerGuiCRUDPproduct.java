@@ -122,18 +122,18 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
             Object row[] = new String[6];
             row[0] = prod.get("id").toString();
             row[1] = prod.get("name").toString(); //NOMBRE
-            row[2] = prod.get("stock").toString(); // STOCK 
+            row[2] = ParserFloat.floatToString( (float) prod.get("stock")); // STOCK 
             row[3] = prod.get("measure_unit").toString(); // UNIDAD DE MEDIDA            
             if (prod.get("measure_unit").toString().equals("gr")) {
-                row[4] = ParserFloat.floatToString(ParserFloat.stringToFloat(prod.get("unit_price").toString()) * 1000); // PRECIO UNITARIO EN UNIDAD GRANDE
+                row[4] = ParserFloat.floatToString( (float)prod.get("unit_price") * 1000); // PRECIO UNITARIO EN UNIDAD GRANDE
                 row[5] = "Kg";
             }
             if (prod.get("measure_unit").toString().equals("ml")) {
-                row[4] = ParserFloat.floatToString(ParserFloat.stringToFloat(prod.get("unit_price").toString()) * 1000); // PRECIO UNITARIO EN UNIDAD GRANDE
+                row[4] = ParserFloat.floatToString((float)prod.get("unit_price") * 1000); // PRECIO UNITARIO EN UNIDAD GRANDE
                 row[5] = "Litro";
             }
             if (prod.get("measure_unit").toString().equals("unitario")) {
-                row[4] = prod.get("unit_price").toString(); // PRECIO UNITARIO
+                row[4] = ParserFloat.floatToString((float) prod.get("unit_price")); // PRECIO UNITARIO
                 row[5] = "unitario";
             }
             tableProductsDefault.addRow(row);

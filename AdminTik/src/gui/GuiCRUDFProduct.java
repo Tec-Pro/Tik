@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import utils.ParserFloat;
 
 /**
  *
@@ -278,7 +279,7 @@ public class GuiCRUDFProduct extends javax.swing.JInternalFrame {
         category.setSelectedItem(cat.get("name").toString()); //CATEGORIA
         loadSubCategory(cat.get("name").toString());
         subcategory.setSelectedItem(subC.get("name").toString()); //SubCATEGORIA  
-        txtSellPrice.setText(prod.get("sell_price").toString());
+        txtSellPrice.setText(ParserFloat.floatToString( (float)prod.get("sell_price")));
     }
 
     /**
