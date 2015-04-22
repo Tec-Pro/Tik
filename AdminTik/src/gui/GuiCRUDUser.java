@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.util.Date;
 import javax.swing.JComboBox;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.ImageIcon;
 /**
  *
  * @author xen
@@ -16,6 +17,7 @@ import javax.swing.table.DefaultTableModel;
 public class GuiCRUDUser extends javax.swing.JInternalFrame {
 
     private final DefaultTableModel dtmUsers;
+    private ImageIcon photo = null;
     
     /**
      * Creates new form GuiCRUDUser
@@ -25,8 +27,161 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         cleanFields();
         dtmUsers = (DefaultTableModel) tableUsers.getModel();
         setVisible(false);
+    }   
+    
+    /**
+     * clean all the text fields
+     * 
+     */
+    public void cleanFields(){
+        txtName.setText("");
+        txtSurname.setText("");
+        txtAddress.setText("");
+        dateHiredDate.setDate(null);
+        dateDischargedDate.setDate(null);
+        boxTurn.setSelectedIndex(0);
+        dateBirthDate.setDate(null);
+        txtPlaceOfBirth.setText("");
+        boxIdType.setSelectedIndex(0);
+        txtIdNumber.setText("");
+        txtPass.setText("");
+        txtHomePhone.setText("");
+        txtEmergencyPhone.setText("");
+        txtMobilePhone.setText("");
+        txtIdNumber.setText("");
+        boxMaritalStatus.setSelectedIndex(0);
+        boxBloodType.setSelectedIndex(0);
+        boxPosition.setSelectedIndex(0);
+        photo = null;
+        lblPhoto.setText("Haga doble click sobre el panel");
+    }
+    
+    public void updateFields(String name,
+            String surname,
+            String pass,
+            Date entryDate,
+            Date exitDate,
+            String turn,
+            Date dateOfBirth,
+            String placeOfBirth,
+            String idType,
+            String idNumber,
+            String address,
+            String homePhone,
+            String emergencyPhone,
+            String mobilePhone,
+            String maritalStatus,
+            String bloodType,
+            String position){
+        txtName.setText(name);
+        txtSurname.setText(surname);
+        txtAddress.setText(address);
+        dateHiredDate.setDate(entryDate);
+        dateDischargedDate.setDate(exitDate);
+        boxTurn.setSelectedItem(turn);
+        dateBirthDate.setDate(dateOfBirth);
+        txtPlaceOfBirth.setText(placeOfBirth);
+        boxIdType.setSelectedItem(idType);
+        txtIdNumber.setText(idNumber);
+        txtPass.setText(pass);
+        txtHomePhone.setText(homePhone);
+        txtEmergencyPhone.setText(emergencyPhone);
+        txtMobilePhone.setText(mobilePhone);
+        txtIdNumber.setText(maritalStatus);
+        boxMaritalStatus.setSelectedItem(maritalStatus);
+        boxBloodType.setSelectedItem(bloodType);
+        boxPosition.setSelectedItem(position);
+    }
+    
+    public String dateToMySQLDate(Date fecha, boolean paraMostrar) {
+        if (paraMostrar) {
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
+            return sdf.format(fecha);
+        } else {
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+            return sdf.format(fecha);
+        }
+    }   
+    
+    public void modifyMode(boolean b) {
+        if (b) {
+            btnDelete.setText("Cancelar");
+        }else{
+            btnDelete.setText("Borrar");
+        }
+        btnDelete.setEnabled(b);
+        btnSave.setEnabled(b);
+        btnModify.setEnabled(!b);
+        btnCreate.setEnabled(!b);
+        enableFields(b);
+    }
+    public void createMode(boolean b) {
+        if (b) {
+            btnDelete.setText("Cancelar");
+        }else{
+            btnDelete.setText("Borrar");
+        }
+        btnDelete.setEnabled(b);
+        btnSave.setEnabled(b);
+        btnModify.setEnabled(!b);
+        btnCreate.setEnabled(!b);
+        enableFields(b);
+    }   
+    
+    public void selectionMode(boolean b) {
+        btnDelete.setEnabled(b);
+        btnSave.setEnabled(!b);
+        btnModify.setEnabled(b);
+        btnCreate.setEnabled(b);
+        enableFields(!b);
+    }
+    
+    public void initialMode(boolean b) {
+        cleanFields();
+        btnDelete.setText("Borrar");
+        btnDelete.setEnabled(!b);
+        btnSave.setEnabled(!b);
+        btnModify.setEnabled(!b);
+        btnCreate.setEnabled(b);
+        enableFields(!b);
+        tableUsers.clearSelection();
+    }
+    
+    public void setActionListener(ActionListener ac){
+        btnCreate.addActionListener(ac);
+        btnModify.addActionListener(ac);
+        btnSave.addActionListener(ac);
+        btnDelete.addActionListener(ac);
+        checkBoxDischarged.addActionListener(ac);
     }
 
+    private void enableFields(boolean b) {
+        txtName.setEnabled(b);
+        txtSurname.setEnabled(b);
+        txtAddress.setEnabled(b);
+        dateHiredDate.setEnabled(b);
+        dateDischargedDate.setEnabled(b);
+        boxTurn.setEnabled(b);
+        dateBirthDate.setEnabled(b);
+        txtPlaceOfBirth.setEnabled(b);
+        boxIdType.setEnabled(b);
+        txtIdNumber.setEnabled(b);
+        txtPass.setEnabled(b);
+        txtHomePhone.setEnabled(b);
+        txtEmergencyPhone.setEnabled(b);
+        txtMobilePhone.setEnabled(b);
+        txtIdNumber.setEnabled(b);
+        boxMaritalStatus.setEnabled(b);
+        boxBloodType.setEnabled(b);
+        boxPosition.setEnabled(b);
+        checkBoxDischarged.setEnabled(b);
+    }
+    public void enableDischarged(boolean b){
+        lblDischargedDate.setEnabled(b);
+        dateDischargedDate.setEnabled(b);
+        checkBoxDischarged.setSelected(b);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -50,8 +205,8 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         boxMaritalStatus = new javax.swing.JComboBox();
         boxBloodType = new javax.swing.JComboBox();
         lblEmergencyPhone = new javax.swing.JLabel();
-        dateEntryDate = new com.toedter.calendar.JDateChooser();
-        lblExitDate = new javax.swing.JLabel();
+        dateHiredDate = new com.toedter.calendar.JDateChooser();
+        lblHiredDate = new javax.swing.JLabel();
         lblPass = new javax.swing.JLabel();
         lblAddress = new javax.swing.JLabel();
         txtIdNumber = new javax.swing.JTextField();
@@ -71,8 +226,9 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         txtPass = new javax.swing.JTextField();
         lblIdNumber = new javax.swing.JLabel();
         txtAddress = new javax.swing.JTextField();
-        dateExitDate = new com.toedter.calendar.JDateChooser();
-        lblExitDate1 = new javax.swing.JLabel();
+        dateDischargedDate = new com.toedter.calendar.JDateChooser();
+        lblDischargedDate = new javax.swing.JLabel();
+        checkBoxDischarged = new javax.swing.JCheckBox();
         panelEmployeeSchedule = new javax.swing.JPanel();
         scrollEmployeeSchedule = new javax.swing.JScrollPane();
         tableEmployeeSchedule = new javax.swing.JTable();
@@ -85,6 +241,8 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         btnDelete = new javax.swing.JButton();
         btnModify = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        lblPhoto = new javax.swing.JLabel();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -92,15 +250,12 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setResizable(true);
         setTitle("Empleados");
-        setMinimumSize(new java.awt.Dimension(1200, 672));
-        setPreferredSize(new java.awt.Dimension(1200, 672));
+        setMinimumSize(new java.awt.Dimension(1300, 700));
+        setPreferredSize(new java.awt.Dimension(1300, 700));
 
         tableUsers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "ID", "Nombre", "Apellido", "Posicion"
@@ -126,7 +281,11 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         tableUsers.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tableUsers);
         if (tableUsers.getColumnModel().getColumnCount() > 0) {
-            tableUsers.getColumnModel().getColumn(0).setPreferredWidth(30);
+            tableUsers.getColumnModel().getColumn(0).setMinWidth(20);
+            tableUsers.getColumnModel().getColumn(0).setPreferredWidth(20);
+            tableUsers.getColumnModel().getColumn(1).setMinWidth(60);
+            tableUsers.getColumnModel().getColumn(2).setMinWidth(60);
+            tableUsers.getColumnModel().getColumn(3).setMinWidth(60);
         }
 
         panelFields.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Empleado", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Ubuntu", 1, 15))); // NOI18N
@@ -155,9 +314,9 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
 
         lblEmergencyPhone.setText("Tel Emergencia");
 
-        dateEntryDate.setDateFormatString("dd-MM-yyyy");
+        dateHiredDate.setDateFormatString("dd-MM-yyyy");
 
-        lblExitDate.setText("Fecha Contratada");
+        lblHiredDate.setText("Fecha Contratado");
 
         lblPass.setText("Contrasena");
 
@@ -206,57 +365,84 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
             }
         });
 
-        dateExitDate.setDateFormatString("dd-MM-yyyy");
+        dateDischargedDate.setDateFormatString("dd-MM-yyyy");
 
-        lblExitDate1.setText("Fecha Hasta");
+        lblDischargedDate.setText("Fecha Despedido");
+
+        checkBoxDischarged.setText("Despedido");
+        checkBoxDischarged.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkBoxDischargedActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelFieldsLayout = new javax.swing.GroupLayout(panelFields);
         panelFields.setLayout(panelFieldsLayout);
         panelFieldsLayout.setHorizontalGroup(
             panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelFieldsLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(30, Short.MAX_VALUE)
                 .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelFieldsLayout.createSequentialGroup()
                         .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtPlaceOfBirth, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblPlaceOfBirth)
-                            .addComponent(lblName))
+                            .addComponent(dateBirthDate, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblEntryDate))
                         .addGap(30, 30, 30)
                         .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelFieldsLayout.createSequentialGroup()
-                                .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtSurname, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblSurname))
-                                .addGap(30, 30, 30)
-                                .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblTurn)
-                                    .addComponent(boxTurn, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(panelFieldsLayout.createSequentialGroup()
-                                .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblPass))
-                                .addGap(30, 30, 30)
-                                .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblAddress)
-                                    .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(boxPosition, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblPosition))
+                        .addGap(30, 30, 30)
+                        .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(dateHiredDate, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblHiredDate))
+                        .addGap(30, 30, 30)
+                        .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(dateDischargedDate, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblDischargedDate))
+                        .addGap(23, 23, 23))
                     .addGroup(panelFieldsLayout.createSequentialGroup()
                         .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(boxIdType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblIdType))
-                        .addGap(30, 30, 30)
-                        .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtIdNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblIdNumber))
-                        .addGap(30, 30, 30)
-                        .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(boxMaritalStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblMaritalStatus))
-                        .addGap(30, 30, 30)
-                        .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblBloodType)
-                            .addComponent(boxBloodType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(panelFieldsLayout.createSequentialGroup()
+                                .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtPlaceOfBirth, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblPlaceOfBirth)
+                                    .addComponent(lblName))
+                                .addGap(30, 30, 30)
+                                .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(panelFieldsLayout.createSequentialGroup()
+                                        .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtSurname, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(lblSurname))
+                                        .addGap(30, 30, 30)
+                                        .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lblTurn)
+                                            .addComponent(boxTurn, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(panelFieldsLayout.createSequentialGroup()
+                                        .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(lblPass))
+                                        .addGap(30, 30, 30)
+                                        .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lblAddress)
+                                            .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addGroup(panelFieldsLayout.createSequentialGroup()
+                                .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(boxIdType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblIdType))
+                                .addGap(30, 30, 30)
+                                .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtIdNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblIdNumber))
+                                .addGap(30, 30, 30)
+                                .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(boxMaritalStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblMaritalStatus))
+                                .addGap(30, 30, 30)
+                                .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblBloodType)
+                                    .addComponent(boxBloodType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(panelFieldsLayout.createSequentialGroup()
                         .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtHomePhone, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -268,31 +454,15 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
                         .addGap(30, 30, 30)
                         .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblMobilePhone)
-                            .addComponent(txtMobilePhone, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(panelFieldsLayout.createSequentialGroup()
-                        .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelFieldsLayout.createSequentialGroup()
-                                .addComponent(dateBirthDate, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(12, 12, 12)
-                                .addComponent(dateEntryDate, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(panelFieldsLayout.createSequentialGroup()
-                                .addComponent(lblEntryDate)
-                                .addGap(59, 59, 59)
-                                .addComponent(lblExitDate)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblExitDate1)
-                            .addComponent(dateExitDate, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(boxPosition, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblPosition))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(txtMobilePhone, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(15, 15, 15)
+                        .addComponent(checkBoxDischarged)
+                        .addGap(50, 50, 50))))
         );
         panelFieldsLayout.setVerticalGroup(
             panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelFieldsLayout.createSequentialGroup()
-                .addGap(12, 12, 12)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSurname)
                     .addComponent(lblName)
@@ -318,48 +488,51 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
                     .addGroup(panelFieldsLayout.createSequentialGroup()
                         .addGap(12, 12, 12)
                         .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblExitDate)
-                            .addComponent(lblExitDate1)))
+                            .addComponent(lblHiredDate)
+                            .addComponent(lblDischargedDate)))
                     .addGroup(panelFieldsLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblEntryDate))
-                    .addGroup(panelFieldsLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblPosition)))
-                .addGap(10, 10, 10)
-                .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(dateEntryDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dateBirthDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(boxPosition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(dateExitDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblEntryDate)
+                            .addComponent(lblPosition))))
                 .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelFieldsLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
-                        .addComponent(lblHomePhone, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelFieldsLayout.createSequentialGroup()
+                                .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(dateHiredDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(dateBirthDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(10, 10, 10)
+                                .addComponent(lblHomePhone, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(8, 8, 8)
+                                .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtHomePhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtMobilePhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtEmergencyPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(12, 12, 12)
+                                .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lblIdNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblIdType, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblMaritalStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblBloodType, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(10, 10, 10)
+                                .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtIdNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(boxIdType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(boxMaritalStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(boxBloodType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(panelFieldsLayout.createSequentialGroup()
+                                .addComponent(dateDischargedDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(checkBoxDischarged))))
                     .addGroup(panelFieldsLayout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(boxPosition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblEmergencyPhone)
                             .addComponent(lblMobilePhone))))
-                .addGap(8, 8, 8)
-                .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtHomePhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtMobilePhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtEmergencyPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12)
-                .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblIdNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblIdType, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblMaritalStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblBloodType, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10)
-                .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtIdNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(boxIdType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(boxMaritalStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(boxBloodType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -367,13 +540,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
 
         tableEmployeeSchedule.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "ID", "Dia Entrada", "Hora Entrada", "Dia Salida", "Hora Salida"
@@ -415,13 +582,13 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
                 .addGroup(panelEmployeeScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelEmployeeScheduleLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(scrollEmployeeSchedule, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE))
+                        .addComponent(scrollEmployeeSchedule, javax.swing.GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE))
                     .addGroup(panelEmployeeScheduleLayout.createSequentialGroup()
                         .addGap(26, 26, 26)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(dateEntryJob, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(40, 40, 40)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(dateExitJob, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -435,8 +602,8 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
                     .addComponent(jLabel1)
                     .addComponent(dateExitJob, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
-                .addComponent(scrollEmployeeSchedule, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(scrollEmployeeSchedule, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -460,34 +627,62 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         btnSave.setText("Guardar");
         jPanel1.add(btnSave);
 
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Foto", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Ubuntu", 1, 15))); // NOI18N
+        jPanel2.setMinimumSize(new java.awt.Dimension(227, 227));
+        jPanel2.setPreferredSize(new java.awt.Dimension(227, 227));
+
+        lblPhoto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblPhoto, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblPhoto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1169, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(jScrollPane1))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(panelFields, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
+                        .addGap(10, 10, 10)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(panelEmployeeSchedule, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(10, 10, 10))
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(panelEmployeeSchedule, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
-                .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE))
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(panelEmployeeSchedule, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(panelFields, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(panelEmployeeSchedule, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(10, 10, 10)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(panelFields, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(10, 10, 10))
         );
 
@@ -518,6 +713,10 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_boxPositionActionPerformed
 
+    private void checkBoxDischargedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkBoxDischargedActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_checkBoxDischargedActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox boxBloodType;
@@ -529,21 +728,23 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnModify;
     private javax.swing.JButton btnSave;
+    private javax.swing.JCheckBox checkBoxDischarged;
     private com.toedter.calendar.JDateChooser dateBirthDate;
-    private com.toedter.calendar.JDateChooser dateEntryDate;
+    private com.toedter.calendar.JDateChooser dateDischargedDate;
     private com.toedter.calendar.JDateChooser dateEntryJob;
-    private com.toedter.calendar.JDateChooser dateExitDate;
     private com.toedter.calendar.JDateChooser dateExitJob;
+    private com.toedter.calendar.JDateChooser dateHiredDate;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAddress;
     private javax.swing.JLabel lblBloodType;
+    private javax.swing.JLabel lblDischargedDate;
     private javax.swing.JLabel lblEmergencyPhone;
     private javax.swing.JLabel lblEntryDate;
-    private javax.swing.JLabel lblExitDate;
-    private javax.swing.JLabel lblExitDate1;
+    private javax.swing.JLabel lblHiredDate;
     private javax.swing.JLabel lblHomePhone;
     private javax.swing.JLabel lblIdNumber;
     private javax.swing.JLabel lblIdType;
@@ -551,6 +752,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lblMobilePhone;
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblPass;
+    private javax.swing.JLabel lblPhoto;
     private javax.swing.JLabel lblPlaceOfBirth;
     private javax.swing.JLabel lblPosition;
     private javax.swing.JLabel lblSurname;
@@ -698,17 +900,17 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
     }
 
     /**
-     * @return the dateEntryDate
+     * @return the dateHiredDate
      */
-    public com.toedter.calendar.JDateChooser getDateEntryDate() {
-        return dateEntryDate;
+    public com.toedter.calendar.JDateChooser getDateHiredDate() {
+        return dateHiredDate;
     }
 
     /**
-     * @return the dateExitDate
+     * @return the dateDischargedtDate
      */
-    public com.toedter.calendar.JDateChooser getDateExitDate() {
-        return dateExitDate;
+    public com.toedter.calendar.JDateChooser getDateDischargedDate() {
+        return dateDischargedDate;
     }
     
     /**
@@ -739,149 +941,31 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         return boxPosition;
     }
 
-    
     /**
-     * clean all the text fields
-     * 
+     * @return the panelPhoto
      */
-    public void cleanFields(){
-        txtName.setText("");
-        txtSurname.setText("");
-        txtAddress.setText("");
-        dateEntryDate.setDate(new Date());
-        dateExitDate.setDate(new Date());
-        boxTurn.setSelectedIndex(0);
-        dateBirthDate.setDate(new Date());
-        txtPlaceOfBirth.setText("");
-        boxIdType.setSelectedIndex(0);
-        txtIdNumber.setText("");
-        txtPass.setText("");
-        txtHomePhone.setText("");
-        txtEmergencyPhone.setText("");
-        txtMobilePhone.setText("");
-        txtIdNumber.setText("");
-        boxMaritalStatus.setSelectedIndex(0);
-        boxBloodType.setSelectedIndex(0);
-        boxPosition.setSelectedIndex(0);
-    }
-    
-    public void updateFields(String name,
-            String surname,
-            String pass,
-            Date entryDate,
-            Date exitDate,
-            String turn,
-            Date dateOfBirth,
-            String placeOfBirth,
-            String idType,
-            String idNumber,
-            String address,
-            String homePhone,
-            String emergencyPhone,
-            String mobilePhone,
-            String maritalStatus,
-            String bloodType,
-            String position){
-        txtName.setText(name);
-        txtSurname.setText(surname);
-        txtAddress.setText(address);
-        dateEntryDate.setDate(entryDate);
-        dateExitDate.setDate(exitDate);
-        boxTurn.setSelectedItem(turn);
-        dateBirthDate.setDate(dateOfBirth);
-        txtPlaceOfBirth.setText(placeOfBirth);
-        boxIdType.setSelectedItem(idType);
-        txtIdNumber.setText(idNumber);
-        txtPass.setText(pass);
-        txtHomePhone.setText(homePhone);
-        txtEmergencyPhone.setText(emergencyPhone);
-        txtMobilePhone.setText(mobilePhone);
-        txtIdNumber.setText(maritalStatus);
-        boxMaritalStatus.setSelectedItem(maritalStatus);
-        boxBloodType.setSelectedItem(bloodType);
-        boxPosition.setSelectedItem(position);
-    }
-    
-    public String dateToMySQLDate(Date fecha, boolean paraMostrar) {
-        if (paraMostrar) {
-            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
-            return sdf.format(fecha);
-        } else {
-            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
-            return sdf.format(fecha);
-        }
-    }   
-    
-    public void modifyMode(boolean b) {
-        if (b) {
-            btnDelete.setText("Cancelar");
-        }else{
-            btnDelete.setText("Borrar");
-        }
-        btnDelete.setEnabled(b);
-        btnSave.setEnabled(b);
-        btnModify.setEnabled(!b);
-        btnCreate.setEnabled(!b);
-        enableFields(b);
-    }
-    public void createMode(boolean b) {
-        if (b) {
-            btnDelete.setText("Cancelar");
-        }else{
-            btnDelete.setText("Borrar");
-        }
-        btnDelete.setEnabled(b);
-        btnSave.setEnabled(b);
-        btnModify.setEnabled(!b);
-        btnCreate.setEnabled(!b);
-        enableFields(b);
-    }   
-    
-    public void selectionMode(boolean b) {
-        btnDelete.setEnabled(b);
-        btnSave.setEnabled(!b);
-        btnModify.setEnabled(b);
-        btnCreate.setEnabled(b);
-        enableFields(!b);
-    }
-    
-    public void initialMode(boolean b) {
-        cleanFields();
-        btnDelete.setText("Borrar");
-        btnDelete.setEnabled(!b);
-        btnSave.setEnabled(!b);
-        btnModify.setEnabled(!b);
-        btnCreate.setEnabled(b);
-        enableFields(!b);
-        tableUsers.clearSelection();
-    }
-    
-    public void setActionListener(ActionListener ac){
-        btnCreate.addActionListener(ac);
-        btnModify.addActionListener(ac);
-        btnSave.addActionListener(ac);
-        btnDelete.addActionListener(ac);
+    public javax.swing.JPanel getPanelPhoto() {
+        return jPanel2;
     }
 
-    private void enableFields(boolean b) {
-        txtName.setEnabled(b);
-        txtSurname.setEnabled(b);
-        txtAddress.setEnabled(b);
-        dateEntryDate.setEnabled(b);
-        dateExitDate.setEnabled(b);
-        boxTurn.setEnabled(b);
-        dateBirthDate.setEnabled(b);
-        txtPlaceOfBirth.setEnabled(b);
-        boxIdType.setEnabled(b);
-        txtIdNumber.setEnabled(b);
-        txtPass.setEnabled(b);
-        txtHomePhone.setEnabled(b);
-        txtEmergencyPhone.setEnabled(b);
-        txtMobilePhone.setEnabled(b);
-        txtIdNumber.setEnabled(b);
-        boxMaritalStatus.setEnabled(b);
-        boxBloodType.setEnabled(b);
-        boxPosition.setEnabled(b);
+    /**
+     * @return the lblPhoto
+     */
+    public javax.swing.JLabel getLblPhoto() {
+        return lblPhoto;
     }
 
+    /**
+     * @return the photo
+     */
+    public ImageIcon getPhoto() {
+        return photo;
+    }
+
+    /**
+     * @return the checkBoxDischarged
+     */
+    public javax.swing.JCheckBox getCheckBoxDischarged() {
+        return checkBoxDischarged;
+    }
 }

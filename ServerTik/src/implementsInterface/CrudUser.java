@@ -32,8 +32,8 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
             String name,
             String surname,
             String pass,
-            Date entryDate,
-            Date exitDate,
+            Date hiredDate,
+            Date dischargedDate,
             String turn,
             Date dateOfBirth,
             String placeOfBirth,
@@ -45,7 +45,8 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
             String mobilePhone,
             String maritalStatus,
             String bloodType,
-            String position
+            String position,
+            byte[] photo
             ) throws java.rmi.RemoteException {
         
         Utils.abrirBase();
@@ -60,8 +61,8 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
                 "name", name,
                 "surname", surname,
                 "pass", passEncrypted,
-                "entry_date", entryDate,
-                "exit_date", exitDate,
+                "date_hired", hiredDate,
+                "date_discharged", dischargedDate,
                 "turn", turn,
                 "date_of_birth", dateOfBirth,
                 "place_of_birth", placeOfBirth,
@@ -73,7 +74,8 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
                 "mobile_phone", mobilePhone,
                 "marital_status", maritalStatus,
                 "blood_type", bloodType,
-                "position", position
+                "position", position,
+                "photo", photo
                 ).toMap();
         Base.commitTransaction();
         return res;
@@ -84,8 +86,8 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
             String name,
             String surname,
             String pass,
-            Date entryDate,
-            Date exitDate,
+            Date hiredDate,
+            Date dischargedDate,
             String turn,
             Date dateOfBirth,
             String placeOfBirth,
@@ -112,8 +114,8 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
             user.setString("name", name);
             user.setString("surname", surname);
             user.setString("pass", passEncrypted);
-            user.setDate("entry_date", entryDate);
-            user.setDate("exit_date", exitDate);
+            user.setDate("date_hired", hiredDate);
+            user.setDate("date_discharged", dischargedDate);
             user.setString("turn", turn);
             user.setDate("date_of_birth", dateOfBirth);
             user.setString("place_of_birth", placeOfBirth);

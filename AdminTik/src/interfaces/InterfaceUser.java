@@ -21,8 +21,8 @@ public interface InterfaceUser extends Remote {
             String name,
             String surname,
             String pass,
-            Date entryDate,
-            Date exitDate,
+            Date hiredDate,
+            Date dischargedDate,
             String turn,
             Date dateOfBirth,
             String placeOfBirth,
@@ -34,7 +34,8 @@ public interface InterfaceUser extends Remote {
             String mobilePhone,
             String maritalStatus,
             String bloodType,
-            String position
+            String position,
+            byte[] photo
             ) throws java.rmi.RemoteException;
      
     public Map<String,Object> modify(
@@ -42,8 +43,8 @@ public interface InterfaceUser extends Remote {
             String name,
             String surname,
             String pass,
-            Date entryDate,
-            Date exitDate,
+            Date hiredDate,
+            Date dischargedDate,
             String turn,
             Date dateOfBirth,
             String placeOfBirth,
