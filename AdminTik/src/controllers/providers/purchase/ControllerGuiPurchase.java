@@ -155,8 +155,8 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
                                 case "ml":
                                     o[3] = "L";
                                     break;
-                                case "u":
-                                    o[3] = "U";
+                                case "unitario":
+                                    o[3] = "unitario";
                                     break;
                             }
                             o[4] = ParserFloat.floatToString(unitPrice);
