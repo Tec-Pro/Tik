@@ -25,6 +25,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import utils.Config;
+import utils.ParserFloat;
 
 /**
  *
@@ -124,11 +125,11 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
             row[2] = prod.get("stock").toString(); // STOCK 
             row[3] = prod.get("measure_unit").toString(); // UNIDAD DE MEDIDA            
             if (prod.get("measure_unit").toString().equals("gr")) {
-                row[4] = String.valueOf(Float.valueOf(prod.get("unit_price").toString()) * 1000); // PRECIO UNITARIO EN UNIDAD GRANDE
+                row[4] = ParserFloat.floatToString(ParserFloat.stringToFloat(prod.get("unit_price").toString()) * 1000); // PRECIO UNITARIO EN UNIDAD GRANDE
                 row[5] = "Kg";
             }
             if (prod.get("measure_unit").toString().equals("ml")) {
-                row[4] = String.valueOf(Float.valueOf(prod.get("unit_price").toString()) * 1000); // PRECIO UNITARIO EN UNIDAD GRANDE
+                row[4] = ParserFloat.floatToString(ParserFloat.stringToFloat(prod.get("unit_price").toString()) * 1000); // PRECIO UNITARIO EN UNIDAD GRANDE
                 row[5] = "Litro";
             }
             if (prod.get("measure_unit").toString().equals("unitario")) {
@@ -194,8 +195,8 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
         if (e.getSource() == guiCRUDPProduct.getBtnSave() && editingInformation && isNew) { //guardo un producto nuevo, boton guardar
             if (guiCRUDPProduct.checkFields()) {
                 String name = guiCRUDPProduct.getTxtName().getText();
-                float stock = Float.parseFloat(guiCRUDPProduct.getTxtStock().getText());
-                float unitPrice = Float.parseFloat(guiCRUDPProduct.getTxtPrice().getText());
+                float stock = ParserFloat.stringToFloat(guiCRUDPProduct.getTxtStock().getText());
+                float unitPrice = ParserFloat.stringToFloat(guiCRUDPProduct.getTxtPrice().getText());
                 String measureUnit = "";
                 if (guiCRUDPProduct.getCboxMeasureUnit().getSelectedIndex() != -1) {
                     measureUnit = guiCRUDPProduct.getCboxMeasureUnit().getSelectedItem().toString();
@@ -214,8 +215,8 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
         if (e.getSource() == guiCRUDPProduct.getBtnSave() && editingInformation && !isNew) { //modifico un producto, boton guardar
             if (guiCRUDPProduct.checkFields()) {
                 String name = guiCRUDPProduct.getTxtName().getText();
-                float stock = Float.parseFloat(guiCRUDPProduct.getTxtStock().getText());
-                float unitPrice = Float.parseFloat(guiCRUDPProduct.getTxtPrice().getText());
+                float stock = ParserFloat.stringToFloat(guiCRUDPProduct.getTxtStock().getText());
+                float unitPrice = ParserFloat.stringToFloat(guiCRUDPProduct.getTxtPrice().getText());
                 String measureUnit = guiCRUDPProduct.getCboxMeasureUnit().getSelectedItem().toString();
                 int id = Integer.parseInt(guiCRUDPProduct.getTxtId().getText());
                 try {
@@ -287,8 +288,8 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
             if (guiLoadPurchase.checkFields()) {
                 int idx = Integer.parseInt(guiLoadPurchase.getTxtId().getText());
                 String measureU = guiLoadPurchase.getcBoxMeasureUnit().getItemAt(guiLoadPurchase.getcBoxMeasureUnit().getSelectedIndex()).toString();
-                float price = Float.parseFloat(guiLoadPurchase.getTxtPrice().getText());
-                float amount = Float.parseFloat(guiLoadPurchase.getTxtAmount().getText());
+                float price = ParserFloat.stringToFloat(guiLoadPurchase.getTxtPrice().getText());
+                float amount = ParserFloat.stringToFloat(guiLoadPurchase.getTxtAmount().getText());
                 if (guiLoadPurchase.getCheckBoxOnlyCalculate().isSelected()) { //me fijo si solo hay que calcular el precio
                     try {
                         pproduct.calculateUnitPrice(idx, measureU, price, amount);

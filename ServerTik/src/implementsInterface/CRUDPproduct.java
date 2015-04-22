@@ -49,7 +49,7 @@ public class CRUDPproduct extends UnicastRemoteObject implements interfaces.Inte
         Map<String, Object> res = null;
         if (product != null) {
             Base.openTransaction();
-            if (measureUnit.equals("unitario")) {
+            if (!measureUnit.equals("unitario")) {
                 unitPrice = unitPrice / 1000;
             }
             product.setString("name", name);

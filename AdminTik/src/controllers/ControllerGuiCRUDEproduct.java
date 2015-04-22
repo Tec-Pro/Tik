@@ -26,6 +26,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import utils.Config;
 import utils.Pair;
+import utils.ParserFloat;
 
 /**
  *
@@ -303,7 +304,7 @@ public class ControllerGuiCRUDEproduct implements ActionListener {
             if (guiCRUDEProduct.checkFields()) {
                 List<Pair> listP = new LinkedList<Pair>();
                 for (int i = 0; i < tableReciper.getRowCount(); i++) { //cargo la lista de productos
-                    Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), Float.parseFloat((String) tableReciper.getValueAt(i, 2)));
+                    Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), ParserFloat.stringToFloat((String) tableReciper.getValueAt(i, 2)));
                     listP.add(p);
                 }
                 String name = guiCRUDEProduct.getTxtName().getText();
@@ -324,7 +325,7 @@ public class ControllerGuiCRUDEproduct implements ActionListener {
             if (guiCRUDEProduct.checkFields()) {
                 List<Pair> listP = new LinkedList<Pair>();
                 for (int i = 0; i < tableReciper.getRowCount(); i++) { //cargo la lista de productos
-                    Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), Float.parseFloat((String) tableReciper.getValueAt(i, 2)));
+                    Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), ParserFloat.stringToFloat((String) tableReciper.getValueAt(i, 2)));
                     listP.add(p);
                 }
                 String name = guiCRUDEProduct.getTxtName().getText();

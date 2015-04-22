@@ -6,7 +6,7 @@
 package controllers;
 
 import controllers.providers.ControllerGuiCRUDProviders;
-import controllers.providers.ControllerGuiNewProvider;
+import controllers.providers.purchase.ControllerGuiPurchase;
 import gui.GuiAdminLogin;
 import gui.GuiCRUDAdmin;
 import gui.GuiCRUDEProduct;
@@ -19,6 +19,7 @@ import gui.GuiLoadPurchase;
 import gui.main.GuiMain;
 import gui.providers.GuiCRUDProviders;
 import gui.providers.GuiNewProvider;
+import gui.providers.purchases.GuiPurchase;
 import interfaces.providers.InterfaceProvider;
 import interfaces.providers.InterfaceProviderCategory;
 import interfaces.providers.InterfaceProvidersSearch;
@@ -58,6 +59,7 @@ public class ControllerMain implements ActionListener {
     private static GuiNewProvider guiNewProvider;
     private static GuiLoadPurchase guiLoadPurchase;
     private static GuiMenu guiMenu;
+    private static GuiPurchase guiPurchase;
 
     //controladores
     private static ControllerGuiCRUDAdmin controllerCRUDAdmin; //controlador de la gui para admin
@@ -68,6 +70,7 @@ public class ControllerMain implements ActionListener {
     private ControllerGuiCRUDProviders controllerCRUDProviders;
     private ControllerGuiCRUDUser controllerCRUDUser;
     private ControllerGuiMenu controllerGuiMenu;
+    private ControllerGuiPurchase controllerGuiPurchase;
     
     public ControllerMain(GuiAdminLogin guiAdminLogin) throws NotBoundException, MalformedURLException, RemoteException {
         this.guiAdminLogin = guiAdminLogin; //hago esto, así si cierra sesión pongo en visible la ventana
@@ -94,6 +97,7 @@ public class ControllerMain implements ActionListener {
         guiNewProvider = new GuiNewProvider();
         guiLoadPurchase = new GuiLoadPurchase();
         guiMenu = new GuiMenu();
+        guiPurchase = new GuiPurchase();
         
         //agrego las gui al desktop
         guiMain.getDesktop().add(guiCRUDAdmin);
@@ -106,6 +110,7 @@ public class ControllerMain implements ActionListener {
         guiMain.getDesktop().add(guiNewProvider);
         guiMain.getDesktop().add(guiLoadPurchase);
         guiMain.getDesktop().add(guiMenu);
+        guiMain.getDesktop().add(guiPurchase);
         
         InterfaceProvider provider = (InterfaceProvider) Naming.lookup("//" + Config.ip + "/crudProvider");
         InterfaceProviderCategory providerCategory = (InterfaceProviderCategory ) Naming.lookup("//" + Config.ip + "/crudProviderCategory");
@@ -121,6 +126,7 @@ public class ControllerMain implements ActionListener {
         controllerCRUDUser = new ControllerGuiCRUDUser(guiCRUDUser);
         controllerCRUDPProduct = new ControllerGuiCRUDPproduct(guiCRUDPProduct,guiLoadPurchase);
         controllerGuiMenu = new ControllerGuiMenu(guiMenu,guiMain);
+        controllerGuiPurchase= new ControllerGuiPurchase(guiPurchase);
         //restauro el puntero asi ya se que termino de cargar todo
         guiMain.setCursor(Cursor.DEFAULT_CURSOR);
 
@@ -134,14 +140,15 @@ public class ControllerMain implements ActionListener {
         guiAdminLogin.clearFields();
         ControllerGuiAdminLogin.getAllAdmins();
         guiCRUDAdmin.dispose();
-      //  guiCRUDEProduct.dispose();
-       // guiCRUDFProduct.dispose();
-       // guiCRUDPProduct.dispose();
-      //  guiCRUDProductCategory.dispose();
-       // guiCRUDProviders.dispose();
-      //  guiNewProvider.dispose();
+        guiCRUDEProduct.dispose();
+        guiCRUDFProduct.dispose();
+        guiCRUDPProduct.dispose();
+        guiCRUDProductCategory.dispose();
+        guiCRUDProviders.dispose();
+        guiNewProvider.dispose();
         guiCRUDUser.dispose();
-      //  guiLoadPurchase.dispose();
+        guiLoadPurchase.dispose();
+        guiPurchase.dispose();
     }
 
     public static boolean isAdmin(){
@@ -239,6 +246,16 @@ public class ControllerMain implements ActionListener {
             }
             guiMenu.toFront();
         }
+        //boton compras
+        if(ae.getSource() == guiMain.getBtnPurchase()){
+            try {
+                guiPurchase.setMaximum(true);
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            guiPurchase.setVisible(true);
+            guiPurchase.toFront();
+        }        
     }
 
 }

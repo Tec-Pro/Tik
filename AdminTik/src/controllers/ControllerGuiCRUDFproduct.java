@@ -28,6 +28,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import utils.Config;
 import utils.Pair;
+import utils.ParserFloat;
 
 /**
  *
@@ -208,7 +209,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
                 fproductEproductList = crudFproduct.getFproductEproduts(id);
                 guiCRUDFProduct.loadProduct(fproduct);
                 float productionPrice = crudFproduct.calculateProductionPrice(id);
-                guiCRUDFProduct.getTxtProductionPrice().setText(String.valueOf(productionPrice));
+                guiCRUDFProduct.getTxtProductionPrice().setText(ParserFloat.floatToString(productionPrice));
                 guiCRUDFProduct.getTxtSuggestedPrice().setText("ACA VA LA MULTIPLICACION PARA PRECIO SUGERIDO");
                 refreshReciperList();
             } else {
@@ -321,19 +322,19 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
             for (int j = 0; j < i; j++) {
                 if (tableReciper.getValueAt(j, 4).toString().equals("Primario")) {
                     Map pp = crudPproduct.getPproduct(Integer.parseInt(tableReciper.getValueAt(j, 0).toString()));
-                    price += Float.parseFloat(pp.get("unit_price").toString()) * Float.parseFloat(tableReciper.getValueAt(j, 2).toString());
+                    price += ParserFloat.stringToFloat(pp.get("unit_price").toString()) * ParserFloat.stringToFloat(tableReciper.getValueAt(j, 2).toString());
                 } else {
                     List<Map> leppp = crudEproduct.getEproductPproduts(Integer.parseInt(tableReciper.getValueAt(j, 0).toString()));
                     float priceEp = 0;
                     for (Map m : leppp){
                        Map pp2 = crudPproduct.getPproduct(Integer.parseInt(m.get("pproduct_id").toString()));
-                       priceEp += Float.parseFloat(pp2.get("unit_price").toString()) * Float.parseFloat(m.get("amount").toString());
+                       priceEp += ParserFloat.stringToFloat(pp2.get("unit_price").toString()) * ParserFloat.stringToFloat(m.get("amount").toString());
                     }
-                     price += priceEp * Float.parseFloat(tableReciper.getValueAt(j, 2).toString());
+                     price += priceEp * ParserFloat.stringToFloat(tableReciper.getValueAt(j, 2).toString());
                 }
             }
         }
-        guiCRUDFProduct.getTxtProductionPrice().setText(String.valueOf(price));
+        guiCRUDFProduct.getTxtProductionPrice().setText(ParserFloat.floatToString(price));
     }
 
     @Override
@@ -390,15 +391,15 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
                     List<Pair> listE = new LinkedList<Pair>();
                     for (int i = 0; i < tableReciper.getRowCount(); i++) { //cargo la lista de productos
                         if (((String) tableReciper.getValueAt(i, 4)).equals("Primario")) {
-                            Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), Float.parseFloat((String) tableReciper.getValueAt(i, 2)));
+                            Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), ParserFloat.stringToFloat((String) tableReciper.getValueAt(i, 2)));
                             listP.add(p);
                         } else {
-                            Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), Float.parseFloat((String) tableReciper.getValueAt(i, 2)));
+                            Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), ParserFloat.stringToFloat((String) tableReciper.getValueAt(i, 2)));
                             listE.add(p);
                         }
                     }
                     String name = guiCRUDFProduct.getTxtName().getText();
-                    float sellPrice = Float.parseFloat(guiCRUDFProduct.getTxtSellPrice().getText());
+                    float sellPrice = ParserFloat.stringToFloat(guiCRUDFProduct.getTxtSellPrice().getText());
                     try {
                         crudFproduct.create(name, subcategory_id, listP, listE, sellPrice);
                         JOptionPane.showMessageDialog(guiCRUDFProduct, "¡Producto creado exitosamente!");
@@ -423,16 +424,16 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
                     List<Pair> listE = new LinkedList<Pair>();
                     for (int i = 0; i < tableReciper.getRowCount(); i++) {
                         if (((String) tableReciper.getValueAt(i, 4)).equals("Primario")) { //cargo la lista de productos
-                            Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), Float.parseFloat((String) tableReciper.getValueAt(i, 2)));
+                            Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), ParserFloat.stringToFloat((String) tableReciper.getValueAt(i, 2)));
                             listP.add(p);
                         } else {
-                            Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), Float.parseFloat((String) tableReciper.getValueAt(i, 2)));
+                            Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), ParserFloat.stringToFloat((String) tableReciper.getValueAt(i, 2)));
                             listE.add(p);
                         }
                     }
                     String name = guiCRUDFProduct.getTxtName().getText();
                     int id = Integer.parseInt(guiCRUDFProduct.getTxtId().getText());
-                    float sellPrice = Float.parseFloat(guiCRUDFProduct.getTxtSellPrice().getText());
+                    float sellPrice = ParserFloat.stringToFloat(guiCRUDFProduct.getTxtSellPrice().getText());
                     try {
                         crudFproduct.modify(id, name, subcategory_id, listP, listE, sellPrice);
                         JOptionPane.showMessageDialog(guiCRUDFProduct, "¡Producto modificado exitosamente!");
