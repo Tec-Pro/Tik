@@ -26,50 +26,58 @@ import utils.Pair;
  * @author eze
  */
 public class ControllerGuiTicketsPaid {
-    
+
     private final GuiTicketsPaid guiTicketsPaid;
     private final InterfacePurchase interfacePurchase;
     private int currentProviderId;
-    
-    public ControllerGuiTicketsPaid (GuiTicketsPaid guiTP, int current_id) throws NotBoundException, MalformedURLException, RemoteException {
+
+    public ControllerGuiTicketsPaid(GuiTicketsPaid guiTP, int current_id) throws NotBoundException, MalformedURLException, RemoteException {
         this.guiTicketsPaid = guiTP;
-        
+
         this.interfacePurchase = (InterfacePurchase) Naming.lookup("//" + Config.ip + "/CRUDPurchase");
-        
+
         this.currentProviderId = current_id;
-        
-        loadTicketsTable();
-        
-        this.guiTicketsPaid.getDateFrom().addPropertyChangeListener(new PropertyChangeListener(){
+
+        List<Pair<Map<String, Object>, List<Map>>> purchasesProvider = this.interfacePurchase.getPurchasesProvider(currentProviderId);
+        loadTicketsTable(purchasesProvider);
+
+        this.guiTicketsPaid.getDateFrom().addPropertyChangeListener(new PropertyChangeListener() {
 
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 try {
-                    loadTicketsTable();
+                    if(guiTicketsPaid.getStringDateUntil() != null){
+                    guiTicketsPaid.cleanComponents();
+                    List<Pair<Map<String, Object>, List<Map>>> purchasesProvider = interfacePurchase.getProviderPurchasesBetweenDates(currentProviderId,guiTicketsPaid.getStringDateFrom(),guiTicketsPaid.getStringDateUntil());
+                    loadTicketsTable(purchasesProvider);
+                    }
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiTicketsPaid.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            
+
         });
-        
-        this.guiTicketsPaid.getDateUntil().addPropertyChangeListener(new PropertyChangeListener(){
+
+        this.guiTicketsPaid.getDateUntil().addPropertyChangeListener(new PropertyChangeListener() {
 
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 try {
-                    loadTicketsTable();
+                    if(guiTicketsPaid.getStringDateFrom() != null){
+                    guiTicketsPaid.cleanComponents();
+                    List<Pair<Map<String, Object>, List<Map>>> purchasesProvider = interfacePurchase.getProviderPurchasesBetweenDates(currentProviderId,guiTicketsPaid.getStringDateFrom(),guiTicketsPaid.getStringDateUntil());
+                    loadTicketsTable(purchasesProvider);
+                    }
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiTicketsPaid.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            
+
         });
     }
-    
-    private void loadTicketsTable() throws RemoteException{
-        List<Pair<Map<String, Object>, List<Map>>> purchasesProvider = this.interfacePurchase.getPurchasesProvider(currentProviderId);
-        if (!purchasesProvider.isEmpty()){
+
+    private void loadTicketsTable(List<Pair<Map<String, Object>, List<Map>>> purchasesProvider) throws RemoteException {
+        if (!purchasesProvider.isEmpty()) {
             DefaultTableModel dtmPurchasesProvider = (DefaultTableModel) this.guiTicketsPaid.getTableProviderCurrentAccount().getModel();
             dtmPurchasesProvider.setRowCount(0);
             Object[] row = new Object[7];
@@ -79,7 +87,7 @@ public class ControllerGuiTicketsPaid {
                 row[2] = purchase.first().get("date_paid");
                 row[3] = purchase.first().get("cost");
                 row[4] = purchase.first().get("paid");
-                row[5] = (float) row[3]- (float) row[4];
+                row[5] = (float) row[3] - (float) row[4];
                 row[6] = (float) row[3] == (float) row[4];
                 dtmPurchasesProvider.addRow(row);
             }

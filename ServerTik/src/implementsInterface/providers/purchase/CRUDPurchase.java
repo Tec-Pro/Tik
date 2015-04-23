@@ -116,5 +116,20 @@ public class CRUDPurchase extends UnicastRemoteObject implements InterfacePurcha
       }
       return result;
   }
+
+    @Override
+    public List<Pair<Map<String, Object>, List<Map>>> getProviderPurchasesBetweenDates(Integer idProvider, String from, String until) throws RemoteException {
+        Utils.abrirBase();
+      Base.openTransaction();
+      LinkedList<Pair<Map<String,Object>,List<Map>>> result= new LinkedList<>();
+      LazyList<Purchase> purchases= Purchase.where("provider_id = ? AND date>= ? AND date <= ?", idProvider,from,until);
+      Iterator<Purchase> it= purchases.iterator();
+      while(it.hasNext()){
+          Purchase p= it.next();
+          Pair<Map<String,Object>,List<Map>> pair= new Pair<>(p.toMap(),p.get(PproductsPurchases.class, "purchase_id = ?", p.getId()).toMaps());
+          result.add(pair);
+      }
+      return result;
+    }
    
 }

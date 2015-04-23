@@ -41,16 +41,18 @@ public class ControllerGuiCRUDProviders implements ActionListener {
     private final InterfaceProviderCategory providerCategory;
     private final InterfaceProvider provider;
     private final InterfaceProvidersSearch providersSearch;
+    private static Integer iDCurrentlySelectedProvider;
 
-    public ControllerGuiCRUDProviders(GuiCRUDProviders guiCProv, GuiNewProvider guiNProv, GuiPaymentsToProviders guiPTP, GuiTicketsPaid guiIP) throws RemoteException, NotBoundException, MalformedURLException {
+    public ControllerGuiCRUDProviders(GuiCRUDProviders guiCProv, GuiNewProvider guiNProv) throws RemoteException, NotBoundException, MalformedURLException {
         this.provider = (InterfaceProvider) Naming.lookup("//" + Config.ip + "/crudProvider");
         this.providersSearch = (InterfaceProvidersSearch) Naming.lookup("//" + Config.ip + "/providersSearch");
         this.providerCategory = (InterfaceProviderCategory) Naming.lookup("//" + Config.ip + "/crudProviderCategory");
         
         this.guiCRUDProviders = guiCProv;
         this.guiNewProvider = guiNProv;
-        this.controllerGuiNewProvider = new ControllerGuiNewProvider(this.guiNewProvider, guiPTP, guiIP);
+        this.controllerGuiNewProvider = new ControllerGuiNewProvider(this.guiNewProvider);
         
+        iDCurrentlySelectedProvider = -1;
         this.guiCRUDProviders.setActionListener(this);
         loadProviderCategories();
         //escucho en el txtFindProvider lo que se va ingresando para buscar un proveedor
@@ -92,7 +94,6 @@ public class ControllerGuiCRUDProviders implements ActionListener {
             }
 
         });
-        //reviso si se clickea alguna fila de la tabla proveedores
         
         //reviso si se clickea alguna fila de la tabla categorias
         this.guiCRUDProviders.getTableProviderCategories().addMouseListener(new java.awt.event.MouseAdapter() {
@@ -148,8 +149,13 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                 int row = guiCRUDProviders.getTableProviders().getSelectedRow();
                 if (row == -1){
                     guiCRUDProviders.getBtnRemoveProvider().setEnabled(false);
+                    iDCurrentlySelectedProvider = -1;
                 } else {
                     guiCRUDProviders.getBtnRemoveProvider().setEnabled(true);
+                    guiCRUDProviders.getBtnTicketsPaid().setEnabled(true);
+                    guiCRUDProviders.getBtnPayments().setEnabled(true);
+                    int selectedRow = guiCRUDProviders.getTableProviders().getSelectedRow();
+                    iDCurrentlySelectedProvider = Integer.parseInt(((DefaultTableModel)guiCRUDProviders.getTableProviders().getModel()).getValueAt(selectedRow, 0).toString());
                 }
             }
         });
@@ -160,7 +166,10 @@ public class ControllerGuiCRUDProviders implements ActionListener {
             public void valueChanged(ListSelectionEvent e) {
                 int row = guiCRUDProviders.getTableProviderCategories().getSelectedRow();
                 if (row != -1){
+                    iDCurrentlySelectedProvider = -1;
                     guiCRUDProviders.getBtnRemoveCategory().setEnabled(false);
+                    guiCRUDProviders.getBtnTicketsPaid().setEnabled(false);
+                    guiCRUDProviders.getBtnPayments().setEnabled(false);
                 }
             }
         });
@@ -210,6 +219,23 @@ public class ControllerGuiCRUDProviders implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        //si presiono el boton LISTADO DE PAGOS REALIZADOS
+        if(e.getSource().equals(this.guiCRUDProviders.getBtnPayments())){
+            GuiPaymentsToProviders guiPaymentsToProviders = new GuiPaymentsToProviders(null, true);
+            new ControllerGuiPaymentsToProviders(guiPaymentsToProviders, iDCurrentlySelectedProvider);
+            guiPaymentsToProviders.setVisible(true);
+        }
+        //si presiono el boton LISTADO DE FACTURACIÓN
+        if(e.getSource().equals(this.guiCRUDProviders.getBtnTicketsPaid())){
+            
+            GuiTicketsPaid guiTicketsPaid = new GuiTicketsPaid(null, true);
+            try {
+                new ControllerGuiTicketsPaid(guiTicketsPaid, iDCurrentlySelectedProvider);
+            } catch (NotBoundException | MalformedURLException | RemoteException ex) {
+                Logger.getLogger(ControllerGuiNewProvider.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            guiTicketsPaid.setVisible(true); 
+        }
         //Si presiono el boton de agregar una nueva categoria
         if (e.getSource().equals(this.guiCRUDProviders.getBtnNewCategory())) {
             String categoryName = JOptionPane.showInputDialog(guiCRUDProviders, "Ingrese el nombre de la categoría.", "Modificar categoría", JOptionPane.PLAIN_MESSAGE);

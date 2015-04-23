@@ -5,13 +5,15 @@
  */
 package controllers.providers;
 
+import gui.providers.GuiPaymentsToProviders;
+
 /**
  *
  * @author eze
  */
 public class ControllerGuiPaymentsToProviders {
     
-    public ControllerGuiPaymentsToProviders () {
+    public ControllerGuiPaymentsToProviders(GuiPaymentsToProviders guiPTP, int current_id) {
     
 }
 }

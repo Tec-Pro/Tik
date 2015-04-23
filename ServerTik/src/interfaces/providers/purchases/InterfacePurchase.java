@@ -54,4 +54,15 @@ public interface InterfacePurchase extends Remote {
      * @throws RemoteException
      */
     public List<Pair<Map<String, Object>, List<Map>>> getPurchasesProvider(Integer idProvider) throws java.rmi.RemoteException;
+
+    /**
+     *
+     * @param idProvider
+     * @param from
+     * @param until
+     * @return
+     * @throws RemoteException
+     */
+    public List<Pair<Map<String, Object>, List<Map>>> getProviderPurchasesBetweenDates(Integer idProvider, String from, String until) throws java.rmi.RemoteException;
+
 }

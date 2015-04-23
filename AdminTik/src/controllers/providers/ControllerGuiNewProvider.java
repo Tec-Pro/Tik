@@ -35,22 +35,17 @@ public class ControllerGuiNewProvider implements ActionListener {
     private final GuiNewProvider guiNewProvider;
     private boolean modify;
     private int currentProviderId;
-    private final GuiTicketsPaid guiTicketsPaid;
-    private final GuiPaymentsToProviders guiPaymentsToProviders;
 
     /**
      *
      * @param guiNProv
      * @param guiPTP
-     * @param guiTP
-     * @param prov
-     * @param provCategory
      * @throws RemoteException
+     * @throws java.rmi.NotBoundException
+     * @throws java.net.MalformedURLException
      */
-    public ControllerGuiNewProvider(GuiNewProvider guiNProv, GuiPaymentsToProviders guiPTP, GuiTicketsPaid guiTP) throws RemoteException, NotBoundException, MalformedURLException {
+    public ControllerGuiNewProvider(GuiNewProvider guiNProv) throws RemoteException, NotBoundException, MalformedURLException {
         this.modify = false;
-        this.guiPaymentsToProviders = guiPTP;
-        this.guiTicketsPaid = guiTP;
         this.guiNewProvider = guiNProv;
         this.provider = (InterfaceProvider) Naming.lookup("//" + Config.ip + "/crudProvider");
         this.providerCategory = (InterfaceProviderCategory) Naming.lookup("//" + Config.ip + "/crudProviderCategory");
@@ -262,19 +257,7 @@ public class ControllerGuiNewProvider implements ActionListener {
             this.guiNewProvider.hide();
             setModify(false);
         }
-        //si presiono el boton LISTADO DE PAGOS REALIZADOS
-        if(e.getSource().equals(this.guiNewProvider.getBtnPayments())){
-            guiPaymentsToProviders.setVisible(true);
-        }
-        //si presiono el boton LISTADO DE FACTURACIÓN
-        if(e.getSource().equals(this.guiNewProvider.getBtnTicketsPaid())){
-            try {
-                ControllerGuiTicketsPaid controllerTickets = new ControllerGuiTicketsPaid(guiTicketsPaid, currentProviderId);
-                guiTicketsPaid.setVisible(true);
-            } catch (NotBoundException | MalformedURLException | RemoteException ex) {
-                Logger.getLogger(ControllerGuiNewProvider.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        
     }
 
 }
