@@ -7,6 +7,7 @@ package controllers;
 
 import gui.GuiAddUpdateProductCategory;
 import gui.GuiAddUpdateProductSubcategory;
+import gui.GuiCRUDFProduct;
 import gui.GuiCRUDProductCategory;
 import gui.GuiMenu;
 import gui.main.GuiMain;
@@ -18,6 +19,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyVetoException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -52,6 +54,8 @@ public class ControllerGuiMenu implements ActionListener {
     private GuiAddUpdateProductSubcategory guiAddUpdateProductSubcategory;
     String currentSelectedNodeName = "";
     DefaultMutableTreeNode currentNode = null;
+    GuiCRUDFProduct guiCRUDFProduct;
+    ControllerGuiCRUDFproduct controllerGuiCRUDFproduct;
 
     public ControllerGuiMenu(GuiMenu gt, GuiMain gm) throws NotBoundException, MalformedURLException, RemoteException {
         crudProductCategory = (InterfaceCategory) Naming.lookup("//localhost/CRUDCategory");
@@ -66,6 +70,9 @@ public class ControllerGuiMenu implements ActionListener {
         guiAddUpdateProductSubcategory.setLocationRelativeTo(guiMenu);
         guiAddUpdateProductSubcategory.setActionListener(this);
         guiMenu.setActionListener(this);
+        guiCRUDFProduct = new GuiCRUDFProduct();
+        controllerGuiCRUDFproduct = new ControllerGuiCRUDFproduct(guiCRUDFProduct);
+        gm.getDesktop().add(guiCRUDFProduct);
 
         guiMenu.getTreeMenu().addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent me) {
@@ -75,13 +82,12 @@ public class ControllerGuiMenu implements ActionListener {
         guiMenu.getTreeMenu().getSelectionModel().addTreeSelectionListener(new TreeSelectionListener() {
 
             public void valueChanged(TreeSelectionEvent e) {
-                if(currentNode!=null){
+                if (currentNode != null) {
                     if (currentNode.getLevel() == 0) {
                         guiMenu.getBtnDelete().setEnabled(false);
                         guiMenu.getBtnUpdate().setEnabled(false);
                     }
                 }
-                
 
             }
 
@@ -117,7 +123,7 @@ public class ControllerGuiMenu implements ActionListener {
                         guiMenu.getBtnDelete().setEnabled(false);
                         guiMenu.getBtnUpdate().setEnabled(false);
                         if (me.getClickCount() == 2) {
-                            
+
                         }
                         break;
                     default:
@@ -172,10 +178,6 @@ public class ControllerGuiMenu implements ActionListener {
 
         DefaultTreeModel modelo = new DefaultTreeModel(root);
         guiMenu.getTreeMenu().setModel(modelo);
-
-    }
-
-    private void addSubcategorySelected() {
 
     }
 
@@ -273,6 +275,7 @@ public class ControllerGuiMenu implements ActionListener {
                                     if (modifiedCategory != null) {
                                         JOptionPane.showMessageDialog(guiMenu, "Datos modificados correctamente!", "Modificacion exitosa!", JOptionPane.INFORMATION_MESSAGE);
                                         guiAddUpdateProductCategory.setVisible(false);
+                                        guiMenu.setBtnUpdateSelected(false);
                                         CreateTree();
                                     } else {
                                         JOptionPane.showMessageDialog(guiMenu, "No se pudo modificar!", "Error!", JOptionPane.ERROR_MESSAGE);
@@ -341,6 +344,7 @@ public class ControllerGuiMenu implements ActionListener {
                                     if (modifiedSubcategory != null) {
                                         JOptionPane.showMessageDialog(guiMenu, "Datos modificados correctamente!", "Modificacion exitosa!", JOptionPane.INFORMATION_MESSAGE);
                                         guiAddUpdateProductSubcategory.setVisible(false);
+                                        guiMenu.setBtnUpdateSelected(false);
                                         CreateTree();
                                     } else {
                                         JOptionPane.showMessageDialog(guiMenu, "No se pudo modificar!", "Error!", JOptionPane.ERROR_MESSAGE);
@@ -383,6 +387,44 @@ public class ControllerGuiMenu implements ActionListener {
                     guiAddUpdateProductSubcategory.UpdateSubcategoryState();
                     guiAddUpdateProductSubcategory.getTxtSubcategory().setText(currentSelectedNodeName);
                     guiAddUpdateProductSubcategory.setVisible(true);
+                    break;
+                case 3:
+                    for (int i = 0; i < guiCRUDFProduct.getTableProductsDefault().getRowCount(); i++) {
+                        if(String.valueOf(guiCRUDFProduct.getTableProducts().getValueAt(i, 1)).equals(currentSelectedNodeName)){
+                            guiCRUDFProduct.getTableProducts().setRowSelectionInterval(i, i);
+                        }
+                    }
+                    guiCRUDFProduct.setVisible(true);
+                    try {
+                        guiCRUDFProduct.setMaximum(true);
+                    } catch (PropertyVetoException ex) {
+                        Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+            }
+
+        }
+        if (e.getSource().equals(guiMenu.getBtnDelete())) {
+            switch (currentNode.getLevel()) {
+                case 0:
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    for (int i = 0; i < guiCRUDFProduct.getTableProductsDefault().getRowCount(); i++) {
+                        if(String.valueOf(guiCRUDFProduct.getTableProducts().getValueAt(i, 1)).equals(currentSelectedNodeName)){
+                            guiCRUDFProduct.getTableProducts().setRowSelectionInterval(i, i);
+                        }
+                    }
+                    guiCRUDFProduct.setVisible(true);
+                    try {
+                        guiCRUDFProduct.setMaximum(true);
+                    } catch (PropertyVetoException ex) {
+                        Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
             }
 
         }
