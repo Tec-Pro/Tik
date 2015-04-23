@@ -40,7 +40,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
     private JTable tableProducts;
     private JTable tableReciper;
     private DefaultTableModel tableProductsDefault;
-    private DefaultTableModel tableReciperDefault;
+    private DefaultTableModel tableReciperDefault;  
     private Boolean isNew;
     private Boolean editingInformation;
     private List<Map> pproductList;
@@ -130,7 +130,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
      * @param evt
      * @throws RemoteException
      */
-    private void search() throws RemoteException {
+    public void search() throws RemoteException {
         if (guiCRUDFProduct.getTxtSearch().getText().equals("") || guiCRUDFProduct.getTxtSearch().getText().equals(" ")) {
             if (editingInformation) {
                 pproductList = crudPproduct.getPproducts();
@@ -153,7 +153,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
      * refresca la lista de productos, diferenciando si son finales, elaborados
      * o primarios
      */
-    private void refreshList() throws RemoteException {
+    public void refreshList() throws RemoteException {
         tableProductsDefault.setRowCount(0);
         if (editingInformation) {
             Iterator<Map> it = pproductList.iterator();
