@@ -275,7 +275,7 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
             Pair<Integer, Pair<Float, Float>> pair = new Pair<>(idProduct, amountPrice);
             products.add(pair);
         }
-        return interfacePurchase.create(cost, paid, datePaid, providerId, datePurchase, products);//retorna el id
+        return interfacePurchase.create(cost, paid, datePurchase, providerId,datePaid , products);//retorna el id
 
     }
 
