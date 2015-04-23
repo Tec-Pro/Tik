@@ -76,62 +76,89 @@ public class ControllerGuiMenu implements ActionListener {
 
         guiMenu.getTreeMenu().addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent me) {
-                changeSelection(me);
+                try {
+                    changeSelection(me);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiMenu.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         guiMenu.getTreeMenu().getSelectionModel().addTreeSelectionListener(new TreeSelectionListener() {
 
             public void valueChanged(TreeSelectionEvent e) {
-                if (currentNode != null) {
-                    if (currentNode.getLevel() == 0) {
-                        guiMenu.getBtnDelete().setEnabled(false);
-                        guiMenu.getBtnUpdate().setEnabled(false);
-                    }
-                }
-
+                
             }
 
         });
     }
 
-    private void changeSelection(MouseEvent me) {
-        guiMenu.getBtnDelete().setEnabled(true);
-        guiMenu.getBtnUpdate().setEnabled(true);
+    private void changeSelection(MouseEvent me) throws RemoteException {
         TreePath currentSelection = guiMenu.getTreeMenu().getSelectionPath();
         if (currentSelection != null) {
             currentNode = (DefaultMutableTreeNode) currentSelection.getLastPathComponent();
             currentSelectedNodeName = currentNode.toString();// nombre de la hoja seleccionada
-            if (currentNode.isLeaf()) {
-                switch (currentSelectedNodeName) {
-                    case "AGREGAR CATEGORIA":
-                        guiMenu.getBtnDelete().setEnabled(false);
-                        guiMenu.getBtnUpdate().setEnabled(false);
-                        if (me.getClickCount() == 2) {
-                            guiAddUpdateProductCategory.addCategoryState();
-                            guiAddUpdateProductCategory.setVisible(true);
+            //if (currentNode.isLeaf()) {
+            switch (currentSelectedNodeName) {
+                case "AGREGAR CATEGORIA":
+                    guiMenu.getBtnDelete().setEnabled(false);
+                    guiMenu.getBtnUpdate().setEnabled(false);
+                    guiMenu.getTableReciperDefault().setRowCount(0);
+                    if (me.getClickCount() == 2) {
+                        guiAddUpdateProductCategory.addCategoryState();
+                        guiAddUpdateProductCategory.setVisible(true);
+                    }
+                    break;
+                case "AGREGAR SUBCATEGORIA":
+                    guiMenu.getBtnDelete().setEnabled(false);
+                    guiMenu.getBtnUpdate().setEnabled(false);
+                    guiMenu.getTableReciperDefault().setRowCount(0);
+                    if (me.getClickCount() == 2) {
+                        guiAddUpdateProductSubcategory.addSucategoryState();
+                        guiAddUpdateProductSubcategory.setVisible(true);
+                    }
+                    break;
+                case "AGREGAR PRODUCTO":
+                    guiMenu.getBtnDelete().setEnabled(false);
+                    guiMenu.getBtnUpdate().setEnabled(false);
+                    guiMenu.getTableReciperDefault().setRowCount(0);
+                    if (me.getClickCount() == 2) {
+                        guiCRUDFProduct.setVisible(true);
+                        guiCRUDFProduct.clicSaveProduct();
+                        controllerGuiCRUDFproduct.search();
+                        controllerGuiCRUDFproduct.refreshList();
+                        try {
+                            guiCRUDFProduct.setMaximum(true);
+                        } catch (PropertyVetoException ex) {
+                            Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        break;
-                    case "AGREGAR SUBCATEGORIA":
-                        guiMenu.getBtnDelete().setEnabled(false);
-                        guiMenu.getBtnUpdate().setEnabled(false);
-                        if (me.getClickCount() == 2) {
-                            guiAddUpdateProductSubcategory.addSucategoryState();
-                            guiAddUpdateProductSubcategory.setVisible(true);
-                        }
-                        break;
-                    case "AGREGAR PRODUCTO":
-                        guiMenu.getBtnDelete().setEnabled(false);
-                        guiMenu.getBtnUpdate().setEnabled(false);
-                        if (me.getClickCount() == 2) {
-
-                        }
-                        break;
-                    default:
+                    }
+                    break;
+                case "CATEGORIA POR DEFECTO":
+                    guiMenu.getBtnDelete().setEnabled(false);
+                    guiMenu.getBtnUpdate().setEnabled(false);
+                    guiMenu.getTableReciperDefault().setRowCount(0);
+                    break;
+                case "SUBCATEGORIA POR DEFECTO":
+                    guiMenu.getBtnDelete().setEnabled(false);
+                    guiMenu.getBtnUpdate().setEnabled(false);
+                    guiMenu.getTableReciperDefault().setRowCount(0);
+                    break;
+                case "Menu":
+                    guiMenu.getBtnDelete().setEnabled(false);
+                    guiMenu.getBtnUpdate().setEnabled(false);
+                    guiMenu.getTableReciperDefault().setRowCount(0);
+                    break;
+                default:
+                    guiMenu.getBtnDelete().setEnabled(true);
+                    guiMenu.getBtnUpdate().setEnabled(true);
+                    guiMenu.getTableReciperDefault().setRowCount(0);
+                    if(currentNode.getLevel() == 3){
                         fProductSelected(currentSelectedNodeName);
-                        break;
-                }
+                    }
+                    break;
             }
         }
+        //}
     }
 
     public void CreateTree() throws RemoteException {
@@ -388,19 +415,27 @@ public class ControllerGuiMenu implements ActionListener {
                     guiAddUpdateProductSubcategory.getTxtSubcategory().setText(currentSelectedNodeName);
                     guiAddUpdateProductSubcategory.setVisible(true);
                     break;
-                case 3:
-                    for (int i = 0; i < guiCRUDFProduct.getTableProductsDefault().getRowCount(); i++) {
-                        if(String.valueOf(guiCRUDFProduct.getTableProducts().getValueAt(i, 1)).equals(currentSelectedNodeName)){
-                            guiCRUDFProduct.getTableProducts().setRowSelectionInterval(i, i);
-                        }
-                    }
-                    guiCRUDFProduct.setVisible(true);
+                case 3: {
                     try {
-                        guiCRUDFProduct.setMaximum(true);
-                    } catch (PropertyVetoException ex) {
-                        Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+                        guiCRUDFProduct.clear();
+                        controllerGuiCRUDFproduct.search();
+                        controllerGuiCRUDFproduct.refreshList();
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(ControllerGuiMenu.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    break;
+                }
+                for (int i = 0; i < guiCRUDFProduct.getTableProductsDefault().getRowCount(); i++) {
+                    if (String.valueOf(guiCRUDFProduct.getTableProducts().getValueAt(i, 1)).equals(currentSelectedNodeName)) {
+                        guiCRUDFProduct.getTableProducts().setRowSelectionInterval(i, i);
+                    }
+                }
+                guiCRUDFProduct.setVisible(true);
+                try {
+                    guiCRUDFProduct.setMaximum(true);
+                } catch (PropertyVetoException ex) {
+                    Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                break;
             }
 
         }
@@ -409,22 +444,60 @@ public class ControllerGuiMenu implements ActionListener {
                 case 0:
                     break;
                 case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    for (int i = 0; i < guiCRUDFProduct.getTableProductsDefault().getRowCount(); i++) {
-                        if(String.valueOf(guiCRUDFProduct.getTableProducts().getValueAt(i, 1)).equals(currentSelectedNodeName)){
-                            guiCRUDFProduct.getTableProducts().setRowSelectionInterval(i, i);
+                    int resp = JOptionPane.showConfirmDialog(guiMenu, "¿Desea eliminar la categoria " + currentSelectedNodeName + "? Todos las subcategorias se moveran a la categoria por defecto.", "Atencion!", JOptionPane.YES_NO_OPTION);
+                    if (resp == JOptionPane.YES_OPTION) {
+                        try {
+                            Map<String, Object> category;
+                            category = crudProductCategory.getCategoryByName(currentSelectedNodeName);
+                            if (crudProductCategory.delete((int) category.get("id"))) {
+                                JOptionPane.showMessageDialog(guiMenu, "Ccategoria eliminada correctamente.", "Operacion exitosa.", JOptionPane.INFORMATION_MESSAGE);
+                                CreateTree();
+                            } else {
+                                JOptionPane.showMessageDialog(guiMenu, "No se pudo eliminar la categoria.", "Error.", JOptionPane.ERROR_MESSAGE);
+                            }
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(ControllerGuiMenu.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
-                    guiCRUDFProduct.setVisible(true);
-                    try {
-                        guiCRUDFProduct.setMaximum(true);
-                    } catch (PropertyVetoException ex) {
-                        Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+                    break;
+                case 2:
+                    int res = JOptionPane.showConfirmDialog(guiMenu, "¿Desea eliminar la subcategoria " + currentSelectedNodeName + "? Todos los productos se moveran a la subcategoria por defecto.", "Atencion!", JOptionPane.YES_NO_OPTION);
+                    if (res == JOptionPane.YES_OPTION) {
+                        try {
+                            Map<String, Object> subcategory;
+                            subcategory = crudProductCategory.getSubcategory(currentSelectedNodeName);
+                            if (crudProductCategory.deleteSubcategory((int) subcategory.get("id"))) {
+                                JOptionPane.showMessageDialog(guiMenu, "Subcategoria eliminada correctamente.", "Operacion exitosa.", JOptionPane.INFORMATION_MESSAGE);
+                                CreateTree();
+                            } else {
+                                JOptionPane.showMessageDialog(guiMenu, "No se pudo eliminar la subcategoria.", "Error.", JOptionPane.ERROR_MESSAGE);
+                            }
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(ControllerGuiMenu.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                     break;
+                case 3: {
+                    try {
+                        guiCRUDFProduct.clear();
+                        controllerGuiCRUDFproduct.search();
+                        controllerGuiCRUDFproduct.refreshList();
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(ControllerGuiMenu.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                for (int i = 0; i < guiCRUDFProduct.getTableProductsDefault().getRowCount(); i++) {
+                    if (String.valueOf(guiCRUDFProduct.getTableProducts().getValueAt(i, 1)).equals(currentSelectedNodeName)) {
+                        guiCRUDFProduct.getTableProducts().setRowSelectionInterval(i, i);
+                    }
+                }
+                guiCRUDFProduct.setVisible(true);
+                try {
+                    guiCRUDFProduct.setMaximum(true);
+                } catch (PropertyVetoException ex) {
+                    Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                break;
             }
 
         }
