@@ -19,8 +19,6 @@ import gui.GuiLoadPurchase;
 import gui.main.GuiMain;
 import gui.providers.GuiCRUDProviders;
 import gui.providers.GuiNewProvider;
-import gui.providers.GuiInvoicesPaid;
-import gui.providers.GuiPaymentsToProviders;
 import gui.providers.purchases.GuiPurchase;
 import interfaces.providers.InterfaceProvider;
 import interfaces.providers.InterfaceProviderCategory;
@@ -61,8 +59,6 @@ public class ControllerMain implements ActionListener {
     private static GuiNewProvider guiNewProvider;
     private static GuiLoadPurchase guiLoadPurchase;
     private static GuiMenu guiMenu;
-    private static GuiPaymentsToProviders guiPaymentsToProviders;
-    private static GuiInvoicesPaid guiInvoicesPaid;
     private static GuiPurchase guiPurchase;
 
     //controladores
@@ -101,8 +97,6 @@ public class ControllerMain implements ActionListener {
         guiNewProvider = new GuiNewProvider();
         guiLoadPurchase = new GuiLoadPurchase();
         guiMenu = new GuiMenu();
-        guiInvoicesPaid = new GuiInvoicesPaid();
-        guiPaymentsToProviders = new GuiPaymentsToProviders();
         guiPurchase = new GuiPurchase();
         
         //agrego las gui al desktop
@@ -116,8 +110,6 @@ public class ControllerMain implements ActionListener {
         guiMain.getDesktop().add(guiNewProvider);
         guiMain.getDesktop().add(guiLoadPurchase);
         guiMain.getDesktop().add(guiMenu);
-        guiMain.getDesktop().add(guiInvoicesPaid);
-        guiMain.getDesktop().add(guiPaymentsToProviders);
         guiMain.getDesktop().add(guiPurchase);
         
         InterfaceProvider provider = (InterfaceProvider) Naming.lookup("//" + Config.ip + "/crudProvider");
@@ -130,7 +122,7 @@ public class ControllerMain implements ActionListener {
         controllerCRUDEProduct = new ControllerGuiCRUDEproduct(guiCRUDEProduct);
         controllerCRUDFProduct = new ControllerGuiCRUDFproduct(guiCRUDFProduct);
         controllerCRUDProductCategory = new ControllerGuiProductCategory(guiCRUDProductCategory);
-        controllerCRUDProviders = new ControllerGuiCRUDProviders(guiCRUDProviders, guiNewProvider, guiPaymentsToProviders, guiInvoicesPaid, provider, providerCategory, providersSearch);
+        controllerCRUDProviders = new ControllerGuiCRUDProviders(guiCRUDProviders, guiNewProvider);
         controllerCRUDUser = new ControllerGuiCRUDUser(guiCRUDUser);
         controllerCRUDPProduct = new ControllerGuiCRUDPproduct(guiCRUDPProduct,guiLoadPurchase);
         controllerGuiMenu = new ControllerGuiMenu(guiMenu,guiMain);

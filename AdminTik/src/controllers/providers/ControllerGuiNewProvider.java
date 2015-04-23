@@ -10,6 +10,9 @@ import interfaces.providers.InterfaceProvider;
 import interfaces.providers.InterfaceProviderCategory;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Collections;
 import java.util.Iterator;
@@ -19,6 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import utils.Config;
 
 /**
  *
@@ -31,25 +35,20 @@ public class ControllerGuiNewProvider implements ActionListener {
     private final GuiNewProvider guiNewProvider;
     private boolean modify;
     private int currentProviderId;
-    private final GuiTicketsPaid guiInvoicesPaid;
-    private final GuiPaymentsToProviders guiPaymentsToProviders;
 
     /**
      *
      * @param guiNProv
      * @param guiPTP
-     * @param guiIP
-     * @param prov
-     * @param provCategory
      * @throws RemoteException
+     * @throws java.rmi.NotBoundException
+     * @throws java.net.MalformedURLException
      */
-    public ControllerGuiNewProvider(GuiNewProvider guiNProv, GuiPaymentsToProviders guiPTP, GuiTicketsPaid guiIP, InterfaceProvider prov, InterfaceProviderCategory provCategory) throws RemoteException {
+    public ControllerGuiNewProvider(GuiNewProvider guiNProv) throws RemoteException, NotBoundException, MalformedURLException {
         this.modify = false;
-        this.guiPaymentsToProviders = guiPTP;
-        this.guiInvoicesPaid = guiIP;
         this.guiNewProvider = guiNProv;
-        this.provider = prov;
-        this.providerCategory = provCategory;
+        this.provider = (InterfaceProvider) Naming.lookup("//" + Config.ip + "/crudProvider");
+        this.providerCategory = (InterfaceProviderCategory) Naming.lookup("//" + Config.ip + "/crudProviderCategory");
         this.guiNewProvider.setActionListener(this);
         //Escucho si se clickea alguna fila de la tabla FindProviderCategories
         this.guiNewProvider.getTableFindProviderCategories().addMouseListener(new java.awt.event.MouseAdapter() {
@@ -213,6 +212,7 @@ public class ControllerGuiNewProvider implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        
         //Si presiono el boton GUARDAR
         if (e.getSource().equals(this.guiNewProvider.getBtnSaveProvider())) {
             if (!isModify()) {
@@ -257,14 +257,7 @@ public class ControllerGuiNewProvider implements ActionListener {
             this.guiNewProvider.hide();
             setModify(false);
         }
-        //si presiono el boton LISTADO DE PAGOS REALIZADOS
-        if(e.getSource().equals(this.guiNewProvider.getBtnPayments())){
-            guiPaymentsToProviders.setVisible(true);
-        }
-        //si presiono el boton LISTADO DE FACTURACIÓN
-        if(e.getSource().equals(this.guiNewProvider.getBtnInvoicesPaid())){
-            guiInvoicesPaid.setVisible(true);
-        }
+        
     }
 
 }
