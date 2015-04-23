@@ -28,7 +28,7 @@ public class GuiNewProvider extends javax.swing.JInternalFrame {
         return btnPayments;
     }
 
-    public JButton getBtnInvoicesPaid() {
+    public JButton getBtnTicketsPaid() {
         return btnInvoicesPaid;
     }
     

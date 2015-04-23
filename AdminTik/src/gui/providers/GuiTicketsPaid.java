@@ -6,6 +6,7 @@
 package gui.providers;
 
 import com.toedter.calendar.JDateChooser;
+import java.awt.event.ActionListener;
 import javax.swing.JTable;
 
 /**
@@ -30,10 +31,9 @@ public class GuiTicketsPaid extends javax.swing.JInternalFrame {
     }
 
     public JTable getTableProviderCurrentAccount() {
-        return tableInvoicesPaid;
+        return tableTicketsPaid;
     }
 
-    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -50,7 +50,7 @@ public class GuiTicketsPaid extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tableInvoicesPaid = new javax.swing.JTable();
+        tableTicketsPaid = new javax.swing.JTable();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -93,7 +93,7 @@ public class GuiTicketsPaid extends javax.swing.JInternalFrame {
                 .addContainerGap(453, Short.MAX_VALUE))
         );
 
-        tableInvoicesPaid.setModel(new javax.swing.table.DefaultTableModel(
+        tableTicketsPaid.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -116,8 +116,8 @@ public class GuiTicketsPaid extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        tableInvoicesPaid.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane2.setViewportView(tableInvoicesPaid);
+        tableTicketsPaid.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane2.setViewportView(tableTicketsPaid);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -151,6 +151,6 @@ public class GuiTicketsPaid extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable tableInvoicesPaid;
+    private javax.swing.JTable tableTicketsPaid;
     // End of variables declaration//GEN-END:variables
 }

@@ -11,6 +11,9 @@ import interfaces.providers.InterfaceProviderCategory;
 import interfaces.providers.InterfaceProvidersSearch;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Collections;
 import java.util.Iterator;
@@ -24,6 +27,7 @@ import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import utils.Config;
 
 /**
  *
@@ -38,14 +42,15 @@ public class ControllerGuiCRUDProviders implements ActionListener {
     private final InterfaceProvider provider;
     private final InterfaceProvidersSearch providersSearch;
 
-    public ControllerGuiCRUDProviders(GuiCRUDProviders guiCProv, GuiNewProvider guiNProv, GuiPaymentsToProviders guiPTP, GuiTicketsPaid guiIP,
-            InterfaceProvider prov, InterfaceProviderCategory provCategory, InterfaceProvidersSearch provSearch) throws RemoteException {
+    public ControllerGuiCRUDProviders(GuiCRUDProviders guiCProv, GuiNewProvider guiNProv, GuiPaymentsToProviders guiPTP, GuiTicketsPaid guiIP) throws RemoteException, NotBoundException, MalformedURLException {
+        this.provider = (InterfaceProvider) Naming.lookup("//" + Config.ip + "/crudProvider");
+        this.providersSearch = (InterfaceProvidersSearch) Naming.lookup("//" + Config.ip + "/providersSearch");
+        this.providerCategory = (InterfaceProviderCategory) Naming.lookup("//" + Config.ip + "/crudProviderCategory");
+        
         this.guiCRUDProviders = guiCProv;
         this.guiNewProvider = guiNProv;
-        this.provider = prov;
-        this.providerCategory = provCategory;
-        this.providersSearch = provSearch;
-        this.controllerGuiNewProvider = new ControllerGuiNewProvider(this.guiNewProvider, guiPTP, guiIP, this.provider, this.providerCategory);
+        this.controllerGuiNewProvider = new ControllerGuiNewProvider(this.guiNewProvider, guiPTP, guiIP);
+        
         this.guiCRUDProviders.setActionListener(this);
         loadProviderCategories();
         //escucho en el txtFindProvider lo que se va ingresando para buscar un proveedor

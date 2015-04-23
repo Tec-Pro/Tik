@@ -29,6 +29,7 @@ public class CRUDPurchase extends UnicastRemoteObject implements InterfacePurcha
         super();
     }
 
+    @Override
     public Integer create(Float cost, Float paid, String date, Integer providerId, String datePaid, LinkedList<Pair<Integer, Pair<Float, Float>>> products) {
         Utils.abrirBase();
         Base.openTransaction();
@@ -76,6 +77,7 @@ public class CRUDPurchase extends UnicastRemoteObject implements InterfacePurcha
     }
 
     //no se actualiza el stock, supongo que se borran por ser muy viejas
+    @Override
    public boolean delete(Integer idPurchase){
        Utils.abrirBase();
        boolean result=false;
@@ -89,6 +91,7 @@ public class CRUDPurchase extends UnicastRemoteObject implements InterfacePurcha
        return result;
    }
    
+    @Override
   public Pair<Map<String,Object>,List<Map>> getPurchase(Integer idPurchase){
       Utils.abrirBase();
       Base.openTransaction();
@@ -99,11 +102,12 @@ public class CRUDPurchase extends UnicastRemoteObject implements InterfacePurcha
       return new Pair<>(resultPurchase, resultProducts);
   }
   
+    @Override
     public List<Pair<Map<String,Object>,List<Map>>> getPurchasesProvider(Integer idProvider){
       Utils.abrirBase();
       Base.openTransaction();
       LinkedList<Pair<Map<String,Object>,List<Map>>> result= new LinkedList<>();
-      LazyList<Purchase> purchases=Purchase.where("provider_id", idProvider);
+      LazyList<Purchase> purchases=Purchase.where("provider_id = ?", idProvider);
       Iterator<Purchase> it= purchases.iterator();
       while(it.hasNext()){
           Purchase p= it.next();
