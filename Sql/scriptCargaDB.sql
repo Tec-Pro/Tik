@@ -9,23 +9,23 @@ LIMIT 0, 1000
 INSERT INTO `admins` (`id`,`name`,`pass`,`is_admin`) VALUES (1,'admin','V×Øöñ²*)´lïVõ)Zï',1);
 
 #Cargo categorías de productos
-INSERT INTO `categories` (`id`,`name`) VALUES (1,'Bebidas ');
+INSERT INTO `categories` (`id`,`name`) VALUES (1,'Bebidas');
 INSERT INTO `categories` (`id`,`name`) VALUES (2,'Carnes');
 INSERT INTO `categories` (`id`,`name`) VALUES (3,'Verduras');
 INSERT INTO `categories` (`id`,`name`) VALUES (4,'Frutas');
 INSERT INTO `categories` (`id`,`name`) VALUES (5,'Pizzas');
 
 #Cargo productos primarios
-INSERT INTO `pproducts` (`id`,`name`,`stock`,`measure_unit`,`unit_price`,`removed`) VALUES (2,'Fernet branca',5000,'ml',0.08,0,0);
-INSERT INTO `pproducts` (`id`,`name`,`stock`,`measure_unit`,`unit_price`,`removed`) VALUES (3,'Coca Cola',10000,'ml',0.018,0,0);
-INSERT INTO `pproducts` (`id`,`name`,`stock`,`measure_unit`,`unit_price`,`removed`) VALUES (4,'Lomo de ternera',4000,'gr',0.04,0,0);
-INSERT INTO `pproducts` (`id`,`name`,`stock`,`measure_unit`,`unit_price`,`removed`) VALUES (5,'Pechuga de pollo',2000,'gr',0.025,0,0);
-INSERT INTO `pproducts` (`id`,`name`,`stock`,`measure_unit`,`unit_price`,`removed`) VALUES (6,'Zanahoria',3000,'gr',0.01,0,0);
-INSERT INTO `pproducts` (`id`,`name`,`stock`,`measure_unit`,`unit_price`,`removed`) VALUES (7,'Naranja',4000,'gr',0.008,0,0);
-INSERT INTO `pproducts` (`id`,`name`,`stock`,`measure_unit`,`unit_price`,`removed`) VALUES (8,'Harina',10000,'gr',0.005,0,2);
-INSERT INTO `pproducts` (`id`,`name`,`stock`,`measure_unit`,`unit_price`,`removed`) VALUES (9,'Huevo',12,'unitario',2,0,2);
-INSERT INTO `pproducts` (`id`,`name`,`stock`,`measure_unit`,`unit_price`,`removed`) VALUES (10,'Queso',1000,'gr',0.012,0,2);
-INSERT INTO `pproducts` (`id`,`name`,`stock`,`measure_unit`,`unit_price`,`removed`) VALUES (11,'Tomate',3000,'gr',0.008,0,2);
+INSERT INTO `pproducts` (`id`,`name`,`stock`,`measure_unit`,`unit_price`,`removed`,`provider_id`) VALUES (2,'Fernet branca',5000,'ml',0.08,0,0,2);
+INSERT INTO `pproducts` (`id`,`name`,`stock`,`measure_unit`,`unit_price`,`removed`,`provider_id`) VALUES (3,'Coca Cola',10000,'ml',0.018,0,0,2);
+INSERT INTO `pproducts` (`id`,`name`,`stock`,`measure_unit`,`unit_price`,`removed`,`provider_id`) VALUES (4,'Lomo de ternera',4000,'gr',0.04,0,0,2);
+INSERT INTO `pproducts` (`id`,`name`,`stock`,`measure_unit`,`unit_price`,`removed`,`provider_id`) VALUES (5,'Pechuga de pollo',2000,'gr',0.025,0,0,2);
+INSERT INTO `pproducts` (`id`,`name`,`stock`,`measure_unit`,`unit_price`,`removed`,`provider_id`) VALUES (6,'Zanahoria',3000,'gr',0.01,0,0,2);
+INSERT INTO `pproducts` (`id`,`name`,`stock`,`measure_unit`,`unit_price`,`removed`,`provider_id`) VALUES (7,'Naranja',4000,'gr',0.008,0,0,2);
+INSERT INTO `pproducts` (`id`,`name`,`stock`,`measure_unit`,`unit_price`,`removed`,`provider_id`) VALUES (8,'Harina',10000,'gr',0.005,0,2,2);
+INSERT INTO `pproducts` (`id`,`name`,`stock`,`measure_unit`,`unit_price`,`removed`,`provider_id`) VALUES (9,'Huevo',12,'unitario',2,0,2,2);
+INSERT INTO `pproducts` (`id`,`name`,`stock`,`measure_unit`,`unit_price`,`removed`,`provider_id`) VALUES (10,'Queso',1000,'gr',0.012,0,2,2);
+INSERT INTO `pproducts` (`id`,`name`,`stock`,`measure_unit`,`unit_price`,`removed`,`provider_id`) VALUES (11,'Tomate',3000,'gr',0.008,0,2,2);
 
 
 #Cargo productos elaborados
