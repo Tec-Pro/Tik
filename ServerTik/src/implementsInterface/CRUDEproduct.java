@@ -12,6 +12,8 @@ import java.util.Map;
 import models.Eproduct;
 import models.EproductsPproducts;
 import models.Fproduct;
+import models.FproductsEproducts;
+import models.FproductsPproducts;
 import models.Pproduct;
 import org.javalite.activejdbc.Base;
 import utils.Pair;
@@ -146,5 +148,21 @@ public class CRUDEproduct extends UnicastRemoteObject implements interfaces.Inte
          
         return ret;
 
+    }
+    
+    @Override
+    public float calculateProductionPrice(int idEproduct) throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        Eproduct eProd = Eproduct.findById(idEproduct);
+        float epPrice = 0;
+        if (eProd != null) {
+            for (EproductsPproducts ep : eProd.getAll(EproductsPproducts.class)) {
+                    Pproduct pp2 = Pproduct.findById(ep.getInteger("pproduct_id"));
+                    epPrice += pp2.getFloat("unit_price") * ep.getFloat("amount");
+                }
+                
+            }
+        
+        return epPrice;
     }
 }

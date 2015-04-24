@@ -78,5 +78,6 @@ public interface InterfaceEproduct extends Remote {
      */
      public  List<Map> getEproductPproduts(int idEproduct) throws java.rmi.RemoteException;
      
+     public float calculateProductionPrice(int idFproduct) throws java.rmi.RemoteException ;
 
 }

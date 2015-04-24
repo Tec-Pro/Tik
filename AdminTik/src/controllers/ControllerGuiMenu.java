@@ -36,6 +36,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import utils.Config;
+import utils.ParserFloat;
 
 /**
  *
@@ -219,28 +220,36 @@ public class ControllerGuiMenu implements ActionListener {
                 fproductPproductList = crudFproduct.getFproductPproduts(id);
                 fproductEproductList = crudFproduct.getFproductEproduts(id);
                 refreshReciperList();
-
+                guiMenu.getTxtTotalPrice().setText(String.valueOf(crudFproduct.calculateProductionPrice(id)));
+                guiMenu.getTxtSellPrice().setText(p.get("sell_price").toString());
             }
         } catch (RemoteException ex) {
             Logger.getLogger(ControllerGuiMenu.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
+        
     }
 
     public void refreshReciperList() throws RemoteException {
         guiMenu.getTableReciperDefault().setRowCount(0);
         for (Map fpPp : fproductPproductList) {
-            Object row[] = new String[4];
+            Object row[] = new String[5];
             row[0] = fpPp.get("pproduct_id").toString();
             row[1] = crudPproduct.getPproduct(Integer.parseInt(fpPp.get("pproduct_id").toString())).get("name").toString(); //NOMBRE
-            row[2] = fpPp.get("amount").toString(); // Cantidad     
+            row[2] = fpPp.get("amount").toString(); // Cantidad
+            List<Map> ppList = crudPproduct.getPproducts(String.valueOf(fpPp.get("pproduct_id")));
+            Map<String,Object> pp = ppList.get(0);
+            row[3] = pp.get("measure_unit");
+            row[4] = ParserFloat.floatToString(ParserFloat.stringToFloat(String.valueOf(pp.get("unit_price"))) * ParserFloat.stringToFloat(String.valueOf(fpPp.get("amount"))));
             guiMenu.getTableReciperDefault().addRow(row);
         }
         for (Map fpEp : fproductEproductList) {
-            Object row[] = new String[4];
+            Object row[] = new String[5];
             row[0] = fpEp.get("eproduct_id").toString();
             row[1] = crudEproduct.getEproduct(Integer.parseInt(fpEp.get("eproduct_id").toString())).get("name").toString(); //NOMBRE
-            row[2] = fpEp.get("amount").toString(); // Cantidad     
+            row[2] = fpEp.get("amount").toString(); // Cantidad
+            row[3] = "unitario";
+            row[4] = String.valueOf(crudEproduct.calculateProductionPrice((int)fpEp.get("eproduct_id")));
             guiMenu.getTableReciperDefault().addRow(row);
         }
     }
