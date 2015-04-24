@@ -14,3 +14,12 @@ CREATE TABLE `tik`.`pproducts_purchases` (
   `amount` VARCHAR(45) NOT NULL,
   `final_price` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`));
+  
+  ALTER TABLE `tik`.`pproducts` 
+ADD COLUMN `provider_id` INT NULL AFTER `removed`;
+
+ALTER TABLE `tik`.`pproducts` 
+CHANGE COLUMN `provider_id` `provider_id` INT(11) NULL DEFAULT 0 ;
+ALTER TABLE `tik`.`pproducts` 
+CHANGE COLUMN `provider_id` `provider_id` INT(11) NOT NULL DEFAULT '0' ;
+

@@ -8,6 +8,7 @@ import gui.GuiCRUDPProduct;
 import gui.GuiLoadPurchase;
 import interfaces.InterfaceCategory;
 import interfaces.InterfacePproduct;
+import interfaces.providers.InterfaceProvider;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
@@ -44,6 +45,7 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
     InterfaceCategory category;
     Map<String, Object> product;
     //private CRUDPproduct crudPproduct;
+    private final InterfaceProvider provider;
 
     /**
      *
@@ -82,6 +84,7 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
 
         tableProductsDefault = guiCRUDPProduct.getTableProductsDefault();
         pproduct = (InterfacePproduct) Naming.lookup("//" + Config.ip + "/CRUDPproduct");
+        this.provider = (InterfaceProvider) Naming.lookup("//" + Config.ip + "/crudProvider");
         productList = pproduct.getPproducts();
         refreshList();
     }
@@ -152,6 +155,7 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
             guiCRUDPProduct.clicSaveProduct();
             guiCRUDPProduct.clicTableProducts();
             product = pproduct.getPproduct(Integer.parseInt((String) tableProducts.getValueAt(tableProducts.getSelectedRow(), 0)));
+            guiCRUDPProduct.loadProviders(provider.getProviders());
             guiCRUDPProduct.loadProduct(product);
         }
 
@@ -162,6 +166,7 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
         if (e.getSource() == guiCRUDPProduct.getBtnNew()) { //Boton nuevo
             try {
                 guiCRUDPProduct.clicNewProduct();
+                guiCRUDPProduct.loadProviders(provider.getProviders());
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -171,6 +176,10 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
         if (e.getSource() == guiCRUDPProduct.getBtnModify()) { //boton modificar
             try {
                 guiCRUDPProduct.clicModifyProduct();
+                Integer idSelected=guiCRUDPProduct.getIdProviderSelected();
+                guiCRUDPProduct.loadProviders(provider.getProviders());
+                guiCRUDPProduct.setProviderBox(idSelected);
+
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -205,7 +214,7 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
                     measureUnit = guiCRUDPProduct.getCboxMeasureUnit().getSelectedItem().toString();
                 }
                 try {
-                    pproduct.create(name, stock, measureUnit, unitPrice);
+                    pproduct.create(name, stock, measureUnit, unitPrice,guiCRUDPProduct.getIdProviderSelected());
                     JOptionPane.showMessageDialog(guiCRUDPProduct, "¡Producto creado exitosamente!");
                     guiCRUDPProduct.clicSaveProduct();
                     productList = pproduct.getPproducts();
@@ -223,7 +232,7 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
                 String measureUnit = guiCRUDPProduct.getCboxMeasureUnit().getSelectedItem().toString();
                 int id = Integer.parseInt(guiCRUDPProduct.getTxtId().getText());
                 try {
-                    pproduct.modify(id, name, stock, measureUnit, unitPrice);
+                    pproduct.modify(id, name, stock, measureUnit, unitPrice,guiCRUDPProduct.getIdProviderSelected());
                     JOptionPane.showMessageDialog(guiCRUDPProduct, "¡Producto modificado exitosamente!");
                     guiCRUDPProduct.clicSaveProduct();
                     productList = pproduct.getPproducts();

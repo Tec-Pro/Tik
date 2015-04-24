@@ -12,7 +12,9 @@ import java.util.Map;
 import models.Eproduct;
 import models.Fproduct;
 import models.Pproduct;
+import models.Provider;
 import org.javalite.activejdbc.Base;
+import org.javalite.activejdbc.Model;
 import utils.Utils;
 
 /**
@@ -31,19 +33,19 @@ public class CRUDPproduct extends UnicastRemoteObject implements interfaces.Inte
     }
 
     @Override
-    public Map<String, Object> create(String name, float stock, String measureUnit, float unitPrice) throws java.rmi.RemoteException {
+    public Map<String, Object> create(String name, float stock, String measureUnit, float unitPrice, int idProvider) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
         if (!measureUnit.equals("unitario")) {
             unitPrice = unitPrice / 1000;
         }
-        Pproduct ret = Pproduct.createIt("name", name, "stock", stock, "measure_unit", measureUnit, "unit_price", unitPrice);
+        Pproduct ret = Pproduct.createIt("name", name, "stock", stock, "measure_unit", measureUnit, "unit_price", unitPrice,"provider_id",idProvider);
         Base.commitTransaction();
         return ret.toMap();
     }
 
     @Override
-    public Map<String, Object> modify(int id, String name, float stock, String measureUnit, float unitPrice) throws java.rmi.RemoteException {
+    public Map<String, Object> modify(int id, String name, float stock, String measureUnit, float unitPrice, int idProvider) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Pproduct product = Pproduct.findById(id);
         Map<String, Object> res = null;
@@ -56,12 +58,14 @@ public class CRUDPproduct extends UnicastRemoteObject implements interfaces.Inte
             product.setFloat("stock", stock);
             product.setString("measure_unit", measureUnit);
             product.setFloat("unit_price", unitPrice);
+            product.setInteger("provider_id", idProvider);
             product.saveIt();
             res = product.toMap();
             Base.commitTransaction();
         }
         return res;
     }
+    
 
     @Override
     public boolean delete(int id) throws java.rmi.RemoteException {

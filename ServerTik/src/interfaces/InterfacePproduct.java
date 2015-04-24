@@ -22,10 +22,11 @@ public interface InterfacePproduct extends Remote {
      * @param stock
      * @param measureUnit
      * @param unitPrice
+     * @param idProvider
      * @return Map<String,Object> 
      * @throws java.rmi.RemoteException
      */
-    public Map<String,Object> create(String name, float stock, String measureUnit, float unitPrice) throws java.rmi.RemoteException;
+    public Map<String,Object> create(String name, float stock, String measureUnit, float unitPrice, int idProvider) throws java.rmi.RemoteException;
      
     
     /**
@@ -35,10 +36,11 @@ public interface InterfacePproduct extends Remote {
      * @param stock
      * @param measureUnit
      * @param unitPrice
+     * @param idProvider
      * @return Map<String,Object>
      * @throws java.rmi.RemoteException
      */
-     public Map<String,Object> modify(int id,String name, float stock, String measureUnit, float unitPrice) throws java.rmi.RemoteException;
+     public Map<String,Object> modify(int id,String name, float stock, String measureUnit, float unitPrice, int idProvider) throws java.rmi.RemoteException;
     
      /**
      * Carga una compra.
@@ -90,4 +92,4 @@ public interface InterfacePproduct extends Remote {
      * @throws java.rmi.RemoteException
      */
      public List<Map> getPproducts(String searchParams) throws java.rmi.RemoteException;    
-}
+     }

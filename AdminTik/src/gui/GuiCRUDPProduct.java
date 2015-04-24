@@ -7,6 +7,8 @@ package gui;
 
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -58,6 +60,8 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         cboxMeasureUnit.setSelectedIndex(-1);
         lblPriceUnity.setText("");
         lblStockUnity.setText("");
+        proveedores.removeAllItems();
+        proveedores.addItem("Seleccione un proveedor");
     }
 
     /**
@@ -77,6 +81,7 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         btnDelete.setEnabled(false);
         btnModify.setEnabled(false);
         cboxMeasureUnit.setEnabled(true);
+        proveedores.setEnabled(true);
     }
 
     /**
@@ -95,6 +100,8 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         btnCancel.setEnabled(false);
         btnNew.setEnabled(true);
         cboxMeasureUnit.setEnabled(false);
+        proveedores.setEnabled(false);
+
     }
 
     /**
@@ -128,6 +135,8 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         btnCancel.setEnabled(false);
         btnNew.setEnabled(true);
         cboxMeasureUnit.setEnabled(false);
+        proveedores.setEnabled(false);
+
     }
 
     /**
@@ -147,6 +156,8 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         btnCancel.setEnabled(true);
         btnNew.setEnabled(false);
         cboxMeasureUnit.setEditable(true);
+        proveedores.setEnabled(true);
+
     }
 
     /**
@@ -259,12 +270,49 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         txtId.setText(prod.get("id").toString());
         txtStock.setText(ParserFloat.floatToString((float) prod.get("stock")));
         if (prod.get("measure_unit").toString().equals("unitario")) {
-            txtPrice.setText(ParserFloat.floatToString((float)prod.get("unit_price")));
+            txtPrice.setText(ParserFloat.floatToString((float) prod.get("unit_price")));
         } else {
-            txtPrice.setText(ParserFloat.floatToString( (float) prod.get("unit_price") * 1000));
+            txtPrice.setText(ParserFloat.floatToString((float) prod.get("unit_price") * 1000));
         }
         txtName.setText(prod.get("name").toString());
         cboxMeasureUnit.setSelectedItem(prod.get("measure_unit").toString());
+        setProviderBox((Integer)prod.get("provider_id"));
+    }
+
+    public void loadProviders(List<Map> providers) {
+
+        proveedores.removeAllItems();
+        Iterator<Map> it = providers.iterator();
+        while (it.hasNext()) {
+            Map prov = it.next();
+            proveedores.addItem(prov.get("id") + "-" + prov.get("name"));
+        }
+        proveedores.addItem("Seleccione un proveedor");
+        proveedores.setSelectedItem("Seleccione un proveedor");
+    }
+    
+    public void setProviderBox(Integer id){
+            boolean notFound=true;
+            for(int i=0;i<proveedores.getItemCount()&&notFound;i++){
+                String item=(String)proveedores.getItemAt(i);
+                if(!"Seleccione un proveedor".equals(item)){
+                Integer idItem=Integer.valueOf(item.split("-")[0]);
+                if(Integer.compare(id, idItem)==0){
+                    notFound=false;
+                    proveedores.setSelectedIndex(i);
+                }
+                }
+            }
+            if(notFound)
+                proveedores.setSelectedItem("Seleccione un proveedor");
+    }
+    
+    public Integer getIdProviderSelected(){
+        String prov=(String)proveedores.getSelectedItem();
+        if (!prov.equals("Seleccione un proveedor")){
+            return Integer.valueOf(proveedores.getSelectedItem().toString().split("-")[0]);
+        }
+        return 0;
     }
 
     /**
@@ -321,6 +369,8 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         btnCancel = new javax.swing.JButton();
         lblPriceUnity = new javax.swing.JLabel();
         lblStockUnity = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        proveedores = new javax.swing.JComboBox();
         jScrollPane4 = new javax.swing.JScrollPane();
         tableProducts = new javax.swing.JTable();
         txtSearch = new javax.swing.JTextField();
@@ -447,6 +497,10 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
+        jLabel10.setText("Proveedor");
+
+        proveedores.setEnabled(false);
+
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
@@ -470,7 +524,11 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel9Layout.createSequentialGroup()
                         .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(proveedores, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(83, 83, 83)
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblStockUnity, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -491,7 +549,10 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
                         .addComponent(jLabel2)
                         .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel9)
-                        .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(proveedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel10))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -539,7 +600,6 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         });
         jScrollPane4.setViewportView(tableProducts);
 
-        txtSearch.setForeground(java.awt.Color.black);
         txtSearch.setToolTipText("Búsqueda personalizada");
         txtSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -633,6 +693,7 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnPurchase;
     private javax.swing.JButton btnSave;
     private javax.swing.JComboBox cboxMeasureUnit;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
@@ -645,6 +706,7 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel lblPriceUnity;
     private javax.swing.JLabel lblStockUnity;
+    private javax.swing.JComboBox proveedores;
     private javax.swing.JTable tableProducts;
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtName;

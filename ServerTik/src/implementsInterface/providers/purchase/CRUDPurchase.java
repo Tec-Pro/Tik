@@ -68,6 +68,7 @@ public class CRUDPurchase extends UnicastRemoteObject implements InterfacePurcha
                             }
                     pproduct.setFloat("stock",stock+pproduct.getFloat("stock") );
                     pproduct.setFloat("unit_price",unitPrice );
+                    pproduct.setInteger("provider_id", providerId);
                     pproduct.saveIt();
                 }
             }
