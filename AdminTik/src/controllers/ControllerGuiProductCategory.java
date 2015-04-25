@@ -115,7 +115,13 @@ public class ControllerGuiProductCategory implements ActionListener {
             row[1] = subCategory.get("name").toString();
             guiProductCategory.getTableSubCategoryDefault().addRow(row);
         }
-
+        if(guiProductCategory.getTxtCategory().getText().equals("CATEGORIA POR DEFECTO")){
+            guiProductCategory.getBtnUpdateCategory().setEnabled(false);
+            guiProductCategory.getBtnDeleteCategory().setEnabled(false);
+            guiProductCategory.getBtnDeleteSubCategory().setEnabled(false);
+            guiProductCategory.getBtnNewSubCategory().setEnabled(false);
+            guiProductCategory.getBtnUpdateSubCategory().setEnabled(false);
+        }
     }
     
     /**
@@ -141,6 +147,13 @@ public class ControllerGuiProductCategory implements ActionListener {
         guiProductCategory.getTxtSubCategory().setText(guiProductCategory.getTableSubCategoryDefault().getValueAt(r, 1).toString());
         guiProductCategory.setBtnUpdateSubCategorySelected(false);
         guiProductCategory.getBtnNewSubCategory().setEnabled(true);
+        if(guiProductCategory.getTxtSubCategory().getText().equals("SUBCATEGORIA POR DEFECTO")){
+            guiProductCategory.getBtnUpdateCategory().setEnabled(false);
+            guiProductCategory.getBtnDeleteCategory().setEnabled(false);
+            guiProductCategory.getBtnDeleteSubCategory().setEnabled(false);
+            guiProductCategory.getBtnNewSubCategory().setEnabled(false);
+            guiProductCategory.getBtnUpdateSubCategory().setEnabled(false);
+        }
     }
 
     /**
