@@ -18,7 +18,6 @@ import gui.GuiMenu;
 import gui.GuiLoadPurchase;
 import gui.main.GuiMain;
 import gui.providers.GuiCRUDProviders;
-import gui.providers.GuiNewProvider;
 import gui.providers.purchases.GuiPurchase;
 import interfaces.providers.InterfaceProvider;
 import interfaces.providers.InterfaceProviderCategory;
@@ -56,7 +55,6 @@ public class ControllerMain implements ActionListener {
     private static GuiCRUDProductCategory guiCRUDProductCategory; //gui categoria productos
     private static GuiCRUDProviders guiCRUDProviders; 
     private static GuiCRUDUser guiCRUDUser; //gui usuarios
-    private static GuiNewProvider guiNewProvider;
     private static GuiLoadPurchase guiLoadPurchase;
     private static GuiMenu guiMenu;
     private static GuiPurchase guiPurchase;
@@ -94,7 +92,6 @@ public class ControllerMain implements ActionListener {
         guiCRUDProductCategory = new GuiCRUDProductCategory();
         guiCRUDProviders = new GuiCRUDProviders();
         guiCRUDUser = new GuiCRUDUser();
-        guiNewProvider = new GuiNewProvider();
         guiLoadPurchase = new GuiLoadPurchase();
         guiMenu = new GuiMenu();
         guiPurchase = new GuiPurchase();
@@ -106,8 +103,7 @@ public class ControllerMain implements ActionListener {
         guiMain.getDesktop().add(guiCRUDPProduct);
         guiMain.getDesktop().add(guiCRUDProductCategory);
         guiMain.getDesktop().add(guiCRUDProviders);
-        guiMain.getDesktop().add(guiCRUDUser);        
-        guiMain.getDesktop().add(guiNewProvider);
+        guiMain.getDesktop().add(guiCRUDUser);
         guiMain.getDesktop().add(guiLoadPurchase);
         guiMain.getDesktop().add(guiMenu);
         guiMain.getDesktop().add(guiPurchase);
@@ -122,7 +118,7 @@ public class ControllerMain implements ActionListener {
         controllerCRUDEProduct = new ControllerGuiCRUDEproduct(guiCRUDEProduct);
         controllerCRUDFProduct = new ControllerGuiCRUDFproduct(guiCRUDFProduct);
         controllerCRUDProductCategory = new ControllerGuiProductCategory(guiCRUDProductCategory);
-        controllerCRUDProviders = new ControllerGuiCRUDProviders(guiCRUDProviders, guiNewProvider);
+        controllerCRUDProviders = new ControllerGuiCRUDProviders(guiCRUDProviders);
         controllerCRUDUser = new ControllerGuiCRUDUser(guiCRUDUser);
         controllerCRUDPProduct = new ControllerGuiCRUDPproduct(guiCRUDPProduct,guiLoadPurchase);
         controllerGuiMenu = new ControllerGuiMenu(guiMenu,guiMain);
@@ -145,7 +141,6 @@ public class ControllerMain implements ActionListener {
         guiCRUDPProduct.dispose();
         guiCRUDProductCategory.dispose();
         guiCRUDProviders.dispose();
-        guiNewProvider.dispose();
         guiCRUDUser.dispose();
         guiLoadPurchase.dispose();
         guiPurchase.dispose();

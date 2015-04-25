@@ -9,6 +9,7 @@ import gui.providers.*;
 import interfaces.providers.InterfaceProvider;
 import interfaces.providers.InterfaceProviderCategory;
 import interfaces.providers.InterfaceProvidersSearch;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
@@ -36,22 +37,16 @@ import utils.Config;
 public class ControllerGuiCRUDProviders implements ActionListener {
 
     private final GuiCRUDProviders guiCRUDProviders;
-    private final GuiNewProvider guiNewProvider;
-    private final ControllerGuiNewProvider controllerGuiNewProvider;
     private final InterfaceProviderCategory providerCategory;
     private final InterfaceProvider provider;
     private final InterfaceProvidersSearch providersSearch;
     private static Integer iDCurrentlySelectedProvider;
 
-    public ControllerGuiCRUDProviders(GuiCRUDProviders guiCProv, GuiNewProvider guiNProv) throws RemoteException, NotBoundException, MalformedURLException {
+    public ControllerGuiCRUDProviders(GuiCRUDProviders guiCProv) throws RemoteException, NotBoundException, MalformedURLException {
         this.provider = (InterfaceProvider) Naming.lookup("//" + Config.ip + "/crudProvider");
         this.providersSearch = (InterfaceProvidersSearch) Naming.lookup("//" + Config.ip + "/providersSearch");
         this.providerCategory = (InterfaceProviderCategory) Naming.lookup("//" + Config.ip + "/crudProviderCategory");
-        
         this.guiCRUDProviders = guiCProv;
-        this.guiNewProvider = guiNProv;
-        this.controllerGuiNewProvider = new ControllerGuiNewProvider(this.guiNewProvider);
-        
         iDCurrentlySelectedProvider = -1;
         this.guiCRUDProviders.setActionListener(this);
         loadProviderCategories();
@@ -82,19 +77,32 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                     JTable target = (JTable) evt.getSource();
                     int row = target.getSelectedRow();
                     try {
-                        guiNewProvider.cleanComponents();
+                        GuiNewProvider guiNewProvider = new GuiNewProvider(null, true);
+                        ControllerGuiNewProvider controllerGuiNewProvider = new ControllerGuiNewProvider(guiNewProvider);
                         controllerGuiNewProvider.loadFindCategoryTable();
                         controllerGuiNewProvider.loadGUIWithData((int) target.getValueAt(row, 0));
-                    } catch (RemoteException ex) {
+                        guiNewProvider.setVisible(true);
+                    } catch (RemoteException | NotBoundException | MalformedURLException ex) {
                         Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    guiCRUDProviders.cleanComponents();
-                    guiNewProvider.setVisible(true);
+                    //hago una busqueda nueva de proveedores y lo cargo en la tabla, para actualizar posibles modificaciones
+                    String txtFindProvider = guiCRUDProviders.getTxtFindProvider().getText();
+                    if (txtFindProvider != null) {
+                        List<Map> providersList;
+                        try {
+                            //hago la busqueda de proveedores en base a ese texto
+                            providersList = providersSearch.searchProviders(txtFindProvider);
+                            //cargo los proveedores en la tabla
+                            updateSearchProviderTable(providersList);
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
                 }
             }
 
         });
-        
+
         //reviso si se clickea alguna fila de la tabla categorias
         this.guiCRUDProviders.getTableProviderCategories().addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -147,7 +155,7 @@ public class ControllerGuiCRUDProviders implements ActionListener {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 int row = guiCRUDProviders.getTableProviders().getSelectedRow();
-                if (row == -1){
+                if (row == -1) {
                     guiCRUDProviders.getBtnRemoveProvider().setEnabled(false);
                     iDCurrentlySelectedProvider = -1;
                 } else {
@@ -155,17 +163,17 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                     guiCRUDProviders.getBtnTicketsPaid().setEnabled(true);
                     guiCRUDProviders.getBtnPayments().setEnabled(true);
                     int selectedRow = guiCRUDProviders.getTableProviders().getSelectedRow();
-                    iDCurrentlySelectedProvider = Integer.parseInt(((DefaultTableModel)guiCRUDProviders.getTableProviders().getModel()).getValueAt(selectedRow, 0).toString());
+                    iDCurrentlySelectedProvider = Integer.parseInt(((DefaultTableModel) guiCRUDProviders.getTableProviders().getModel()).getValueAt(selectedRow, 0).toString());
                 }
             }
         });
-        
+
         guiCRUDProviders.getTableProviderCategories().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 int row = guiCRUDProviders.getTableProviderCategories().getSelectedRow();
-                if (row != -1){
+                if (row != -1) {
                     iDCurrentlySelectedProvider = -1;
                     guiCRUDProviders.getBtnRemoveCategory().setEnabled(false);
                     guiCRUDProviders.getBtnTicketsPaid().setEnabled(false);
@@ -220,21 +228,21 @@ public class ControllerGuiCRUDProviders implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         //si presiono el boton LISTADO DE PAGOS REALIZADOS
-        if(e.getSource().equals(this.guiCRUDProviders.getBtnPayments())){
+        if (e.getSource().equals(this.guiCRUDProviders.getBtnPayments())) {
             GuiPaymentsToProviders guiPaymentsToProviders = new GuiPaymentsToProviders(null, true);
             new ControllerGuiPaymentsToProviders(guiPaymentsToProviders, iDCurrentlySelectedProvider);
             guiPaymentsToProviders.setVisible(true);
         }
         //si presiono el boton LISTADO DE FACTURACIÓN
-        if(e.getSource().equals(this.guiCRUDProviders.getBtnTicketsPaid())){
-            
+        if (e.getSource().equals(this.guiCRUDProviders.getBtnTicketsPaid())) {
+
             GuiTicketsPaid guiTicketsPaid = new GuiTicketsPaid(null, true);
             try {
                 new ControllerGuiTicketsPaid(guiTicketsPaid, iDCurrentlySelectedProvider);
             } catch (NotBoundException | MalformedURLException | RemoteException ex) {
                 Logger.getLogger(ControllerGuiNewProvider.class.getName()).log(Level.SEVERE, null, ex);
             }
-            guiTicketsPaid.setVisible(true); 
+            guiTicketsPaid.setVisible(true);
         }
         //Si presiono el boton de agregar una nueva categoria
         if (e.getSource().equals(this.guiCRUDProviders.getBtnNewCategory())) {
@@ -269,45 +277,58 @@ public class ControllerGuiCRUDProviders implements ActionListener {
         }
         //Si presiono el boton de agregar un nuevo proveedor
         if (e.getSource().equals(this.guiCRUDProviders.getBtnNewProvider())) {
-            this.guiNewProvider.cleanComponents();
-            this.guiCRUDProviders.cleanComponents();
             try {
                 //cargo las categorias disponibles en la tabla correspondiente de la guiNewProvider
-                this.controllerGuiNewProvider.setModify(false);
-                this.controllerGuiNewProvider.loadFindCategoryTable();
-            } catch (RemoteException ex) {
+                GuiNewProvider guiNewProvider = new GuiNewProvider(null, true);
+                ControllerGuiNewProvider controllerGuiNewProvider = new ControllerGuiNewProvider(guiNewProvider);
+                controllerGuiNewProvider.setModify(false);
+                controllerGuiNewProvider.loadFindCategoryTable();
+                guiNewProvider.setVisible(true);
+            } catch (RemoteException | NotBoundException | MalformedURLException ex) {
                 Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
             }
-            this.guiNewProvider.setVisible(true);
-        }
-        /*Si presiono el boton de eliminar un proveedor(el cual debera ser seleccionado previamente
-         * de la tabala de proveedores.
-         */
-        if (e.getSource().equals(this.guiCRUDProviders.getBtnRemoveProvider())) {
-            Integer resp = JOptionPane.showConfirmDialog(guiCRUDProviders, "¿Desea borrar el proveedor seleccionada?", "Confirmar borrado", JOptionPane.YES_NO_OPTION);
-            if (resp == JOptionPane.YES_OPTION) {
-                int row = guiCRUDProviders.getTableProviders().getSelectedRow();
+            //hago una busqueda nueva de proveedores y lo cargo en la tabla, para actualizar posibles modificaciones
+            String txtFindProvider = guiCRUDProviders.getTxtFindProvider().getText();
+            if (txtFindProvider != null) {
+                List<Map> providersList;
                 try {
-                    if (provider.delete((int) guiCRUDProviders.getDefaultTableProviders().getValueAt(row, 0))) {
-                        JOptionPane.showMessageDialog(guiCRUDProviders, "Proveedor eliminado correctamente", "Operacion exitosa", JOptionPane.INFORMATION_MESSAGE);
-                        List<Map> providersList = Collections.EMPTY_LIST;
-                        //hago la busqueda de proveedores en base a ese texto
-                        providersList = providersSearch.searchProviders(guiCRUDProviders.getTxtFindProvider().getText());
-                        //cargo los proveedores en la tabla
-                        updateSearchProviderTable(providersList);
-                    } else {
-                        JOptionPane.showMessageDialog(guiCRUDProviders, "Ocurrio un error", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
+                    //hago la busqueda de proveedores en base a ese texto
+                    providersList = providersSearch.searchProviders(txtFindProvider);
+                    //cargo los proveedores en la tabla
+                    updateSearchProviderTable(providersList);
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+            /*Si presiono el boton de eliminar un proveedor(el cual debera ser seleccionado previamente
+             * de la tabala de proveedores.
+             */
+            if (e.getSource().equals(this.guiCRUDProviders.getBtnRemoveProvider())) {
+                Integer resp = JOptionPane.showConfirmDialog(guiCRUDProviders, "¿Desea borrar el proveedor seleccionada?", "Confirmar borrado", JOptionPane.YES_NO_OPTION);
+                if (resp == JOptionPane.YES_OPTION) {
+                    int row = guiCRUDProviders.getTableProviders().getSelectedRow();
+                    try {
+                        if (provider.delete((int) guiCRUDProviders.getDefaultTableProviders().getValueAt(row, 0))) {
+                            JOptionPane.showMessageDialog(guiCRUDProviders, "Proveedor eliminado correctamente", "Operacion exitosa", JOptionPane.INFORMATION_MESSAGE);
+                            List<Map> providersList = Collections.EMPTY_LIST;
+                            //hago la busqueda de proveedores en base a ese texto
+                            providersList = providersSearch.searchProviders(guiCRUDProviders.getTxtFindProvider().getText());
+                            //cargo los proveedores en la tabla
+                            updateSearchProviderTable(providersList);
+                        } else {
+                            JOptionPane.showMessageDialog(guiCRUDProviders, "Ocurrio un error", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+            try {
+                loadProviderCategories();
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        try {
-            loadProviderCategories();
-        } catch (RemoteException ex) {
-            Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
+    }
 }

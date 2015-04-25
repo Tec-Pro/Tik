@@ -15,15 +15,15 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author eze
  */
-public class GuiNewProvider extends javax.swing.JInternalFrame {
+public class GuiNewProvider extends javax.swing.JDialog {
 
     /**
-     * Creates new form GuiNewProvider
+     * Creates new form NewJDialog
      */
-    public GuiNewProvider() {
+    public GuiNewProvider(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
     }
-
     
     public JButton getBtnCancelProvider() {
         return btnCancelProvider;
@@ -75,6 +75,7 @@ public class GuiNewProvider extends javax.swing.JInternalFrame {
         this.btnCancelProvider.addActionListener(lis);
         this.btnSaveProvider.addActionListener(lis);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -107,13 +108,8 @@ public class GuiNewProvider extends javax.swing.JInternalFrame {
         btnSaveProvider = new javax.swing.JButton();
         btnCancelProvider = new javax.swing.JButton();
 
-        setClosable(true);
-        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
-        setIconifiable(true);
-        setMaximizable(true);
-        setResizable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registro de Proveedores");
-        setToolTipText("");
         setPreferredSize(new java.awt.Dimension(1060, 560));
 
         jLabel5.setFont(new java.awt.Font("Century Schoolbook L", 3, 24)); // NOI18N
@@ -136,13 +132,7 @@ public class GuiNewProvider extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        tableCategoriesProviders.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane3.setViewportView(tableCategoriesProviders);
-        if (tableCategoriesProviders.getColumnModel().getColumnCount() > 0) {
-            tableCategoriesProviders.getColumnModel().getColumn(0).setResizable(false);
-            tableCategoriesProviders.getColumnModel().getColumn(0).setPreferredWidth(10);
-            tableCategoriesProviders.getColumnModel().getColumn(1).setResizable(false);
-        }
 
         tableFindProviderCategories.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -160,13 +150,7 @@ public class GuiNewProvider extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        tableFindProviderCategories.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane4.setViewportView(tableFindProviderCategories);
-        if (tableFindProviderCategories.getColumnModel().getColumnCount() > 0) {
-            tableFindProviderCategories.getColumnModel().getColumn(0).setResizable(false);
-            tableFindProviderCategories.getColumnModel().getColumn(0).setPreferredWidth(10);
-            tableFindProviderCategories.getColumnModel().getColumn(1).setResizable(false);
-        }
 
         jLabel7.setFont(new java.awt.Font("Century Schoolbook L", 3, 24)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(1, 1, 1));
@@ -291,6 +275,7 @@ public class GuiNewProvider extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(btnCancelProvider, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
                         .addComponent(btnSaveProvider, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(39, 39, 39)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -330,12 +315,12 @@ public class GuiNewProvider extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1027, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 528, Short.MAX_VALUE)
                 .addGap(0, 0, 0))
         );
 
@@ -346,6 +331,10 @@ public class GuiNewProvider extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtProviderNameActionPerformed
 
+    private void txtProviderDescriptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtProviderDescriptionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtProviderDescriptionActionPerformed
+
     private void txtProviderAddressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtProviderAddressActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtProviderAddressActionPerformed
@@ -354,10 +343,48 @@ public class GuiNewProvider extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCancelProviderActionPerformed
 
-    private void txtProviderDescriptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtProviderDescriptionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtProviderDescriptionActionPerformed
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(GuiNewProvider.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(GuiNewProvider.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(GuiNewProvider.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(GuiNewProvider.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
 
+        /* Create and display the dialog */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                GuiNewProvider dialog = new GuiNewProvider(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelProvider;
