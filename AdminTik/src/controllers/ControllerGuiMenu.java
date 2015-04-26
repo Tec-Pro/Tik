@@ -78,16 +78,104 @@ public class ControllerGuiMenu implements ActionListener {
         guiMenu.getTreeMenu().addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent me) {
                 try {
-                    changeSelection(me);
+                    TreePath currentSelection = guiMenu.getTreeMenu().getSelectionPath();
+                    if (currentSelection != null) {
+                        currentNode = (DefaultMutableTreeNode) currentSelection.getLastPathComponent();
+                        currentSelectedNodeName = currentNode.toString();// nombre de la hoja seleccionada
+                        if (me.getClickCount() == 2) {
+                            switch (currentSelectedNodeName) {
+                                case "AGREGAR CATEGORIA":
+                                    guiAddUpdateProductCategory.addCategoryState();
+                                    guiAddUpdateProductCategory.setVisible(true);
+                                    break;
+                                case "AGREGAR SUBCATEGORIA":
+                                    guiAddUpdateProductSubcategory.addSucategoryState();
+                                    guiAddUpdateProductSubcategory.setVisible(true);
+                                    break;
+                                case "AGREGAR PRODUCTO":
+                                    guiCRUDFProduct.setVisible(true);
+                                    guiCRUDFProduct.clicSaveProduct();
+                                    controllerGuiCRUDFproduct.search();
+                                    controllerGuiCRUDFproduct.refreshList();
+                                    try {
+                                        guiCRUDFProduct.setMaximum(true);
+                                    } catch (PropertyVetoException ex) {
+                                        Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiMenu.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        });
+        }
+        );
         guiMenu.getTreeMenu().getSelectionModel().addTreeSelectionListener(new TreeSelectionListener() {
 
             public void valueChanged(TreeSelectionEvent e) {
+                TreePath currentSelection = guiMenu.getTreeMenu().getSelectionPath();
+                if (currentSelection != null) {
+                    currentNode = (DefaultMutableTreeNode) currentSelection.getLastPathComponent();
+                    currentSelectedNodeName = currentNode.toString();// nombre de la hoja seleccionada
+                    switch (currentSelectedNodeName) {
+                        case "AGREGAR CATEGORIA":
+                            guiMenu.getBtnDelete().setEnabled(false);
+                            guiMenu.getBtnUpdate().setEnabled(false);
+                            guiMenu.getTableReciperDefault().setRowCount(0);
+                            break;
+                        case "AGREGAR SUBCATEGORIA":
+                            guiMenu.getBtnDelete().setEnabled(false);
+                            guiMenu.getBtnUpdate().setEnabled(false);
+                            guiMenu.getTableReciperDefault().setRowCount(0);
+                            break;
+                        case "AGREGAR PRODUCTO":
+                            guiMenu.getBtnDelete().setEnabled(false);
+                            guiMenu.getBtnUpdate().setEnabled(false);
+                            guiMenu.getTableReciperDefault().setRowCount(0);
 
+                            break;
+                        case "CATEGORIA POR DEFECTO":
+                            guiMenu.getBtnDelete().setEnabled(false);
+                            guiMenu.getBtnUpdate().setEnabled(false);
+                            guiMenu.getTableReciperDefault().setRowCount(0);
+                            break;
+                        case "SUBCATEGORIA POR DEFECTO":
+                            guiMenu.getBtnDelete().setEnabled(false);
+                            guiMenu.getBtnUpdate().setEnabled(false);
+                            guiMenu.getTableReciperDefault().setRowCount(0);
+                            break;
+                        case "Menu":
+                            guiMenu.getBtnDelete().setEnabled(false);
+                            guiMenu.getBtnUpdate().setEnabled(false);
+                            guiMenu.getTableReciperDefault().setRowCount(0);
+                            break;
+                        default:
+                            guiMenu.getBtnDelete().setEnabled(true);
+                            guiMenu.getBtnUpdate().setEnabled(true);
+                            guiMenu.getTableReciperDefault().setRowCount(0);
+                            switch (currentNode.getLevel()) {
+                                case 0:
+                                    break;
+                                case 1:
+                                    guiMenu.getBtnDelete().setText("Eliminar categoria");
+                                    guiMenu.getBtnUpdate().setText("Modificar categoria");
+                                    break;
+                                case 2:
+                                    guiMenu.getBtnDelete().setText("Eliminar subcategoria");
+                                    guiMenu.getBtnUpdate().setText("Modificar subcategoria");
+                                    break;
+                                case 3:
+                                    guiMenu.getBtnDelete().setText("Eliminar producto");
+                                    guiMenu.getBtnUpdate().setText("Editar producto");
+                                    fProductSelected(currentSelectedNodeName);
+                                    break;
+                            }
+                            break;
+                    }
+                }
             }
 
         });
@@ -101,27 +189,18 @@ public class ControllerGuiMenu implements ActionListener {
             //if (currentNode.isLeaf()) {
             switch (currentSelectedNodeName) {
                 case "AGREGAR CATEGORIA":
-                    guiMenu.getBtnDelete().setEnabled(false);
-                    guiMenu.getBtnUpdate().setEnabled(false);
-                    guiMenu.getTableReciperDefault().setRowCount(0);
                     if (me.getClickCount() == 2) {
                         guiAddUpdateProductCategory.addCategoryState();
                         guiAddUpdateProductCategory.setVisible(true);
                     }
                     break;
                 case "AGREGAR SUBCATEGORIA":
-                    guiMenu.getBtnDelete().setEnabled(false);
-                    guiMenu.getBtnUpdate().setEnabled(false);
-                    guiMenu.getTableReciperDefault().setRowCount(0);
                     if (me.getClickCount() == 2) {
                         guiAddUpdateProductSubcategory.addSucategoryState();
                         guiAddUpdateProductSubcategory.setVisible(true);
                     }
                     break;
                 case "AGREGAR PRODUCTO":
-                    guiMenu.getBtnDelete().setEnabled(false);
-                    guiMenu.getBtnUpdate().setEnabled(false);
-                    guiMenu.getTableReciperDefault().setRowCount(0);
                     if (me.getClickCount() == 2) {
                         guiCRUDFProduct.setVisible(true);
                         guiCRUDFProduct.clicSaveProduct();
