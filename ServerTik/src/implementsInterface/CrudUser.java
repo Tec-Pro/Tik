@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.awt.image.BufferedImage;
 import models.User;
 import org.javalite.activejdbc.Base;
 import utils.Encryption;
@@ -28,7 +29,7 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
 
     }
 
-    public Map<String,Object> create(
+    public Map<String, Object> create(
             String name,
             String surname,
             String pass,
@@ -47,8 +48,8 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
             String bloodType,
             String position,
             byte[] photo
-            ) throws java.rmi.RemoteException {
-        
+    ) throws java.rmi.RemoteException {
+
         Utils.abrirBase();
         Base.openTransaction();
         byte[] passEncrypted = {0};
@@ -57,7 +58,7 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
         } catch (Exception ex) {
             Logger.getLogger(CrudUser.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Map<String,Object> res= User.createIt(
+        Map<String, Object> res = User.createIt(
                 "name", name,
                 "surname", surname,
                 "pass", passEncrypted,
@@ -76,12 +77,12 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
                 "blood_type", bloodType,
                 "position", position,
                 "photo", photo
-                ).toMap();
+        ).toMap();
         Base.commitTransaction();
         return res;
     }
 
-    public Map<String,Object> modify(
+    public Map<String, Object> modify(
             int id,
             String name,
             String surname,
@@ -100,10 +101,10 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
             String maritalStatus,
             String bloodType,
             String position
-            ) throws java.rmi.RemoteException  {
+    ) throws java.rmi.RemoteException {
         Utils.abrirBase();
         User user = User.findById(id);
-        Map<String,Object> res = null;
+        Map<String, Object> res = null;
         byte[] passEncrypted = {0};
         try {
             passEncrypted = Encryption.encrypt(pass);
@@ -148,15 +149,27 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
         return res;
     }
 
-     public Map<String,Object> getUser(int id) throws java.rmi.RemoteException{
-         Utils.abrirBase();
-         Map<String,Object> ret= User.findById(id).toMap();
-         return ret;
-     }
-     
+    public Map<String, Object> getUser(int id) throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        Map<String, Object> ret = User.findById(id).toMap();
+        return ret;
+    }
+
     public List<Map> getUsers() throws java.rmi.RemoteException {
         Utils.abrirBase();
         List<Map> ret = User.findAll().toMaps();
+        return ret;
+    }
+
+    public Map<String, Object> modifyPhoto(int id, String photo) throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        User user = User.findById(id);
+        Map<String, Object> ret = null;
+        if (user != null) {
+            user.setString("photo", photo);
+            user.saveIt();
+            ret = user.toMap();
+        }
         return ret;
     }
 }

@@ -10,6 +10,12 @@ import java.util.Date;
 import javax.swing.JComboBox;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.ImageIcon;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+//import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.File;
+
 /**
  *
  * @author xen
@@ -18,7 +24,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
 
     private final DefaultTableModel dtmUsers;
     private ImageIcon photo = null;
-    
+
     /**
      * Creates new form GuiCRUDUser
      */
@@ -27,13 +33,13 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         cleanFields();
         dtmUsers = (DefaultTableModel) tableUsers.getModel();
         setVisible(false);
-    }   
-    
+    }
+
     /**
      * clean all the text fields
-     * 
+     *
      */
-    public void cleanFields(){
+    public void cleanFields() {
         txtName.setText("");
         txtSurname.setText("");
         txtAddress.setText("");
@@ -55,7 +61,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         photo = null;
         lblPhoto.setText("Haga doble click sobre el panel");
     }
-    
+
     public void updateFields(String name,
             String surname,
             String pass,
@@ -72,7 +78,8 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
             String mobilePhone,
             String maritalStatus,
             String bloodType,
-            String position){
+            String position,
+            String photo) throws IOException {
         txtName.setText(name);
         txtSurname.setText(surname);
         txtAddress.setText(address);
@@ -91,8 +98,19 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         boxMaritalStatus.setSelectedItem(maritalStatus);
         boxBloodType.setSelectedItem(bloodType);
         boxPosition.setSelectedItem(position);
+        if (photo == null) {
+            lblPhoto.setText("Haga doble click sobre el panel");
+        } else {
+                System.out.println(photo);
+                File file = new File(String.format(photo, 0));
+                BufferedImage image = ImageIO.read(file);
+                ImageIcon imgIcon = new ImageIcon(image);
+                lblPhoto.setIcon(imgIcon);
+                lblPhoto.setText("");        
+        }
+        lblPhoto.updateUI();
     }
-    
+
     public String dateToMySQLDate(Date fecha, boolean paraMostrar) {
         if (paraMostrar) {
             java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
@@ -101,12 +119,12 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
             java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
             return sdf.format(fecha);
         }
-    }   
-    
+    }
+
     public void modifyMode(boolean b) {
         if (b) {
             btnDelete.setText("Cancelar");
-        }else{
+        } else {
             btnDelete.setText("Borrar");
         }
         btnDelete.setEnabled(b);
@@ -115,10 +133,11 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         btnCreate.setEnabled(!b);
         enableFields(b);
     }
+
     public void createMode(boolean b) {
         if (b) {
             btnDelete.setText("Cancelar");
-        }else{
+        } else {
             btnDelete.setText("Borrar");
         }
         btnDelete.setEnabled(b);
@@ -126,8 +145,8 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         btnModify.setEnabled(!b);
         btnCreate.setEnabled(!b);
         enableFields(b);
-    }   
-    
+    }
+
     public void selectionMode(boolean b) {
         btnDelete.setEnabled(b);
         btnSave.setEnabled(!b);
@@ -135,7 +154,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         btnCreate.setEnabled(b);
         enableFields(!b);
     }
-    
+
     public void initialMode(boolean b) {
         cleanFields();
         btnDelete.setText("Borrar");
@@ -146,8 +165,8 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         enableFields(!b);
         tableUsers.clearSelection();
     }
-    
-    public void setActionListener(ActionListener ac){
+
+    public void setActionListener(ActionListener ac) {
         btnCreate.addActionListener(ac);
         btnModify.addActionListener(ac);
         btnSave.addActionListener(ac);
@@ -176,12 +195,13 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         boxPosition.setEnabled(b);
         checkBoxDischarged.setEnabled(b);
     }
-    public void enableDischarged(boolean b){
+
+    public void enableDischarged(boolean b) {
         lblDischargedDate.setEnabled(b);
         dateDischargedDate.setEnabled(b);
         checkBoxDischarged.setSelected(b);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -381,7 +401,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         panelFieldsLayout.setHorizontalGroup(
             panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelFieldsLayout.createSequentialGroup()
-                .addContainerGap(30, Short.MAX_VALUE)
+                .addContainerGap(41, Short.MAX_VALUE)
                 .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelFieldsLayout.createSequentialGroup()
                         .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -578,7 +598,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
                 .addGroup(panelEmployeeScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelEmployeeScheduleLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(scrollEmployeeSchedule, javax.swing.GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE))
+                        .addComponent(scrollEmployeeSchedule, javax.swing.GroupLayout.DEFAULT_SIZE, 527, Short.MAX_VALUE))
                     .addGroup(panelEmployeeScheduleLayout.createSequentialGroup()
                         .addGap(26, 26, 26)
                         .addComponent(jLabel1)
@@ -635,7 +655,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblPhoto, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+                .addComponent(lblPhoto, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -671,7 +691,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE))
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -789,7 +809,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
     public javax.swing.JButton getBtnModify() {
         return btnModify;
     }
-    
+
     /**
      * @return the btnSave
      */
@@ -803,7 +823,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
     public javax.swing.JTable getTableEmployeeSchedule() {
         return tableEmployeeSchedule;
     }
-    
+
     /**
      * @return the tableUsers
      */
@@ -817,7 +837,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
     public javax.swing.JTextField getTxtAddress() {
         return txtAddress;
     }
-    
+
     /**
      * @return the txtEmergencyPhone
      */
@@ -873,7 +893,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
     public javax.swing.JTextField getTxtSurname() {
         return txtSurname;
     }
-    
+
     /**
      * @return the boxTurn
      */
@@ -886,8 +906,8 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
      */
     public DefaultTableModel getDtmUsers() {
         return dtmUsers;
-    }   
-    
+    }
+
     /**
      * @return the dateBirthDate
      */
@@ -908,7 +928,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
     public com.toedter.calendar.JDateChooser getDateDischargedDate() {
         return dateDischargedDate;
     }
-    
+
     /**
      * @return the boxBloodType
      */

@@ -10,7 +10,7 @@ import java.rmi.Remote;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
+import java.awt.image.BufferedImage;
 /**
  *
  * @author nico
@@ -59,9 +59,12 @@ public interface InterfaceUser extends Remote {
             String position
             ) throws java.rmi.RemoteException ;
     
-     public boolean delete(int id) throws java.rmi.RemoteException;
+    public boolean delete(int id) throws java.rmi.RemoteException;
      
-     public Map<String,Object> getUser(int id) throws java.rmi.RemoteException;
+    public Map<String,Object> getUser(int id) throws java.rmi.RemoteException;
 
-     public  List<Map> getUsers() throws java.rmi.RemoteException;    
+    public  List<Map> getUsers() throws java.rmi.RemoteException;    
+
+    public Map<String,Object> modifyPhoto(int id, String photo ) throws java.rmi.RemoteException;
+         
 }

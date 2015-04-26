@@ -24,13 +24,22 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.JFileChooser;
-import javax.swing.ImageIcon;
+//import javax.swing.ImageIcon;
 import java.io.File;
 import java.io.IOException;
+//import java.io.ByteArrayOutputStream;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import javax.imageio.ImageIO;
 import javax.swing.event.ListSelectionEvent;
 import utils.Config;
+import utils.ImageExtensions;
 import utils.ImageFilter;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 /**
  *
@@ -41,18 +50,16 @@ public class ControllerGuiCRUDUser implements ActionListener {
     private final GuiCRUDUser guiUser;
     private final InterfaceUser crudUser;
     private final DefaultTableModel dtmUsers;
-    private ImageIcon photo;
     private boolean modifyMode = false;
     private boolean createMode = false;
 
     public ControllerGuiCRUDUser(GuiCRUDUser gui) throws NotBoundException, MalformedURLException, RemoteException {
         crudUser = (InterfaceUser) Naming.lookup("//" + Config.ip + "/crudUser");
         guiUser = gui;
-        guiUser.getTableUsers().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+        guiUser.getTableUsers().getSelectionModel().addListSelectionListener(new ListSelectionListener() { // Listener for moving through the tableUsers and refreshing the gui
             @Override
-            public void valueChanged(ListSelectionEvent e) {
+            public void valueChanged(ListSelectionEvent e) { 
                 if (guiUser.getTableUsers().getSelectedRow() != -1) {
-
                     try {
                         tableUserMouseClicked(null);
                     } catch (RemoteException ex) {
@@ -70,7 +77,22 @@ public class ControllerGuiCRUDUser implements ActionListener {
                 }
             }
         });
-        guiUser.getPanelPhoto().addMouseListener(new java.awt.event.MouseAdapter() {
+        guiUser.getTableUsers().addMouseListener(new java.awt.event.MouseAdapter() { // Listener for double click and modify on tableUsers
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt){
+                if (evt.getClickCount() == 2) {
+                    guiUser.getTableUsers().setEnabled(false);
+                    modifyMode = true;
+                    guiUser.modifyMode(modifyMode);
+                    if (guiUser.getDateDischargedDate().getDate() == null) {
+                        guiUser.enableDischarged(false);
+                    } else {
+                        guiUser.enableDischarged(true);
+                    }
+                }
+            }
+        });
+        guiUser.getPanelPhoto().addMouseListener(new java.awt.event.MouseAdapter() { // Listener for the panelPhoto
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 if (evt.getClickCount() == 2) {
@@ -78,39 +100,62 @@ public class ControllerGuiCRUDUser implements ActionListener {
                         panelPhotoDobleClicked(null);
                     } catch (IOException ex) {
                         Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (Exception ex) {
+                        Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
         });
-        photo = guiUser.getPhoto();
         dtmUsers = guiUser.getDtmUsers();
         updateDtmUsers();
         guiUser.setActionListener(this);
         guiUser.initialMode(true);
     }
 
-    private void panelPhotoDobleClicked(MouseEvent evt) throws IOException {
+    private void panelPhotoDobleClicked(MouseEvent evt) throws IOException, Exception {
         if (createMode || modifyMode) { //If I'm either creating a new user or modifying an old one, I can change the photo
             final JFileChooser fc = new JFileChooser();
             fc.setAcceptAllFileFilterUsed(false);
             fc.addChoosableFileFilter(new ImageFilter());
-            int returnVal = fc.showOpenDialog(guiUser);
+            int returnVal = fc.showOpenDialog(guiUser); // user chooses the image
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = fc.getSelectedFile();
-//          Save in DataBase
-//          if(!savedSuccesful){
-//              ERROR!
-//          }else{
-                BufferedImage s;
-                s = ImageIO.read(file);
-                ImageIcon format = new ImageIcon(s);
-                photo = format;
-                guiUser.getLblPhoto().setIcon(format);
-                guiUser.getLblPhoto().setText("");
-//                guiUser.updateUI();
-                                guiUser.getLblPhoto().updateUI();
-
-//          }
+                File file = fc.getSelectedFile(); //I get the selected File
+                System.out.println(file.toString());
+                
+                BufferedImage image = ImageIO.read(file); // I take the file and convert it to a BufferedImage
+                ImageExtensions imgEx = new ImageExtensions(); // I create an instance of ImageExtensions
+                String ext = imgEx.getExtension(file); // I extract the extension used
+                
+                int row = guiUser.getTableUsers().getSelectedRow(); // selected row
+                int id = (int) dtmUsers.getValueAt(row, 0); // selected emplyee id
+                Map<String,Object> mapPhoto = crudUser.getUser(id); // get emplyee information
+                
+                String name = (String) mapPhoto.get("name")+(String) mapPhoto.get("surname")+id+"."+ext; //name of the file
+                File destination = new File("src/Photos/"+name); // create the new empty file
+                mapPhoto = null; //initalize the map to use later on
+                StandardCopyOption copyOption = StandardCopyOption.REPLACE_EXISTING;
+                try {
+                    Files.copy(file.toPath(), destination.toPath(), copyOption); //copy file to destination  
+                    mapPhoto =crudUser.modifyPhoto(id, name);
+                } catch(IOException e) {
+                     Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, e);
+                }
+//
+//                ByteArrayOutputStream baos = new ByteArrayOutputStream(); // I create an instance of ByteArrayOutputStream
+//                ImageIO.write( image, ext, baos ); // I take the BufferedImage and it's extension and parse it to a ByteArrayOutputStream
+//                byte[] imageInByte = baos.toByteArray(); // I take the ByteArrayOutputStream and parse it to a byte[]
+//                
+//                System.out.println(imageInByte.toString());
+//                
+//                int row = guiUser.getTableUsers().getSelectedRow();
+//                int id = (int) dtmUsers.getValueAt(row, 0);
+//                Map<String,Object> mapPhoto = crudUser.modifyPhoto(id, imageInByte);
+//                
+                if(mapPhoto == null){
+                    JOptionPane.showMessageDialog(guiUser, "Ups! Error! Intente de nuevo!", "Error", JOptionPane.ERROR_MESSAGE);
+                }else{
+                    loadSelectedUser(id);
+                }
             } else {
                 //Nothing
             }
@@ -152,7 +197,8 @@ public class ControllerGuiCRUDUser implements ActionListener {
                     (String) user.get("mobile_phone"),
                     (String) user.get("marital_status"),
                     (String) user.get("blood_type"),
-                    (String) user.get("position"));
+                    (String) user.get("position"),
+                    (String) user.get("photo"));
         } else {
             JOptionPane.showMessageDialog(guiUser, "Ups! Error! Intente de nuevo!", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -279,7 +325,6 @@ public class ControllerGuiCRUDUser implements ActionListener {
             if(guiUser.getDateDischargedDate().getDate() == null){
                 guiUser.enableDischarged(false);             
             }else{
-                System.out.println(guiUser.getDateDischargedDate().getDate().toString());
                 guiUser.enableDischarged(true);
             }
         }
