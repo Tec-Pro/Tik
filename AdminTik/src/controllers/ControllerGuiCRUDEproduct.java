@@ -202,7 +202,8 @@ public class ControllerGuiCRUDEproduct implements ActionListener {
             }
         } else {
             if (!editingInformation) {
-                tableReciperDefault.setRowCount(0);
+                guiCRUDEProduct.clear();
+                guiCRUDEProduct.clicSaveProduct();
             }
         }
     }

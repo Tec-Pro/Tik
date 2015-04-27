@@ -35,10 +35,10 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
     }
 
     @Override
-    public Map<String, Object> create(String name, int subcategory_id, List<Pair> pProducts, List<Pair> eProducts, float sellPrice) throws RemoteException {
+    public Map<String, Object> create(String name, int subcategory_id, List<Pair> pProducts, List<Pair> eProducts, float sellPrice, String belong) throws RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
-        Fproduct ret = Fproduct.createIt("name", name, "subcategory_id", subcategory_id, "sell_price",sellPrice);
+        Fproduct ret = Fproduct.createIt("name", name, "subcategory_id", subcategory_id, "sell_price", sellPrice, "belong", belong);
         Iterator it = pProducts.iterator();
         for (Pair<Integer, Float> prod : pProducts) {
             float amount = Float.parseFloat(prod.second().toString());
@@ -54,14 +54,15 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
     }
 
     @Override
-    public Map<String, Object> modify(int id, String name, int subcategory_id, List<Pair> pProducts, List<Pair> eProducts,float sellPrice) throws RemoteException {
+    public Map<String, Object> modify(int id, String name, int subcategory_id, List<Pair> pProducts, List<Pair> eProducts, float sellPrice, String belong) throws RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
         Fproduct ret = Fproduct.findById(id);
         if (ret != null) {
             ret.setString("name", name);
+            ret.setString("belong", belong);
             ret.set("subcategory_id", subcategory_id);
-            ret.set("sell_price",sellPrice);
+            ret.set("sell_price", sellPrice);
             for (FproductsPproducts fp : ret.getAll(FproductsPproducts.class)) {
                 fp.delete();
             }

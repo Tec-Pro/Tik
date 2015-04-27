@@ -125,14 +125,14 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
             Object row[] = new String[6];
             row[0] = prod.get("id").toString();
             row[1] = prod.get("name").toString(); //NOMBRE
-            row[2] = ParserFloat.floatToString( (float) prod.get("stock")); // STOCK 
+            row[2] = ParserFloat.floatToString((float) prod.get("stock")); // STOCK 
             row[3] = prod.get("measure_unit").toString(); // UNIDAD DE MEDIDA            
             if (prod.get("measure_unit").toString().equals("gr")) {
-                row[4] = ParserFloat.floatToString( (float)prod.get("unit_price") * 1000); // PRECIO UNITARIO EN UNIDAD GRANDE
+                row[4] = ParserFloat.floatToString((float) prod.get("unit_price") * 1000); // PRECIO UNITARIO EN UNIDAD GRANDE
                 row[5] = "Kg";
             }
             if (prod.get("measure_unit").toString().equals("ml")) {
-                row[4] = ParserFloat.floatToString((float)prod.get("unit_price") * 1000); // PRECIO UNITARIO EN UNIDAD GRANDE
+                row[4] = ParserFloat.floatToString((float) prod.get("unit_price") * 1000); // PRECIO UNITARIO EN UNIDAD GRANDE
                 row[5] = "Litro";
             }
             if (prod.get("measure_unit").toString().equals("unitario")) {
@@ -157,6 +157,9 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
             product = pproduct.getPproduct(Integer.parseInt((String) tableProducts.getValueAt(tableProducts.getSelectedRow(), 0)));
             guiCRUDPProduct.loadProviders(provider.getProviders());
             guiCRUDPProduct.loadProduct(product);
+        } else {
+            guiCRUDPProduct.clear();
+            guiCRUDPProduct.clicSaveProduct();
         }
 
     }
@@ -176,7 +179,7 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
         if (e.getSource() == guiCRUDPProduct.getBtnModify()) { //boton modificar
             try {
                 guiCRUDPProduct.clicModifyProduct();
-                Integer idSelected=guiCRUDPProduct.getIdProviderSelected();
+                Integer idSelected = guiCRUDPProduct.getIdProviderSelected();
                 guiCRUDPProduct.loadProviders(provider.getProviders());
                 guiCRUDPProduct.setProviderBox(idSelected);
 
@@ -214,7 +217,7 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
                     measureUnit = guiCRUDPProduct.getCboxMeasureUnit().getSelectedItem().toString();
                 }
                 try {
-                    pproduct.create(name, stock, measureUnit, unitPrice,guiCRUDPProduct.getIdProviderSelected());
+                    pproduct.create(name, stock, measureUnit, unitPrice, guiCRUDPProduct.getIdProviderSelected());
                     JOptionPane.showMessageDialog(guiCRUDPProduct, "¡Producto creado exitosamente!");
                     guiCRUDPProduct.clicSaveProduct();
                     productList = pproduct.getPproducts();
@@ -232,7 +235,7 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
                 String measureUnit = guiCRUDPProduct.getCboxMeasureUnit().getSelectedItem().toString();
                 int id = Integer.parseInt(guiCRUDPProduct.getTxtId().getText());
                 try {
-                    pproduct.modify(id, name, stock, measureUnit, unitPrice,guiCRUDPProduct.getIdProviderSelected());
+                    pproduct.modify(id, name, stock, measureUnit, unitPrice, guiCRUDPProduct.getIdProviderSelected());
                     JOptionPane.showMessageDialog(guiCRUDPProduct, "¡Producto modificado exitosamente!");
                     guiCRUDPProduct.clicSaveProduct();
                     productList = pproduct.getPproducts();
