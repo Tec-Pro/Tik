@@ -23,4 +23,6 @@ public interface InterfaceProvidersSearch extends Remote {
      * @throws RemoteException
      */
     public List<Map> searchProviders(String search) throws java.rmi.RemoteException;
+
+    public List<Map> searchProviders(String txtFindProvider, int category_id) throws java.rmi.RemoteException;
 }

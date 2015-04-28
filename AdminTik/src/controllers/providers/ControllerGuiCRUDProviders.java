@@ -50,6 +50,7 @@ public class ControllerGuiCRUDProviders implements ActionListener {
         iDCurrentlySelectedProvider = -1;
         this.guiCRUDProviders.setActionListener(this);
         loadProviderCategories();
+        updateSearchProviderTable(provider.getProviders());
         //escucho en el txtFindProvider lo que se va ingresando para buscar un proveedor
         this.guiCRUDProviders.getTxtFindProvider().addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
@@ -57,7 +58,16 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                 //saco el texto ingresado en txtFindProvider
                 String txtFindProvider = guiCRUDProviders.getTxtFindProvider().getText();
                 if (txtFindProvider != null) {
-                    List<Map> providersList;
+                    List<Map> providersList = null;
+                    int row = guiCRUDProviders.getTableProviderCategories().getSelectedRow();
+                    if (row != -1){
+                        try {
+                            providersList = providersSearch.searchProviders(txtFindProvider, (int) guiCRUDProviders.getTableProviderCategories().getModel().getValueAt(row, 0));
+                            updateSearchProviderTable(providersList);
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    } else {
                     try {
                         //hago la busqueda de proveedores en base a ese texto
                         providersList = providersSearch.searchProviders(txtFindProvider);
@@ -66,6 +76,7 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                     } catch (RemoteException ex) {
                         Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                }
                 }
             }
         });
@@ -87,7 +98,7 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                     }
                     //hago una busqueda nueva de proveedores y lo cargo en la tabla, para actualizar posibles modificaciones
                     String txtFindProvider = guiCRUDProviders.getTxtFindProvider().getText();
-                    if (txtFindProvider != null) {
+                    //if (txtFindProvider != null) {
                         List<Map> providersList;
                         try {
                             //hago la busqueda de proveedores en base a ese texto
@@ -97,7 +108,7 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                         } catch (RemoteException ex) {
                             Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                    }
+                    //}
                 }
             }
 
@@ -107,28 +118,6 @@ public class ControllerGuiCRUDProviders implements ActionListener {
         this.guiCRUDProviders.getTableProviderCategories().addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                //limpio la pantalla antes de cargar los datos nuevos
-                guiCRUDProviders.cleanComponents();
-                //saco el id de la categoria, de la fila seleccionada
-                DefaultTableModel categoryModel = ((DefaultTableModel) guiCRUDProviders.getTableProviderCategories().getModel());
-                int selectedRow = guiCRUDProviders.getTableProviderCategories().getSelectedRow();
-                int categoryId = Integer.parseInt(categoryModel.getValueAt(selectedRow, 0).toString());
-                List<Map> providersList = null;
-                try {
-                    //busco la lista de proveedores de la categoria seleccionada
-                    providersList = providerCategory.getProvidersFromCategory(categoryId);
-                } catch (RemoteException ex) {
-                    Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                //si hay proveedores en la lista
-                if (providersList != null && !providersList.isEmpty()) {
-                    try {
-                        //cargo los proveedores en la tabla
-                        updateSearchProviderTable(providersList);
-                    } catch (RemoteException ex) {
-                        Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
                 //guiCRUDProviders.getBtnRemoveCategory().setEnabled(true);
                 //Si hago doble click en la tabla de categorías muestro un diálogo de edición.
                 if (evt.getClickCount() == 2) {
@@ -178,7 +167,13 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                     guiCRUDProviders.getBtnRemoveCategory().setEnabled(false);
                     guiCRUDProviders.getBtnTicketsPaid().setEnabled(false);
                     guiCRUDProviders.getBtnPayments().setEnabled(false);
+                    try {
+                    updateSearchProviderTable(providerCategory.getProvidersFromCategory((int) guiCRUDProviders.getTableProviderCategories().getModel().getValueAt(row, 0)));
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                }
+                
             }
         });
     }
@@ -196,7 +191,8 @@ public class ControllerGuiCRUDProviders implements ActionListener {
     }
 
     private void updateSearchProviderTable(List<Map> providersList) throws RemoteException {
-        if (providersList != null) { //si hay proveedores los cargo en la gui
+        if(providersList != null){
+        //si hay proveedores los cargo en la gui
             DefaultTableModel providerModel = ((DefaultTableModel) this.guiCRUDProviders.getTableProviders().getModel());
             providerModel.setRowCount(0);//limpio la tabla antes de cargarla nuevamente
             Map<String, Object> providerMap;
@@ -289,11 +285,12 @@ public class ControllerGuiCRUDProviders implements ActionListener {
             }
             //hago una busqueda nueva de proveedores y lo cargo en la tabla, para actualizar posibles modificaciones
             String txtFindProvider = guiCRUDProviders.getTxtFindProvider().getText();
-            if (txtFindProvider != null) {
+            int rowNewProvider = guiCRUDProviders.getTableProviderCategories().getSelectedRow();
+            if (txtFindProvider != null || rowNewProvider != -1) {
                 List<Map> providersList;
                 try {
                     //hago la busqueda de proveedores en base a ese texto
-                    providersList = providersSearch.searchProviders(txtFindProvider);
+                    providersList = providersSearch.searchProviders(txtFindProvider, (int) guiCRUDProviders.getTableProviderCategories().getModel().getValueAt(rowNewProvider, 0));
                     //cargo los proveedores en la tabla
                     updateSearchProviderTable(providersList);
                 } catch (RemoteException ex) {
