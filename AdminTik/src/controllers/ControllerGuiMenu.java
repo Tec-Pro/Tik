@@ -15,6 +15,8 @@ import interfaces.InterfaceCategory;
 import interfaces.InterfaceEproduct;
 import interfaces.InterfaceFproduct;
 import interfaces.InterfacePproduct;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -29,10 +31,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import utils.Config;
@@ -42,7 +47,7 @@ import utils.ParserFloat;
  *
  * @author Alan Gonzalez
  */
-public class ControllerGuiMenu implements ActionListener {
+public class ControllerGuiMenu extends DefaultTreeCellRenderer implements ActionListener {
 
     private final GuiMenu guiMenu;
     private final InterfaceCategory crudProductCategory;
@@ -57,6 +62,12 @@ public class ControllerGuiMenu implements ActionListener {
     DefaultMutableTreeNode currentNode = null;
     GuiCRUDFProduct guiCRUDFProduct;
     ControllerGuiCRUDFproduct controllerGuiCRUDFproduct;
+
+    private ImageIcon rootIcon;
+    private ImageIcon categoryIcon;
+    private ImageIcon subcategoryIcon;
+    private ImageIcon productIcon;
+    private ImageIcon addIcon;
 
     public ControllerGuiMenu(GuiMenu gt, GuiMain gm) throws NotBoundException, MalformedURLException, RemoteException {
         crudProductCategory = (InterfaceCategory) Naming.lookup("//localhost/CRUDCategory");
@@ -74,6 +85,12 @@ public class ControllerGuiMenu implements ActionListener {
         guiCRUDFProduct = new GuiCRUDFProduct();
         controllerGuiCRUDFproduct = new ControllerGuiCRUDFproduct(guiCRUDFProduct);
         gm.getDesktop().add(guiCRUDFProduct);
+
+        rootIcon = new ImageIcon(getClass().getResource("/Icons/menu.png"));
+        categoryIcon = new ImageIcon(getClass().getResource("/Icons/category.png"));
+        subcategoryIcon = new ImageIcon(getClass().getResource("/Icons/subcategory.png"));
+        productIcon = new ImageIcon(getClass().getResource("/Icons/products.png"));
+        addIcon = new ImageIcon(getClass().getResource("/Icons/add.png"));
 
         guiMenu.getTreeMenu().addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent me) {
@@ -181,66 +198,6 @@ public class ControllerGuiMenu implements ActionListener {
         });
     }
 
-    private void changeSelection(MouseEvent me) throws RemoteException {
-        TreePath currentSelection = guiMenu.getTreeMenu().getSelectionPath();
-        if (currentSelection != null) {
-            currentNode = (DefaultMutableTreeNode) currentSelection.getLastPathComponent();
-            currentSelectedNodeName = currentNode.toString();// nombre de la hoja seleccionada
-            //if (currentNode.isLeaf()) {
-            switch (currentSelectedNodeName) {
-                case "AGREGAR CATEGORIA":
-                    if (me.getClickCount() == 2) {
-                        guiAddUpdateProductCategory.addCategoryState();
-                        guiAddUpdateProductCategory.setVisible(true);
-                    }
-                    break;
-                case "AGREGAR SUBCATEGORIA":
-                    if (me.getClickCount() == 2) {
-                        guiAddUpdateProductSubcategory.addSucategoryState();
-                        guiAddUpdateProductSubcategory.setVisible(true);
-                    }
-                    break;
-                case "AGREGAR PRODUCTO":
-                    if (me.getClickCount() == 2) {
-                        guiCRUDFProduct.setVisible(true);
-                        guiCRUDFProduct.clicSaveProduct();
-                        controllerGuiCRUDFproduct.search();
-                        controllerGuiCRUDFproduct.refreshList();
-                        try {
-                            guiCRUDFProduct.setMaximum(true);
-                        } catch (PropertyVetoException ex) {
-                            Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-                    break;
-                case "CATEGORIA POR DEFECTO":
-                    guiMenu.getBtnDelete().setEnabled(false);
-                    guiMenu.getBtnUpdate().setEnabled(false);
-                    guiMenu.getTableReciperDefault().setRowCount(0);
-                    break;
-                case "SUBCATEGORIA POR DEFECTO":
-                    guiMenu.getBtnDelete().setEnabled(false);
-                    guiMenu.getBtnUpdate().setEnabled(false);
-                    guiMenu.getTableReciperDefault().setRowCount(0);
-                    break;
-                case "Menu":
-                    guiMenu.getBtnDelete().setEnabled(false);
-                    guiMenu.getBtnUpdate().setEnabled(false);
-                    guiMenu.getTableReciperDefault().setRowCount(0);
-                    break;
-                default:
-                    guiMenu.getBtnDelete().setEnabled(true);
-                    guiMenu.getBtnUpdate().setEnabled(true);
-                    guiMenu.getTableReciperDefault().setRowCount(0);
-                    if (currentNode.getLevel() == 3) {
-                        fProductSelected(currentSelectedNodeName);
-                    }
-                    break;
-            }
-        }
-        //}
-    }
-
     public void CreateTree() throws RemoteException {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Menu");
         DefaultMutableTreeNode category;
@@ -289,7 +246,49 @@ public class ControllerGuiMenu implements ActionListener {
 
         DefaultTreeModel modelo = new DefaultTreeModel(root);
         guiMenu.getTreeMenu().setModel(modelo);
+        guiMenu.getTreeMenu().setCellRenderer(this);
+    }
 
+    @Override
+    public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded,
+            boolean leaf, int row, boolean hasFocus) {
+        super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+        //altura de cada nodo
+        tree.setRowHeight(26);
+        setOpaque(true);
+        //color de texto
+        setForeground(Color.black);
+        if (selected) {
+            setForeground(Color.blue);
+        }
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+        switch (node.getLevel()) {
+            case 0:
+                setIcon(rootIcon);
+                break;
+            case 1:
+                if (node.toString().equals("AGREGAR CATEGORIA")) {
+                    setIcon(addIcon);
+                } else {
+                    setIcon(categoryIcon);
+                }
+                break;
+            case 2:
+                if (node.toString().equals("AGREGAR SUBCATEGORIA")) {
+                    setIcon(addIcon);
+                } else {
+                    setIcon(subcategoryIcon);
+                }
+                break;
+            case 3:
+                if (node.toString().equals("AGREGAR PRODUCTO")) {
+                    setIcon(addIcon);
+                } else {
+                    setIcon(productIcon);
+                }
+                break;
+        }
+        return this;
     }
 
     private void fProductSelected(String currentNode) {
