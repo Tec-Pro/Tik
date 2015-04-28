@@ -142,37 +142,58 @@ public class ControllerGuiMenu extends DefaultTreeCellRenderer implements Action
                             guiMenu.getBtnDelete().setEnabled(false);
                             guiMenu.getBtnUpdate().setEnabled(false);
                             guiMenu.getTableReciperDefault().setRowCount(0);
+                            guiMenu.getTxtSellPrice().setText("");
+                            guiMenu.getTxtSuggestPrice().setText("");
+                            guiMenu.getTxtTotalPrice().setText("");
                             break;
                         case "AGREGAR SUBCATEGORIA":
                             guiMenu.getBtnDelete().setEnabled(false);
                             guiMenu.getBtnUpdate().setEnabled(false);
                             guiMenu.getTableReciperDefault().setRowCount(0);
+                            guiMenu.getTxtSellPrice().setText("");
+                            guiMenu.getTxtSuggestPrice().setText("");
+                            guiMenu.getTxtTotalPrice().setText("");
                             break;
                         case "AGREGAR PRODUCTO":
                             guiMenu.getBtnDelete().setEnabled(false);
                             guiMenu.getBtnUpdate().setEnabled(false);
                             guiMenu.getTableReciperDefault().setRowCount(0);
+                            guiMenu.getTxtSellPrice().setText("");
+                            guiMenu.getTxtSuggestPrice().setText("");
+                            guiMenu.getTxtTotalPrice().setText("");
 
                             break;
                         case "CATEGORIA POR DEFECTO":
                             guiMenu.getBtnDelete().setEnabled(false);
                             guiMenu.getBtnUpdate().setEnabled(false);
                             guiMenu.getTableReciperDefault().setRowCount(0);
+                            guiMenu.getTxtSellPrice().setText("");
+                            guiMenu.getTxtSuggestPrice().setText("");
+                            guiMenu.getTxtTotalPrice().setText("");
                             break;
                         case "SUBCATEGORIA POR DEFECTO":
                             guiMenu.getBtnDelete().setEnabled(false);
                             guiMenu.getBtnUpdate().setEnabled(false);
                             guiMenu.getTableReciperDefault().setRowCount(0);
+                            guiMenu.getTxtSellPrice().setText("");
+                            guiMenu.getTxtSuggestPrice().setText("");
+                            guiMenu.getTxtTotalPrice().setText("");
                             break;
                         case "Menu":
                             guiMenu.getBtnDelete().setEnabled(false);
                             guiMenu.getBtnUpdate().setEnabled(false);
                             guiMenu.getTableReciperDefault().setRowCount(0);
+                            guiMenu.getTxtSellPrice().setText("");
+                            guiMenu.getTxtSuggestPrice().setText("");
+                            guiMenu.getTxtTotalPrice().setText("");
                             break;
                         default:
                             guiMenu.getBtnDelete().setEnabled(true);
                             guiMenu.getBtnUpdate().setEnabled(true);
                             guiMenu.getTableReciperDefault().setRowCount(0);
+                            guiMenu.getTxtSellPrice().setText("");
+                            guiMenu.getTxtSuggestPrice().setText("");
+                            guiMenu.getTxtTotalPrice().setText("");
                             switch (currentNode.getLevel()) {
                                 case 0:
                                     break;
