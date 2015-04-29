@@ -50,14 +50,13 @@ public class ControllerGuiCRUDProviders implements ActionListener {
         iDCurrentlySelectedProvider = -1;
         this.guiCRUDProviders.setActionListener(this);
         loadProviderCategories();
-        updateSearchProviderTable(provider.getProviders());
+        //updateSearchProviderTable(provider.getProviders());
         //escucho en el txtFindProvider lo que se va ingresando para buscar un proveedor
         this.guiCRUDProviders.getTxtFindProvider().addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 //saco el texto ingresado en txtFindProvider
                 String txtFindProvider = guiCRUDProviders.getTxtFindProvider().getText();
-                if (txtFindProvider != null) {
                     List<Map> providersList = null;
                     int row = guiCRUDProviders.getTableProviderCategories().getSelectedRow();
                     if (row != -1){
@@ -76,7 +75,8 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                     } catch (RemoteException ex) {
                         Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }
+                
+                    
                 }
             }
         });
@@ -117,7 +117,7 @@ public class ControllerGuiCRUDProviders implements ActionListener {
         //reviso si se clickea alguna fila de la tabla categorias
         this.guiCRUDProviders.getTableProviderCategories().addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
                 //guiCRUDProviders.getBtnRemoveCategory().setEnabled(true);
                 //Si hago doble click en la tabla de categorías muestro un diálogo de edición.
                 if (evt.getClickCount() == 2) {
@@ -188,6 +188,33 @@ public class ControllerGuiCRUDProviders implements ActionListener {
             o[1] = provCat.get("name");
             providerCategoriesTableModel.addRow(o);
         }
+    }
+    
+    public void loadProviderTable() throws RemoteException {
+        List<Map> providers = provider.getProviders();
+        DefaultTableModel providerModel = ((DefaultTableModel) this.guiCRUDProviders.getTableProviders().getModel());
+            providerModel.setRowCount(0);//limpio la tabla antes de cargarla nuevamente
+
+            Object[] o = new Object[7];
+            for (Map p : providers){
+                o[0] = (p.get("id"));
+                o[1] = (p.get("name"));
+                o[2] = (p.get("cuit"));
+                o[3] = (p.get("address"));
+                o[4] = (p.get("description"));
+                o[5] = (p.get("phones"));
+                //busco las categorias de cada proveedor y las cargo en la tabla
+                List<Map> categoriesList = this.provider.getCategoriesFromProvider(Integer.parseInt(p.get("id").toString()));
+                Iterator<Map> categoriesItr = categoriesList.iterator();
+                String categories = "";
+                while (categoriesItr.hasNext()) {
+                    Map<String, Object> categoryMap = categoriesItr.next();
+                    categories += categoryMap.get("name") + " ";
+                }
+                o[6] = (categories);
+                providerModel.addRow(o);
+            }
+    
     }
 
     private void updateSearchProviderTable(List<Map> providersList) throws RemoteException {
