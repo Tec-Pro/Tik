@@ -458,7 +458,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
             editingInformation = false;
             guiCRUDFProduct.clicSaveProduct();
             try {
-                eproductList = crudEproduct.getEproducts();
+                fproductList = crudFproduct.getFproducts();
                 refreshList();
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiCRUDEproduct.class.getName()).log(Level.SEVERE, null, ex);
