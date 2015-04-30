@@ -214,9 +214,11 @@ public class ControllerMain implements ActionListener {
         if (ae.getSource() == guiMain.getBtnProviders()) {
             guiCRUDProviders.cleanComponents();
             try {
+                controllerCRUDProviders.loadProviderTable();
                 guiCRUDProviders.setMaximum(true);
-            } catch (PropertyVetoException ex) {
+            } catch (RemoteException | PropertyVetoException ex) {
                 Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+                
             }
             guiCRUDProviders.setVisible(true);
             guiCRUDProviders.toFront();

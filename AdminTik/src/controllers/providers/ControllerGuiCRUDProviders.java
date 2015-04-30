@@ -146,6 +146,8 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                 int row = guiCRUDProviders.getTableProviders().getSelectedRow();
                 if (row == -1) {
                     guiCRUDProviders.getBtnRemoveProvider().setEnabled(false);
+                    guiCRUDProviders.getBtnPayments().setEnabled(false);
+                    guiCRUDProviders.getBtnTicketsPaid().setEnabled(false);
                     iDCurrentlySelectedProvider = -1;
                 } else {
                     guiCRUDProviders.getBtnRemoveProvider().setEnabled(true);
@@ -168,7 +170,7 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                     guiCRUDProviders.getBtnTicketsPaid().setEnabled(false);
                     guiCRUDProviders.getBtnPayments().setEnabled(false);
                     try {
-                    updateSearchProviderTable(providerCategory.getProvidersFromCategory((int) guiCRUDProviders.getTableProviderCategories().getModel().getValueAt(row, 0)));
+                    updateSearchProviderTable(providersSearch.searchProviders(guiCRUDProviders.getTxtFindProvider().getText(),(int) guiCRUDProviders.getTableProviderCategories().getModel().getValueAt(row, 0)));
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
                 }
