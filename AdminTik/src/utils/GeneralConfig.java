@@ -7,6 +7,7 @@ package utils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,7 +25,7 @@ public class GeneralConfig {
     private static Properties configProps;
     public static float percent;
 
-    public static void saveProperties(float percent) throws IOException {
+    public static void saveProperties(float percent) throws IOException  {
         configProps.setProperty("percent", ParserFloat.floatToString(percent));
         OutputStream outputStream = new FileOutputStream(configFile);
         configProps.store(outputStream, "general configurations");
@@ -38,8 +39,9 @@ public class GeneralConfig {
         // loads properties from file
         InputStream inputStream = new FileInputStream(configFile);
         configProps.load(inputStream);
-        inputStream.close();
         percent = ParserFloat.stringToFloat(configProps.getProperty("percent"));
+        inputStream.close();
+
 
     }
 

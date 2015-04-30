@@ -28,7 +28,7 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws NotBoundException, MalformedURLException, RemoteException {
+    public static void main(String[] args) throws NotBoundException, MalformedURLException, RemoteException, IOException {
 
                  try {
             JFrame.setDefaultLookAndFeelDecorated(true);
@@ -40,6 +40,7 @@ public class Main {
         try {
             GeneralConfig.loadProperties();
         } catch (IOException ex) {
+            GeneralConfig.saveProperties((float)100);
             JOptionPane.showMessageDialog(null, "El archivo de configuracion no existe, la configuracion por default fue creada.");
         }
           

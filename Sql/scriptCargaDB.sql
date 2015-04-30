@@ -5,8 +5,6 @@ LIMIT 0, 1000
 -- Date: 2015-04-23 17:41
 */
 
-#Cargo administrador
-INSERT INTO `admins` (`id`,`name`,`pass`,`is_admin`) VALUES (1,'admin','V×Øöñ²*)´lïVõ)Zï',1);
 
 #Cargo categorías de productos
 INSERT INTO `categories` (`id`,`name`) VALUES (2,'Bebidas');
@@ -33,7 +31,7 @@ INSERT INTO `eproducts` (`id`,`name`,`removed`) VALUES (1,'Masa de pizza ',0);
 INSERT INTO `eproducts` (`id`,`name`,`removed`) VALUES (2,'Salsa roja',0);
 
 #Cargo productos finales
-INSERT INTO `fproducts` (`id`,`name`,`subcategory_id`,`removed`,`sell_price`,`belong`) VALUES (1,'Pizza Mozzarella',5,0,40,'Cocina');
+INSERT INTO `fproducts` (`id`,`name`,`subcategory_id`,`removed`,`sell_price`,`belong`) VALUES (1,'Pizza Mozzarella',6,0,40,'Cocina');
 
 #Cargo categorías de proveedor
 INSERT INTO `providercategories` (`id`,`name`) VALUES (1,'Bebidas');
@@ -50,11 +48,11 @@ INSERT INTO `providers` (`id`,`name`,`cuit`,`address`,`description`,`phones`) VA
 INSERT INTO `purchases` (`id`,`cost`,`paid`,`date`,`provider_id`,`date_paid`) VALUES (1,26,26,'2015-04-23',2,'2015-04-23');
 
 #Cargo subcategorías de productos
-INSERT INTO `subcategories` (`id`,`name`,`category_id`) VALUES (2,'Alcoholicas',1);
-INSERT INTO `subcategories` (`id`,`name`,`category_id`) VALUES (3,'Sin alcohol',1);
-INSERT INTO `subcategories` (`id`,`name`,`category_id`) VALUES (4,'Rojas',2);
-INSERT INTO `subcategories` (`id`,`name`,`category_id`) VALUES (5,'Blancas',2);
-INSERT INTO `subcategories` (`id`,`name`,`category_id`) VALUES (6,'Pizza ',5);
+INSERT INTO `subcategories` (`id`,`name`,`category_id`) VALUES (2,'Alcoholicas',2);
+INSERT INTO `subcategories` (`id`,`name`,`category_id`) VALUES (3,'Sin alcohol',2);
+INSERT INTO `subcategories` (`id`,`name`,`category_id`) VALUES (4,'Rojas',3);
+INSERT INTO `subcategories` (`id`,`name`,`category_id`) VALUES (5,'Blancas',3);
+INSERT INTO `subcategories` (`id`,`name`,`category_id`) VALUES (6,'Pizza ',6);
 
 #Cargo un mozo
 INSERT INTO `users` (`id`,`name`,`surname`,`pass`,`date_hired`,`date_discharged`,`turn`,`date_of_birth`,`place_of_birth`,`id_type`,`id_number`,`address`,`home_phone`,`emergency_phone`,`mobile_phone`,`marital_status`,`blood_type`,`position`,`photo`) VALUES (1,'Federico','Mollea','ãÌã<$Øˆü§ŒwÌø','2015-04-16',NULL,'Manana','1994-06-18','Río Cuarto','DNI','38182819','San Martín 123','465773','4658883','154281982','Soltero','O+','Mozo',NULL);

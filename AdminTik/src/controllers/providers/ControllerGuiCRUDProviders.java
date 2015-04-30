@@ -174,8 +174,13 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                }
-                
+                }else{
+                    try {
+                        updateSearchProviderTable(providersSearch.searchProviders(guiCRUDProviders.getTxtFindProvider().getText()));
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }   
             }
         });
     }
