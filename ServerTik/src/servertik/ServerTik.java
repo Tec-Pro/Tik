@@ -21,6 +21,7 @@ import java.rmi.Naming;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import org.javalite.activejdbc.Base;
 import search.providersSearch.ProvidersSearch;
 
 /**
@@ -40,7 +41,6 @@ public class ServerTik {
             }*/
             //System.setProperty("java.rmi.server.codebase",getClass().getResource("java.policy").toString());
             //System.setProperty("java.security.policy","/home/agustin/Documentos/ProyectosGithub/Tik/ServerTik/src/java.policy");
-          
 
             // Creo el registro de objetos remotos, que acepte llamadas en el puerto 1099
            LocateRegistry.createRegistry(1099);

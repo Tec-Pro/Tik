@@ -134,12 +134,12 @@ public class Config extends JDialog {
 				try {
 					saveProperties();
 					JOptionPane.showMessageDialog(Config.this, 
-							"Properties were saved successfully!");
+							"Se guardo la configuración correctamente!");
                                          doClose(RET_OK);
                                          
 				} catch (IOException ex) {
 					JOptionPane.showMessageDialog(Config.this, 
-							"Error saving properties file: " + ex.getMessage());		
+							"Error al guardar configuracion: " + ex.getMessage());		
 				}
 			}
 		});
@@ -153,7 +153,7 @@ public class Config extends JDialog {
 		try {
 			loadProperties();
 		} catch (IOException ex) {
-			JOptionPane.showMessageDialog(this, "The config.properties file does not exist, default properties loaded.");
+			JOptionPane.showMessageDialog(this, "El archivo de configuracion no existe, la configuracion por default fue creada.");
 		}
 //		textHost.setText(configProps.getProperty("host"));
 //		textPort.setText(configProps.getProperty("port"));
