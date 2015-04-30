@@ -41,6 +41,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import utils.Config;
+import utils.GeneralConfig;
 import utils.ParserFloat;
 
 /**
@@ -323,10 +324,10 @@ public class ControllerGuiMenu extends DefaultTreeCellRenderer implements Action
                 fproductPproductList = crudFproduct.getFproductPproduts(id);
                 fproductEproductList = crudFproduct.getFproductEproduts(id);
                 refreshReciperList();
-                guiMenu.getTxtTotalPrice().setText(ParserFloat.floatToString(crudFproduct.calculateProductionPrice(id)));
+                float productionPrice=crudFproduct.calculateProductionPrice(id);
+                guiMenu.getTxtTotalPrice().setText(ParserFloat.floatToString(productionPrice));
                 guiMenu.getTxtSellPrice().setText(ParserFloat.floatToString((float) p.get("sell_price")));
-
-                //*****ACA VA EL PRECIO SUGERIDO!*****
+                guiMenu.getTxtSuggestPrice().setText(ParserFloat.floatToString(productionPrice+productionPrice*GeneralConfig.percent/100));
             }
         } catch (RemoteException ex) {
             Logger.getLogger(ControllerGuiMenu.class

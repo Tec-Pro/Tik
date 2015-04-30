@@ -42,6 +42,11 @@ public class GuiMain extends javax.swing.JFrame {
         this.btnEmployes.addActionListener(lis);
         this.btnMenu.addActionListener(lis);
         this.btnPurchase.addActionListener(lis);
+        this.btnConfig.addActionListener(lis);
+    }
+
+    public JMenuItem getBtnConfig() {
+        return btnConfig;
     }
 
     public JMenuItem getBtnPurchase() {
@@ -137,6 +142,8 @@ public class GuiMain extends javax.swing.JFrame {
         btnPurchase = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         btnEmployes = new javax.swing.JMenuItem();
+        jMenu6 = new javax.swing.JMenu();
+        btnConfig = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         btnAbout = new javax.swing.JMenuItem();
 
@@ -212,6 +219,13 @@ public class GuiMain extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu5);
 
+        jMenu6.setText("Configuracion");
+
+        btnConfig.setText("Configuracion general");
+        jMenu6.add(btnConfig);
+
+        jMenuBar1.add(jMenu6);
+
         jMenu2.setText("Acerca de");
 
         btnAbout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/acerca.png"))); // NOI18N
@@ -248,6 +262,7 @@ public class GuiMain extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnAbout;
     private javax.swing.JMenuItem btnAdmins;
+    private javax.swing.JMenuItem btnConfig;
     private javax.swing.JMenuItem btnDisconnect;
     private javax.swing.JMenuItem btnEProduct;
     private javax.swing.JMenuItem btnEmployes;
@@ -264,6 +279,7 @@ public class GuiMain extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu6;
     private javax.swing.JMenuBar jMenuBar1;
     // End of variables declaration//GEN-END:variables
 }

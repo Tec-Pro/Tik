@@ -16,6 +16,7 @@ import gui.GuiCRUDProductCategory;
 import gui.GuiCRUDUser;
 import gui.GuiMenu;
 import gui.GuiLoadPurchase;
+import gui.main.GuiConfig;
 import gui.main.GuiMain;
 import gui.providers.GuiCRUDProviders;
 import gui.providers.purchases.GuiPurchase;
@@ -26,6 +27,7 @@ import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -36,6 +38,7 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import utils.Config;
+import utils.GeneralConfig;
 
 /**
  *
@@ -53,7 +56,7 @@ public class ControllerMain implements ActionListener {
     private static GuiCRUDPProduct guiCRUDPProduct; //gui productos primarios
     private static GuiCRUDFProduct guiCRUDFProduct; //gui productos finales
     private static GuiCRUDProductCategory guiCRUDProductCategory; //gui categoria productos
-    private static GuiCRUDProviders guiCRUDProviders; 
+    private static GuiCRUDProviders guiCRUDProviders;
     private static GuiCRUDUser guiCRUDUser; //gui usuarios
     private static GuiLoadPurchase guiLoadPurchase;
     private static GuiMenu guiMenu;
@@ -69,7 +72,7 @@ public class ControllerMain implements ActionListener {
     private ControllerGuiCRUDUser controllerCRUDUser;
     private ControllerGuiMenu controllerGuiMenu;
     private ControllerGuiPurchase controllerGuiPurchase;
-    
+
     public ControllerMain(GuiAdminLogin guiAdminLogin) throws NotBoundException, MalformedURLException, RemoteException {
         this.guiAdminLogin = guiAdminLogin; //hago esto, así si cierra sesión pongo en visible la ventana
         guiMain = new GuiMain();
@@ -95,7 +98,7 @@ public class ControllerMain implements ActionListener {
         guiLoadPurchase = new GuiLoadPurchase();
         guiMenu = new GuiMenu();
         guiPurchase = new GuiPurchase();
-        
+
         //agrego las gui al desktop
         guiMain.getDesktop().add(guiCRUDAdmin);
         guiMain.getDesktop().add(guiCRUDEProduct);
@@ -107,12 +110,11 @@ public class ControllerMain implements ActionListener {
         guiMain.getDesktop().add(guiLoadPurchase);
         guiMain.getDesktop().add(guiMenu);
         guiMain.getDesktop().add(guiPurchase);
-        
+
         InterfaceProvider provider = (InterfaceProvider) Naming.lookup("//" + Config.ip + "/crudProvider");
-        InterfaceProviderCategory providerCategory = (InterfaceProviderCategory ) Naming.lookup("//" + Config.ip + "/crudProviderCategory");
+        InterfaceProviderCategory providerCategory = (InterfaceProviderCategory) Naming.lookup("//" + Config.ip + "/crudProviderCategory");
         InterfaceProvidersSearch providersSearch = (InterfaceProvidersSearch) Naming.lookup("//" + Config.ip + "/providersSearch");
 
-        
         //creo los controladores 
         controllerCRUDAdmin = new ControllerGuiCRUDAdmin(userLogged, guiCRUDAdmin);
         controllerCRUDEProduct = new ControllerGuiCRUDEproduct(guiCRUDEProduct);
@@ -120,9 +122,9 @@ public class ControllerMain implements ActionListener {
         controllerCRUDProductCategory = new ControllerGuiProductCategory(guiCRUDProductCategory);
         controllerCRUDProviders = new ControllerGuiCRUDProviders(guiCRUDProviders);
         controllerCRUDUser = new ControllerGuiCRUDUser(guiCRUDUser);
-        controllerCRUDPProduct = new ControllerGuiCRUDPproduct(guiCRUDPProduct,guiLoadPurchase);
-        controllerGuiMenu = new ControllerGuiMenu(guiMenu,guiMain);
-        controllerGuiPurchase= new ControllerGuiPurchase(guiPurchase);
+        controllerCRUDPProduct = new ControllerGuiCRUDPproduct(guiCRUDPProduct, guiLoadPurchase);
+        controllerGuiMenu = new ControllerGuiMenu(guiMenu, guiMain);
+        controllerGuiPurchase = new ControllerGuiPurchase(guiPurchase);
         //restauro el puntero asi ya se que termino de cargar todo
         guiMain.setCursor(Cursor.DEFAULT_CURSOR);
 
@@ -146,10 +148,10 @@ public class ControllerMain implements ActionListener {
         guiPurchase.dispose();
     }
 
-    public static boolean isAdmin(){
-        return (boolean)userLogged.get("is_admin");
+    public static boolean isAdmin() {
+        return (boolean) userLogged.get("is_admin");
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == guiMain.getBtnDisconnect()) {//cerrar sesion
@@ -224,7 +226,7 @@ public class ControllerMain implements ActionListener {
             guiCRUDProviders.toFront();
         }
         //boton empleados
-        if(ae.getSource() == guiMain.getBtnEmployes()){
+        if (ae.getSource() == guiMain.getBtnEmployes()) {
             try {
                 guiCRUDUser.setMaximum(true);
             } catch (PropertyVetoException ex) {
@@ -234,7 +236,7 @@ public class ControllerMain implements ActionListener {
             guiCRUDUser.toFront();
         }
         //boton menu
-        if(ae.getSource() == guiMain.getBtnMenu()){
+        if (ae.getSource() == guiMain.getBtnMenu()) {
             guiMenu.setVisible(true);
             try {
                 controllerGuiMenu.CreateTree();
@@ -244,7 +246,7 @@ public class ControllerMain implements ActionListener {
             guiMenu.toFront();
         }
         //boton compras
-        if(ae.getSource() == guiMain.getBtnPurchase()){
+        if (ae.getSource() == guiMain.getBtnPurchase()) {
             try {
                 guiPurchase.setMaximum(true);
             } catch (PropertyVetoException ex) {
@@ -252,7 +254,20 @@ public class ControllerMain implements ActionListener {
             }
             guiPurchase.setVisible(true);
             guiPurchase.toFront();
-        }        
+        }
+        //boton configuracion
+        if (ae.getSource() == guiMain.getBtnConfig()) {
+            GuiConfig guiConfig = new GuiConfig(guiMain, true);
+            guiConfig.setLocationRelativeTo(guiMain);
+            guiConfig.setVisible(true);
+            if (guiConfig.getStatus() == 1) {
+                try {
+                    GeneralConfig.saveProperties(guiConfig.getPercent());
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(guiMain, "Error al guardar configuracion: " + ex.getMessage());
+                }
+            }
+        }
     }
 
 }

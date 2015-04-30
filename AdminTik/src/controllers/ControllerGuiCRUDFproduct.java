@@ -27,6 +27,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import utils.Config;
+import utils.GeneralConfig;
 import utils.Pair;
 import utils.ParserFloat;
 
@@ -210,7 +211,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
                 guiCRUDFProduct.loadProduct(fproduct);
                 float productionPrice = crudFproduct.calculateProductionPrice(id);
                 guiCRUDFProduct.getTxtProductionPrice().setText(ParserFloat.floatToString(productionPrice));
-                guiCRUDFProduct.getTxtSuggestedPrice().setText("ACA VA LA MULTIPLICACION PARA PRECIO SUGERIDO");
+                guiCRUDFProduct.getTxtSuggestedPrice().setText(ParserFloat.floatToString(productionPrice+productionPrice*GeneralConfig.percent/100));
                 refreshReciperList();
             } else {
                 if (!(isRepeatedOnTableReciper(tableProducts.getValueAt(tableProducts.getSelectedRow(), 1)))) {

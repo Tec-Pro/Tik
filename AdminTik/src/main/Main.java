@@ -7,12 +7,17 @@
 package main;
 
 import controllers.ControllerGuiAdminLogin;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import utils.GeneralConfig;
 
 /**
  *
@@ -31,6 +36,11 @@ public class Main {
 
             UIManager.setLookAndFeel("com.jtattoo.plaf.aero.AeroLookAndFeel");
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+        }
+        try {
+            GeneralConfig.loadProperties();
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "El archivo de configuracion no existe, la configuracion por default fue creada.");
         }
           
                  ControllerGuiAdminLogin controllerLogin = new ControllerGuiAdminLogin(); //inicio l apantalla del login y desde aca arranca el programa
