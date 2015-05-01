@@ -38,20 +38,18 @@ public class GuiPurchase extends javax.swing.JInternalFrame {
     }
 
     /**
-     * Seteo el actionListener para los botones articulosALaCompra,
-     * proveedorALaCompra, compraNueva, imprimir, realizarCompra,
-     * borrarArticulosSeleccionados, modificar
-     *
-     * @param
-     * @return
-     * @exception
-     */
+     * Seteo el actionListener para los botones,
+     * , compraNueva, realizarCompra, cancelar
+     * @param lis     */
     public void setActionListener(ActionListener lis) {
         this.btnNew.addActionListener(lis);
         this.btnPurchase.addActionListener(lis);
         this.btnCancel.addActionListener(lis);
     }
     
+    /**
+     *limpia la ventana
+     */
     public void clearFields() {
         datePurchase.setDate(Calendar.getInstance().getTime());
         txtCost.setText(String.valueOf((float)0));
@@ -66,6 +64,9 @@ public class GuiPurchase extends javax.swing.JInternalFrame {
         
     }
     
+    /**
+     *configura la interfaz del modo cuando hace click en nuevo
+     */
     public void clickNew() {
         clearFields();
         btnCancel.setEnabled(true);
@@ -81,6 +82,10 @@ public class GuiPurchase extends javax.swing.JInternalFrame {
 
     }
     
+    
+    /**
+     *configura la interfaz del modo cuando hace click en cancelar
+     */
     public void clickCancel() {
         clearFields();
         btnCancel.setEnabled(false);
@@ -96,68 +101,130 @@ public class GuiPurchase extends javax.swing.JInternalFrame {
         
     }
 
+    /**
+     *retorna el lable idProvider
+     * @return
+     */
     public JLabel getLblIdProvider() {
         return lblIdProvider;
     }
 
-    
-    
+    /**
+     *retorna la tabla defaultProvider
+     * @return
+     */
     public DefaultTableModel getTblDefaultProvider() {
         return tblDefaultProvider;
     }
 
+    /**
+     *
+     * @return
+     */
     public DefaultTableModel getTblDefaultProduct() {
         return tblDefaultProduct;
     }
 
+    /**
+     *
+     * @return
+     */
     public DefaultTableModel getTblDefaultPurchase() {
         return tblDefaultPurchase;
     }
 
+    /**
+     *
+     * @return
+     */
     public JCheckBox getBoxPay() {
         return boxPay;
     }
 
+    /**
+     *
+     * @return
+     */
     public JButton getBtnCancel() {
         return btnCancel;
     }
 
+    /**
+     *
+     * @return
+     */
     public JButton getBtnNew() {
         return btnNew;
     }
 
+    /**
+     *
+     * @return
+     */
     public JButton getBtnPurchase() {
         return btnPurchase;
     }
 
+    /**
+     *
+     * @return
+     */
     public JDateChooser getDatePurchase() {
         return datePurchase;
     }
 
+    /**
+     *
+     * @return
+     */
     public JLabel getLblProvider() {
         return lblProvider;
     }
 
+    /**
+     *
+     * @return
+     */
     public JTable getTblProduct() {
         return tblProduct;
     }
 
+    /**
+     *
+     * @return
+     */
     public JTable getTblProvider() {
         return tblProvider;
     }
 
+    /**
+     *
+     * @return
+     */
     public JTable getTblPurchase() {
         return tblPurchase;
     }
 
+    /**
+     *
+     * @return
+     */
     public JTextField getTxtCost() {
         return txtCost;
     }
 
+    /**
+     *
+     * @return
+     */
     public JTextField getTxtSearchProduct() {
         return txtSearchProduct;
     }
 
+    /**
+     *
+     * @return
+     */
     public JTextField getTxtSearchProvider() {
         return txtSearchProvider;
     }
@@ -322,24 +389,24 @@ public class GuiPurchase extends javax.swing.JInternalFrame {
         panelCompraLayout.setVerticalGroup(
             panelCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelCompraLayout.createSequentialGroup()
-                .addGroup(panelCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(panelCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel3)
-                        .addGroup(panelCompraLayout.createSequentialGroup()
+                .addGroup(panelCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(panelCompraLayout.createSequentialGroup()
+                        .addGroup(panelCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblProvider, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(0, 0, Short.MAX_VALUE))
-                        .addComponent(labelCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(datePurchase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblIdProvider, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel3)
+                            .addComponent(datePurchase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblIdProvider, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panelCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelTotal)
+                .addGroup(panelCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(jLabel5)
                         .addComponent(boxPay))
-                    .addComponent(txtCost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(txtCost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelTotal)))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -395,7 +462,6 @@ public class GuiPurchase extends javax.swing.JInternalFrame {
             }
         });
         tblProduct.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
-        tblProduct.setRowSorter(null);
         tblProduct.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tblProduct.getTableHeader().setReorderingAllowed(false);
         jScrollPane6.setViewportView(tblProduct);
@@ -462,7 +528,6 @@ public class GuiPurchase extends javax.swing.JInternalFrame {
             }
         });
         tblProvider.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
-        tblProvider.setRowSorter(null);
         tblProvider.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tblProvider.getTableHeader().setReorderingAllowed(false);
         jScrollPane7.setViewportView(tblProvider);

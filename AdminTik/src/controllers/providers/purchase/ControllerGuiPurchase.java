@@ -34,6 +34,7 @@ import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.table.DefaultTableModel;
 import utils.Config;
+import utils.Dates;
 import utils.Pair;
 import utils.ParserFloat;
 
@@ -59,6 +60,13 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
     private List<Map> productsList;
     private List<Map> providersList;
 
+    /**
+     *
+     * @param guiPurchase
+     * @throws NotBoundException
+     * @throws MalformedURLException
+     * @throws RemoteException
+     */
     public ControllerGuiPurchase(final GuiPurchase guiPurchase) throws NotBoundException, MalformedURLException, RemoteException {
         this.interfacePurchase = (InterfacePurchase) Naming.lookup("//" + Config.ip + "/CRUDPurchase");
         this.interfacePproduct = (InterfacePproduct) Naming.lookup("//" + Config.ip + "/CRUDPproduct");
@@ -183,6 +191,9 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
         loadProductsTable(productsList);
     }
 
+    /**
+     *
+     */
     public void setCellEditor() {
         for (int i = 0; i < tblPurchase.getRowCount(); i++) {
             tblPurchase.getCellEditor(i, 2).addCellEditorListener(this);
@@ -243,17 +254,8 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
         }
     }
 
-    /*va true si se quiere usar para mostrarla por pantalla es decir 12/12/2014 y false si va 
-     para la base de datos, es decir 2014/12/12*/
-    public String dateToMySQLDate(Date fecha, boolean paraMostrar) {
-        if (paraMostrar) {
-            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
-            return sdf.format(fecha);
-        } else {
-            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
-            return sdf.format(fecha);
-        }
-    }
+
+
 
     private Integer makePurchase() throws RemoteException {
         float cost = ParserFloat.stringToFloat(guiPurchase.getTxtCost().getText());
@@ -261,10 +263,10 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
         String datePaid = null;
         if (guiPurchase.getBoxPay().isSelected()) {//paga el total de la factura
             paid = cost;
-            datePaid = dateToMySQLDate(Calendar.getInstance().getTime(), false);
+            datePaid = Dates.dateToMySQLDate(Calendar.getInstance().getTime(), false);
             //Aca deberia ir el pago
         }
-        String datePurchase = dateToMySQLDate(guiPurchase.getDatePurchase().getDate(), false);
+        String datePurchase = Dates.dateToMySQLDate(guiPurchase.getDatePurchase().getDate(), false);
         Integer providerId = Integer.valueOf(guiPurchase.getLblIdProvider().getText());
         LinkedList<Pair<Integer, Pair<Float, Float>>> products = new LinkedList<>();
         for (int i = 0; i < tblPurchase.getRowCount(); i++) {
@@ -279,6 +281,10 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
 
     }
 
+    /**
+     *
+     * @param ae
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource().equals(guiPurchase.getBtnNew())) {
@@ -314,11 +320,19 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
 
     }
 
+    /**
+     *
+     * @param ce
+     */
     @Override
     public void editingStopped(ChangeEvent ce) {
         guiPurchase.getTxtCost().setText(ParserFloat.floatToString(calculateCost()));
     }
 
+    /**
+     *
+     * @param ce
+     */
     @Override
     public void editingCanceled(ChangeEvent ce) {
     }

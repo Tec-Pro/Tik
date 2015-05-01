@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package main;
 
 import controllers.ControllerGuiAdminLogin;
@@ -30,7 +29,7 @@ public class Main {
      */
     public static void main(String[] args) throws NotBoundException, MalformedURLException, RemoteException, IOException {
 
-                 try {
+        try {
             JFrame.setDefaultLookAndFeelDecorated(true);
             com.jtattoo.plaf.aero.AeroLookAndFeel.setTheme("Default");
 
@@ -40,11 +39,11 @@ public class Main {
         try {
             GeneralConfig.loadProperties();
         } catch (IOException ex) {
-            GeneralConfig.saveProperties((float)100);
+            GeneralConfig.createDefaultProperties();
             JOptionPane.showMessageDialog(null, "El archivo de configuracion no existe, la configuracion por default fue creada.");
         }
-          
-                 ControllerGuiAdminLogin controllerLogin = new ControllerGuiAdminLogin(); //inicio l apantalla del login y desde aca arranca el programa
+
+        ControllerGuiAdminLogin controllerLogin = new ControllerGuiAdminLogin(); //inicio l apantalla del login y desde aca arranca el programa
     }
-    
+
 }

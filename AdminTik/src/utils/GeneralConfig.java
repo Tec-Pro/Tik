@@ -23,8 +23,17 @@ public class GeneralConfig {
 
     private static File configFile = new File("generalConfig.properties");
     private static Properties configProps;
+
+    /**
+     *
+     */
     public static float percent;
 
+    /**
+     *guarda en un archivo de propiedades el porcentaje de ganancias
+     * @param percent porcentaje de ganancia
+     * @throws IOException
+     */
     public static void saveProperties(float percent) throws IOException  {
         configProps.setProperty("percent", ParserFloat.floatToString(percent));
         OutputStream outputStream = new FileOutputStream(configFile);
@@ -32,6 +41,10 @@ public class GeneralConfig {
         outputStream.close();
     }
 
+    /**
+     *carga las propieades del archivo de configuracion
+     * @throws IOException
+     */
     public static void loadProperties() throws IOException {
         Properties defaultProps = new Properties();
         defaultProps.setProperty("percent", ParserFloat.floatToString((float)100));
@@ -42,7 +55,17 @@ public class GeneralConfig {
         percent = ParserFloat.stringToFloat(configProps.getProperty("percent"));
         inputStream.close();
 
-
     }
 
+    /**
+     *crea un archivo de configuracion por defaul con 100% de ganancias
+     * @throws IOException
+     */
+    public static void createDefaultProperties() throws IOException  {
+        configProps.setProperty("percent", ParserFloat.floatToString((float)100));
+        OutputStream outputStream = new FileOutputStream(configFile);
+        configProps.store(outputStream, "general configurations");
+        outputStream.close();
+    }
+    
 }

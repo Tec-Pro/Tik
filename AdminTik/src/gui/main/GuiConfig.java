@@ -5,6 +5,12 @@
  */
 package gui.main;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFormattedTextField;
 import utils.GeneralConfig;
 import utils.ParserFloat;
@@ -18,14 +24,33 @@ public class GuiConfig extends javax.swing.JDialog {
     /**
      * Creates new form GuiConfig
      */
-    private int status=0;
-    private float percent=0;
+    private int status = 0;
+    private float percent = 0;
+
     public GuiConfig(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        percent=GeneralConfig.percent;
+        Enumeration<NetworkInterface> n;
+        try {
+            n = NetworkInterface.getNetworkInterfaces();
+            for (; n.hasMoreElements();) {
+                NetworkInterface e = n.nextElement();
+
+                Enumeration<InetAddress> a = e.getInetAddresses();
+                for (; a.hasMoreElements();) {
+                    InetAddress addr = a.nextElement();
+                    if(addr.isSiteLocalAddress()){
+                        lblIp.setText(addr.getHostAddress());
+                    }
+                }
+            }
+        } catch (SocketException ex) {
+            Logger.getLogger(GuiConfig.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        percent = GeneralConfig.percent;
         txtBenefit.setText(ParserFloat.floatToString(percent));
-        
+
     }
 
     public JFormattedTextField getTxtBenefit() {
@@ -46,6 +71,9 @@ public class GuiConfig extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         btnAccept = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        lblIp = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -69,23 +97,51 @@ public class GuiConfig extends javax.swing.JDialog {
             }
         });
 
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("IP de esta computadora"));
+
+        jLabel3.setText("Mi IP es:");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblIp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jLabel3)
+                .addGap(0, 14, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(lblIp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtBenefit, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
-                .addContainerGap(178, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnCancel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnAccept)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnCancel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAccept))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtBenefit, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel2)
+                        .addGap(0, 166, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -96,7 +152,9 @@ public class GuiConfig extends javax.swing.JDialog {
                     .addComponent(jLabel1)
                     .addComponent(txtBenefit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addGap(113, 113, 113)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(85, 85, 85)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAccept)
                     .addComponent(btnCancel))
@@ -107,14 +165,14 @@ public class GuiConfig extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAcceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcceptActionPerformed
-       status=1;
-       percent= ParserFloat.stringToFloat(txtBenefit.getText());
-       this.dispose();
+        status = 1;
+        percent = ParserFloat.stringToFloat(txtBenefit.getText());
+        this.dispose();
     }//GEN-LAST:event_btnAcceptActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-       status=0;
-       this.dispose();
+        status = 0;
+        this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
     public int getStatus() {
@@ -172,6 +230,9 @@ public class GuiConfig extends javax.swing.JDialog {
     private javax.swing.JButton btnCancel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblIp;
     private javax.swing.JFormattedTextField txtBenefit;
     // End of variables declaration//GEN-END:variables
 }

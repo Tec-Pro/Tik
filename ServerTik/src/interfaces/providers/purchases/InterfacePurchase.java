@@ -19,7 +19,7 @@ import utils.Pair;
 public interface InterfacePurchase extends Remote {
 
     /**
-     *
+     *crea una nueva compra
      * @param cost
      * @param paid
      * @param date
@@ -32,7 +32,7 @@ public interface InterfacePurchase extends Remote {
     public Integer create(Float cost, Float paid, String date, Integer providerId, String datePaid, LinkedList<Pair<Integer, Pair<Float, Float>>> products) throws java.rmi.RemoteException;
 
     /**
-     *
+     *borra una compra
      * @param idPurchase
      * @return
      * @throws RemoteException
@@ -40,7 +40,7 @@ public interface InterfacePurchase extends Remote {
     public boolean delete(Integer idPurchase) throws java.rmi.RemoteException;
 
     /**
-     *
+     *retorna la compra con el id idPurchase
      * @param idPurchase
      * @return
      * @throws RemoteException
@@ -48,7 +48,7 @@ public interface InterfacePurchase extends Remote {
     public Pair<Map<String, Object>, List<Map>> getPurchase(Integer idPurchase) throws java.rmi.RemoteException;
 
     /**
-     *
+     *obtiene las compras de un proveedor
      * @param idProvider
      * @return
      * @throws RemoteException
@@ -56,7 +56,7 @@ public interface InterfacePurchase extends Remote {
     public List<Pair<Map<String, Object>, List<Map>>> getPurchasesProvider(Integer idProvider) throws java.rmi.RemoteException;
 
     /**
-     *
+     *obtiene las compras de un proveedor dada dos fechas
      * @param idProvider
      * @param from
      * @param until

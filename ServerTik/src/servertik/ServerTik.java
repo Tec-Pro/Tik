@@ -16,11 +16,16 @@ import implementsInterface.CrudProviderCategory;
 import implementsInterface.CrudUser;
 import implementsInterface.Server;
 import implementsInterface.providers.purchase.CRUDPurchase;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.rmi.Naming;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.util.Enumeration;
 import org.javalite.activejdbc.Base;
 import search.providersSearch.ProvidersSearch;
 
@@ -33,8 +38,24 @@ public class ServerTik {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws RemoteException, MalformedURLException, InterruptedException {
-                 // arrancar un gestor de seguridad – esto es 
+    public static void main(String[] args) throws RemoteException, MalformedURLException, InterruptedException, UnknownHostException, SocketException {
+             
+    Enumeration<NetworkInterface> n = NetworkInterface.getNetworkInterfaces();
+    for (; n.hasMoreElements();)
+    {
+        NetworkInterface e = n.nextElement();
+
+        Enumeration<InetAddress> a = e.getInetAddresses();
+        for (; a.hasMoreElements();)
+        {
+            InetAddress addr = a.nextElement();
+            if(addr.isSiteLocalAddress())
+                System.out.println("The IP of server is: " + addr.getHostAddress());
+        }
+    }
+        
+
+            // arrancar un gestor de seguridad – esto es 
             // necesario si se utiliza stub downloading
             /*if (System.getSecurityManager() == null){
                 System.setSecurityManager(new RMISecurityManager());

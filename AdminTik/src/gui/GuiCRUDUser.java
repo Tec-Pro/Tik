@@ -111,15 +111,6 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         lblPhoto.updateUI();
     }
 
-    public String dateToMySQLDate(Date fecha, boolean paraMostrar) {
-        if (paraMostrar) {
-            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
-            return sdf.format(fecha);
-        } else {
-            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
-            return sdf.format(fecha);
-        }
-    }
 
     public void modifyMode(boolean b) {
         if (b) {
