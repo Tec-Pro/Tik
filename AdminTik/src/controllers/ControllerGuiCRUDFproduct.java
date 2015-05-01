@@ -211,7 +211,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
                 guiCRUDFProduct.loadProduct(fproduct);
                 float productionPrice = crudFproduct.calculateProductionPrice(id);
                 guiCRUDFProduct.getTxtProductionPrice().setText(ParserFloat.floatToString(productionPrice));
-                guiCRUDFProduct.getTxtSuggestedPrice().setText(ParserFloat.floatToString(productionPrice+productionPrice*GeneralConfig.percent/100));
+                guiCRUDFProduct.getTxtSuggestedPrice().setText(ParserFloat.floatToString(productionPrice + productionPrice * GeneralConfig.percent / 100));
                 refreshReciperList();
             } else {
                 if (!(isRepeatedOnTableReciper(tableProducts.getValueAt(tableProducts.getSelectedRow(), 1)))) {
@@ -248,8 +248,25 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
             }
         } else {
             if (!editingInformation) {
-                guiCRUDFProduct.clear();
-                guiCRUDFProduct.clicSaveProduct();
+                tableReciperDefault.setRowCount(0);
+                guiCRUDFProduct.getTxtId().setText("");
+                guiCRUDFProduct.getTxtName().setText("");
+                guiCRUDFProduct.getTxtProductionPrice().setText("");
+                guiCRUDFProduct.getTxtSellPrice().setText("");
+                guiCRUDFProduct.getTxtSuggestedPrice().setText("");
+                guiCRUDFProduct.getBelong().setSelectedIndex(-1);
+                guiCRUDFProduct.getBelong().removeAllItems();
+                guiCRUDFProduct.getCategory().setSelectedIndex(-1);
+                guiCRUDFProduct.getCategory().removeAllItems();
+                guiCRUDFProduct.getSubcategory().setSelectedIndex(-1);
+                guiCRUDFProduct.getSubcategory().removeAllItems();
+                guiCRUDFProduct.getBtnNew().setEnabled(true);
+                guiCRUDFProduct.getBtnCancel().setEnabled(false);
+                guiCRUDFProduct.getBtnDelete().setEnabled(false);
+                guiCRUDFProduct.getBtnModify().setEnabled(false);
+                guiCRUDFProduct.getBtnSave().setEnabled(false);
+                guiCRUDFProduct.getBtnAddCategory().setEnabled(false);
+                guiCRUDFProduct.getBtnAddSubcategory().setEnabled(false);
             }
         }
     }
@@ -404,7 +421,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
                     String belong = guiCRUDFProduct.getBelong().getSelectedItem().toString();
                     float sellPrice = ParserFloat.stringToFloat(guiCRUDFProduct.getTxtSellPrice().getText());
                     try {
-                        crudFproduct.create(name, subcategory_id, listP, listE, sellPrice,belong);
+                        crudFproduct.create(name, subcategory_id, listP, listE, sellPrice, belong);
                         JOptionPane.showMessageDialog(guiCRUDFProduct, "¡Producto creado exitosamente!");
                         editingInformation = false;
                         guiCRUDFProduct.clicSaveProduct();
@@ -439,7 +456,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
                     int id = Integer.parseInt(guiCRUDFProduct.getTxtId().getText());
                     float sellPrice = ParserFloat.stringToFloat(guiCRUDFProduct.getTxtSellPrice().getText());
                     try {
-                        crudFproduct.modify(id, name, subcategory_id, listP, listE, sellPrice,belong);
+                        crudFproduct.modify(id, name, subcategory_id, listP, listE, sellPrice, belong);
                         JOptionPane.showMessageDialog(guiCRUDFProduct, "¡Producto modificado exitosamente!");
                         editingInformation = false;
                         guiCRUDFProduct.clicSaveProduct();
@@ -453,13 +470,30 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
                 }
             }
         }
-        if (e.getSource() == guiCRUDFProduct.getBtnCancel()) { //creo un producto pero cancel0          
+        if (e.getSource() == guiCRUDFProduct.getBtnCancel()) { //creo un producto pero cancel 
             isNew = false;
             editingInformation = false;
-            guiCRUDFProduct.clicSaveProduct();
+            tableReciperDefault.setRowCount(0);
+            guiCRUDFProduct.getTxtId().setText("");
+            guiCRUDFProduct.getTxtName().setText("");
+            guiCRUDFProduct.getTxtProductionPrice().setText("");
+            guiCRUDFProduct.getTxtSellPrice().setText("");
+            guiCRUDFProduct.getTxtSuggestedPrice().setText("");
+            guiCRUDFProduct.getBelong().setSelectedIndex(-1);
+            guiCRUDFProduct.getBelong().removeAllItems();
+            guiCRUDFProduct.getCategory().setSelectedIndex(-1);
+            guiCRUDFProduct.getCategory().removeAllItems();
+            guiCRUDFProduct.getSubcategory().setSelectedIndex(-1);
+            guiCRUDFProduct.getSubcategory().removeAllItems();
+            guiCRUDFProduct.getBtnNew().setEnabled(true);
+            guiCRUDFProduct.getBtnCancel().setEnabled(false);
+            guiCRUDFProduct.getBtnDelete().setEnabled(false);
+            guiCRUDFProduct.getBtnModify().setEnabled(false);
+            guiCRUDFProduct.getBtnSave().setEnabled(false);
+            guiCRUDFProduct.getBtnAddCategory().setEnabled(false);
+            guiCRUDFProduct.getBtnAddSubcategory().setEnabled(false);
             try {
-                fproductList = crudFproduct.getFproducts();
-                refreshList();
+                search();
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiCRUDEproduct.class.getName()).log(Level.SEVERE, null, ex);
             }

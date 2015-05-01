@@ -202,8 +202,14 @@ public class ControllerGuiCRUDEproduct implements ActionListener {
             }
         } else {
             if (!editingInformation) {
-                guiCRUDEProduct.clear();
-                guiCRUDEProduct.clicSaveProduct();
+                tableReciperDefault.setRowCount(0);
+                guiCRUDEProduct.getTxtId().setText("");
+                guiCRUDEProduct.getTxtName().setText("");
+                guiCRUDEProduct.getBtnNew().setEnabled(true);
+                guiCRUDEProduct.getBtnCancel().setEnabled(false);
+                guiCRUDEProduct.getBtnDelete().setEnabled(false);
+                guiCRUDEProduct.getBtnModify().setEnabled(false);
+                guiCRUDEProduct.getBtnSave().setEnabled(false);
             }
         }
     }
@@ -252,7 +258,7 @@ public class ControllerGuiCRUDEproduct implements ActionListener {
             String measureU = crudPproduct.getPproduct(idx).get("measure_unit").toString();
             row[0] = idxs;
             row[1] = crudPproduct.getPproduct(Integer.parseInt(epPp.get("pproduct_id").toString())).get("name").toString(); //NOMBRE
-            row[2] = ParserFloat.floatToString( (float)epPp.get("amount")); // Cantidad    
+            row[2] = ParserFloat.floatToString((float) epPp.get("amount")); // Cantidad    
             row[3] = measureU;
             tableReciperDefault.addRow(row);
         }
@@ -343,13 +349,19 @@ public class ControllerGuiCRUDEproduct implements ActionListener {
                 }
             }
         }
-        if (e.getSource() == guiCRUDEProduct.getBtnCancel()) { //creo un producto         
+        if (e.getSource() == guiCRUDEProduct.getBtnCancel()) { //creo un producto                   
             isNew = false;
             editingInformation = false;
-            guiCRUDEProduct.clicSaveProduct();
+            tableReciperDefault.setRowCount(0);
+            guiCRUDEProduct.getTxtId().setText("");
+            guiCRUDEProduct.getTxtName().setText("");
+            guiCRUDEProduct.getBtnNew().setEnabled(true);
+            guiCRUDEProduct.getBtnCancel().setEnabled(false);
+            guiCRUDEProduct.getBtnDelete().setEnabled(false);
+            guiCRUDEProduct.getBtnModify().setEnabled(false);
+            guiCRUDEProduct.getBtnSave().setEnabled(false);
             try {
-                eproductList = crudEproduct.getEproducts();
-                refreshList();
+                search();
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiCRUDEproduct.class.getName()).log(Level.SEVERE, null, ex);
             }
