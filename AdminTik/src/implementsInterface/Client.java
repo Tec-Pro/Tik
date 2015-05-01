@@ -20,6 +20,7 @@ import java.rmi.server.UnicastRemoteObject;
  * dosomething de esta clase y asi los clietes mozos actualizan sus vistas
  */
 public class Client extends UnicastRemoteObject implements interfaces.InterfaceClient {
+    
     @Override
     public void doSomething() throws RemoteException {
         System.out.println("Server invoked doSomething()");

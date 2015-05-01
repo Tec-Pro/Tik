@@ -33,7 +33,7 @@ public class ServerTik {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws RemoteException, MalformedURLException {
+    public static void main(String[] args) throws RemoteException, MalformedURLException, InterruptedException {
                  // arrancar un gestor de seguridad – esto es 
             // necesario si se utiliza stub downloading
             /*if (System.getSecurityManager() == null){
@@ -69,7 +69,10 @@ public class ServerTik {
            Naming.rebind("crudProviderCategory", crudProviderCategory);
            Naming.rebind("providersSearch", providerSearch);
            Naming.rebind("Server", server);  
-           
+           while(true){ // le aviso infinitamente que tienen pedidos 
+           Thread.sleep(7000);
+           Server.notifyWaitersOrderReady(1);
+           }
         //   System.out.println("hice un usuario" + crudAdmin.create("agu", "aguasdasd"));
     }
     

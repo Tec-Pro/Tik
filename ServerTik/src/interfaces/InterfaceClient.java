@@ -12,10 +12,19 @@ import java.rmi.RemoteException;
 /**
  *
  * @author nico
+ * 
+ * En esta clase van los métodos para que el server pueda invocarlos
  */
 
 public interface InterfaceClient extends Remote {
     
     
     public void doSomething() throws RemoteException;
+    
+    /**
+     * es un ejemplo de cuando la cocina envia un pedido que esta listo y le pasa el id
+     * @param id id del pedido puevo
+     * @throws RemoteException 
+     */
+    public void readyOrder(int id) throws RemoteException;
 }

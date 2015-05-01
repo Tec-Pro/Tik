@@ -9,6 +9,7 @@ package implementsInterface;
 import interfaces.InterfaceClient;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -32,6 +33,18 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
     public Server()throws RemoteException{
         super();
         clients= new LinkedList<>();
+    }
+    
+    //le aviso a los mozos que el pedido con id está listo
+    public static void notifyWaitersOrderReady(int id) throws RemoteException{
+        Iterator<Object[]> it= clients.iterator();
+        while(it.hasNext()){
+            Object[] client= it.next();
+            if(client[1].equals("waiter")){
+                ((InterfaceClient)client[0]).readyOrder(id);
+            }
+            
+        }
     }
     
 }

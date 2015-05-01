@@ -8,6 +8,7 @@ package implementsInterface;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -27,5 +28,10 @@ public class Client extends UnicastRemoteObject implements interfaces.InterfaceC
     
     public Client() throws RemoteException{
         super();
+    }
+
+    @Override
+    public void readyOrder(int id) throws RemoteException {
+        JOptionPane.showConfirmDialog(null, "El pedido "+ id+" esta listo vieja");
     }
 }
