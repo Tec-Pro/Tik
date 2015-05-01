@@ -42,7 +42,8 @@ public interface InterfacePurchase extends Remote {
     /**
      *retorna la compra con el id idPurchase
      * @param idPurchase
-     * @return
+     * @return Pair<Map<String, Object>, List<Map>> el primer elemento es el map de la compra que contiene 
+     *los datos de la compra y el segundo es una lista de map que contiene los alimentos comprados
      * @throws RemoteException
      */
     public Pair<Map<String, Object>, List<Map>> getPurchase(Integer idPurchase) throws java.rmi.RemoteException;
