@@ -173,8 +173,9 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
         return ret;
     }
     
-    public boolean validatePass(int id, String pass){
+    public boolean validatePass(int id, String pass) throws java.rmi.RemoteException{
+        Utils.abrirBase();
         User user = User.findById(id);
-        return(user.get("pass").equals(pass));
+        return (user.get("pass").equals(pass));
     }
 }
