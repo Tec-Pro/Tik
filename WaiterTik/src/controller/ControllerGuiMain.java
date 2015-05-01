@@ -50,10 +50,10 @@ public class ControllerGuiMain implements ActionListener {
         //instancia nueva a componente
         ComponentUserLoginBtn cULBtn = new ComponentUserLoginBtn(user);
         cULBtn.btn.addActionListener(this);//escucha eventos
+        cULBtn.setSize(guiMain.getBtnLogin().getSize());
+        guiMain.getPanelLogin().add(cULBtn);//se añade al jpanel 
+        guiMain.getPanelLogin().revalidate();
         cULBtn.setVisible(true);
-        guiMain.getPanelLogin().add(cULBtn);//se añade al jpanel
-        guiMain.getPanelLogin().validate();
-        guiMain.validate();
         //se añade al MAP
         this.buttons.put("key_" + user, cULBtn);
     }
@@ -72,7 +72,8 @@ public class ControllerGuiMain implements ActionListener {
             if (itm.equals(command)) {
                 //se recupera el contenido del JTextfield
                 String name = ((ComponentUserLoginBtn) entry.getValue()).btn.getText();
-                //FILTRAR               
+                //FILTRAR 
+                System.out.print("APRIETO");
             }
         }
         if (e.getSource() == guiMain.getBtnLogin()) {            
@@ -96,6 +97,7 @@ public class ControllerGuiMain implements ActionListener {
             //boolean validate = crudUser.validatePass(Integer.parseInt(split[0]),guiLogin.getTxtPass().getText());
             if (validate) {
                 addMyComponent("1-ramiro");
+                 addMyComponent("1-ra2iro");
                 guiLogin.dispose();
             } else {
                  JOptionPane.showMessageDialog(guiMain, "Ocurrió un error, contraseña incorrecta", "Error!", JOptionPane.ERROR_MESSAGE);
