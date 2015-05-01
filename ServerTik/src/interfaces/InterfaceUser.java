@@ -66,5 +66,6 @@ public interface InterfaceUser extends Remote {
     public  List<Map> getUsers() throws java.rmi.RemoteException;    
 
     public Map<String,Object> modifyPhoto(int id, String photo ) throws java.rmi.RemoteException;
-         
+    
+    public boolean validatePass(int id, String pass);
 }
