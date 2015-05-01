@@ -15,6 +15,7 @@ import models.Subcategory;
 import models.Category;
 import models.Fproduct;
 import org.javalite.activejdbc.Base;
+import org.javalite.activejdbc.LazyList;
 import utils.Utils;
 
 /**
@@ -77,11 +78,16 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
     public boolean delete(int id) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Category category = Category.findById(id);
+        Subcategory subcategoryDefault = Subcategory.findById(1);
         boolean res = true;
         if (category != null) {
             Base.openTransaction();
            for(Subcategory s : category.getAll(Subcategory.class)){
-              res = res && s.delete();
+               LazyList<Fproduct> fproducts = s.getAll(Fproduct.class);
+               for(Fproduct fp : fproducts){
+                   subcategoryDefault.add(fp);
+               }
+               res = res && s.delete();
            }
            res = res && category.delete();
             Base.commitTransaction();
@@ -130,7 +136,12 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
         Base.openTransaction();
         boolean ret = false;
         Subcategory subcategory = Subcategory.findById(id);
+        Subcategory subcategoryDefault = Subcategory.findById(1);
         if (subcategory != null) {
+            LazyList<Fproduct> fproducts = subcategory.getAll(Fproduct.class);
+            for(Fproduct fp : fproducts){
+                subcategoryDefault.add(fp);
+            }
             ret = subcategory.delete();
         }
         Base.commitTransaction();
