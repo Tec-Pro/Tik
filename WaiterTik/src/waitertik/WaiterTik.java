@@ -6,6 +6,7 @@
 
 package waitertik;
 
+import controller.ControllerGuiMain;
 import implementsInterface.Client;
 import interfaces.InterfaceServer;
 import java.io.IOException;
@@ -61,13 +62,11 @@ public class WaiterTik {
                     System.exit(0);
                 }
                 connected = false;
-
             }
+            
+            
         }
-              
-              
-
-       
+        ControllerGuiMain c = new ControllerGuiMain();          
     }
     
 }
