@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import utils.Config;
 
@@ -39,6 +40,7 @@ public class ControllerGuiMain implements ActionListener {
         guiMain.setActionListener(this);
         buttons = new HashMap();
         guiMain.setVisible(true);
+        guiMain.setExtendedState(JFrame.MAXIMIZED_BOTH);
         crudUser = (InterfaceUser) Naming.lookup("//" + Config.ip + "/crudUser");
     }
     
