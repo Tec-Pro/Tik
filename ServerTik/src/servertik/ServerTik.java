@@ -11,6 +11,7 @@ import implementsInterface.CRUDEproduct;
 import implementsInterface.CRUDFproduct;
 import implementsInterface.CRUDPproduct;
 import implementsInterface.CrudAdmin;
+import implementsInterface.CrudPresence;
 import implementsInterface.CrudProvider;
 import implementsInterface.CrudProviderCategory;
 import implementsInterface.CrudUser;
@@ -78,6 +79,7 @@ public class ServerTik {
            CrudProvider crudProvider= new CrudProvider();
            CrudProviderCategory crudProviderCategory= new CrudProviderCategory();
            ProvidersSearch providerSearch = new ProvidersSearch();
+           CrudPresence crudPresence = new CrudPresence();
            //Asocio el objeto remoto 's' a la direccion de mi host seguida de un /nombreAsociado
            Naming.rebind("crudAdmin", crudAdmin); 
            Naming.rebind("CRUDPproduct", CRUDPproduct);
@@ -89,6 +91,7 @@ public class ServerTik {
            Naming.rebind("crudProvider", crudProvider);
            Naming.rebind("crudProviderCategory", crudProviderCategory);
            Naming.rebind("providersSearch", providerSearch);
+           Naming.rebind("crudPresence", crudPresence);
            Naming.rebind("Server", server);  
            
            //ESTO ES DE LOS PEDIDOS DEL TORTUGA LO COMENTO PORQUE LE PUSO WHILE INFINITO 

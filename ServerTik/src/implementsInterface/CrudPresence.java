@@ -6,6 +6,7 @@ package implementsInterface;
 
 import interfaces.InterfacePresence;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -15,7 +16,11 @@ import models.Presence;
  *
  * @author jacinto
  */
-public class CrudPresence implements InterfacePresence{
+public class CrudPresence extends UnicastRemoteObject implements InterfacePresence{
+
+    public CrudPresence() throws RemoteException {
+        super();
+    }
 
     @Override
     public Map<String, Object> create(int userId) throws RemoteException {
@@ -24,7 +29,7 @@ public class CrudPresence implements InterfacePresence{
        SimpleDateFormat hour = new SimpleDateFormat("HH:mm:ss");
         System.out.println(date.format(now));
         System.out.println(hour.format(now));        
-       Presence p = Presence.createIt("day",date.format(now),"enrty_time",hour.format(now),"user_id",userId);
+       Presence p = Presence.createIt("day",date.format(now),"entry_time",hour.format(now),"user_id",userId);
        return p.toMap();
     }
 

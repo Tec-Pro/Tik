@@ -4,9 +4,10 @@
  */
 package controller;
 
-import gui.GuiLogin;
+import gui.login.GuiLogin;
 import gui.GuiMain;
-import gui.ComponentUserLoginBtn;
+import gui.login.ComponentUserLoginBtn;
+import interfaces.InterfacePresence;
 import interfaces.InterfaceUser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,8 +16,10 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -33,7 +36,9 @@ public class ControllerGuiMain implements ActionListener {
     private GuiMain guiMain;
     private GuiLogin guiLogin;
     private InterfaceUser crudUser;
+    private InterfacePresence crudPresence;
     private Map buttons; //Nos sirve para almacenar a los objetos creados
+    private Set<Map> online;
 
     public ControllerGuiMain() throws NotBoundException, MalformedURLException, RemoteException {
         guiMain = new GuiMain();
@@ -42,10 +47,10 @@ public class ControllerGuiMain implements ActionListener {
         guiMain.setVisible(true);
         guiMain.setExtendedState(JFrame.MAXIMIZED_BOTH);
         crudUser = (InterfaceUser) Naming.lookup("//" + Config.ip + "/crudUser");
+        crudPresence = (InterfacePresence) Naming.lookup("//" + Config.ip + "/crudPresence");
+        online = new HashSet<Map>();        
     }
     
-    
-
     public void addMyComponent(String user) {
         //instancia nueva a componente
         ComponentUserLoginBtn cULBtn = new ComponentUserLoginBtn(user);
@@ -55,7 +60,7 @@ public class ControllerGuiMain implements ActionListener {
         guiMain.getPanelLogin().revalidate();
         cULBtn.setVisible(true);
         //se añade al MAP
-        this.buttons.put("key_" + user, cULBtn);
+        this.buttons.put(user, cULBtn);
     }
 
     @Override
@@ -73,40 +78,41 @@ public class ControllerGuiMain implements ActionListener {
                 //se recupera el contenido del JTextfield
                 String name = ((ComponentUserLoginBtn) entry.getValue()).btn.getText();
                 //FILTRAR 
-                System.out.print("APRIETO");
             }
         }
         if (e.getSource() == guiMain.getBtnLogin()) {            
             try {
                 guiLogin = new GuiLogin(guiMain, true);
-                guiLogin.loadCBoxUsers(crudUser.getUsers());
+                Set<Map> offline = new HashSet<Map>();
+                offline.addAll(crudUser.getUsers());
+                offline.removeAll(online);
+                guiLogin.loadCBoxUsers(offline);
                 guiLogin.setActionListener(this);
-                guiLogin.setVisible(true);
-                
+                guiLogin.setVisible(true);                
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
+            }            
+        }
+        if (e.getSource() == guiLogin.getBtnAccept()) {            
+            String user = guiLogin.getcBoxUsers().getItemAt(guiLogin.getcBoxUsers().getSelectedIndex()).toString();
+            String split[] = user.split("-");
+            int userId = Integer.parseInt(split[0]);
+            try {
+                //crudUser.validatePass(userId,guiLogin.getTxtPass().getText())
+                if (true) {
+                     addMyComponent(user);
+                     crudPresence.create(userId);
+                     guiLogin.dispose();
+                     online.add(crudUser.getUser(userId));
+                 } else {
+                      JOptionPane.showMessageDialog(guiMain, "Ocurrió un error, contraseña incorrecta", "Error!", JOptionPane.ERROR_MESSAGE);
+                 }
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-        }
-
-        if (e.getSource() == guiLogin.getBtnAccept()) {
-            
-            //String user = guiLogin.getcBoxUsers().getItemAt(guiLogin.getcBoxUsers().getSelectedIndex()).toString();
-            //String split[] = user.split("-");
-            boolean validate = true;
-            //boolean validate = crudUser.validatePass(Integer.parseInt(split[0]),guiLogin.getTxtPass().getText());
-            if (validate) {
-                addMyComponent("1-ramiro");
-                 addMyComponent("1-ra2iro");
-                guiLogin.dispose();
-            } else {
-                 JOptionPane.showMessageDialog(guiMain, "Ocurrió un error, contraseña incorrecta", "Error!", JOptionPane.ERROR_MESSAGE);
-            }
         }
         if (e.getSource() == guiLogin.getBtnCancel()) {
+             guiLogin.dispose();
         }
-
-    }    
-    
-    
+    }        
 }

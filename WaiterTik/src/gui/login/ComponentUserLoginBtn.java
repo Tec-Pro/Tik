@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui;
+package gui.login;
 
 /**
  *
@@ -19,8 +19,7 @@ public class ComponentUserLoginBtn extends javax.swing.JPanel {
         initComponents();
         btn.setText(name);
         this.name = name;
-        String split[] = name.split("-");
-        this.btn.setActionCommand("key_" + split[0]);
+        this.btn.setActionCommand(name);
         this.setVisible(true);
     }
 

@@ -2,12 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui;
+package gui.login;
 
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPasswordField;
@@ -47,7 +48,11 @@ public class GuiLogin extends javax.swing.JDialog {
         return txtPass;
     }
 
-    public void loadCBoxUsers(List<Map> listU) {
+    /**
+     * carga el combobox con los usuarios
+     * @param listU
+     */
+    public void loadCBoxUsers(Set<Map> listU) {
         cBoxUsers.setSelectedIndex(-1);
         cBoxUsers.removeAllItems();
         for (Map usr : listU) {
