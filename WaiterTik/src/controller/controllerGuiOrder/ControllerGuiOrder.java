@@ -14,6 +14,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyVetoException;
@@ -27,10 +29,12 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 /**
@@ -62,10 +66,10 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
         subcategoryIcon = new ImageIcon(getClass().getResource("/Icons/subcategory.png"));
         productIcon = new ImageIcon(getClass().getResource("/Icons/products.png"));
         guiAmount = new GuiAmount(gm, true);
+        guiAmount.setActionListener(this);
 
         guiOrder.getTreeMenu().addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent me) {
-
                 TreePath currentSelection = guiOrder.getTreeMenu().getSelectionPath();
                 if (currentSelection != null) {
                     currentNode = (DefaultMutableTreeNode) currentSelection.getLastPathComponent();
@@ -75,11 +79,22 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                         guiAmount.setLocationRelativeTo(null);
                         guiAmount.setVisible(true);
                     }
-
                 }
             }
         });
+        guiOrder.getTxtSearch().addKeyListener(new KeyAdapter(){
+
+            @Override
+            public void keyReleased(KeyEvent evt){
+                search();
+            }
+            
+        });
         CreateTree();
+    }
+    
+    private void search(){
+        
     }
 
     public void CreateTree() throws RemoteException {
@@ -158,6 +173,25 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //*******GuiAmount**************//
+        if(e.getSource().equals(guiAmount.getBtnAccept())){
+            try {
+                List<Map> fproducts = crudFproduct.getFproducts(currentSelectedNodeName);
+                if(fproducts.size() == 1){
+                    Map<String,Object> fp = fproducts.get(0);
+                    Object[] row = new Object[3];
+                    row[0] = fp.get("id");
+                    row[1] = guiAmount.getTxtAmount().getText();
+                    row[2] = currentSelectedNodeName;
+                    guiOrder.getTableProductsDefault().addRow(row);
+                }else{
+                    JOptionPane.showMessageDialog(guiOrder, "No se encontro el producto o existen varios productos con el mismo nombre", "Atencion!", JOptionPane.WARNING_MESSAGE);
+                }
+                guiAmount.getTxtAmount().setText("1");
+                guiAmount.setVisible(false);
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }
