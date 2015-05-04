@@ -30,6 +30,7 @@ public class GuiMain extends javax.swing.JFrame {
     
      public void setActionListener(ActionListener lis) {
         this.btnLogin.addActionListener(lis);
+        this.btnNew.addActionListener(lis);
     }
 
     public JButton getBtnLogin() {
@@ -40,6 +41,11 @@ public class GuiMain extends javax.swing.JFrame {
         return panelLogin;
     }
 
+    public JButton getBtnNew() {
+        return btnNew;
+    }
+
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -54,6 +60,7 @@ public class GuiMain extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         panelLogin = new javax.swing.JPanel();
         btnLogin = new javax.swing.JButton();
+        btnNew = new javax.swing.JButton();
         jSplitPane1 = new javax.swing.JSplitPane();
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
@@ -81,6 +88,9 @@ public class GuiMain extends javax.swing.JFrame {
 
         btnLogin.setText("Login");
         panelLogin.add(btnLogin);
+
+        btnNew.setText("Nuevo");
+        panelLogin.add(btnNew);
 
         jSplitPane1.setDividerLocation(600);
         jSplitPane1.setDividerSize(10);
@@ -238,6 +248,7 @@ public class GuiMain extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
+    private javax.swing.JButton btnNew;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

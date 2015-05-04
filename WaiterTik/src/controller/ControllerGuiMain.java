@@ -4,9 +4,11 @@
  */
 package controller;
 
+import controller.controllerGuiOrder.ControllerGuiOrder;
 import gui.login.GuiLogin;
 import gui.GuiMain;
 import gui.login.ComponentUserLoginBtn;
+import gui.order.GuiOrder;
 import interfaces.InterfacePresence;
 import interfaces.InterfaceUser;
 import java.awt.event.ActionEvent;
@@ -39,6 +41,8 @@ public class ControllerGuiMain implements ActionListener {
     private InterfacePresence crudPresence;
     private Map buttons; //Nos sirve para almacenar a los objetos creados
     private Set<Map> online;
+    private GuiOrder guiOrder;
+    ControllerGuiOrder controllerGuiOrder;
 
     public ControllerGuiMain() throws NotBoundException, MalformedURLException, RemoteException {
         guiMain = new GuiMain();
@@ -48,7 +52,9 @@ public class ControllerGuiMain implements ActionListener {
         guiMain.setExtendedState(JFrame.MAXIMIZED_BOTH);
         crudUser = (InterfaceUser) Naming.lookup("//" + Config.ip + "/crudUser");
         crudPresence = (InterfacePresence) Naming.lookup("//" + Config.ip + "/crudPresence");
-        online = new HashSet<Map>();        
+        online = new HashSet<Map>();  
+        guiOrder = new GuiOrder(guiMain, true);
+        controllerGuiOrder = new ControllerGuiOrder(guiOrder);
     }
     
     public void addMyComponent(String user) {
@@ -113,6 +119,9 @@ public class ControllerGuiMain implements ActionListener {
         }
         if (e.getSource() == guiLogin.getBtnCancel()) {
              guiLogin.dispose();
+        }
+        if(e.getSource().equals(guiMain.getBtnNew())){
+            guiOrder.setVisible(true);
         }
     }        
 }
