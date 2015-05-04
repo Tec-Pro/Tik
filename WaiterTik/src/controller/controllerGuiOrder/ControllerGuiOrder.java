@@ -5,6 +5,8 @@
  */
 package controller.controllerGuiOrder;
 
+import gui.GuiMain;
+import gui.order.GuiAmount;
 import gui.order.GuiOrder;
 import interfaces.InterfaceCategory;
 import interfaces.InterfaceFproduct;
@@ -12,6 +14,9 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyVetoException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -19,17 +24,20 @@ import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 
 /**
  *
  * @author alan
  */
-public class ControllerGuiOrder extends DefaultTreeCellRenderer implements ActionListener{
+public class ControllerGuiOrder extends DefaultTreeCellRenderer implements ActionListener {
 
     private final GuiOrder guiOrder;
     private final InterfaceCategory crudProductCategory;
@@ -42,8 +50,9 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
     private ImageIcon categoryIcon;
     private ImageIcon subcategoryIcon;
     private ImageIcon productIcon;
+    private GuiAmount guiAmount;
 
-    public ControllerGuiOrder(GuiOrder go) throws NotBoundException, MalformedURLException, RemoteException {
+    public ControllerGuiOrder(GuiOrder go,GuiMain gm) throws NotBoundException, MalformedURLException, RemoteException {
         guiOrder = go;
         crudProductCategory = (InterfaceCategory) Naming.lookup("//localhost/CRUDCategory");
         crudFproduct = (InterfaceFproduct) Naming.lookup("//localhost/CRUDFproduct");
@@ -52,6 +61,24 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
         categoryIcon = new ImageIcon(getClass().getResource("/Icons/category.png"));
         subcategoryIcon = new ImageIcon(getClass().getResource("/Icons/subcategory.png"));
         productIcon = new ImageIcon(getClass().getResource("/Icons/products.png"));
+        guiAmount = new GuiAmount(gm, true);
+
+        guiOrder.getTreeMenu().addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent me) {
+
+                TreePath currentSelection = guiOrder.getTreeMenu().getSelectionPath();
+                if (currentSelection != null) {
+                    currentNode = (DefaultMutableTreeNode) currentSelection.getLastPathComponent();
+                    currentSelectedNodeName = currentNode.toString();// nombre de la hoja seleccionada
+                    if (currentNode.getLevel() == 3) {
+                        guiAmount.getLblProd().setText(currentSelectedNodeName);
+                        guiAmount.setLocationRelativeTo(null);
+                        guiAmount.setVisible(true);
+                    }
+
+                }
+            }
+        });
         CreateTree();
     }
 

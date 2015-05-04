@@ -54,7 +54,7 @@ public class ControllerGuiMain implements ActionListener {
         crudPresence = (InterfacePresence) Naming.lookup("//" + Config.ip + "/crudPresence");
         online = new HashSet<Map>();  
         guiOrder = new GuiOrder(guiMain, true);
-        controllerGuiOrder = new ControllerGuiOrder(guiOrder);
+        controllerGuiOrder = new ControllerGuiOrder(guiOrder,guiMain);
     }
     
     public void addMyComponent(String user) {
@@ -121,6 +121,7 @@ public class ControllerGuiMain implements ActionListener {
              guiLogin.dispose();
         }
         if(e.getSource().equals(guiMain.getBtnNew())){
+            guiOrder.setLocationRelativeTo(null);
             guiOrder.setVisible(true);
         }
     }        
