@@ -46,7 +46,7 @@ import utils.GeneralConfig;
  */
 public class ControllerMain implements ActionListener {
 
-    private static GuiMain guiMain; //interfaz principal con el desktpp
+    public static GuiMain guiMain; //interfaz principal con el desktop, publico para los Dialog.
     private static Map<String, Object> userLogged; //usuario logeado
 
     //guis

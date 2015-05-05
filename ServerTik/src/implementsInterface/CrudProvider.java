@@ -12,10 +12,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import models.Category;
 import models.Provider;
 import models.Providercategory;
-import models.ProvidersProvidercategory;
 import org.javalite.activejdbc.Base;
 import utils.Utils;
 
@@ -25,18 +23,22 @@ import utils.Utils;
  */
 public class CrudProvider extends UnicastRemoteObject implements interfaces.providers.InterfaceProvider {
 
+    /**
+     *
+     * @throws RemoteException
+     */
     public CrudProvider() throws RemoteException {
         super();
 
     }
 
     /**
-     *
-     * @param name
-     * @param cuit
-     * @param address
-     * @param description
-     * @param phones
+     * Crea un proveedor en la base de datos.
+     * @param name nombre del proveedor.
+     * @param cuit cuit del proveedor.
+     * @param address dirección del proveedor.
+     * @param description descripción del proveedor.
+     * @param phones teléfonos del proveedor.
      * @return map representing the created provider.
      * @throws RemoteException
      */
@@ -46,18 +48,17 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.prov
         Base.openTransaction();
         Provider ret = Provider.createIt("name", name, "cuit", cuit, "address", address, "description", description, "phones", phones);
         Base.commitTransaction();
-         
         return ret.toMap();
     }
 
     /**
-     *
-     * @param id
-     * @param name
-     * @param cuit
-     * @param address
-     * @param description
-     * @param phones
+     * Función que modifica un proveedor existente de la DB.
+     * @param id id del proveedor a modificar.
+     * @param name nuevo nombre del proveedor.
+     * @param cuit nuevo cuit del proveedor.
+     * @param address nueva dirección del proveedor.
+     * @param description nueva descripción del proveedor.
+     * @param phones nuevos teléfonos del proveedor.
      * @return a map representing the modified provider if exists, empty map
      * otherwise.
      * @throws RemoteException
@@ -78,8 +79,8 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.prov
     }
 
     /**
-     *
-     * @param id
+     * Función que elimina un proveedor si existe en la DB.
+     * @param id id del proveedor a eliminar.
      * @return true if the provider was deleted from the database.
      * @throws RemoteException
      */
@@ -98,8 +99,8 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.prov
     }
 
     /**
-     *
-     * @param id
+     * Función que devuelve el proveedor correspondiente con el id pasado. 
+     * @param id id del proveedor pedido.
      * @return map representing the requested provider.
      * @throws RemoteException
      */
@@ -107,12 +108,11 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.prov
     public Map<String, Object> getProvider(int id) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Map<String, Object> ret = Provider.findById(id).toMap();
-         
         return ret;
     }
 
     /**
-     *
+     * Función que lista todos los proveedores existentes en la DB.
      * @return a list of maps representing the providers.
      * @throws RemoteException
      */
@@ -120,39 +120,23 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.prov
     public List<Map> getProviders() throws java.rmi.RemoteException {
         Utils.abrirBase();
         List<Map> ret = Provider.findAll().toMaps();
-         
         return ret;
     }
 
     /**
-     *Función que agrega una categoría a un proveedor. Recibe como parámetros
-     * el <code>id_proveedor</code> y el <code>id_categoría</code>. Devuelve un 
-     * Map conteniendo el proveedor.
-     * 
-     * @param provider_id
-     * @param category_id
-     * @return Un map con el proveedor.
-     * @throws RemoteException
+     * Función que devuelve las categorías de un proveedor específico.
+     * @param id id del proveedor del que se quieren obtener las categorías.
+     * @return una lista de Maps que representan las categorías de un proveedor.
+     * @throws RemoteException 
      */
-    @Override
-    public Map<String, Object> addCategoryToProvider(int provider_id, int category_id) throws java.rmi.RemoteException {
-        Utils.abrirBase();
-        Base.openTransaction();
-        Provider p = Provider.findById(provider_id);
-        Providercategory pc = Providercategory.findById(category_id);
-        p.add(pc);
-        Base.commitTransaction();
-        return getProvider(provider_id);
-    }
-
     @Override
     public List<Map> getCategoriesFromProvider(int id) throws RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
-        List<Map> result = new LinkedList<>();
+        List<Map> result;
         //busco el proveedor corespondiente al id
         Provider prov = Provider.findById(id);
-        if (prov != null) {
+        /*if (prov != null) {
             //saco las relaciones con categorias en las cuales se encuentra ese proveedor
             List<ProvidersProvidercategory> provCategoryList = prov.getAll(ProvidersProvidercategory.class);
             //si tiene categorias asociadas
@@ -165,9 +149,50 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.prov
                     result.add(category.toMap());
                 }
             }
-        }
+        }*/
+        result = prov.getAll(Providercategory.class).toMaps();
         Base.commitTransaction();
         return result;
     }
+    
+    /**
+     * Función que guarda las nuevas categorías de un proveedor.
+     * @param provider_id id del proveedor al que se le guardan las categorías.
+     * @param categoriesToAdd categorías para agregar al proveedor especificado.
+     * @param categoriesToRemove categorías para remover del proveedor especificado.
+     * @return un map representando al proveedor especificado.
+     * @throws RemoteException 
+     */
+    @Override
+    public Map<String, Object> saveCategoriesOfProvider(int provider_id, LinkedList categoriesToAdd, LinkedList categoriesToRemove) throws RemoteException {
+        Utils.abrirBase();
+        Base.openTransaction();
+        Provider p = Provider.findById(provider_id);
+        List<Providercategory> categoriesFromProvider = p.getAll(Providercategory.class);
+        for (Iterator it = categoriesToRemove.iterator(); it.hasNext();) {
+            int i = (int) it.next();
+            Providercategory pc = Providercategory.findById(i);
+            for (Providercategory providerCategory : categoriesFromProvider){
+                if (providerCategory.getId().equals(i)){
+                    p.remove(pc);
+                    categoriesFromProvider = p.getAll(Providercategory.class);
+                }
+            }
+        }
+        for (Iterator it = categoriesToAdd.iterator(); it.hasNext();) {
+            int j = (int) it.next();
+            Providercategory pc = Providercategory.findById(j);
+            boolean add = true;
+            for (Providercategory providerCategory : categoriesFromProvider){
+                add = !providerCategory.getId().equals(j);
+            }
+            if (add) {
+                p.add(pc);
+            }
+        }
+        Base.commitTransaction();
+        return getProvider(provider_id);
+    }
+    
 
 }
