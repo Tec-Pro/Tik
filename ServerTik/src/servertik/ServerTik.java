@@ -9,6 +9,7 @@ package servertik;
 import implementsInterface.CRUDCategory;
 import implementsInterface.CRUDEproduct;
 import implementsInterface.CRUDFproduct;
+import implementsInterface.CRUDOrder;
 import implementsInterface.CRUDPproduct;
 import implementsInterface.CrudAdmin;
 import implementsInterface.CrudPresence;
@@ -75,6 +76,7 @@ public class ServerTik {
            CRUDFproduct CRUDFproduct = new CRUDFproduct();
            CRUDCategory crudCategory = new CRUDCategory();
            CRUDPurchase CRUDPurchase = new CRUDPurchase();
+           CRUDOrder crudOrder = new CRUDOrder();
            CrudUser crudUser = new CrudUser();
            CrudProvider crudProvider= new CrudProvider();
            CrudProviderCategory crudProviderCategory= new CrudProviderCategory();
@@ -92,6 +94,7 @@ public class ServerTik {
            Naming.rebind("crudProviderCategory", crudProviderCategory);
            Naming.rebind("providersSearch", providerSearch);
            Naming.rebind("crudPresence", crudPresence);
+           Naming.rebind("crudOrder", crudPresence);          
            Naming.rebind("Server", server);  
            
            //ESTO ES DE LOS PEDIDOS DEL TORTUGA LO COMENTO PORQUE LE PUSO WHILE INFINITO 
@@ -99,7 +102,6 @@ public class ServerTik {
   //         Thread.sleep(7000);
     //       Server.notifyWaitersOrderReady(1);
       //     }
-        //   System.out.println("hice un usuario" + crudAdmin.create("agu", "aguasdasd"));
     }
     
 }
