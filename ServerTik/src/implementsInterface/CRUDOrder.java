@@ -4,9 +4,10 @@
  * and open the template in the editor.
  */
 package implementsInterface;
-
+import java.rmi.RemoteException;
 import interfaces.InterfaceOrder;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.Map;
 import models.Order;
@@ -18,7 +19,13 @@ import utils.Utils;
  *
  * @author agustin
  */
-public class CRUDOrder implements InterfaceOrder {
+public class CRUDOrder extends UnicastRemoteObject implements interfaces.InterfaceOrder{
+
+    
+    
+    public CRUDOrder() throws RemoteException {
+        super();
+    }
 
     /**
      *
