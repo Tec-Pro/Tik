@@ -23,6 +23,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -35,7 +37,7 @@ import utils.ParserFloat;
  *
  * @author jacinto
  */
-public class ControllerGuiCRUDFproduct implements ActionListener {
+public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorListener {
 
     private GuiCRUDFProduct guiCRUDFProduct;
     private JTable tableProducts;
@@ -230,6 +232,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
                                 row[4] = "Primario"; // Tipo 
                                 tableReciperDefault.addRow(row);
                                 dinamicProductionPrice();
+                                setCellEditor();
                             }
                         }
                     } else {
@@ -301,7 +304,37 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
             }
         }
     }
+    
+    /**
+     * actualiza el precio de costo cuando se edita una celda
+     *
+     * @param evt
+     * @throws RemoteException
+     */
+     @Override
+    public void editingStopped(ChangeEvent e) {
+        try {
+            dinamicProductionPrice();
+        } catch (RemoteException ex) {
+            Logger.getLogger(ControllerGuiCRUDFproduct.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+     
+     /**
+     * Setea el CellEditorListener a las celdas de la receta.
+     *
+     */
+      public void setCellEditor() {
+        for (int i = 0; i < tableReciper.getRowCount(); i++) {
+            tableReciper.getCellEditor(i, 2).addCellEditorListener(this);
+        }
+    }
 
+    @Override
+    public void editingCanceled(ChangeEvent e) {
+        //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
     /**
      * refresca la lista de la reseta diferenciando si son productos primarios o
      * elaborados
@@ -328,6 +361,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener {
             row[4] = "Elaborado"; // Tipo  
             tableReciperDefault.addRow(row);
         }
+        setCellEditor();
     }
 
     /**
