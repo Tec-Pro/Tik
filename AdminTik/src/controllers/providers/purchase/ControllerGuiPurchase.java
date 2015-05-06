@@ -5,6 +5,7 @@
  */
 package controllers.providers.purchase;
 
+import controllers.ControllerMain;
 import controllers.providers.ControllerGuiCRUDProviders;
 import gui.providers.purchases.GuiAddProductToPurchase;
 import gui.providers.purchases.GuiPurchase;
@@ -146,7 +147,7 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
                         String measureUnit = (String) product.get("measure_unit");
                         Float unitPrice = (float) product.get("unit_price");
                         Float amount = new Float(1);
-                        GuiAddProductToPurchase guiAdd = new GuiAddProductToPurchase(null, true, measureUnit, unitPrice );
+                        GuiAddProductToPurchase guiAdd = new GuiAddProductToPurchase(ControllerMain.guiMain, true, measureUnit, unitPrice );
                         guiAdd.setLocationRelativeTo(guiPurchase);
                         guiAdd.setVisible(true);
                         if (guiAdd.getReturnStatus() == GuiAddProductToPurchase.RET_OK) {
