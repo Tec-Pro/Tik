@@ -238,6 +238,7 @@ public class ControllerMain implements ActionListener {
         //boton menu
         if (ae.getSource() == guiMain.getBtnMenu()) {
             guiMenu.setVisible(true);
+            guiMenu.getTableReciperDefault().setRowCount(0);
             try {
                 controllerGuiMenu.CreateTree();
             } catch (RemoteException ex) {
