@@ -40,8 +40,8 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         Utils.abrirBase();
         Base.openTransaction();      
         Order newOrder = Order.createIt("description", description,"closed",false);
-        for (Map<String, Object> prod : fproducts) {
-            OrdersFproducts.create("order_id", newOrder.getId(), "fproduct_id", (int)prod.get("fproductId"), "quantity", (int)prod.get("quantity"), "done", (boolean)prod.get("done"), "commited", (boolean)prod.get("comitted"), "issued", (boolean)prod.get("issued")).saveIt();
+        for (Map<String, Object> prod : fproducts) {     
+           OrdersFproducts.create("order_id", newOrder.getId(), "fproduct_id", (int)prod.get("fproductId"), "quantity", (int)prod.get("quantity"), "done", (boolean)prod.get("done"), "commited", (boolean)prod.get("commited"), "issued", (boolean)prod.get("issued")).saveIt();
         }
         Base.commitTransaction();
         return newOrder.toMap();
@@ -68,7 +68,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
            return false; 
         }
         for (Map<String, Object> prod : fproducts) {
-           OrdersFproducts.create("order_id", order.getId(), "fproduct_id", (int)prod.get("fproductId"), "quantity", (int)prod.get("quantity"), "done", (boolean)prod.get("done"), "commited", (boolean)prod.get("comitted"), "issued", (boolean)prod.get("issued")).saveIt();
+            OrdersFproducts.create("order_id", order.getId(), "fproduct_id", (int)prod.get("fproductId"), "quantity", (int)prod.get("quantity"), "done", (boolean)prod.get("done"), "commited", (boolean)prod.get("commited"), "issued", (boolean)prod.get("issued")).saveIt();
         }
         Base.commitTransaction();
         return true;
@@ -82,11 +82,14 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
      */
     @Override
     public boolean closeOrder(int idOrder) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Utils.abrirBase();
+        Base.openTransaction();
+        Order order = Order.findById(idOrder);
+        order.set("closed", true);
+        Base.commitTransaction();
+        return true;
     }
     
     
-
-
     
 }
