@@ -23,6 +23,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +37,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
+import utils.ParserFloat;
 
 /**
  *
@@ -99,6 +101,9 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
 
     private void search() throws RemoteException {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Menu");
+        DefaultTreeModel model = new DefaultTreeModel(root);
+        guiOrder.getTreeMenu().setModel(model);
+        guiOrder.getTreeMenu().setCellRenderer(this);
         DefaultMutableTreeNode categoryNode;
         DefaultMutableTreeNode subcategoryNode;
         DefaultMutableTreeNode final_prodNode;
@@ -111,20 +116,48 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
             Map<String, Object> subcategory = crudProductCategory.getSubcategory(idSubcategory);
             int idCategory = (int) subcategory.get("category_id");
             Map<String, Object> category = crudProductCategory.getCategory(idCategory);
-            categoryNode = new DefaultMutableTreeNode(category.get("name").toString());
-            root.add(categoryNode);
-            subcategoryNode = new DefaultMutableTreeNode(subcategory.get("name").toString());
-            categoryNode.add(subcategoryNode);
+            categoryNode = searchNode((String)category.get("name"), root);
+            if (categoryNode == null) {
+                categoryNode = new DefaultMutableTreeNode(category.get("name").toString());
+                root.add(categoryNode);
+            }
+            subcategoryNode = searchNode((String)subcategory.get("name"), root);
+            if (subcategoryNode == null) {
+                subcategoryNode = new DefaultMutableTreeNode(subcategory.get("name").toString());
+                categoryNode.add(subcategoryNode);
+            }
             final_prodNode = new DefaultMutableTreeNode(fp.get("name").toString());
             subcategoryNode.add(final_prodNode);
         }
 
-            DefaultTreeModel modelo = new DefaultTreeModel(root);
-            guiOrder.getTreeMenu().setModel(modelo);
-            guiOrder.getTreeMenu().setCellRenderer(this);
-        
-
+        DefaultTreeModel modelo = new DefaultTreeModel(root);
+        guiOrder.getTreeMenu().setModel(modelo);
+        guiOrder.getTreeMenu().setCellRenderer(this);
     }
+
+    public DefaultMutableTreeNode searchNode(String nodeStr,DefaultMutableTreeNode root) {
+    DefaultMutableTreeNode node = null;
+    Enumeration e = root.breadthFirstEnumeration();
+    while (e.hasMoreElements()) {
+      node = (DefaultMutableTreeNode) e.nextElement();
+      if (nodeStr.equals(node.getUserObject().toString())) {
+        return node;
+      }
+    }
+    return null;
+  }
+    
+    /*private DefaultMutableTreeNode isInTree(Object name, boolean isCategory) {
+        if (isCategory) {
+            TreePath tp = new TreePath(name);
+            if (tp != null) {
+                DefaultMutableTreeNode n = (DefaultMutableTreeNode) tp.getLastPathComponent();
+                return n;
+            }
+
+        }
+        return null;
+    }*/
 
     public void CreateTree() throws RemoteException {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Menu");
@@ -208,12 +241,15 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                 List<Map> fproducts = crudFproduct.getFproducts(currentSelectedNodeName);
                 if (fproducts.size() == 1) {
                     Map<String, Object> fp = fproducts.get(0);
-                    Object[] row = new Object[5];
+                    Object[] row = new Object[6];
                     row[0] = fp.get("id");
                     row[1] = guiAmount.getTxtAmount().getText();
                     row[2] = currentSelectedNodeName;
-                    row[3] = false;
+                    float price = (float)fp.get("sell_price");
+                    float amount = ParserFloat.stringToFloat(guiAmount.getTxtAmount().getText());
+                    row[3] = ParserFloat.floatToString(price*amount);
                     row[4] = false;
+                    row[5] = false;
                     guiOrder.getTableProductsDefault().addRow(row);
                 } else {
                     JOptionPane.showMessageDialog(guiOrder, "No se encontro el producto o existen varios productos con el mismo nombre", "Atencion!", JOptionPane.WARNING_MESSAGE);
@@ -225,4 +261,5 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
             }
         }
     }
+
 }

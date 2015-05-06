@@ -153,4 +153,8 @@ public interface InterfaceCategory extends Remote {
      * @throws RemoteException
      */
     public Map<String,Object> getCategoryOfSubcategory(int id)throws java.rmi.RemoteException;
+
+    public List<Map> searchCategories(String txt) throws java.rmi.RemoteException;
+    
+    public List<Map> searchSubcategories(String txt) throws java.rmi.RemoteException;
 }
