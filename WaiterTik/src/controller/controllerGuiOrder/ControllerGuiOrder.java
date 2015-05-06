@@ -56,7 +56,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
     private ImageIcon productIcon;
     private GuiAmount guiAmount;
 
-    public ControllerGuiOrder(GuiOrder go,GuiMain gm) throws NotBoundException, MalformedURLException, RemoteException {
+    public ControllerGuiOrder(GuiOrder go, GuiMain gm) throws NotBoundException, MalformedURLException, RemoteException {
         guiOrder = go;
         crudProductCategory = (InterfaceCategory) Naming.lookup("//localhost/CRUDCategory");
         crudFproduct = (InterfaceFproduct) Naming.lookup("//localhost/CRUDFproduct");
@@ -82,19 +82,48 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                 }
             }
         });
-        guiOrder.getTxtSearch().addKeyListener(new KeyAdapter(){
+        guiOrder.getTxtSearch().addKeyListener(new KeyAdapter() {
 
             @Override
-            public void keyReleased(KeyEvent evt){
-                search();
+            public void keyReleased(KeyEvent evt) {
+                try {
+                    search();
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-            
+
         });
         CreateTree();
     }
-    
-    private void search(){
+
+    private void search() throws RemoteException {
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Menu");
+        DefaultMutableTreeNode categoryNode;
+        DefaultMutableTreeNode subcategoryNode;
+        DefaultMutableTreeNode final_prodNode;
+        String txt = guiOrder.getTxtSearch().getText();
+        //List<Map> listCategories = crudProductCategory.searchCategories(txt);
+        //List<Map> listSubategories = crudProductCategory.searchSubcategories(txt);
+        List<Map> listfproducts = crudFproduct.getFproducts(txt);
+        for (Map<String, Object> fp : listfproducts) {
+            int idSubcategory = (int) fp.get("subcategory_id");
+            Map<String, Object> subcategory = crudProductCategory.getSubcategory(idSubcategory);
+            int idCategory = (int) subcategory.get("category_id");
+            Map<String, Object> category = crudProductCategory.getCategory(idCategory);
+            categoryNode = new DefaultMutableTreeNode(category.get("name").toString());
+            root.add(categoryNode);
+            subcategoryNode = new DefaultMutableTreeNode(subcategory.get("name").toString());
+            categoryNode.add(subcategoryNode);
+            final_prodNode = new DefaultMutableTreeNode(fp.get("name").toString());
+            subcategoryNode.add(final_prodNode);
+        }
+
+            DefaultTreeModel modelo = new DefaultTreeModel(root);
+            guiOrder.getTreeMenu().setModel(modelo);
+            guiOrder.getTreeMenu().setCellRenderer(this);
         
+
     }
 
     public void CreateTree() throws RemoteException {
@@ -174,17 +203,19 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
     @Override
     public void actionPerformed(ActionEvent e) {
         //*******GuiAmount**************//
-        if(e.getSource().equals(guiAmount.getBtnAccept())){
+        if (e.getSource().equals(guiAmount.getBtnAccept())) {
             try {
                 List<Map> fproducts = crudFproduct.getFproducts(currentSelectedNodeName);
-                if(fproducts.size() == 1){
-                    Map<String,Object> fp = fproducts.get(0);
-                    Object[] row = new Object[3];
+                if (fproducts.size() == 1) {
+                    Map<String, Object> fp = fproducts.get(0);
+                    Object[] row = new Object[5];
                     row[0] = fp.get("id");
                     row[1] = guiAmount.getTxtAmount().getText();
                     row[2] = currentSelectedNodeName;
+                    row[3] = false;
+                    row[4] = false;
                     guiOrder.getTableProductsDefault().addRow(row);
-                }else{
+                } else {
                     JOptionPane.showMessageDialog(guiOrder, "No se encontro el producto o existen varios productos con el mismo nombre", "Atencion!", JOptionPane.WARNING_MESSAGE);
                 }
                 guiAmount.getTxtAmount().setText("1");
