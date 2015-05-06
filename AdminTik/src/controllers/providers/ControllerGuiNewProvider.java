@@ -14,7 +14,6 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,6 +21,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import utils.Config;
 
@@ -39,27 +39,29 @@ public class ControllerGuiNewProvider implements ActionListener {
     private final LinkedList categoriesToAdd, categoriesToRemove;
 
     /**
-     * Constructor del controlador encargado de la interacción entre GUI New Provider y CRUD Provider.
+     * Constructor del controlador encargado de la interacción entre GUI New
+     * Provider y CRUD Provider.
+     *
      * @param guiNProv
      * @throws RemoteException
      * @throws java.rmi.NotBoundException
      * @throws java.net.MalformedURLException
      */
     public ControllerGuiNewProvider(GuiNewProvider guiNProv) throws RemoteException, NotBoundException, MalformedURLException {
-        
+
         this.modify = false;
         this.guiNewProvider = guiNProv;
-        
+
         //Busco los métodos de CRUD Provider y CRUD Provider Category en el server.
         this.provider = (InterfaceProvider) Naming.lookup("//" + Config.ip + "/crudProvider");
         this.providerCategory = (InterfaceProviderCategory) Naming.lookup("//" + Config.ip + "/crudProviderCategory");
-        
+
         this.guiNewProvider.setActionListener(this);
-        
+
         //Listas utilizadas en el caso de la modificación, representan las categorías para agregar y las categorías para eliminar.
         this.categoriesToAdd = new LinkedList();
         this.categoriesToRemove = new LinkedList();
-        
+
         //Escucho si se clickea alguna fila de la tabla FindProviderCategories
         this.guiNewProvider.getTableFindProviderCategories().addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -74,8 +76,11 @@ public class ControllerGuiNewProvider implements ActionListener {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 //Si se hace doble click en la tabla de categorías del proveedor.
                 if (evt.getClickCount() == 2) {
-                    //Elimino la categoría de la tabla.
-                    removeRowProviderCategoriesTable();
+                    JTable target = (JTable) evt.getSource();
+                    if (target.getSelectedRow() != -1) {
+                        //Elimino la categoría de la tabla.
+                        removeRowProviderCategoriesTable();
+                    }
                 }
             }
         });
@@ -122,8 +127,8 @@ public class ControllerGuiNewProvider implements ActionListener {
     }
 
     /**
-     * Función que agrega una fila a la tabla de categorías de proveedor.
-     * Esta función es invocada cuando se hace click sobre una de las categorías
+     * Función que agrega una fila a la tabla de categorías de proveedor. Esta
+     * función es invocada cuando se hace click sobre una de las categorías
      * existentes.
      */
     private void addRowProviderCategoriesTable() {
@@ -160,9 +165,10 @@ public class ControllerGuiNewProvider implements ActionListener {
 
     /**
      * Función que guarda las categorías de un proveedor.
+     *
      * @param id el id del proveedor.
      * @return Map conteniendo al proveedor.
-     * @throws RemoteException 
+     * @throws RemoteException
      */
     private Map<String, Object> saveProviderCategories(int id) throws RemoteException {
         Map<String, Object> result;
@@ -175,8 +181,9 @@ public class ControllerGuiNewProvider implements ActionListener {
 
     /**
      * Función que guarda el proveedor, ya sea uno creado o modificado.
+     *
      * @return True si el proveedor fue creado exitosamente.
-     * @throws RemoteException 
+     * @throws RemoteException
      */
     private boolean saveProvider() throws RemoteException {
         String name = this.guiNewProvider.getTxtProviderName().getText();
@@ -201,10 +208,12 @@ public class ControllerGuiNewProvider implements ActionListener {
         }
 
     }
+
     /**
      * Función que carga la GUINewProvider con los datos del proveedor elegido.
+     *
      * @param id el id del proveedor del que se cargaran los datos en la GUI.
-     * @throws RemoteException 
+     * @throws RemoteException
      */
     public void loadGUIWithData(int id) throws RemoteException {
         Map<String, Object> p = provider.getProvider(id);
@@ -220,9 +229,11 @@ public class ControllerGuiNewProvider implements ActionListener {
     }
 
     /**
-     * Función que carga las categorías de un proveedor en la tabla de categorías.
+     * Función que carga las categorías de un proveedor en la tabla de
+     * categorías.
+     *
      * @param id Id del proveedor del cual se cargaran las categorías.
-     * @throws RemoteException 
+     * @throws RemoteException
      */
     private void loadCategoriesOfProvider(int id) throws RemoteException {
         Object[] o = new Object[2];
