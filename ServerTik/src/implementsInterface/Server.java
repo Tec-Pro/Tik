@@ -7,6 +7,7 @@
 package implementsInterface;
 
 import interfaces.InterfaceClient;
+import interfaces.InterfaceClientKitchen;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Iterator;
@@ -52,6 +53,14 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
             }
             i++;
         }
+    }
+
+    @Override
+    public void registerClientKitchen(InterfaceClientKitchen client, String name) throws RemoteException {
+        Object[] clientArr = new Object[2];
+        clientArr[0]= client;
+        clientArr[1] = name;
+        clients.add(clientArr);
     }
     
 }

@@ -16,4 +16,5 @@ import java.rmi.RemoteException;
 public interface InterfaceServer extends Remote {
     public void registerClient(InterfaceClient clientm,String name) throws RemoteException;
 
+    public void registerClientKitchen(InterfaceClientKitchen client,String name) throws RemoteException;
 }
