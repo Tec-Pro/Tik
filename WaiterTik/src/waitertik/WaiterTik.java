@@ -22,12 +22,6 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import utils.Config;
 
-/* prueba cargar orden , borrar esto despues
-import interfaces.InterfaceOrder;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;*/
 
 /**
  *
@@ -73,18 +67,8 @@ public class WaiterTik {
             
             
         }
-        /*--------Prueba cargar orden-----*/
-        /*InterfaceOrder crudOrder = (InterfaceOrder)Naming.lookup("//" + Config.ip + "/crudOrder") ;
-        List<Map<String,Object>> products = new LinkedList<>();
-        Map<String,Object> product = new HashMap();
-        product.put("fproductId", 1);
-        product.put("quantity",67);
-        product.put("done", false);
-        product.put("commited", false);
-        product.put("issued", true);
-        products.add(product);
-        crudOrder.sendOrder("Nueva orden!", products);*/
-        ControllerGuiMain c = new ControllerGuiMain();          
+ 
+        ControllerGuiMain c = new ControllerGuiMain();      
     }
     
 }

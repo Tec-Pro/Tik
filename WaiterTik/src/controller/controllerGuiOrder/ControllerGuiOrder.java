@@ -10,6 +10,7 @@ import gui.order.GuiAmount;
 import gui.order.GuiOrder;
 import interfaces.InterfaceCategory;
 import interfaces.InterfaceFproduct;
+import interfaces.InterfaceOrder;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -24,7 +25,9 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -32,11 +35,13 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JTree;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
+import utils.Config;
 import utils.ParserFloat;
 
 /**
@@ -57,11 +62,13 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
     private ImageIcon subcategoryIcon;
     private ImageIcon productIcon;
     private GuiAmount guiAmount;
+    private final InterfaceOrder crudOrder;
 
     public ControllerGuiOrder(GuiOrder go, GuiMain gm) throws NotBoundException, MalformedURLException, RemoteException {
         guiOrder = go;
         crudProductCategory = (InterfaceCategory) Naming.lookup("//localhost/CRUDCategory");
         crudFproduct = (InterfaceFproduct) Naming.lookup("//localhost/CRUDFproduct");
+        crudOrder = (InterfaceOrder)Naming.lookup("//" + Config.ip + "/crudOrder") ;
         guiOrder.setActionListener(this);
         rootIcon = new ImageIcon(getClass().getResource("/Icons/menu.png"));
         categoryIcon = new ImageIcon(getClass().getResource("/Icons/category.png"));
@@ -69,7 +76,6 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
         productIcon = new ImageIcon(getClass().getResource("/Icons/products.png"));
         guiAmount = new GuiAmount(gm, true);
         guiAmount.setActionListener(this);
-
         guiOrder.getTreeMenu().addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent me) {
                 TreePath currentSelection = guiOrder.getTreeMenu().getSelectionPath();
@@ -235,21 +241,44 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        
+        if(e.getSource().equals(guiOrder.getBtnSend())){
+            DefaultTableModel productsTable = guiOrder.getTableProductsDefault();
+            List<Map<String,Object>> products = new LinkedList<>();
+            for(int i = 0; i < productsTable.getRowCount(); i++){
+                Map<String,Object> prodMap = new HashMap();
+                prodMap.put("fproductId",productsTable.getValueAt(i, 0) );
+                prodMap.put("quantity",productsTable.getValueAt(i, 1));
+                prodMap.put("done", productsTable.getValueAt(i, 4));//(boolean)productsTable.getValueAt(i, 4)
+                prodMap.put("commited",productsTable.getValueAt(i, 5) );//(boolean)productsTable.getValueAt(i, 5)
+                prodMap.put("issued",productsTable.getValueAt(i, 6) ); //(boolean)productsTable.getValueAt(i, 6)
+                products.add(prodMap);
+            }
+            try {
+                crudOrder.sendOrder(2,guiOrder.getjTextDescription().getText(),products); // falta agregar el id del usuario
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    
+ 
+        
         //*******GuiAmount**************//
         if (e.getSource().equals(guiAmount.getBtnAccept())) {
             try {
                 List<Map> fproducts = crudFproduct.getFproducts(currentSelectedNodeName);
                 if (fproducts.size() == 1) {
                     Map<String, Object> fp = fproducts.get(0);
-                    Object[] row = new Object[6];
+                    Object[] row = new Object[7];
                     row[0] = fp.get("id");
-                    row[1] = guiAmount.getTxtAmount().getText();
+                    row[1] = ParserFloat.stringToFloat(guiAmount.getTxtAmount().getText());
                     row[2] = currentSelectedNodeName;
                     float price = (float)fp.get("sell_price");
                     float amount = ParserFloat.stringToFloat(guiAmount.getTxtAmount().getText());
                     row[3] = ParserFloat.floatToString(price*amount);
                     row[4] = false;
                     row[5] = false;
+                    row[6] = false;
                     guiOrder.getTableProductsDefault().addRow(row);
                 } else {
                     JOptionPane.showMessageDialog(guiOrder, "No se encontro el producto o existen varios productos con el mismo nombre", "Atencion!", JOptionPane.WARNING_MESSAGE);
@@ -260,6 +289,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                 Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
     }
 
 }

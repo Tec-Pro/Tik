@@ -9,6 +9,7 @@ package gui.order;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.table.DefaultTableModel;
@@ -27,6 +28,10 @@ public class GuiOrder extends javax.swing.JDialog {
         tableProductsDefault = (DefaultTableModel) tableProducts.getModel();
     }
 
+    public JTextArea getjTextDescription() {
+        return jTextDescription;
+    }
+    
     public JTree getTreeMenu() {
         return treeMenu;
     }
@@ -48,7 +53,7 @@ public class GuiOrder extends javax.swing.JDialog {
     }
 
     public void setActionListener(ActionListener al){
-        
+        btnSend.addActionListener(al); 
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -67,7 +72,7 @@ public class GuiOrder extends javax.swing.JDialog {
         jScrollPane3 = new javax.swing.JScrollPane();
         tableProducts = new javax.swing.JTable();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jTextDescription = new javax.swing.JTextArea();
         txtSearch = new javax.swing.JTextField();
         btnSend = new javax.swing.JButton();
 
@@ -82,14 +87,14 @@ public class GuiOrder extends javax.swing.JDialog {
 
             },
             new String [] {
-                "ID", "Cantidad", "Alimento", "Precio total", "Hecho", "Entregado"
+                "ID", "Cantidad", "Alimento", "Precio total", "Hecho", "Entregado", "Enviado"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class, java.lang.Boolean.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true, true
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -102,9 +107,9 @@ public class GuiOrder extends javax.swing.JDialog {
         });
         jScrollPane3.setViewportView(tableProducts);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane4.setViewportView(jTextArea1);
+        jTextDescription.setColumns(20);
+        jTextDescription.setRows(5);
+        jScrollPane4.setViewportView(jTextDescription);
 
         btnSend.setText("Enviar");
 
@@ -232,7 +237,7 @@ public class GuiOrder extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextDescription;
     private javax.swing.JTable tableProducts;
     private javax.swing.JTree treeMenu;
     private javax.swing.JTextField txtSearch;
