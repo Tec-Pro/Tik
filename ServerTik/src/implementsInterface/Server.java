@@ -63,6 +63,7 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
         clients.add(clientArr);
     }
     
+
     //avisa a la cocina que hay un nuevo pedido o se actualizo uno
     public static void notifyKitchenNewOrder(int id) throws RemoteException{
         Iterator<Object[]> it= clients.iterator();
@@ -81,7 +82,6 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
             i++;
         }
     }
-    
     //avisa a la barra que hay un nuevo pedido o se actualizo uno
     public static void notifyBarNewOrder(int id) throws RemoteException{
         Iterator<Object[]> it= clients.iterator();
