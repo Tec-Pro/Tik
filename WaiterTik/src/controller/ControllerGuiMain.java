@@ -123,6 +123,11 @@ public class ControllerGuiMain implements ActionListener {
         if(e.getSource().equals(guiMain.getBtnNew())){
             guiOrder.setLocationRelativeTo(null);
             guiOrder.setVisible(true);
+            try {
+                controllerGuiOrder.CreateTree();
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }        
 }

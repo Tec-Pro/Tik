@@ -127,26 +127,94 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
         DefaultMutableTreeNode subcategoryNode;
         DefaultMutableTreeNode final_prodNode;
         String txt = guiOrder.getTxtSearch().getText();
-        //List<Map> listCategories = crudProductCategory.searchCategories(txt);
-        //List<Map> listSubategories = crudProductCategory.searchSubcategories(txt);
+        List<Map> listCategories = crudProductCategory.searchCategories(txt);
+        List<Map> listSubategories = crudProductCategory.searchSubcategories(txt);
         List<Map> listfproducts = crudFproduct.getFproducts(txt);
+        /**
+         * ***********Muestro por categoria***********
+         */
+        for (Map<String, Object> cat : listCategories) {
+            categoryNode = searchNode((String) cat.get("name"), root);
+            if (categoryNode == null) {
+                categoryNode = new DefaultMutableTreeNode(cat.get("name").toString());
+                root.add(categoryNode);
+            }
+            List<Map> listCategorySubcayegory = crudProductCategory.getSubcategoriesCategory((int) cat.get("id"));
+            if (!listCategorySubcayegory.isEmpty()) {
+                for (Map<String, Object> sub : listCategorySubcayegory) {
+                    subcategoryNode = searchNode((String) sub.get("name"), root);
+                    if (subcategoryNode == null) {
+                        subcategoryNode = new DefaultMutableTreeNode(sub.get("name").toString());
+                        categoryNode.add(subcategoryNode);
+                    }
+                    int idSub = (int) sub.get("id");
+                    List<Map> prods = crudProductCategory.getFProductsSubcategory(idSub);
+                    if (!prods.isEmpty()) {
+                        for (Map<String, Object> prod : prods) {
+                            final_prodNode = searchNode((String) prod.get("name"), root);
+                            if (final_prodNode == null) {
+                                final_prodNode = new DefaultMutableTreeNode(prod.get("name").toString());
+                                subcategoryNode.add(final_prodNode);
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+
+        /**
+         * ************Muestro por subcategorias*******************
+         */
+        for (Map<String, Object> subcategory : listSubategories) {
+            int idCat = (int) subcategory.get("category_id");
+            int idSub = (int) subcategory.get("id");
+            Map<String, Object> cat = crudProductCategory.getCategory(idCat);
+            categoryNode = searchNode((String) cat.get("name"), root);
+            if (categoryNode == null) {
+                categoryNode = new DefaultMutableTreeNode(cat.get("name").toString());
+                root.add(categoryNode);
+            }
+            subcategoryNode = searchNode((String) subcategory.get("name"), root);
+            if (subcategoryNode == null) {
+                subcategoryNode = new DefaultMutableTreeNode(subcategory.get("name").toString());
+                categoryNode.add(subcategoryNode);
+            }
+            List<Map> prods = crudProductCategory.getFProductsSubcategory(idSub);
+            if (!prods.isEmpty()) {
+                for (Map<String, Object> prod : prods) {
+                    final_prodNode = searchNode((String) prod.get("name"), root);
+                    if (final_prodNode == null) {
+                        final_prodNode = new DefaultMutableTreeNode(prod.get("name").toString());
+                        subcategoryNode.add(final_prodNode);
+                    }
+                }
+            }
+        }
+
+        /**
+         * ***Muestro por producto*****
+         */
         for (Map<String, Object> fp : listfproducts) {
             int idSubcategory = (int) fp.get("subcategory_id");
             Map<String, Object> subcategory = crudProductCategory.getSubcategory(idSubcategory);
             int idCategory = (int) subcategory.get("category_id");
             Map<String, Object> category = crudProductCategory.getCategory(idCategory);
-            categoryNode = searchNode((String)category.get("name"), root);
+            categoryNode = searchNode((String) category.get("name"), root);
             if (categoryNode == null) {
                 categoryNode = new DefaultMutableTreeNode(category.get("name").toString());
                 root.add(categoryNode);
             }
-            subcategoryNode = searchNode((String)subcategory.get("name"), root);
+            subcategoryNode = searchNode((String) subcategory.get("name"), root);
             if (subcategoryNode == null) {
                 subcategoryNode = new DefaultMutableTreeNode(subcategory.get("name").toString());
                 categoryNode.add(subcategoryNode);
             }
-            final_prodNode = new DefaultMutableTreeNode(fp.get("name").toString());
-            subcategoryNode.add(final_prodNode);
+            final_prodNode = searchNode((String) fp.get("name"), root);
+            if (final_prodNode == null) {
+                final_prodNode = new DefaultMutableTreeNode(fp.get("name").toString());
+                subcategoryNode.add(final_prodNode);
+            }
         }
 
         DefaultTreeModel modelo = new DefaultTreeModel(root);
@@ -154,29 +222,17 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
         guiOrder.getTreeMenu().setCellRenderer(this);
     }
 
-    public DefaultMutableTreeNode searchNode(String nodeStr,DefaultMutableTreeNode root) {
-    DefaultMutableTreeNode node = null;
-    Enumeration e = root.breadthFirstEnumeration();
-    while (e.hasMoreElements()) {
-      node = (DefaultMutableTreeNode) e.nextElement();
-      if (nodeStr.equals(node.getUserObject().toString())) {
-        return node;
-      }
-    }
-    return null;
-  }
-    
-    /*private DefaultMutableTreeNode isInTree(Object name, boolean isCategory) {
-        if (isCategory) {
-            TreePath tp = new TreePath(name);
-            if (tp != null) {
-                DefaultMutableTreeNode n = (DefaultMutableTreeNode) tp.getLastPathComponent();
-                return n;
+    public DefaultMutableTreeNode searchNode(String nodeStr, DefaultMutableTreeNode root) {
+        DefaultMutableTreeNode node = null;
+        Enumeration e = root.breadthFirstEnumeration();
+        while (e.hasMoreElements()) {
+            node = (DefaultMutableTreeNode) e.nextElement();
+            if (nodeStr.equals(node.getUserObject().toString())) {
+                return node;
             }
-
         }
         return null;
-    }*/
+    }
 
     public void CreateTree() throws RemoteException {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Menu");
