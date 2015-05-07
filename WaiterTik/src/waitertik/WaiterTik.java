@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package waitertik;
 
 import controller.ControllerGuiMain;
@@ -22,7 +21,6 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import utils.Config;
 
-
 /**
  *
  * @author nico
@@ -33,19 +31,17 @@ public class WaiterTik {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws RemoteException, MalformedURLException, NotBoundException {
-              try {
+        try {
             JFrame.setDefaultLookAndFeelDecorated(true);
             com.jtattoo.plaf.aero.AeroLookAndFeel.setTheme("Default");
 
             UIManager.setLookAndFeel("com.jtattoo.plaf.aero.AeroLookAndFeel");
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
         }
-              
-              
-              
-                            ClientWaiter client= new ClientWaiter();//creo el cliente este
 
-                      Config config = new Config(new javax.swing.JFrame(), true);
+        ClientWaiter client = new ClientWaiter();//creo el cliente este
+
+        Config config = new Config(new javax.swing.JFrame(), true);
         try {
             config.loadProperties();
         } catch (IOException ex) {
@@ -54,7 +50,7 @@ public class WaiterTik {
         boolean connected = false;
         while (!connected) {
             try {
-             ( (InterfaceServer) Naming.lookup("//" + Config.ip + "/Server")).registerClientWaiter(client);//le digo al server que me conecto y soy un mozo
+                ((InterfaceServer) Naming.lookup("//" + Config.ip + "/Server")).registerClientWaiter(client);//le digo al server que me conecto y soy un mozo
                 connected = true;
             } catch (RemoteException e) {
                 config = new Config(new javax.swing.JFrame(), true);
@@ -64,11 +60,10 @@ public class WaiterTik {
                 }
                 connected = false;
             }
-            
-            
+
         }
- 
-        ControllerGuiMain c = new ControllerGuiMain();      
+
+        ControllerGuiMain c = new ControllerGuiMain();
     }
-    
+
 }
