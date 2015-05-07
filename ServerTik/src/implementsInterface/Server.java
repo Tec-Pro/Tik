@@ -20,7 +20,7 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
 
     
     
-    public static LinkedList<Object[]> clients;
+    public static volatile LinkedList<Object[]> clients;
     @Override
     public void registerClient(InterfaceClient client, String name) throws RemoteException {
         Object[] clientArr = new Object[2];
@@ -38,12 +38,19 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
     //le aviso a los mozos que el pedido con id está listo
     public static void notifyWaitersOrderReady(int id) throws RemoteException{
         Iterator<Object[]> it= clients.iterator();
+        int i=0;
         while(it.hasNext()){
             Object[] client= it.next();
             if(client[1].equals("waiter")){
+                try{
                 ((InterfaceClient)client[0]).readyOrder(id);
+                }catch(java.rmi.ConnectException e){
+                    System.err.println("se rompió porque se cerro un programa seguro"+e);
+                    clients.remove(i);
+                    //despues voy a eliminar este tipo porque la conexión se rechazó por desconectarses
+                }
             }
-            
+            i++;
         }
     }
     
