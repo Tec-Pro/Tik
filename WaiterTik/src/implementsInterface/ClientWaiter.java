@@ -20,13 +20,13 @@ import javax.swing.JOptionPane;
  * vea que es un pedido terminado de parte de la cocina, autmaticamente invoca
  * dosomething de esta clase y asi los clietes mozos actualizan sus vistas
  */
-public class Client extends UnicastRemoteObject implements interfaces.InterfaceClient {
+public class ClientWaiter extends UnicastRemoteObject implements interfaces.InterfaceClientWaiter {
     @Override
     public void doSomething() throws RemoteException {
         System.out.println("Server invoked doSomething()");
     }
     
-    public Client() throws RemoteException{
+    public ClientWaiter() throws RemoteException{
         super();
     }
 

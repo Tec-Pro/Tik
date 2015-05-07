@@ -50,7 +50,7 @@ public class KitchenTik {
         boolean connected = false;
         while (!connected) {
             try {
-             ( (InterfaceServer) Naming.lookup("//" + Config.ip + "/Server")).registerClientKitchen(client, "kitchen");//le digo al server que me conecto y soy un mozo
+             ( (InterfaceServer) Naming.lookup("//" + Config.ip + "/Server")).registerClientKitchen(client);//le digo al server que me conecto y soy un mozo
                 connected = true;
             } catch (RemoteException e) {
                 config = new Config(new javax.swing.JFrame(), true);

@@ -7,7 +7,7 @@
 package waitertik;
 
 import controller.ControllerGuiMain;
-import implementsInterface.Client;
+import implementsInterface.ClientWaiter;
 import interfaces.InterfaceServer;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -43,7 +43,7 @@ public class WaiterTik {
               
               
               
-                            Client client= new Client();//creo el cliente este
+                            ClientWaiter client= new ClientWaiter();//creo el cliente este
 
                       Config config = new Config(new javax.swing.JFrame(), true);
         try {
@@ -54,7 +54,7 @@ public class WaiterTik {
         boolean connected = false;
         while (!connected) {
             try {
-             ( (InterfaceServer) Naming.lookup("//" + Config.ip + "/Server")).registerClient(client, "waiter");//le digo al server que me conecto y soy un mozo
+             ( (InterfaceServer) Naming.lookup("//" + Config.ip + "/Server")).registerClientWaiter(client);//le digo al server que me conecto y soy un mozo
                 connected = true;
             } catch (RemoteException e) {
                 config = new Config(new javax.swing.JFrame(), true);
