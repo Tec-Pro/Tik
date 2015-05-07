@@ -5,6 +5,10 @@
  */
 package kitchentik;
 
+import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 /**
  *
  * @author eze
@@ -15,7 +19,13 @@ public class KitchenTik {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        try {
+            JFrame.setDefaultLookAndFeelDecorated(true);
+            com.jtattoo.plaf.aero.AeroLookAndFeel.setTheme("Default");
+
+            UIManager.setLookAndFeel("com.jtattoo.plaf.aero.AeroLookAndFeel");
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+        }
     }
     
 }

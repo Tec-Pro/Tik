@@ -116,9 +116,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
 
     @Override
     public List<Map> getOrderProducts(int orderId) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    
+        return OrdersFproducts.find("order_id = ?", orderId).toMaps();
+    }       
     
 }
