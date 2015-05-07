@@ -6,8 +6,10 @@
 package kitchentik;
 
 import implementsInterface.ClientKitchen;
+import interfaces.InterfaceOrder;
 import interfaces.InterfaceServer;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -50,7 +52,8 @@ public class KitchenTik {
         boolean connected = false;
         while (!connected) {
             try {
-             ( (InterfaceServer) Naming.lookup("//" + Config.ip + "/Server")).registerClientKitchen(client, "kitchen");//le digo al server que me conecto y soy un mozo
+             // le aviso al server que me conecto y que soy la cocinas
+             ( (InterfaceServer) Naming.lookup("//" + Config.ip + "/Server")).registerClientKitchen(client, "kitchen");
                 connected = true;
             } catch (RemoteException e) {
                 config = new Config(new javax.swing.JFrame(), true);
@@ -64,9 +67,15 @@ public class KitchenTik {
             
         }
  
-        //Aca poner el controlador principal y con la gui principal      
-    }
+        //Aca poner el controlador principal y con la gui principal 
         
     
+    }
+        
+    public static void mostrarPedido(int id) throws NotBoundException, MalformedURLException, RemoteException{
+      //todo esto es para probar
+        InterfaceOrder crudOrder = (InterfaceOrder)Naming.lookup("//" + Config.ip + "/crudOrder") ;
+        System.out.println("Pedido: "+crudOrder.getOrderProducts(id).toString());
+    }
     
 }

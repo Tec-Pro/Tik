@@ -6,8 +6,13 @@
 package implementsInterface;
 
 import interfaces.InterfaceClientKitchen;
+import interfaces.InterfaceOrder;
+import java.net.MalformedURLException;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -25,7 +30,14 @@ public class ClientKitchen extends UnicastRemoteObject implements InterfaceClien
 
     @Override
     public void newOrder(int id) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+        try {
+            kitchentik.KitchenTik.mostrarPedido(id);
+        } catch (NotBoundException ex) {
+            Logger.getLogger(ClientKitchen.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(ClientKitchen.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
