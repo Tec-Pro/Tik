@@ -50,6 +50,8 @@ import utils.ParserFloat;
  */
 public class ControllerGuiOrder extends DefaultTreeCellRenderer implements ActionListener {
 
+    private Integer currentOrderId;
+    private int currentWaiterId;
     private final GuiOrder guiOrder;
     private final InterfaceCategory crudProductCategory;
     private final InterfaceFproduct crudFproduct;
@@ -64,6 +66,17 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
     private GuiAmount guiAmount;
     private final InterfaceOrder crudOrder;
 
+    
+    /**
+     * Setea el id del mozo actual, y el id del pedido actual.
+     * @param orderId si es un nuevo pedido, poner en null
+     * @param waiterId
+     */
+    public void setIds(Integer orderId, int waiterId){
+        currentOrderId = orderId;
+        currentWaiterId = waiterId;
+    }
+    
     public ControllerGuiOrder(GuiOrder go, GuiMain gm) throws NotBoundException, MalformedURLException, RemoteException {
         guiOrder = go;
         crudProductCategory = (InterfaceCategory) Naming.lookup("//localhost/CRUDCategory");
@@ -242,22 +255,48 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
     @Override
     public void actionPerformed(ActionEvent e) {
         
+        //*******GuiOrder**************//
         if(e.getSource().equals(guiOrder.getBtnSend())){
-            DefaultTableModel productsTable = guiOrder.getTableProductsDefault();
-            List<Map<String,Object>> products = new LinkedList<>();
-            for(int i = 0; i < productsTable.getRowCount(); i++){
-                Map<String,Object> prodMap = new HashMap();
-                prodMap.put("fproductId",productsTable.getValueAt(i, 0) );
-                prodMap.put("quantity",productsTable.getValueAt(i, 1));
-                prodMap.put("done", productsTable.getValueAt(i, 4));//(boolean)productsTable.getValueAt(i, 4)
-                prodMap.put("commited",productsTable.getValueAt(i, 5) );//(boolean)productsTable.getValueAt(i, 5)
-                prodMap.put("issued",productsTable.getValueAt(i, 6) ); //(boolean)productsTable.getValueAt(i, 6)
-                products.add(prodMap);
+            if(currentOrderId == null){ //si el pedido es nuevo, carga todos los productos y los envia
+                DefaultTableModel productsTable = guiOrder.getTableProductsDefault();
+                List<Map<String,Object>> products = new LinkedList<>();
+                for(int i = 0; i < productsTable.getRowCount(); i++){
+                    Map<String,Object> prodMap = new HashMap();
+                    prodMap.put("fproductId",productsTable.getValueAt(i, 0) );
+                    prodMap.put("quantity",productsTable.getValueAt(i, 1));
+                    prodMap.put("done", productsTable.getValueAt(i, 4));
+                    prodMap.put("commited",productsTable.getValueAt(i, 5) );
+                    prodMap.put("issued",true ); 
+                    products.add(prodMap);
+                }
+                try {
+                    crudOrder.sendOrder(currentWaiterId,guiOrder.getjTextDescription().getText(),products); 
+                    JOptionPane.showMessageDialog(guiOrder, "Nuevo pedido Enviado!", "Pedido Enviado", JOptionPane.INFORMATION_MESSAGE);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-            try {
-                crudOrder.sendOrder(2,guiOrder.getjTextDescription().getText(),products); // falta agregar el id del usuario
-            } catch (RemoteException ex) {
-                Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
+            else{ //si el pedido existe agrega los productos que no han sido enviados, y envia el pedido
+                DefaultTableModel productsTable = guiOrder.getTableProductsDefault();
+                List<Map<String,Object>> products = new LinkedList<>();
+                for(int i = 0; i < productsTable.getRowCount(); i++){
+                    boolean issued = (boolean)productsTable.getValueAt(i, 6);
+                    if(!issued){                       
+                        Map<String,Object> prodMap = new HashMap();
+                        prodMap.put("fproductId",productsTable.getValueAt(i, 0) );
+                        prodMap.put("quantity",productsTable.getValueAt(i, 1));
+                        prodMap.put("done", productsTable.getValueAt(i, 4));
+                        prodMap.put("commited",productsTable.getValueAt(i, 5) );
+                        prodMap.put("issued", true); 
+                        products.add(prodMap);
+                    }
+                }
+                try {
+                    crudOrder.addProducts(currentOrderId, products); 
+                    JOptionPane.showMessageDialog(guiOrder, "Productos Agregados y Enviados!", "Pedido Enviado", JOptionPane.INFORMATION_MESSAGE);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
     

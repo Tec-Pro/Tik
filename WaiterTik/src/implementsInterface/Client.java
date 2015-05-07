@@ -32,7 +32,7 @@ public class Client extends UnicastRemoteObject implements interfaces.InterfaceC
 
     @Override
     public void readyOrder(int id) throws RemoteException {
-        System.out.println("El pedido \"+ id+\" esta listo vieja");
+        System.out.println("El pedido "+ id+ " esta listo vieja");
       //  JOptionPane.showConfirmDialog(null, "El pedido "+ id+" esta listo vieja");
     }
 }

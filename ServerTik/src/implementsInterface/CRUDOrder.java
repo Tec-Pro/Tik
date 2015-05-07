@@ -68,9 +68,10 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
            return false; 
         }
         for (Map<String, Object> prod : fproducts) {
-            OrdersFproducts.create("order_id", order.getId(), "fproduct_id", (int)prod.get("fproductId"), "quantity", (int)prod.get("quantity"), "done", (boolean)prod.get("done"), "commited", (boolean)prod.get("commited"), "issued", (boolean)prod.get("issued")).saveIt();
+             OrdersFproducts.create("order_id", orderId, "fproduct_id", (int)prod.get("fproductId"), "quantity", (float)prod.get("quantity"), "done", (boolean)prod.get("done"), "commited", (boolean)prod.get("commited"), "issued", (boolean)prod.get("issued")).saveIt();
         }
         Base.commitTransaction();
+        Server.notifyWaitersOrderReady(orderId);
         return true;
     }
 
