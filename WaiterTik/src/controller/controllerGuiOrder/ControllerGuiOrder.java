@@ -75,6 +75,11 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
     public void setIds(Integer orderId, int waiterId){
         currentOrderId = orderId;
         currentWaiterId = waiterId;
+        try {
+            loadProducts();
+        } catch (RemoteException ex) {
+            Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public ControllerGuiOrder(GuiOrder go, GuiMain gm) throws NotBoundException, MalformedURLException, RemoteException {
@@ -116,6 +121,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
 
         });
         CreateTree();
+        loadProducts();
     }
 
     private void search() throws RemoteException {
@@ -277,7 +283,28 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
         guiOrder.getTreeMenu().setModel(modelo);
         guiOrder.getTreeMenu().setCellRenderer(this);
     }
-
+    
+    /* carga los productos de la order actual */
+    private void loadProducts() throws RemoteException{
+        if(currentOrderId == null)
+            return;
+        List<Map> orderProducts = crudOrder.getOrderProducts(currentOrderId);
+        for(Map Orderprod : orderProducts){
+            Map prod = crudFproduct.getFproduct((int)Orderprod.get("fproduct_id"));
+            Object[] row = new Object[7];
+            row[0] = prod.get("id");
+            float quantity = (float)Orderprod.get("quantity");
+            row[1] = quantity;
+            row[2] = prod.get("name");
+            float price = (float)prod.get("sell_price");
+            row[3] = ParserFloat.floatToString(price*quantity);
+            row[4] = (boolean)Orderprod.get("done");
+            row[5] = (boolean)Orderprod.get("commited");
+            row[6] = (boolean)Orderprod.get("issued");
+            guiOrder.getTableProductsDefault().addRow(row);
+        }    
+    }
+    
     @Override
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded,
             boolean leaf, int row, boolean hasFocus) {
@@ -326,7 +353,11 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                     products.add(prodMap);
                 }
                 try {
-                    crudOrder.sendOrder(currentWaiterId,guiOrder.getjTextDescription().getText(),products); 
+                    Map<String, Object> newOrder = crudOrder.sendOrder(currentWaiterId,guiOrder.getjTextDescription().getText(),products); 
+                    long idLong = (long)newOrder.get("id");
+                    currentOrderId = (int)idLong;
+                    productsTable.setRowCount(0);
+                    loadProducts();
                     JOptionPane.showMessageDialog(guiOrder, "Nuevo pedido Enviado!", "Pedido Enviado", JOptionPane.INFORMATION_MESSAGE);
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
@@ -348,7 +379,9 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                     }
                 }
                 try {
-                    crudOrder.addProducts(currentOrderId, products); 
+                    crudOrder.addProducts(currentOrderId, products);
+                    productsTable.setRowCount(0);
+                    loadProducts();
                     JOptionPane.showMessageDialog(guiOrder, "Productos Agregados y Enviados!", "Pedido Enviado", JOptionPane.INFORMATION_MESSAGE);
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
