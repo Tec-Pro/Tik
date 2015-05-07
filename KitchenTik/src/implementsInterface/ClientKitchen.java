@@ -30,14 +30,7 @@ public class ClientKitchen extends UnicastRemoteObject implements InterfaceClien
 
     @Override
     public void newOrder(int id) throws RemoteException {
-    
-        try {
-            kitchentik.KitchenTik.mostrarPedido(id);
-        } catch (NotBoundException ex) {
-            Logger.getLogger(ClientKitchen.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(ClientKitchen.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        System.out.println("Llego el pedido: "+id);
     }
 
     @Override

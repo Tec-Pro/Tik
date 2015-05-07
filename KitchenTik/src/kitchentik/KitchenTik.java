@@ -68,14 +68,8 @@ public class KitchenTik {
         }
  
         //Aca poner el controlador principal y con la gui principal 
-        
     
     }
-        
-    public static void mostrarPedido(int id) throws NotBoundException, MalformedURLException, RemoteException{
-      //todo esto es para probar
-        InterfaceOrder crudOrder = (InterfaceOrder)Naming.lookup("//" + Config.ip + "/crudOrder") ;
-        System.out.println("Pedido: "+crudOrder.getOrderProducts(id).toString());
-    }
+    
     
 }
