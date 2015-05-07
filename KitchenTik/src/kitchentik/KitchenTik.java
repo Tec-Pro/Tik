@@ -53,7 +53,7 @@ public class KitchenTik {
         while (!connected) {
             try {
              // le aviso al server que me conecto y que soy la cocinas
-             ( (InterfaceServer) Naming.lookup("//" + Config.ip + "/Server")).registerClientKitchen(client, "kitchen");
+             ( (InterfaceServer) Naming.lookup("//" + Config.ip + "/Server")).registerClientKitchen(client);
                 connected = true;
             } catch (RemoteException e) {
                 config = new Config(new javax.swing.JFrame(), true);

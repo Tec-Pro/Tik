@@ -10,11 +10,11 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
- *
+ *interfaz para el admin
  * @author nico
  */
 
-public interface InterfaceClient extends Remote {
+public interface InterfaceClientAdmin extends Remote {
     
     
     public void doSomething() throws RemoteException;

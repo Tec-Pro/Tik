@@ -6,7 +6,9 @@
 package controllers;
 
 import gui.GuiAdminLogin;
+import implementsInterface.ClientAdmin;
 import interfaces.InterfaceAdmin;
+import interfaces.InterfaceServer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -55,6 +57,9 @@ public class ControllerGuiAdminLogin implements ActionListener {
 
             }
         }
+        ClientAdmin client= new ClientAdmin();//creo el cliente este
+        ( (InterfaceServer) Naming.lookup("//" + Config.ip + "/Server")).registerClientAdmin(client);//le digo al server que me conecto y soy un mozo
+
         guiAdminLogin.clearFields();
         guiAdminLogin.setActionListener(this);
         guiAdminLogin.setLocationRelativeTo(null);

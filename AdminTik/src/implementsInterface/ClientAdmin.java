@@ -19,14 +19,14 @@ import java.rmi.server.UnicastRemoteObject;
  * vea que es un pedido terminado de parte de la cocina, autmaticamente invoca
  * dosomething de esta clase y asi los clietes mozos actualizan sus vistas
  */
-public class Client extends UnicastRemoteObject implements interfaces.InterfaceClient {
+public class ClientAdmin extends UnicastRemoteObject implements interfaces.InterfaceClientAdmin {
     
     @Override
     public void doSomething() throws RemoteException {
         System.out.println("Server invoked doSomething()");
     }
     
-    public Client() throws RemoteException{
+    public ClientAdmin() throws RemoteException{
         super();
     }
 }

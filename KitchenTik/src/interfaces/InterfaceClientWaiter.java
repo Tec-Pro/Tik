@@ -16,7 +16,7 @@ import java.rmi.RemoteException;
  * En esta clase van los métodos para que el server pueda invocarlos
  */
 
-public interface InterfaceClient extends Remote {
+public interface InterfaceClientWaiter extends Remote {
     
     
     public void doSomething() throws RemoteException;
