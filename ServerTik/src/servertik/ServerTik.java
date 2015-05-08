@@ -77,6 +77,7 @@ public class ServerTik {
            CRUDCategory crudCategory = new CRUDCategory();
            CRUDPurchase CRUDPurchase = new CRUDPurchase();
            CRUDOrder crudOrder = new CRUDOrder();
+           CRUDOrder crudOrderKitchen = new CRUDOrder();
            CrudUser crudUser = new CrudUser();
            CrudProvider crudProvider= new CrudProvider();
            CrudProviderCategory crudProviderCategory= new CrudProviderCategory();
@@ -94,14 +95,10 @@ public class ServerTik {
            Naming.rebind("crudProviderCategory", crudProviderCategory);
            Naming.rebind("providersSearch", providerSearch);
            Naming.rebind("crudPresence", crudPresence);
-           Naming.rebind("crudOrder", crudOrder);          
+           Naming.rebind("crudOrder", crudOrder);   
+           Naming.rebind("crudOrderKitchen", crudOrderKitchen);   
            Naming.rebind("Server", server);  
            
-           //ESTO ES DE LOS PEDIDOS DEL TORTUGA LO COMENTO PORQUE LE PUSO WHILE INFINITO 
-//           while(true){ // le aviso infinitamente que tienen pedidos 
-  //         Thread.sleep(7000);
-    //       Server.notifyWaitersOrderReady(1);
-      //     }
     }
     
 }

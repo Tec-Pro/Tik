@@ -47,4 +47,5 @@ public interface InterfaceOrder extends Remote{
     
     public List<Map> getOrderProducts(int orderId) throws java.rmi.RemoteException;
     
+    public Map<String,Object> getOrder(int orderId) throws java.rmi.RemoteException;
 }

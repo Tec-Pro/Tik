@@ -118,5 +118,10 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
     public List<Map> getOrderProducts(int orderId) throws RemoteException {
         return OrdersFproducts.find("order_id = ?", orderId).toMaps();
     }       
+
+    @Override
+    public Map<String, Object> getOrder(int orderId) throws RemoteException {
+        return Order.findById(orderId).toMap();
+    }
     
 }
