@@ -36,7 +36,7 @@ public class ClientKitchen extends UnicastRemoteObject implements InterfaceClien
 
     @Override
     public void updatedOrder(int id) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ControllerGuiKitchenMain.updatedOrder(id);
     }
     
     
