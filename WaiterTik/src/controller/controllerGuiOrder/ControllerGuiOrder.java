@@ -53,7 +53,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
 
     private Integer currentOrderId;
     private int currentWaiterId;
-    private boolean orderClosed;
+    private Map<String,Object> currentOrder;
     private final GuiOrder guiOrder;
     private final InterfaceCategory crudProductCategory;
     private final InterfaceFproduct crudFproduct;
@@ -79,12 +79,13 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
         currentWaiterId = waiterId;
         if(currentOrderId!= null)
             try {
-                orderClosed = (boolean)crudOrder.getOrder(currentOrderId).get("closed"); //setea el esatado del pedido actual, cerrado o no
+                currentOrder = crudOrder.getOrder(currentOrderId);
+                guiOrder.getLblOrderNum().setText(currentOrder.get("order_number").toString());
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
             }
         else
-            orderClosed = false; //si es nuevo, el pedido no esta cerrado
+            guiOrder.getLblOrderNum().setText("");
         try {
             loadProducts();
         } catch (RemoteException ex) {
@@ -350,7 +351,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
     @Override
     public void actionPerformed(ActionEvent e) {
         
-        //*******GuiOrder**************//
+       //*******GuiOrder**************//
         if(e.getSource().equals(guiOrder.getBtnSend())){               
             if(currentOrderId == null){ //si el pedido es nuevo, carga todos los productos y los envia
                 DefaultTableModel productsTable = guiOrder.getTableProductsDefault();
@@ -365,8 +366,9 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                     products.add(prodMap);
                 }
                 try {
-                    Map<String, Object> newOrder = crudOrder.sendOrder(currentWaiterId,guiOrder.getjTextDescription().getText(),products); 
-                    long idLong = (long)newOrder.get("id");
+                    currentOrder = crudOrder.sendOrder(currentWaiterId,guiOrder.getjTextDescription().getText(),products); 
+                    guiOrder.getLblOrderNum().setText(currentOrder.get("order_number").toString());
+                    long idLong = (long)currentOrder.get("id");
                     currentOrderId = (int)idLong;
                     productsTable.setRowCount(0);
                     loadProducts();
@@ -392,7 +394,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                     }
                 }
                 try {
-                    if(orderClosed){
+                    if((boolean)currentOrder.get("closed")){
                         JOptionPane.showMessageDialog(guiOrder, "           El pedido esta cerrado \n No se pueden agregar mas productos!", "Atencion", JOptionPane.INFORMATION_MESSAGE);
                         productsTable.setRowCount(0);
                         loadProducts();
@@ -414,11 +416,15 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                 return;
             try {
                 crudOrder.closeOrder(currentOrderId);
-                orderClosed = true;
+                currentOrder = crudOrder.getOrder(currentOrderId);
                 JOptionPane.showMessageDialog(guiOrder, "Pedido Cerrado!", "Atencion", JOptionPane.INFORMATION_MESSAGE);
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
             }        
+        }
+        
+        if(e.getSource().equals(guiOrder.getBtnCommit())){
+           DefaultTableModel productsTable = guiOrder.getTableProductsDefault();            
         }
         
         

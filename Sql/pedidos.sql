@@ -1,5 +1,6 @@
 CREATE TABLE `tik`.`orders` (
   `id` INT NOT NULL AUTO_INCREMENT,
+  `order_number` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `description` varchar(200) DEFAULT NULL,
   `closed` tinyint(1) DEFAULT NULL,

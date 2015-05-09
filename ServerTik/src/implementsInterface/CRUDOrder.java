@@ -25,6 +25,10 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         super();
     }
 
+    
+    private long getOrdersCount(int userId){
+        return Order.count("user_id = ?", userId);
+    }
     /**
      *
      * @param userId
@@ -38,13 +42,13 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         // campos que deberia tener el map: ("fproductId","quantity","done","commited","issued")
         Utils.abrirBase();
         Base.openTransaction();      
-        Order newOrder = Order.createIt("user_id", userId,"description", description,"closed",false);
+        Order newOrder = Order.createIt("user_id", userId,"order_number",getOrdersCount(userId)+1, "description", description,"closed",false);
         for (Map<String, Object> prod : fproducts) {   
            OrdersFproducts.create("order_id", newOrder.getId(), "fproduct_id", (int)prod.get("fproductId"), "quantity", (float)prod.get("quantity"), "done", (boolean)prod.get("done"), "commited", (boolean)prod.get("commited"), "issued", (boolean)prod.get("issued")).saveIt();
         }
         Base.commitTransaction();
         Server.notifyKitchenNewOrder(newOrder.getInteger("id"));
-        Server.notifyWaitersOrderReady(newOrder.getInteger("id"));
+        //Server.notifyWaitersOrderReady(newOrder.getInteger("id"));
         return newOrder.toMap();
     }
     
