@@ -75,6 +75,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
      * @param waiterId
      */
     public void setIds(Integer orderId, int waiterId){
+        guiOrder.getTableProductsDefault().setRowCount(0);
         currentOrderId = orderId;
         currentWaiterId = waiterId;
         if(currentOrderId!= null)
@@ -424,7 +425,14 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
         }
         
         if(e.getSource().equals(guiOrder.getBtnCommit())){
-           DefaultTableModel productsTable = guiOrder.getTableProductsDefault();            
+            try {
+                crudOrder.commitProducts(currentOrderId);
+                //JOptionPane.showMessageDialog(guiOrder, "Productos entregados!", "Atencion", JOptionPane.INFORMATION_MESSAGE);
+                guiOrder.getTableProductsDefault().setRowCount(0);
+                loadProducts();
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
+            }         
         }
         
         
