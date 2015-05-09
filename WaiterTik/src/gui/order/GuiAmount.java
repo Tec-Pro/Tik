@@ -61,7 +61,8 @@ public class GuiAmount extends javax.swing.JDialog {
         btnAccept = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Agregar producto");
+        setResizable(false);
 
         jLabel1.setText("Cantidad de:");
 
