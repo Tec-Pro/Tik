@@ -86,7 +86,12 @@ public class GuiMenu extends javax.swing.JInternalFrame {
         return txtTotalPrice;
     }
     
-    
+   public void cleanFields(){
+       txtTotalPrice.setText("");
+       txtSuggestPrice.setText("");
+       txtSellPrice.setText("");
+       tableReciperDefault.setRowCount(0);
+   } 
 
     /**
      * This method is called from within the constructor to initialize the form.

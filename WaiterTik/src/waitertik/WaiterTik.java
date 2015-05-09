@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import utils.Config;
+import utils.InterfaceName;
 
 /**
  *
@@ -50,7 +51,7 @@ public class WaiterTik {
         boolean connected = false;
         while (!connected) {
             try {
-                ((InterfaceServer) Naming.lookup("//" + Config.ip + "/Server")).registerClientWaiter(client);//le digo al server que me conecto y soy un mozo
+                ((InterfaceServer) Naming.lookup("//" + Config.ip + "/"+InterfaceName.server)).registerClientWaiter(client);//le digo al server que me conecto y soy un mozo
                 connected = true;
             } catch (RemoteException e) {
                 config = new Config(new javax.swing.JFrame(), true);

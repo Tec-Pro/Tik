@@ -36,6 +36,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.table.DefaultTableModel;
 import utils.Config;
 import utils.Dates;
+import utils.InterfaceName;
 import utils.Pair;
 import utils.ParserFloat;
 
@@ -69,9 +70,9 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
      * @throws RemoteException
      */
     public ControllerGuiPurchase(final GuiPurchase guiPurchase) throws NotBoundException, MalformedURLException, RemoteException {
-        this.interfacePurchase = (InterfacePurchase) Naming.lookup("//" + Config.ip + "/CRUDPurchase");
-        this.interfacePproduct = (InterfacePproduct) Naming.lookup("//" + Config.ip + "/CRUDPproduct");
-        this.interfaceProvidersSearch = (InterfaceProvidersSearch) Naming.lookup("//" + Config.ip + "/providersSearch");
+        this.interfacePurchase = (InterfacePurchase) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDPurchase);
+        this.interfacePproduct = (InterfacePproduct) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDPproduct);
+        this.interfaceProvidersSearch = (InterfaceProvidersSearch) Naming.lookup("//" + Config.ip + "/"+InterfaceName.providersSearch);
         this.guiPurchase = guiPurchase;
         this.tblDefaultProduct = this.guiPurchase.getTblDefaultProduct();
         this.tblDefaultProvider = this.guiPurchase.getTblDefaultProvider();

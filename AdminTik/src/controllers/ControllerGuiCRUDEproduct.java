@@ -25,6 +25,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import utils.Config;
+import utils.InterfaceName;
 import utils.Pair;
 import utils.ParserFloat;
 
@@ -63,8 +64,8 @@ public class ControllerGuiCRUDEproduct implements ActionListener {
         tableReciper = guiCRUDEProduct.getTableReciper();
         tableProductsDefault = guiCRUDEProduct.getTableProductsDefault();
         tableReciperDefault = guiCRUDEProduct.getTableReciperDefault();
-        crudPproduct = (InterfacePproduct) Naming.lookup("//" + Config.ip + "/CRUDPproduct");
-        crudEproduct = (InterfaceEproduct) Naming.lookup("//" + Config.ip + "/CRUDEproduct");
+        crudPproduct = (InterfacePproduct) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDPproduct);
+        crudEproduct = (InterfaceEproduct) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDEproduct);
         pproductList = crudPproduct.getPproducts();
         eproductList = crudEproduct.getEproducts();
         editingInformation = false;

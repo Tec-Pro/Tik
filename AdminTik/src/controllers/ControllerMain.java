@@ -39,6 +39,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import utils.Config;
 import utils.GeneralConfig;
+import utils.InterfaceName;
 
 /**
  *
@@ -111,9 +112,9 @@ public class ControllerMain implements ActionListener {
         guiMain.getDesktop().add(guiMenu);
         guiMain.getDesktop().add(guiPurchase);
 
-        InterfaceProvider provider = (InterfaceProvider) Naming.lookup("//" + Config.ip + "/crudProvider");
-        InterfaceProviderCategory providerCategory = (InterfaceProviderCategory) Naming.lookup("//" + Config.ip + "/crudProviderCategory");
-        InterfaceProvidersSearch providersSearch = (InterfaceProvidersSearch) Naming.lookup("//" + Config.ip + "/providersSearch");
+        InterfaceProvider provider = (InterfaceProvider) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDProvider);
+        InterfaceProviderCategory providerCategory = (InterfaceProviderCategory) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDProviderCategory);
+        InterfaceProvidersSearch providersSearch = (InterfaceProvidersSearch) Naming.lookup("//" + Config.ip + "/"+InterfaceName.providersSearch);
 
         //creo los controladores 
         controllerCRUDAdmin = new ControllerGuiCRUDAdmin(userLogged, guiCRUDAdmin);
@@ -238,7 +239,7 @@ public class ControllerMain implements ActionListener {
         //boton menu
         if (ae.getSource() == guiMain.getBtnMenu()) {
             guiMenu.setVisible(true);
-            guiMenu.getTableReciperDefault().setRowCount(0);
+            guiMenu.cleanFields();
             try {
                 controllerGuiMenu.CreateTree();
             } catch (RemoteException ex) {

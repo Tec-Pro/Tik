@@ -40,6 +40,7 @@ import utils.ImageExtensions;
 import utils.ImageFilter;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import utils.InterfaceName;
 
 /**
  *
@@ -54,7 +55,7 @@ public class ControllerGuiCRUDUser implements ActionListener {
     private boolean createMode = false;
 
     public ControllerGuiCRUDUser(GuiCRUDUser gui) throws NotBoundException, MalformedURLException, RemoteException {
-        crudUser = (InterfaceUser) Naming.lookup("//" + Config.ip + "/crudUser");
+        crudUser = (InterfaceUser) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDUser);
         guiUser = gui;
         guiUser.getTableUsers().getSelectionModel().addListSelectionListener(new ListSelectionListener() { // Listener for moving through the tableUsers and refreshing the gui
             @Override

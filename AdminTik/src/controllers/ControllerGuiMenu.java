@@ -42,6 +42,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import utils.Config;
 import utils.GeneralConfig;
+import utils.InterfaceName;
 import utils.ParserFloat;
 
 /**
@@ -71,11 +72,11 @@ public class ControllerGuiMenu extends DefaultTreeCellRenderer implements Action
     private ImageIcon addIcon;
 
     public ControllerGuiMenu(GuiMenu gt, GuiMain gm) throws NotBoundException, MalformedURLException, RemoteException {
-        crudProductCategory = (InterfaceCategory) Naming.lookup("//localhost/CRUDCategory");
+        crudProductCategory = (InterfaceCategory) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDCategory);
         guiMenu = gt;
-        crudFproduct = (InterfaceFproduct) Naming.lookup("//localhost/CRUDFproduct");
-        crudPproduct = (InterfacePproduct) Naming.lookup("//localhost/CRUDPproduct");
-        crudEproduct = (InterfaceEproduct) Naming.lookup("//localhost/CRUDEproduct");
+        crudFproduct = (InterfaceFproduct) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDFproduct);
+        crudPproduct = (InterfacePproduct) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDPproduct);
+        crudEproduct = (InterfaceEproduct) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDEproduct);
         guiAddUpdateProductCategory = new GuiAddUpdateProductCategory(gm, true);
         guiAddUpdateProductCategory.setLocationRelativeTo(guiMenu);
         guiAddUpdateProductCategory.setActionListener(this);

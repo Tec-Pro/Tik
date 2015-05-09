@@ -22,6 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import utils.Config;
+import utils.InterfaceName;
 
 /**
  *
@@ -45,7 +46,7 @@ public class ControllerGuiAdminLogin implements ActionListener {
         boolean connected = false;
         while (!connected) {
             try {
-                crudAdmin = (InterfaceAdmin) Naming.lookup("//" + Config.ip + "/crudAdmin");
+                crudAdmin = (InterfaceAdmin) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDAdmin);
                 connected = true;
             } catch (RemoteException e) {
                 config = new Config(new javax.swing.JFrame(), true);
@@ -58,7 +59,7 @@ public class ControllerGuiAdminLogin implements ActionListener {
             }
         }
         ClientAdmin client= new ClientAdmin();//creo el cliente este
-        ( (InterfaceServer) Naming.lookup("//" + Config.ip + "/Server")).registerClientAdmin(client);//le digo al server que me conecto y soy un mozo
+        ( (InterfaceServer) Naming.lookup("//" + Config.ip +"/"+InterfaceName.server)).registerClientAdmin(client);//le digo al server que me conecto y soy un mozo
 
         guiAdminLogin.clearFields();
         guiAdminLogin.setActionListener(this);

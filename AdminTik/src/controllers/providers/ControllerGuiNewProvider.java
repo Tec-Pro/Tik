@@ -24,6 +24,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import utils.Config;
+import utils.InterfaceName;
 
 /**
  *
@@ -53,8 +54,8 @@ public class ControllerGuiNewProvider implements ActionListener {
         this.guiNewProvider = guiNProv;
 
         //Busco los métodos de CRUD Provider y CRUD Provider Category en el server.
-        this.provider = (InterfaceProvider) Naming.lookup("//" + Config.ip + "/crudProvider");
-        this.providerCategory = (InterfaceProviderCategory) Naming.lookup("//" + Config.ip + "/crudProviderCategory");
+        this.provider = (InterfaceProvider) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDProvider);
+        this.providerCategory = (InterfaceProviderCategory) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDProviderCategory);
 
         this.guiNewProvider.setActionListener(this);
 

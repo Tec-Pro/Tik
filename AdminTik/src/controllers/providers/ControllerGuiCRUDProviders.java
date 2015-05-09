@@ -28,6 +28,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import utils.Config;
+import utils.InterfaceName;
 
 /**
  *
@@ -52,9 +53,9 @@ public class ControllerGuiCRUDProviders implements ActionListener {
      */
     public ControllerGuiCRUDProviders(GuiCRUDProviders guiCProv) throws RemoteException, NotBoundException, MalformedURLException {
         //Busco las clases en el server.
-        this.provider = (InterfaceProvider) Naming.lookup("//" + Config.ip + "/crudProvider");
-        this.providersSearch = (InterfaceProvidersSearch) Naming.lookup("//" + Config.ip + "/providersSearch");
-        this.providerCategory = (InterfaceProviderCategory) Naming.lookup("//" + Config.ip + "/crudProviderCategory");
+        this.provider = (InterfaceProvider) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDProvider);
+        this.providersSearch = (InterfaceProvidersSearch) Naming.lookup("//" + Config.ip +"/"+InterfaceName.providersSearch);
+        this.providerCategory = (InterfaceProviderCategory) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDProviderCategory);
 
         this.guiCRUDProviders = guiCProv;
         iDCurrentlySelectedProvider = -1;

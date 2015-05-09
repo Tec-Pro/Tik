@@ -20,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import utils.Config;
+import utils.InterfaceName;
 
 /**
  *
@@ -55,7 +56,7 @@ public class KitchenTik {
         while (!connected) {
             try {
              // le aviso al server que me conecto y que soy Kitchen
-             ( (InterfaceServer) Naming.lookup("//" + Config.ip + "/Server")).registerClientKitchen(client);
+             ( (InterfaceServer) Naming.lookup("//" + Config.ip + "/"+InterfaceName.server)).registerClientKitchen(client);
                 connected = true;
             } catch (RemoteException e) {
                 config = new Config(new javax.swing.JFrame(), true);

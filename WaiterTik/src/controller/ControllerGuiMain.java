@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import utils.Config;
+import utils.InterfaceName;
 
 /**
  *
@@ -50,8 +51,8 @@ public class ControllerGuiMain implements ActionListener {
         buttons = new HashMap();
         guiMain.setVisible(true);
         guiMain.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        crudUser = (InterfaceUser) Naming.lookup("//" + Config.ip + "/crudUser");
-        crudPresence = (InterfacePresence) Naming.lookup("//" + Config.ip + "/crudPresence");
+        crudUser = (InterfaceUser) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDUser);
+        crudPresence = (InterfacePresence) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDPresence);
         online = new HashSet<Map>();
         guiOrder = new GuiOrder(guiMain, true);
         controllerGuiOrder = new ControllerGuiOrder(guiOrder, guiMain);

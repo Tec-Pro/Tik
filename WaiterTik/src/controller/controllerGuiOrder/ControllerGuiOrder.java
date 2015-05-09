@@ -42,6 +42,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import utils.Config;
+import utils.InterfaceName;
 import utils.ParserFloat;
 
 /**
@@ -86,9 +87,9 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
     public ControllerGuiOrder(GuiOrder go, GuiMain gm) throws NotBoundException, MalformedURLException, RemoteException {
         guiOrder = go;
         guiOrder.getBtnSend().setEnabled(false);
-        crudProductCategory = (InterfaceCategory) Naming.lookup("//localhost/CRUDCategory");
-        crudFproduct = (InterfaceFproduct) Naming.lookup("//localhost/CRUDFproduct");
-        crudOrder = (InterfaceOrder)Naming.lookup("//" + Config.ip + "/crudOrder") ;
+        crudProductCategory = (InterfaceCategory) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDCategory);
+        crudFproduct = (InterfaceFproduct) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDFproduct);
+        crudOrder = (InterfaceOrder)Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDOrder) ;
         guiOrder.setActionListener(this);
         rootIcon = new ImageIcon(getClass().getResource("/Icons/menu.png"));
         categoryIcon = new ImageIcon(getClass().getResource("/Icons/category.png"));

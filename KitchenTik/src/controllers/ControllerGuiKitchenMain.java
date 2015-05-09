@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import utils.Config;
+import utils.InterfaceName;
 
 /**
  *
@@ -27,7 +28,7 @@ public class ControllerGuiKitchenMain  implements ActionListener {
     private static LinkedList<Map> orderList;
     
     public ControllerGuiKitchenMain() throws NotBoundException, MalformedURLException, RemoteException{
-        crudOrder = (InterfaceOrder) Naming.lookup("//" + Config.ip + "/crudOrder");
+        crudOrder = (InterfaceOrder) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDOrder);
         orderList = new LinkedList<>();
     }
     

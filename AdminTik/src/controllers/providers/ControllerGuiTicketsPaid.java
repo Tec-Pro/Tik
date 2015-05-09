@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import utils.Config;
+import utils.InterfaceName;
 import utils.Pair;
 
 /**
@@ -52,9 +53,9 @@ public class ControllerGuiTicketsPaid {
         this.guiTicketsPaid = guiTP;
 
         //Busco los métodos del server.
-        this.interfacePurchase = (InterfacePurchase) Naming.lookup("//" + Config.ip + "/CRUDPurchase");
+        this.interfacePurchase = (InterfacePurchase) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDPurchase);
 
-        this.interfacePProduct = (InterfacePproduct) Naming.lookup("//" + Config.ip + "/CRUDPproduct");
+        this.interfacePProduct = (InterfacePproduct) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDPproduct);
 
         //Seteo el ID del provedor corriente.
         this.currentProviderId = current_id;

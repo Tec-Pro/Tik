@@ -30,6 +30,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import utils.Config;
 import utils.GeneralConfig;
+import utils.InterfaceName;
 import utils.Pair;
 import utils.ParserFloat;
 
@@ -73,10 +74,10 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
         tableReciper = guiCRUDFProduct.getTableReciper();
         tableProductsDefault = guiCRUDFProduct.getTableProductsDefault();
         tableReciperDefault = guiCRUDFProduct.getTableReciperDefault();
-        crudPproduct = (InterfacePproduct) Naming.lookup("//" + Config.ip + "/CRUDPproduct");
-        crudEproduct = (InterfaceEproduct) Naming.lookup("//" + Config.ip + "/CRUDEproduct");
-        crudFproduct = (InterfaceFproduct) Naming.lookup("//" + Config.ip + "/CRUDFproduct");
-        category = (InterfaceCategory) Naming.lookup("//" + Config.ip + "/CRUDCategory");
+        crudPproduct = (InterfacePproduct) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDPproduct);
+        crudEproduct = (InterfaceEproduct) Naming.lookup("//" + Config.ip +"/"+InterfaceName.CRUDEproduct);
+        crudFproduct = (InterfaceFproduct) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDFproduct);
+        category = (InterfaceCategory) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDCategory);
         guiCRUDFProduct.setCRUDCategory(category);
         pproductList = crudPproduct.getPproducts();
         eproductList = crudEproduct.getEproducts();
@@ -388,6 +389,8 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
             }
         }
         guiCRUDFProduct.getTxtProductionPrice().setText(ParserFloat.floatToString(price));
+        guiCRUDFProduct.getTxtSuggestedPrice().setText(ParserFloat.floatToString(price + price * GeneralConfig.percent / 100));
+
     }
 
     @Override

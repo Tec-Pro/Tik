@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import java.util.Map;
 import javax.swing.JOptionPane;
 import utils.Config;
+import utils.InterfaceName;
 
 /**
  *
@@ -34,7 +35,7 @@ public class ControllerGuiCRUDAdmin implements ActionListener {
 
     public ControllerGuiCRUDAdmin(Map<String, Object> admin, GuiCRUDAdmin gui) throws NotBoundException, MalformedURLException, RemoteException {
         currentAdmin = admin;
-        crudAdmin = (InterfaceAdmin) Naming.lookup("//" + Config.ip + "/crudAdmin");
+        crudAdmin = (InterfaceAdmin) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDAdmin);
         guiAdmin = gui;
         guiAdmin.getTxtName().setEditable(false);
         guiAdmin.getPassField().setEditable(false);
