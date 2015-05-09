@@ -109,8 +109,8 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
     public boolean closeOrder(int idOrder) throws RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
-        Order order = Order.findById(idOrder);
-        order.set("closed", true);
+        Order order = Order.findById(idOrder);      
+        order.set("closed", true).saveIt();
         Base.commitTransaction();
         return true;
     }

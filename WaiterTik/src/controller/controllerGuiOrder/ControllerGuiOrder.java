@@ -52,6 +52,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
 
     private Integer currentOrderId;
     private int currentWaiterId;
+    private boolean orderClosed;
     private final GuiOrder guiOrder;
     private final InterfaceCategory crudProductCategory;
     private final InterfaceFproduct crudFproduct;
@@ -75,6 +76,14 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
     public void setIds(Integer orderId, int waiterId){
         currentOrderId = orderId;
         currentWaiterId = waiterId;
+        if(currentOrderId!= null)
+            try {
+                orderClosed = (boolean)crudOrder.getOrder(currentOrderId).get("closed"); //setea el esatado del pedido actual, cerrado o no
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        else
+            orderClosed = false; //si es nuevo, el pedido no esta cerrado
         try {
             loadProducts();
         } catch (RemoteException ex) {
@@ -341,7 +350,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
     public void actionPerformed(ActionEvent e) {
         
         //*******GuiOrder**************//
-        if(e.getSource().equals(guiOrder.getBtnSend())){
+        if(e.getSource().equals(guiOrder.getBtnSend())){               
             if(currentOrderId == null){ //si el pedido es nuevo, carga todos los productos y los envia
                 DefaultTableModel productsTable = guiOrder.getTableProductsDefault();
                 List<Map<String,Object>> products = new LinkedList<>();
@@ -382,6 +391,12 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                     }
                 }
                 try {
+                    if(orderClosed){
+                        JOptionPane.showMessageDialog(guiOrder, "           El pedido esta cerrado \n No se pueden agregar mas productos!", "Atencion", JOptionPane.INFORMATION_MESSAGE);
+                        productsTable.setRowCount(0);
+                        loadProducts();
+                        return;
+                    }
                     crudOrder.addProducts(currentOrderId, products);
                     productsTable.setRowCount(0);
                     loadProducts();
@@ -393,7 +408,18 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
             }
         }
     
- 
+        if(e.getSource().equals(guiOrder.getBtnClose())){ //cierra el pedido          
+            if(currentOrderId == null)
+                return;
+            try {
+                crudOrder.closeOrder(currentOrderId);
+                orderClosed = true;
+                JOptionPane.showMessageDialog(guiOrder, "Pedido Cerrado!", "Atencion", JOptionPane.INFORMATION_MESSAGE);
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
+            }        
+        }
+        
         
         //*******GuiAmount**************//
         if (e.getSource().equals(guiAmount.getBtnAccept())) {
