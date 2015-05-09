@@ -205,6 +205,8 @@ public class ControllerGuiCRUDEproduct implements ActionListener {
                 tableReciperDefault.setRowCount(0);
                 guiCRUDEProduct.getTxtId().setText("");
                 guiCRUDEProduct.getTxtName().setText("");
+                guiCRUDEProduct.getTxtId().setEnabled(false);
+                guiCRUDEProduct.getTxtName().setEnabled(false);
                 guiCRUDEProduct.getBtnNew().setEnabled(true);
                 guiCRUDEProduct.getBtnCancel().setEnabled(false);
                 guiCRUDEProduct.getBtnDelete().setEnabled(false);
@@ -355,6 +357,8 @@ public class ControllerGuiCRUDEproduct implements ActionListener {
             tableReciperDefault.setRowCount(0);
             guiCRUDEProduct.getTxtId().setText("");
             guiCRUDEProduct.getTxtName().setText("");
+            guiCRUDEProduct.getTxtId().setEnabled(false);
+            guiCRUDEProduct.getTxtName().setEnabled(false);
             guiCRUDEProduct.getBtnNew().setEnabled(true);
             guiCRUDEProduct.getBtnCancel().setEnabled(false);
             guiCRUDEProduct.getBtnDelete().setEnabled(false);

@@ -263,6 +263,14 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
                 guiCRUDFProduct.getCategory().removeAllItems();
                 guiCRUDFProduct.getSubcategory().setSelectedIndex(-1);
                 guiCRUDFProduct.getSubcategory().removeAllItems();
+                guiCRUDFProduct.getTxtId().setEnabled(false);
+                guiCRUDFProduct.getTxtName().setEnabled(false);
+                guiCRUDFProduct.getTxtProductionPrice().setEnabled(false);
+                guiCRUDFProduct.getTxtSellPrice().setEnabled(false);
+                guiCRUDFProduct.getTxtSuggestedPrice().setEnabled(false);
+                guiCRUDFProduct.getBelong().setEnabled(false);
+                guiCRUDFProduct.getCategory().setEnabled(false);
+                guiCRUDFProduct.getSubcategory().setEnabled(false);
                 guiCRUDFProduct.getBtnNew().setEnabled(true);
                 guiCRUDFProduct.getBtnCancel().setEnabled(false);
                 guiCRUDFProduct.getBtnDelete().setEnabled(false);
@@ -304,14 +312,14 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
             }
         }
     }
-    
+
     /**
      * actualiza el precio de costo cuando se edita una celda
      *
      * @param evt
      * @throws RemoteException
      */
-     @Override
+    @Override
     public void editingStopped(ChangeEvent e) {
         try {
             dinamicProductionPrice();
@@ -319,12 +327,12 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
             Logger.getLogger(ControllerGuiCRUDFproduct.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-     
-     /**
+
+    /**
      * Setea el CellEditorListener a las celdas de la receta.
      *
      */
-      public void setCellEditor() {
+    public void setCellEditor() {
         for (int i = 0; i < tableReciper.getRowCount(); i++) {
             tableReciper.getCellEditor(i, 2).addCellEditorListener(this);
         }
@@ -334,7 +342,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
     public void editingCanceled(ChangeEvent e) {
         //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     /**
      * refresca la lista de la reseta diferenciando si son productos primarios o
      * elaborados
@@ -519,6 +527,14 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
             guiCRUDFProduct.getCategory().removeAllItems();
             guiCRUDFProduct.getSubcategory().setSelectedIndex(-1);
             guiCRUDFProduct.getSubcategory().removeAllItems();
+            guiCRUDFProduct.getTxtId().setEnabled(false);
+            guiCRUDFProduct.getTxtName().setEnabled(false);
+            guiCRUDFProduct.getTxtProductionPrice().setEnabled(false);
+            guiCRUDFProduct.getTxtSellPrice().setEnabled(false);
+            guiCRUDFProduct.getTxtSuggestedPrice().setEnabled(false);
+            guiCRUDFProduct.getBelong().setEnabled(false);
+            guiCRUDFProduct.getCategory().setEnabled(false);
+            guiCRUDFProduct.getSubcategory().setEnabled(false);
             guiCRUDFProduct.getBtnNew().setEnabled(true);
             guiCRUDFProduct.getBtnCancel().setEnabled(false);
             guiCRUDFProduct.getBtnDelete().setEnabled(false);
