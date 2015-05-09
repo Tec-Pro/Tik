@@ -5,6 +5,7 @@
  */
 package kitchentik;
 
+import controllers.ControllerGuiKitchenMain;
 import implementsInterface.ClientKitchen;
 import interfaces.InterfaceOrder;
 import interfaces.InterfaceServer;
@@ -28,8 +29,11 @@ public class KitchenTik {
 
     /**
      * @param args the command line arguments
+     * @throws java.rmi.RemoteException
+     * @throws java.rmi.NotBoundException
      */
     public static void main(String[] args) throws RemoteException, IOException, NotBoundException {
+        ControllerGuiKitchenMain controllerGuiKitchen;
         try {
             JFrame.setDefaultLookAndFeelDecorated(true);
             com.jtattoo.plaf.aero.AeroLookAndFeel.setTheme("Default");
@@ -37,13 +41,11 @@ public class KitchenTik {
             UIManager.setLookAndFeel("com.jtattoo.plaf.aero.AeroLookAndFeel");
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
         }
-        
-        
-              
-              
-                            ClientKitchen client= new ClientKitchen();//creo el cliente este
-
-                      Config config = new Config(new javax.swing.JFrame(), true);
+            
+            // Creo el cliente Kitchen
+            ClientKitchen client= new ClientKitchen();
+            //Creo un nuevo archivo de configuracion
+            Config config = new Config(new javax.swing.JFrame(), true);
         try {
             config.loadProperties();
         } catch (IOException ex) {
@@ -52,7 +54,7 @@ public class KitchenTik {
         boolean connected = false;
         while (!connected) {
             try {
-             // le aviso al server que me conecto y que soy la cocinas
+             // le aviso al server que me conecto y que soy Kitchen
              ( (InterfaceServer) Naming.lookup("//" + Config.ip + "/Server")).registerClientKitchen(client);
                 connected = true;
             } catch (RemoteException e) {
@@ -66,8 +68,9 @@ public class KitchenTik {
             
             
         }
- 
-        //Aca poner el controlador principal y con la gui principal 
+        
+        //Creo el controlador principal
+        new ControllerGuiKitchenMain();
     
     }
     

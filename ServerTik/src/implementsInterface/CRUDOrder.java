@@ -72,6 +72,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
              OrdersFproducts.create("order_id", orderId, "fproduct_id", (int)prod.get("fproductId"), "quantity", (float)prod.get("quantity"), "done", (boolean)prod.get("done"), "commited", (boolean)prod.get("commited"), "issued", (boolean)prod.get("issued")).saveIt();
         }
         Base.commitTransaction();
+        Server.notifyKitchenUpdatedOrder(order.getInteger("id"));
         return true;
     }
 
@@ -118,5 +119,14 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
     public List<Map> getOrderProducts(int orderId) throws RemoteException {
         return OrdersFproducts.find("order_id = ?", orderId).toMaps();
     }       
+
+    @Override
+    public Map<String, Object> getOrder(int orderId) throws RemoteException {
+        Utils.abrirBase();
+        Base.openTransaction();
+        Order order =  Order.findById(orderId);
+        Base.commitTransaction();
+        return order.toMap();
+    }
     
 }

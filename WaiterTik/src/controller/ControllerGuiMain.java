@@ -33,7 +33,6 @@ import utils.Config;
  * @author jacinto
  */
 public class ControllerGuiMain implements ActionListener {
-    
 
     private GuiMain guiMain;
     private GuiLogin guiLogin;
@@ -43,6 +42,7 @@ public class ControllerGuiMain implements ActionListener {
     private Set<Map> online;
     private GuiOrder guiOrder;
     ControllerGuiOrder controllerGuiOrder;
+    private boolean isNewOrder;  //variable de control, para saber que accion se ejecuta.
 
     public ControllerGuiMain() throws NotBoundException, MalformedURLException, RemoteException {
         guiMain = new GuiMain();
@@ -52,11 +52,13 @@ public class ControllerGuiMain implements ActionListener {
         guiMain.setExtendedState(JFrame.MAXIMIZED_BOTH);
         crudUser = (InterfaceUser) Naming.lookup("//" + Config.ip + "/crudUser");
         crudPresence = (InterfacePresence) Naming.lookup("//" + Config.ip + "/crudPresence");
-        online = new HashSet<Map>();  
+        online = new HashSet<Map>();
         guiOrder = new GuiOrder(guiMain, true);
-        controllerGuiOrder = new ControllerGuiOrder(guiOrder,guiMain);
+        controllerGuiOrder = new ControllerGuiOrder(guiOrder, guiMain);
+        guiLogin = null;
+
     }
-    
+
     public void addMyComponent(String user) {
         //instancia nueva a componente
         ComponentUserLoginBtn cULBtn = new ComponentUserLoginBtn(user);
@@ -86,7 +88,7 @@ public class ControllerGuiMain implements ActionListener {
                 //FILTRAR 
             }
         }
-        if (e.getSource() == guiMain.getBtnLogin()) {            
+        if (e.getSource() == guiMain.getBtnLogin()) {
             try {
                 guiLogin = new GuiLogin(guiMain, true);
                 Set<Map> offline = new HashSet<Map>();
@@ -94,40 +96,62 @@ public class ControllerGuiMain implements ActionListener {
                 offline.removeAll(online);
                 guiLogin.loadCBoxUsers(offline);
                 guiLogin.setActionListener(this);
-                guiLogin.setVisible(true);                
-            } catch (RemoteException ex) {
-                Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
-            }            
-        }
-        if (e.getSource() == guiLogin.getBtnAccept()) {            
-            String user = guiLogin.getcBoxUsers().getItemAt(guiLogin.getcBoxUsers().getSelectedIndex()).toString();
-            String split[] = user.split("-");
-            int userId = Integer.parseInt(split[0]);
-            try {
-                //crudUser.validatePass(userId,guiLogin.getTxtPass().getText())
-                if (true) {
-                     addMyComponent(user);
-                     crudPresence.create(userId);
-                     guiLogin.dispose();
-                     online.add(crudUser.getUser(userId));
-                 } else {
-                      JOptionPane.showMessageDialog(guiMain, "Ocurrió un error, contraseña incorrecta", "Error!", JOptionPane.ERROR_MESSAGE);
-                 }
+                guiLogin.setVisible(true);
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        if (e.getSource() == guiLogin.getBtnCancel()) {
-             guiLogin.dispose();
-        }
-        if(e.getSource().equals(guiMain.getBtnNew())){
-            guiOrder.setLocationRelativeTo(null);
-            guiOrder.setVisible(true);
-            try {
-                controllerGuiOrder.CreateTree();
-            } catch (RemoteException ex) {
-                Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
+        if (guiLogin != null) {
+            if (e.getSource() == guiLogin.getBtnAccept()) {
+                String user = guiLogin.getcBoxUsers().getItemAt(guiLogin.getcBoxUsers().getSelectedIndex()).toString();
+                String split[] = user.split("-");
+                int userId = Integer.parseInt(split[0]);
+                try {
+                    //crudUser.validatePass(userId, guiLogin.getTxtPass().getText())
+                    if (true) {
+                        if (isNewOrder) {
+                            guiLogin.dispose();
+                            guiOrder.setLocationRelativeTo(null);
+                            guiOrder.setVisible(true);
+                            try {
+                                controllerGuiOrder.CreateTree();
+                                controllerGuiOrder.setIds(null, userId);
+                            } catch (RemoteException ex) {
+                                Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        } else {
+                            addMyComponent(user);
+                            crudPresence.create(userId);
+                            guiLogin.dispose();
+                            online.add(crudUser.getUser(userId));
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(guiMain, "Ocurrió un error, contraseña incorrecta", "Error!", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (e.getSource() == guiLogin.getBtnCancel()) {
+                guiLogin.dispose();
             }
         }
-    }        
+        if (e.getSource().equals(guiMain.getBtnNew())) {
+            if (online.isEmpty()) {
+                JOptionPane.showMessageDialog(guiMain, "Ocurrió un error, no hay mozos logueado", "Error!", JOptionPane.ERROR_MESSAGE);
+            } else {
+                try {
+                    isNewOrder = true;
+                    guiLogin = new GuiLogin(guiMain, true);
+                    Set<Map> offline = new HashSet<Map>();
+                    offline.addAll(crudUser.getUsers());
+                    guiLogin.loadCBoxUsers(offline);
+                    guiLogin.setActionListener(this);
+                    guiLogin.setVisible(true);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
 }

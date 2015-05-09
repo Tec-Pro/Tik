@@ -66,14 +66,32 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
         }
     }
 
-    //avisa a la cocina que hay un nuevo pedido o se actualizo uno
+    //avisa a la cocina que hay un nuevo pedido
     public static void notifyKitchenNewOrder(int id) throws RemoteException {
         Iterator<InterfaceClientKitchen> it = chefs.iterator();
         int i = 0;
         while (it.hasNext()) {
             InterfaceClientKitchen client = it.next();
             try {
-                client.newOrder(id); //aca va el metodo de cocina
+                client.newOrder(id);
+            } catch (java.rmi.ConnectException e) {
+                System.err.println("se rompió porque se cerro un programa seguro" + e);
+                chefs.remove(i);
+                //despues voy a eliminar este tipo porque la conexión se rechazó por desconectarses
+            }
+
+            i++;
+        }
+    }
+    
+    //avisa a la cocina que un pedido fue modificado
+    public static void notifyKitchenUpdatedOrder(int id) throws RemoteException {
+        Iterator<InterfaceClientKitchen> it = chefs.iterator();
+        int i = 0;
+        while (it.hasNext()) {
+            InterfaceClientKitchen client = it.next();
+            try {
+                client.updatedOrder(id); 
             } catch (java.rmi.ConnectException e) {
                 System.err.println("se rompió porque se cerro un programa seguro" + e);
                 chefs.remove(i);

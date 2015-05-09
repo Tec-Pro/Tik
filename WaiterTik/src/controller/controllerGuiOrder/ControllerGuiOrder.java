@@ -80,10 +80,12 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
         } catch (RemoteException ex) {
             Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
+        guiOrder.getBtnSend().setEnabled(false);
     }
     
     public ControllerGuiOrder(GuiOrder go, GuiMain gm) throws NotBoundException, MalformedURLException, RemoteException {
         guiOrder = go;
+        guiOrder.getBtnSend().setEnabled(false);
         crudProductCategory = (InterfaceCategory) Naming.lookup("//localhost/CRUDCategory");
         crudFproduct = (InterfaceFproduct) Naming.lookup("//localhost/CRUDFproduct");
         crudOrder = (InterfaceOrder)Naming.lookup("//" + Config.ip + "/crudOrder") ;
@@ -359,6 +361,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                     productsTable.setRowCount(0);
                     loadProducts();
                     JOptionPane.showMessageDialog(guiOrder, "Nuevo pedido Enviado!", "Pedido Enviado", JOptionPane.INFORMATION_MESSAGE);
+                    guiOrder.getBtnSend().setEnabled(false);
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -383,6 +386,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                     productsTable.setRowCount(0);
                     loadProducts();
                     JOptionPane.showMessageDialog(guiOrder, "Productos Agregados y Enviados!", "Pedido Enviado", JOptionPane.INFORMATION_MESSAGE);
+                    guiOrder.getBtnSend().setEnabled(false);
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -413,6 +417,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                 }
                 guiAmount.getTxtAmount().setText("1");
                 guiAmount.setVisible(false);
+                guiOrder.getBtnSend().setEnabled(true);
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
             }

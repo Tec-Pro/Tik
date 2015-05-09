@@ -94,14 +94,9 @@ public class ServerTik {
            Naming.rebind("crudProviderCategory", crudProviderCategory);
            Naming.rebind("providersSearch", providerSearch);
            Naming.rebind("crudPresence", crudPresence);
-           Naming.rebind("crudOrder", crudOrder);          
+           Naming.rebind("crudOrder", crudOrder);  
            Naming.rebind("Server", server);  
            
-           //ESTO ES DE LOS PEDIDOS DEL TORTUGA LO COMENTO PORQUE LE PUSO WHILE INFINITO 
-//           while(true){ // le aviso infinitamente que tienen pedidos 
-  //         Thread.sleep(7000);
-    //       Server.notifyWaitersOrderReady(1);
-      //     }
     }
     
 }
