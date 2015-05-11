@@ -5,25 +5,25 @@
  */
 package gui.main;
 
-import gui.login.ButtonLogin;
 import gui.order.OrderPane;
 import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
+import javax.swing.JMenuItem;
 import utils.Watch;
 
 /**
  *
  * @author joako
  */
-public class GuiKitchenMain extends javax.swing.JFrame  {
+public class GuiKitchenMain extends javax.swing.JFrame {
 
     /**
      * Creates new form GuiKitchenMain
      */
     public GuiKitchenMain() {
         initComponents();
-        Watch watch = new Watch(0,0,0,0);
+        Watch watch = new Watch(0, 0, 0, 0);
         watch.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         watch.setFont(new java.awt.Font("Arial", 1, 25));
         watchPanel.add(watch, BorderLayout.CENTER);
@@ -41,38 +41,31 @@ public class GuiKitchenMain extends javax.swing.JFrame  {
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel2 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
-        jSplitPane1 = new javax.swing.JSplitPane();
         ordersPanel = new javax.swing.JPanel();
-        loginPanel = new javax.swing.JPanel();
-        btnLogin = new javax.swing.JButton();
         watchPanel = new javax.swing.JPanel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        MenuItemNuevo = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jSplitPane1.setResizeWeight(0.25);
-        jSplitPane1.setToolTipText("");
-
         ordersPanel.setLayout(new java.awt.GridLayout(0, 5));
-        jSplitPane1.setRightComponent(ordersPanel);
-
-        loginPanel.setLayout(new java.awt.GridLayout(25, 0));
-
-        btnLogin.setText("Login");
-        loginPanel.add(btnLogin);
-
-        jSplitPane1.setLeftComponent(loginPanel);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1)
+            .addComponent(ordersPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(ordersPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         watchPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -85,14 +78,14 @@ public class GuiKitchenMain extends javax.swing.JFrame  {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(watchPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(watchPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 685, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(31, 31, 31)
                 .addComponent(watchPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -101,34 +94,48 @@ public class GuiKitchenMain extends javax.swing.JFrame  {
 
         jScrollPane1.setViewportView(jPanel2);
 
+        jMenu1.setText("Login");
+
+        MenuItemNuevo.setText("Nuevo");
+        MenuItemNuevo.setActionCommand("MenuItemNuevo");
+        jMenu1.add(MenuItemNuevo);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 711, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void addElementToLoginGrid(String userLogin, ActionListener lis){
-        ButtonLogin btn = new ButtonLogin(userLogin);
-        loginPanel.add(btn);
-        loginPanel.revalidate();
-        btn.getBtnUserName().addActionListener(lis);
+    public void addElementToLoginList(String userLogin, ActionListener lis) {
+        JMenuItem item = new JMenuItem(userLogin);
+        item.setActionCommand("MenuItem"+userLogin);
+        jMenu1.add(item);
+        jMenu1.revalidate();
+        jMenu1.getItem(jMenu1.getItemCount() - 1).addActionListener(lis);
     }
-    
-    public void addElementToOrdersGrid(String orderId, String orderDescription, String orderArrivalTime){
+
+    public void addElementToOrdersGrid(String orderId, String orderDescription, String orderArrivalTime) {
         OrderPane newOrder = new OrderPane(orderId, orderDescription, orderArrivalTime);
         ordersPanel.add(newOrder);
         ordersPanel.revalidate();
-        
+
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -162,27 +169,27 @@ public class GuiKitchenMain extends javax.swing.JFrame  {
                 new GuiKitchenMain().setVisible(true);
             }
         });
-        
+
     }
-    
-    public void setActionListener(ActionListener lis){
-        this.btnLogin.addActionListener(lis);
+
+    public void setActionListener(ActionListener lis) {
+        this.MenuItemNuevo.addActionListener(lis);
     }
-    
-    public void setMouseListener(MouseListener lis){
+
+    public void setMouseListener(MouseListener lis) {
         this.ordersPanel.addMouseListener(lis);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnLogin;
+    private javax.swing.JMenuItem MenuItemNuevo;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSplitPane jSplitPane1;
-    private javax.swing.JPanel loginPanel;
     private javax.swing.JPanel ordersPanel;
     private javax.swing.JPanel watchPanel;
     // End of variables declaration//GEN-END:variables
 
-    
 }
