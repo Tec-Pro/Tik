@@ -6,11 +6,14 @@
 package implementsInterface;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import models.Order;
 import models.OrdersFproducts;
 import org.javalite.activejdbc.Base;
+import org.javalite.activejdbc.Model;
 import utils.Utils;
 
 /**
@@ -134,7 +137,9 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
     
     @Override
     public List<Map> getOrderProducts(int orderId) throws RemoteException {
-        return OrdersFproducts.find("order_id = ?", orderId).toMaps();
+        Utils.abrirBase();
+        List<Map> ordersFProducts = OrdersFproducts.find("order_id = ?", orderId).toMaps();
+        return ordersFProducts;
     }       
 
     
@@ -146,6 +151,23 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         Order order =  Order.findById(orderId);
         Base.commitTransaction();
         return order.toMap();
+    }
+    
+    @Override
+    public List<Map> updateOrdersReadyProducts(Integer idOrder, List<Integer> productsList) throws RemoteException {
+        Utils.abrirBase();
+        Base.openTransaction();
+        List<Map> result = new LinkedList<>();
+        Iterator<Integer> itr = productsList.iterator();
+        while (itr.hasNext()){
+            Integer idOrderProduct = itr.next();
+            Model product = OrdersFproducts.findById(idOrderProduct);
+            product.set("done", true).saveIt();
+            result.add(product.toMap());
+        }
+        Base.commitTransaction();
+        Server.notifyWaitersOrderReady(idOrder);
+        return result;
     }
     
 }
