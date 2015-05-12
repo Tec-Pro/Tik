@@ -37,6 +37,10 @@ public class GuiMain extends javax.swing.JFrame {
         return btnLogin;
     }
 
+    public JPanel getPanelActiveOrders() {
+        return panelActiveOrders;
+    }
+
     public JPanel getPanelLogin() {
         return panelLogin;
     }
@@ -62,7 +66,7 @@ public class GuiMain extends javax.swing.JFrame {
         btnLogin = new javax.swing.JButton();
         btnNew = new javax.swing.JButton();
         jSplitPane1 = new javax.swing.JSplitPane();
-        jPanel5 = new javax.swing.JPanel();
+        panelActiveOrders = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         pnlWatch = new javax.swing.JPanel();
@@ -95,20 +99,9 @@ public class GuiMain extends javax.swing.JFrame {
         jSplitPane1.setDividerLocation(600);
         jSplitPane1.setDividerSize(10);
 
-        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Pedidos activos"));
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 590, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1295, Short.MAX_VALUE)
-        );
-
-        jSplitPane1.setLeftComponent(jPanel5);
+        panelActiveOrders.setBorder(javax.swing.BorderFactory.createTitledBorder("Pedidos activos"));
+        panelActiveOrders.setLayout(new java.awt.GridLayout(3, 6));
+        jSplitPane1.setLeftComponent(panelActiveOrders);
 
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Pedidos pausados"));
 
@@ -116,7 +109,7 @@ public class GuiMain extends javax.swing.JFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 185, Short.MAX_VALUE)
+            .addGap(0, 134, Short.MAX_VALUE)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -254,11 +247,11 @@ public class GuiMain extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JLabel lblTurn;
+    private javax.swing.JPanel panelActiveOrders;
     private javax.swing.JPanel panelLogin;
     private javax.swing.JPanel pnlWatch;
     // End of variables declaration//GEN-END:variables

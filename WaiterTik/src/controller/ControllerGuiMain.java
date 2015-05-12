@@ -43,6 +43,7 @@ public class ControllerGuiMain implements ActionListener {
     private InterfaceUser crudUser;
     private InterfacePresence crudPresence;
     private Map buttons; //Nos sirve para almacenar a los objetos creados
+    private Map buttonsOrder;
     private Set<Map> online;
     private GuiOrder guiOrder;
     ControllerGuiOrder controllerGuiOrder;
@@ -54,6 +55,7 @@ public class ControllerGuiMain implements ActionListener {
         guiMain = new GuiMain();
         guiMain.setActionListener(this);
         buttons = new HashMap();
+        buttonsOrder = new HashMap();
         guiMain.setVisible(true);
         guiMain.setExtendedState(JFrame.MAXIMIZED_BOTH);
         crudUser = (InterfaceUser) Naming.lookup("//" + Config.ip + "/" + InterfaceName.CRUDUser);
@@ -68,6 +70,10 @@ public class ControllerGuiMain implements ActionListener {
             String usr = (int) m.get("id") + "-" + (String) m.get("name") + " " + (String) m.get("surname");
             addMyComponent(usr);
         }
+    }
+
+    public Map getButtonsOrder() {
+        return buttonsOrder;
     }
 
     /**
