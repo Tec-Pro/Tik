@@ -5,6 +5,7 @@
 package interfaces;
 
 import java.rmi.Remote;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,4 +30,17 @@ public interface  InterfacePresence extends Remote {
      */
     public Map<String,Object> logout(int userId) throws java.rmi.RemoteException;
     
+    /**
+     * devuelve todos los mozos online
+     * @return
+     * @throws java.rmi.RemoteException
+     */
+    public List<Map> getWaiters() throws java.rmi.RemoteException;
+    
+    /**
+     * devuelve todos los cocineros online
+     * @return
+     * @throws java.rmi.RemoteException
+     */
+    public List<Map> getCooks() throws java.rmi.RemoteException;
 }

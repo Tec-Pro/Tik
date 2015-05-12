@@ -38,14 +38,13 @@ import java.util.List;
  */
 public class ControllerGuiMain implements ActionListener {
 
-    
     private static GuiMain guiMain;
     private GuiLogin guiLogin;
-    private  InterfaceUser crudUser;
+    private InterfaceUser crudUser;
     private InterfacePresence crudPresence;
     private Map buttons; //Nos sirve para almacenar a los objetos creados
     private Set<Map> online;
-    private  GuiOrder guiOrder;
+    private GuiOrder guiOrder;
     ControllerGuiOrder controllerGuiOrder;
     private boolean isNewOrder;  //variable de control, para saber que accion se ejecuta.
     private static boolean ordersUpdated; //variable estatica para saber cuando la cocina actualizo un pedido 
@@ -57,22 +56,26 @@ public class ControllerGuiMain implements ActionListener {
         buttons = new HashMap();
         guiMain.setVisible(true);
         guiMain.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        crudUser = (InterfaceUser) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDUser);
-        crudPresence = (InterfacePresence) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDPresence);
+        crudUser = (InterfaceUser) Naming.lookup("//" + Config.ip + "/" + InterfaceName.CRUDUser);
+        crudPresence = (InterfacePresence) Naming.lookup("//" + Config.ip + "/" + InterfaceName.CRUDPresence);
         online = new HashSet<Map>();
         guiOrder = new GuiOrder(guiMain, true);
         controllerGuiOrder = new ControllerGuiOrder(guiOrder, guiMain);
         guiLogin = null;
-        crudOrder  = (InterfaceOrder)Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDOrder) ;
+        crudOrder = (InterfaceOrder) Naming.lookup("//" + Config.ip + "/" + InterfaceName.CRUDOrder);
+        for (Map m : crudPresence.getWaiters()) {
+            online.add(m);
+            String usr = (int) m.get("id") + "-" + (String) m.get("name") + " " + (String) m.get("surname");
+            addMyComponent(usr);
+        }
     }
 
-    
     /**
      * Metodo para avisarle al controlador que se actualizaron los pedidos
-     * 
+     *
      * @param orderId
      */
-    public static void UpdateOrder(int orderId){
+    public static void UpdateOrder(int orderId) {
         List<Map> products = new LinkedList();
         Map order = null;
         try {
@@ -81,30 +84,30 @@ public class ControllerGuiMain implements ActionListener {
         } catch (RemoteException ex) {
             Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if(order==null) return;
-        if((boolean)order.get("closed")){
+        if (order == null) {
+            return;
+        }
+        if ((boolean) order.get("closed")) {
             //poner en blanco, perdido cerrado
             return;
-        }    
+        }
         int productsReady = 0;
-        for(Map prod : products){
-            if((boolean)prod.get("done"))
+        for (Map prod : products) {
+            if ((boolean) prod.get("done")) {
                 productsReady++;
-        }
-        if(productsReady==0){
-            //poner el pedido en rojo, ningun producto esta listo
-        }
-        else{
-            if(productsReady < products.size()){
-                //poner el pedido en amarillo , hay producto listos pero no todos
             }
-            else{
+        }
+        if (productsReady == 0) {
+            //poner el pedido en rojo, ningun producto esta listo
+        } else {
+            if (productsReady < products.size()) {
+                //poner el pedido en amarillo , hay producto listos pero no todos
+            } else {
                 //poner pedido en verde , todos los productos estan listos
-            }        
-        }     
+            }
+        }
     }
-    
-    
+
     public void addMyComponent(String user) {
         //instancia nueva a componente
         ComponentUserLoginBtn cULBtn = new ComponentUserLoginBtn(user);
