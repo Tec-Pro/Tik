@@ -51,7 +51,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         }
         Base.commitTransaction();
         Server.notifyKitchenNewOrder(newOrder.getInteger("id"));
-        //Server.notifyWaitersOrderReady(newOrder.getInteger("id"));
+        Server.notifyWaitersOrderReady(newOrder.getInteger("id"));
         return newOrder.toMap();
     }
     
@@ -80,6 +80,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         }
         Base.commitTransaction();
         Server.notifyKitchenUpdatedOrder(order.getInteger("id"));
+        Server.notifyWaitersOrderReady(order.getInteger("id"));
         return true;
     }
 
@@ -119,6 +120,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         Order order = Order.findById(idOrder);      
         order.set("closed", true).saveIt();
         Base.commitTransaction();
+        Server.notifyWaitersOrderReady(idOrder);
         return true;
     }
 
@@ -132,7 +134,9 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             if((boolean)prod.get("done") == true)
                 prod.set("commited",true).saveIt();
         }
+      
         Base.commitTransaction();
+        Server.notifyWaitersOrderReady(orderId);
     }
     
     @Override

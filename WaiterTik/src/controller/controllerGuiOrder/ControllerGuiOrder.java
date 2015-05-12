@@ -425,9 +425,17 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
         }
         
         if(e.getSource().equals(guiOrder.getBtnCommit())){
+            if(currentOrderId == null){
+                JOptionPane.showMessageDialog(guiOrder, "El pedido no ha sido creado todavia!", "Atencion", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            if((boolean)currentOrder.get("closed")){
+                        JOptionPane.showMessageDialog(guiOrder, "El pedido esta cerrado!", "Atencion", JOptionPane.INFORMATION_MESSAGE);
+                        return;
+            }
             try {
                 crudOrder.commitProducts(currentOrderId);
-                //JOptionPane.showMessageDialog(guiOrder, "Productos entregados!", "Atencion", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(guiOrder, "Productos entregados!", "Atencion", JOptionPane.INFORMATION_MESSAGE);
                 guiOrder.getTableProductsDefault().setRowCount(0);
                 loadProducts();
             } catch (RemoteException ex) {

@@ -6,6 +6,7 @@
 
 package implementsInterface;
 
+import controller.ControllerGuiMain;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import javax.swing.JOptionPane;
@@ -32,7 +33,6 @@ public class ClientWaiter extends UnicastRemoteObject implements interfaces.Inte
 
     @Override
     public void readyOrder(int id) throws RemoteException {
-        System.out.println("El pedido "+ id+ " esta listo vieja");
-      //  JOptionPane.showConfirmDialog(null, "El pedido "+ id+" esta listo vieja");
+       ControllerGuiMain.UpdateOrder(id);
     }
 }
