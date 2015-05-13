@@ -6,22 +6,24 @@
 package gui.order;
 
 import java.util.Map;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
  * @author joako
  */
-public class OrderDetails extends javax.swing.JDialog {
+public class GuiKitchenOrderDetails extends javax.swing.JDialog {
 
     /**
      * Creates new form OrderDetails
      */
-    public OrderDetails(java.awt.Frame parent, boolean modal) {
+    public GuiKitchenOrderDetails(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
     
-    public OrderDetails(java.awt.Frame parent, boolean modal,Map<String,Object> order) {
+    public GuiKitchenOrderDetails(java.awt.Frame parent, boolean modal,Map<String,Object> order) {
         super(parent, modal);
         initComponents();
         
@@ -47,6 +49,8 @@ public class OrderDetails extends javax.swing.JDialog {
         jPanel4 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tableOrderProducts = new javax.swing.JTable();
+        checkBoxCheckAll = new javax.swing.JCheckBox();
+        btnSendOrderDone = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Detalles de pedido");
@@ -72,7 +76,7 @@ public class OrderDetails extends javax.swing.JDialog {
         orderDescriptionPanel.setLayout(orderDescriptionPanelLayout);
         orderDescriptionPanelLayout.setHorizontalGroup(
             orderDescriptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 632, Short.MAX_VALUE)
         );
         orderDescriptionPanelLayout.setVerticalGroup(
             orderDescriptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -101,18 +105,32 @@ public class OrderDetails extends javax.swing.JDialog {
         });
         jScrollPane3.setViewportView(tableOrderProducts);
 
+        checkBoxCheckAll.setText("Marcar todo ");
+
+        btnSendOrderDone.setText("Pedido listo");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 632, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(checkBoxCheckAll, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addComponent(btnSendOrderDone, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(212, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(checkBoxCheckAll)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addComponent(btnSendOrderDone))
         );
 
         jSplitPane2.setRightComponent(jPanel4);
@@ -144,11 +162,11 @@ public class OrderDetails extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 658, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
         );
 
         pack();
@@ -171,20 +189,21 @@ public class OrderDetails extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(OrderDetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GuiKitchenOrderDetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(OrderDetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GuiKitchenOrderDetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(OrderDetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GuiKitchenOrderDetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(OrderDetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GuiKitchenOrderDetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                OrderDetails dialog = new OrderDetails(new javax.swing.JFrame(), true);
+                GuiKitchenOrderDetails dialog = new GuiKitchenOrderDetails(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -197,6 +216,8 @@ public class OrderDetails extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSendOrderDone;
+    private javax.swing.JCheckBox checkBoxCheckAll;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
@@ -209,4 +230,52 @@ public class OrderDetails extends javax.swing.JDialog {
     private javax.swing.JTable tableOrderProducts;
     private javax.swing.JTextPane txtOrderDescription;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * Devuelve el botón para avisar que el pedido está listo.
+     * @return the btnSendOrderDone
+     */
+    public javax.swing.JButton getBtnSendOrderDone() {
+        return btnSendOrderDone;
+    }
+
+    /**
+     * Devuelve el checkbox que se utiliza para marcar todos los items del pedido.
+     * @return the checkBoxCheckAll
+     */
+    public javax.swing.JCheckBox getCheckBoxCheckAll() {
+        return checkBoxCheckAll;
+    }
+
+    /**
+     * Devuelve el label que se utiliza para mostrar el tiempo de llegada del pedido.
+     * @return the labelOrderArrivalTime
+     */
+    public javax.swing.JLabel getLabelOrderArrivalTime() {
+        return labelOrderArrivalTime;
+    }
+
+    /**
+     * Devuelve la tabla de los productos del pedido.
+     * @return the tableOrderProducts
+     */
+    public javax.swing.JTable getTableOrderProducts() {
+        return tableOrderProducts;
+    }
+
+    
+    /**
+     * Devuelve el dtm para la tabla de productos del pedido.
+     * @return the defaultTableModel for tableOrderProducts
+     */
+    public DefaultTableModel getDefaultTableModelOrderProducts() {
+            return (DefaultTableModel) tableOrderProducts.getModel();
+    }
+    /**
+     * Devuelve el panel de texto donde va la descripción del pedido.
+     * @return the txtOrderDescription
+     */
+    public javax.swing.JTextPane getTxtOrderDescription() {
+        return txtOrderDescription;
+    }
 }

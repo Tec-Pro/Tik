@@ -5,7 +5,7 @@
  */
 package gui.main;
 
-import gui.order.OrderPane;
+import gui.order.GuiKitchenOrderPane;
 import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
@@ -44,9 +44,9 @@ public class GuiKitchenMain extends javax.swing.JFrame {
         ordersPanel = new javax.swing.JPanel();
         watchPanel = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        MenuItemNuevo = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        menuLogin = new javax.swing.JMenu();
+        menuItemNewLogin = new javax.swing.JMenuItem();
+        menuItemLoggedUsers = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -63,8 +63,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(ordersPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(ordersPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -78,7 +77,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(watchPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 685, Short.MAX_VALUE)
+                    .addComponent(watchPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 729, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -88,22 +87,22 @@ public class GuiKitchenMain extends javax.swing.JFrame {
                 .addGap(31, 31, 31)
                 .addComponent(watchPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         jScrollPane1.setViewportView(jPanel2);
 
-        jMenu1.setText("Login");
+        menuLogin.setText("Login");
 
-        MenuItemNuevo.setText("Nuevo");
-        MenuItemNuevo.setActionCommand("MenuItemNuevo");
-        jMenu1.add(MenuItemNuevo);
+        menuItemNewLogin.setText("Nuevo");
+        menuItemNewLogin.setActionCommand("MenuItemNuevo");
+        menuLogin.add(menuItemNewLogin);
 
-        jMenuBar1.add(jMenu1);
+        menuItemLoggedUsers.setText("Usuarios Logueados");
+        menuLogin.add(menuItemLoggedUsers);
 
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
+        jMenuBar1.add(menuLogin);
 
         setJMenuBar(jMenuBar1);
 
@@ -111,29 +110,37 @@ public class GuiKitchenMain extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 755, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void addElementToLoginList(String userLogin, ActionListener lis) {
-        JMenuItem item = new JMenuItem(userLogin);
-        item.setActionCommand("MenuItem"+userLogin);
-        jMenu1.add(item);
-        jMenu1.revalidate();
-        jMenu1.getItem(jMenu1.getItemCount() - 1).addActionListener(lis);
-    }
 
     public void addElementToOrdersGrid(String orderId, String orderDescription, String orderArrivalTime) {
-        OrderPane newOrder = new OrderPane(orderId, orderDescription, orderArrivalTime);
-        ordersPanel.add(newOrder);
-        ordersPanel.revalidate();
-
+        GuiKitchenOrderPane newOrder = new GuiKitchenOrderPane(orderId, orderDescription, orderArrivalTime);
+        getOrdersPanel().add(newOrder);
+        getOrdersPanel().revalidate();
+    }
+    
+    public void removeElementOfOrdersGrid(int index){
+        getOrdersPanel().remove(index);
+        getOrdersPanel().revalidate();
+    }
+    
+    public void updateElementOfOrdersGrid(int index, String orderDescription){
+        GuiKitchenOrderPane order = (GuiKitchenOrderPane) getOrdersPanel().getComponent(index);
+        order.getTxtOrderDescription().setText(orderDescription);
+        order.revalidate();
+        getOrdersPanel().revalidate();
     }
 
     /**
@@ -173,23 +180,71 @@ public class GuiKitchenMain extends javax.swing.JFrame {
     }
 
     public void setActionListener(ActionListener lis) {
-        this.MenuItemNuevo.addActionListener(lis);
+        this.getMenuItemNewLogin().addActionListener(lis);
     }
 
     public void setMouseListener(MouseListener lis) {
-        this.ordersPanel.addMouseListener(lis);
+        this.getOrdersPanel().addMouseListener(lis);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem MenuItemNuevo;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JMenuItem menuItemLoggedUsers;
+    private javax.swing.JMenuItem menuItemNewLogin;
+    private javax.swing.JMenu menuLogin;
     private javax.swing.JPanel ordersPanel;
     private javax.swing.JPanel watchPanel;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * Devuelve la barra de menú.
+     * @return the jMenuBar1
+     */
+    public javax.swing.JMenuBar getjMenuBar1() {
+        return jMenuBar1;
+    }
+
+    /**
+     * Devuelve el botón de usuarios logueados.
+     * @return the menuItemLoggedUsers
+     */
+    public javax.swing.JMenuItem getMenuItemLoggedUsers() {
+        return menuItemLoggedUsers;
+    }
+
+    /**
+     * Devuelve el botón para loguear un nuevo usuario.
+     * @return the menuItemNewLogin
+     */
+    public javax.swing.JMenuItem getMenuItemNewLogin() {
+        return menuItemNewLogin;
+    }
+
+    /**
+     * Devuelve el menú que contiene las opciones de login y ver usuarios logueados.
+     * @return the menuLogin
+     */
+    public javax.swing.JMenu getMenuLogin() {
+        return menuLogin;
+    }
+
+    /**
+     * Devuelve el JPanel donde deben ordenarse los pedidos.
+     * @return the ordersPanel
+     */
+    public javax.swing.JPanel getOrdersPanel() {
+        return ordersPanel;
+    }
+
+    /**
+     * Devuelve el panel del reloj.
+     * @return the watchPanel
+     */
+    public javax.swing.JPanel getWatchPanel() {
+        return watchPanel;
+    }
 
 }

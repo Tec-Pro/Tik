@@ -5,11 +5,13 @@
  */
 package gui.order;
 
+import javax.swing.JTextArea;
+
 /**
  *
  * @author joako
  */
-public class OrderPane extends javax.swing.JPanel {
+public class GuiKitchenOrderPane extends javax.swing.JPanel {
 
     /**
      * Creates new form orderPane
@@ -17,7 +19,7 @@ public class OrderPane extends javax.swing.JPanel {
      * @param orderDescription descripción del pedido.
      * @param orderArrivalTime tiempo de llegada del pedido.
      */
-    public OrderPane(String orderId, String orderDescription, String orderArrivalTime) {
+    public GuiKitchenOrderPane(String orderId, String orderDescription, String orderArrivalTime) {
         this.txtOrderDescription.setText(orderDescription);
         this.orderNumber.setText(orderId);
         this.timeOrderArrival.setText(orderArrivalTime);
@@ -35,10 +37,10 @@ public class OrderPane extends javax.swing.JPanel {
 
         jPanel1 = new javax.swing.JPanel();
         jSplitPane1 = new javax.swing.JSplitPane();
-        OrderDescription = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txtOrderDescription = new javax.swing.JLabel();
-        OrderInfo = new javax.swing.JPanel();
+        orderDescription = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtOrderDescription = new javax.swing.JTextArea();
+        orderInfo = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         orderNumber = new javax.swing.JLabel();
         timeOrderArrival = new javax.swing.JLabel();
@@ -47,26 +49,27 @@ public class OrderPane extends javax.swing.JPanel {
         jSplitPane1.setResizeWeight(0.125);
         jSplitPane1.setToolTipText("");
 
-        txtOrderDescription.setText("Descripción del pedido");
-        jScrollPane1.setViewportView(txtOrderDescription);
+        txtOrderDescription.setColumns(20);
+        txtOrderDescription.setRows(5);
+        jScrollPane2.setViewportView(txtOrderDescription);
 
-        javax.swing.GroupLayout OrderDescriptionLayout = new javax.swing.GroupLayout(OrderDescription);
-        OrderDescription.setLayout(OrderDescriptionLayout);
-        OrderDescriptionLayout.setHorizontalGroup(
-            OrderDescriptionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(OrderDescriptionLayout.createSequentialGroup()
+        javax.swing.GroupLayout orderDescriptionLayout = new javax.swing.GroupLayout(orderDescription);
+        orderDescription.setLayout(orderDescriptionLayout);
+        orderDescriptionLayout.setHorizontalGroup(
+            orderDescriptionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(orderDescriptionLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 532, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 532, Short.MAX_VALUE)
                 .addContainerGap())
         );
-        OrderDescriptionLayout.setVerticalGroup(
-            OrderDescriptionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(OrderDescriptionLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
+        orderDescriptionLayout.setVerticalGroup(
+            orderDescriptionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(orderDescriptionLayout.createSequentialGroup()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        jSplitPane1.setBottomComponent(OrderDescription);
+        jSplitPane1.setBottomComponent(orderDescription);
 
         jLabel1.setFont(new java.awt.Font("Cantarell", 0, 24)); // NOI18N
         jLabel1.setText("Pedido:");
@@ -77,11 +80,11 @@ public class OrderPane extends javax.swing.JPanel {
         timeOrderArrival.setFont(new java.awt.Font("Cantarell", 0, 18)); // NOI18N
         timeOrderArrival.setText("Hora de llegada del pedido");
 
-        javax.swing.GroupLayout OrderInfoLayout = new javax.swing.GroupLayout(OrderInfo);
-        OrderInfo.setLayout(OrderInfoLayout);
-        OrderInfoLayout.setHorizontalGroup(
-            OrderInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(OrderInfoLayout.createSequentialGroup()
+        javax.swing.GroupLayout orderInfoLayout = new javax.swing.GroupLayout(orderInfo);
+        orderInfo.setLayout(orderInfoLayout);
+        orderInfoLayout.setHorizontalGroup(
+            orderInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(orderInfoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -90,17 +93,17 @@ public class OrderPane extends javax.swing.JPanel {
                 .addComponent(timeOrderArrival)
                 .addGap(0, 74, Short.MAX_VALUE))
         );
-        OrderInfoLayout.setVerticalGroup(
-            OrderInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(OrderInfoLayout.createSequentialGroup()
-                .addGroup(OrderInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+        orderInfoLayout.setVerticalGroup(
+            orderInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(orderInfoLayout.createSequentialGroup()
+                .addGroup(orderInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
                     .addComponent(orderNumber)
                     .addComponent(timeOrderArrival))
                 .addContainerGap())
         );
 
-        jSplitPane1.setLeftComponent(OrderInfo);
+        jSplitPane1.setLeftComponent(orderInfo);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -127,14 +130,38 @@ public class OrderPane extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel OrderDescription;
-    private javax.swing.JPanel OrderInfo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JPanel orderDescription;
+    private javax.swing.JPanel orderInfo;
     private javax.swing.JLabel orderNumber;
     private javax.swing.JLabel timeOrderArrival;
-    private javax.swing.JLabel txtOrderDescription;
+    private javax.swing.JTextArea txtOrderDescription;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * Devuelve el label que debe mostrar el número del pedido.
+     * @return the orderNumber
+     */
+    public javax.swing.JLabel getOrderNumber() {
+        return orderNumber;
+    }
+
+    /**
+     * Devuelve el label que debe mostrar el tiempo de llegada del pedido.
+     * @return the timeOrderArrival
+     */
+    public javax.swing.JLabel getTimeOrderArrival() {
+        return timeOrderArrival;
+    }
+
+    /**
+     * Devuelve el text area que contiene la descripción del pedido.
+     * @return the txtOrderDescription
+     */
+    public JTextArea getTxtOrderDescription() {
+        return txtOrderDescription;
+    }
 }
