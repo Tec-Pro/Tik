@@ -6,6 +6,7 @@
 package controllers;
 
 import gui.login.GuiLogin;
+import gui.login.GuiOnlineUsers;
 import gui.main.GuiKitchenMain;
 import interfaces.InterfaceOrder;
 import interfaces.InterfacePresence;
@@ -16,12 +17,14 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import utils.Config;
 import utils.InterfaceName;
 
@@ -108,8 +111,6 @@ public class ControllerGuiKitchenMain implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent ae) {
-
-
         if (guiLogin != null) {
             if (ae.getSource() == guiLogin.getBtnAccept()) {
                 String user = guiLogin.getcBoxUsers().getItemAt(guiLogin.getcBoxUsers().getSelectedIndex()).toString();
@@ -124,9 +125,28 @@ public class ControllerGuiKitchenMain implements ActionListener {
                 }
             }
             if (ae.getSource() == guiLogin.getBtnCancel()) {
-                guiLogin.dispose(); 
+                guiLogin.dispose();
             }
-
+        }
+        if (ae.getSource() == guiKitchenMain.getMenuItemNewLogin()) {
+            try {
+                guiLogin = new GuiLogin(guiKitchenMain, true);
+                Set<Map> offline = new HashSet<Map>();
+                offline.addAll(crudUser.getUsers()); //getCooks();
+                offline.removeAll(online);
+                if (offline.isEmpty()) {
+                    JOptionPane.showMessageDialog(guiKitchenMain, "Ocurrió un error, ya estan todos los usuarios logueados", "Error!", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    guiLogin.loadCBoxUsers(offline);
+                    guiLogin.setActionListener(this);
+                    guiLogin.setVisible(true);
+                }
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (ae.getSource() == guiKitchenMain.getMenuItemLoggedUsers()) {
+            new GuiOnlineUsers(guiKitchenMain, true);
         }
         /* PARA ACTUALIZAR LOS PRODUCTOS LISTOS SE DEBE USAR ESTE METODO
          * SI HAY ALGUNA DUDA LEER SU JAVADOC:

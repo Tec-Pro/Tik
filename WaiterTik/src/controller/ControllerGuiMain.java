@@ -147,11 +147,15 @@ public class ControllerGuiMain implements ActionListener {
             try {
                 guiLogin = new GuiLogin(guiMain, true);
                 Set<Map> offline = new HashSet<Map>();
-                offline.addAll(crudUser.getUsers());
+                offline.addAll(crudUser.getUsers()); //getWaiters();
                 offline.removeAll(online);
-                guiLogin.loadCBoxUsers(offline);
-                guiLogin.setActionListener(this);
-                guiLogin.setVisible(true);
+                if (offline.isEmpty()) {
+                    JOptionPane.showMessageDialog(guiMain, "Ocurrió un error, ya estan todos los usuarios logueados", "Error!", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    guiLogin.loadCBoxUsers(offline);
+                    guiLogin.setActionListener(this);
+                    guiLogin.setVisible(true);
+                }
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
             }
