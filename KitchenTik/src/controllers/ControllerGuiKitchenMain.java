@@ -73,7 +73,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
         }
         guiOrderDetails = new GuiKitchenOrderDetails(guiKitchenMain, false);
         guiOrderDetails.setVisible(false);
-
+        
         dtmOrderDetails = guiOrderDetails.getDefaultTableModelOrderProducts();
 
         guiOrderDetails.setTableModelListener(new TableModelListener() {
@@ -107,7 +107,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
         dtmOrderDetails.setRowCount(0);
         List<Map> map = crudOrder.getOrderProducts(order); // I obtain all the products
         for (Map<String, Object> m : map) { // For each product
-            if ((Integer) m.get("done") == 0) { // If the product isn't done
+            if ((boolean) m.get("done") == false) { // If the product isn't done
                 int prodID = (int) m.get("fproduct_id"); // I obtain the product ID
                 Map<String, Object> prod = crudFProduct.getFproduct(prodID); // I obtain the product (importantly, it's name and if it belongs)
                 String cook = (String) m.get("belong");
@@ -131,7 +131,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
         Map<String, Object> order = crudOrder.getOrder(id);
         List<Map> orderProducts = crudOrder.getOrderProducts(id);
         for (Map<String, Object> m : orderProducts) { // For each product 
-            if (!((Integer) m.get("done") == 1)) { // If it's already made, skip it
+            if (!((boolean) m.get("done") == true)) { // If it's already made, skip it
                 int prodID = (int) m.get("fproduct_id"); // I obtain the product ID
                 Map<String, Object> prod = crudFProduct.getFproduct(prodID); // I obtain the product (importantly, where it belongs)
                 String cook = (String) m.get("belong");
