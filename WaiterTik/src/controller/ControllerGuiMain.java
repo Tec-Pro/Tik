@@ -71,7 +71,7 @@ public class ControllerGuiMain implements ActionListener {
         crudPresence = (InterfacePresence) Naming.lookup("//" + Config.ip + "/" + InterfaceName.CRUDPresence);
         online = new HashSet<Map>();
         guiOrder = new GuiOrder(guiMain, true);
-        controllerGuiOrder = new ControllerGuiOrder(guiOrder, guiMain);
+        controllerGuiOrder = new ControllerGuiOrder(guiOrder);
         guiLogin = null;
         crudOrder = (InterfaceOrder) Naming.lookup("//" + Config.ip + "/" + InterfaceName.CRUDOrder);
         crudFproduct = (InterfaceFproduct) Naming.lookup("//" + Config.ip + "/" + InterfaceName.CRUDFproduct);
@@ -227,10 +227,10 @@ public class ControllerGuiMain implements ActionListener {
                         if (isNewOrder) {
                             guiLogin.dispose();
                             guiOrder.setLocationRelativeTo(null);
+                            controllerGuiOrder.setIds(null, userId);
                             guiOrder.setVisible(true);
                             try {
                                 controllerGuiOrder.CreateTree();
-                                controllerGuiOrder.setIds(null, userId);
                             } catch (RemoteException ex) {
                                 Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
                             }

@@ -13,6 +13,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.concurrent.CopyOnWriteArrayList;
 import utils.Pair;
 
 /**
@@ -21,19 +22,19 @@ import utils.Pair;
  */
 public class Server extends UnicastRemoteObject implements interfaces.InterfaceServer {
 
-    public static  LinkedList<InterfaceClientAdmin> admins;
-    public static  LinkedList<InterfaceClientWaiter> waiters;
-    public static  LinkedList<InterfaceClientKitchen> chefs;
-    public static  LinkedList<InterfaceClientBar> bartenders;
+    public static  CopyOnWriteArrayList<InterfaceClientAdmin> admins;
+    public static  CopyOnWriteArrayList<InterfaceClientWaiter> waiters;
+    public static  CopyOnWriteArrayList<InterfaceClientKitchen> chefs;
+    public static  CopyOnWriteArrayList<InterfaceClientBar> bartenders;
 
 
     
     public Server() throws RemoteException {
         super();
-        admins = new LinkedList<>();
-        chefs = new LinkedList<>();
-        waiters = new LinkedList<>();
-        bartenders = new LinkedList<>();
+        admins = new CopyOnWriteArrayList<>();
+        chefs = new CopyOnWriteArrayList<>();
+        waiters = new CopyOnWriteArrayList<>();
+        bartenders = new CopyOnWriteArrayList<>();
     }
     
     @Override

@@ -98,7 +98,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
         guiOrder.getBtnSend().setEnabled(false);
     }
     
-    public ControllerGuiOrder(GuiOrder go, GuiMain gm) throws NotBoundException, MalformedURLException, RemoteException {
+    public ControllerGuiOrder(GuiOrder go) throws NotBoundException, MalformedURLException, RemoteException {
         guiOrder = go;
         guiOrder.getBtnSend().setEnabled(false);
         crudProductCategory = (InterfaceCategory) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDCategory);
@@ -109,7 +109,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
         categoryIcon = new ImageIcon(getClass().getResource("/Icons/category.png"));
         subcategoryIcon = new ImageIcon(getClass().getResource("/Icons/subcategory.png"));
         productIcon = new ImageIcon(getClass().getResource("/Icons/products.png"));
-        guiAmount = new GuiAmount(gm, true);
+        guiAmount = new GuiAmount(guiOrder, true);
         guiAmount.setActionListener(this);
         guiOrder.getTreeMenu().addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent me) {
@@ -118,9 +118,11 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                     currentNode = (DefaultMutableTreeNode) currentSelection.getLastPathComponent();
                     currentSelectedNodeName = currentNode.toString();// nombre de la hoja seleccionada
                     if (currentNode.getLevel() == 3) {
+                        if (me.getClickCount()==2){
                         guiAmount.getLblProd().setText(currentSelectedNodeName);
                         guiAmount.setLocationRelativeTo(null);
                         guiAmount.setVisible(true);
+                        }
                     }
                 }
             }
@@ -373,6 +375,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
             if(currentOrderId == null){ //si el pedido es nuevo, carga todos los productos y los envia
                 DefaultTableModel productsTable = guiOrder.getTableProductsDefault();
                 List<Map<String,Object>> products = new LinkedList<>();
+
                 for(int i = 0; i < productsTable.getRowCount(); i++){
                     Map<String,Object> prodMap = new HashMap();
                     prodMap.put("fproductId",productsTable.getValueAt(i, 0) );
