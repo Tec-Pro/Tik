@@ -6,6 +6,7 @@
 package implementsInterface;
 
 import interfaces.InterfaceClientAdmin;
+import interfaces.InterfaceClientBar;
 import interfaces.InterfaceClientWaiter;
 import interfaces.InterfaceClientKitchen;
 import java.rmi.RemoteException;
@@ -23,7 +24,7 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
     public static volatile LinkedList<InterfaceClientAdmin> admins;
     public static volatile LinkedList<InterfaceClientWaiter> waiters;
     public static volatile LinkedList<InterfaceClientKitchen> chefs;
-    //public static volatile LinkedList<Pair<InterfaceClientBartender,String>> bartenders;
+    public static volatile LinkedList<InterfaceClientBar> bartenders;
 
     
     public Server() throws RemoteException {
@@ -31,12 +32,18 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
         admins = new LinkedList<>();
         chefs = new LinkedList<>();
         waiters = new LinkedList<>();
+        bartenders = new LinkedList<>();
     }
     
     @Override
     public void registerClientAdmin(InterfaceClientAdmin client) throws RemoteException {
         admins.add(client);
 
+    }
+    
+    @Override
+    public void registerClientBar(InterfaceClientBar client) throws RemoteException {
+        bartenders.add(client);
     }
 
     @Override
@@ -77,6 +84,42 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
             } catch (java.rmi.ConnectException e) {
                 System.err.println("se rompió porque se cerro un programa seguro" + e);
                 chefs.remove(i);
+                //despues voy a eliminar este tipo porque la conexión se rechazó por desconectarses
+            }
+
+            i++;
+        }
+    }
+    
+    //avisa al Bar que un pedido fue modificado
+    public static void notifyBarUpdatedOrder(int id) throws RemoteException {
+        Iterator<InterfaceClientBar> it = bartenders.iterator();
+        int i = 0;
+        while (it.hasNext()) {
+            InterfaceClientBar client = it.next();
+            try {
+                client.updatedOrder(id); 
+            } catch (java.rmi.ConnectException e) {
+                System.err.println("se rompió porque se cerro un programa seguro" + e);
+                bartenders.remove(i);
+                //despues voy a eliminar este tipo porque la conexión se rechazó por desconectarses
+            }
+
+            i++;
+        }
+    }
+    
+    //avisa al Bar que hay un nuevo pedido
+    public static void notifyBarNewOrder(int id) throws RemoteException {
+        Iterator<InterfaceClientBar> it = bartenders.iterator();
+        int i = 0;
+        while (it.hasNext()) {
+            InterfaceClientBar client = it.next();
+            try {
+                client.newOrder(id);
+            } catch (java.rmi.ConnectException e) {
+                System.err.println("se rompió porque se cerro un programa seguro" + e);
+                bartenders.remove(i);
                 //despues voy a eliminar este tipo porque la conexión se rechazó por desconectarses
             }
 
