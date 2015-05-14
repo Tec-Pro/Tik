@@ -92,4 +92,12 @@ public interface InterfaceOrder extends Remote{
      * @throws java.rmi.RemoteException
      */
     public List<Map> updateOrdersReadyProducts(Integer idOrder, List<Integer> productsList)throws java.rmi.RemoteException;
+
+    /**
+     * retorna las ordenes activas de un id, si es -1 retorna todas
+     * @param userId
+     * @return 
+     * @throws java.rmi.RemoteException 
+     */
+    public List<Map> getActiveOrdersByUser(int userId)throws java.rmi.RemoteException;
 }
