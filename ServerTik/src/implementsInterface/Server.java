@@ -22,10 +22,10 @@ import utils.Pair;
  */
 public class Server extends UnicastRemoteObject implements interfaces.InterfaceServer {
 
-    public static  CopyOnWriteArrayList<InterfaceClientAdmin> admins;
-    public static  CopyOnWriteArrayList<InterfaceClientWaiter> waiters;
-    public static  CopyOnWriteArrayList<InterfaceClientKitchen> chefs;
-    public static  CopyOnWriteArrayList<InterfaceClientBar> bartenders;
+    public static volatile CopyOnWriteArrayList<InterfaceClientAdmin> admins;
+    public static volatile CopyOnWriteArrayList<InterfaceClientWaiter> waiters;
+    public static volatile CopyOnWriteArrayList<InterfaceClientKitchen> chefs;
+    public static volatile CopyOnWriteArrayList<InterfaceClientBar> bartenders;
 
 
     

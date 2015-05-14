@@ -125,7 +125,8 @@ public class ControllerGuiMain implements ActionListener {
                 @Override
                 public void mousePressed(MouseEvent e) {
                     if (e.getClickCount() == 2) {
-                        System.out.println("click en el pedido: " + newOrder.getIdOrder());
+                        System.out.println("click en el pedido: " + newOrder.getIdOrder()+" del mozo : "+ newOrder.getIdWaiter());
+                        //aca tiene que abrir la ventana del login para ese mozo
                     }
                 }
             });
@@ -203,6 +204,7 @@ public class ControllerGuiMain implements ActionListener {
                 } else {
                     guiLogin.loadCBoxUsers(offline);
                     guiLogin.setActionListener(this);
+                    guiLogin.setLocationRelativeTo(null);
                     guiLogin.setVisible(true);
                 }
             } catch (RemoteException ex) {
@@ -262,6 +264,7 @@ public class ControllerGuiMain implements ActionListener {
                     offline.addAll(crudUser.getUsers());
                     guiLogin.loadCBoxUsers(offline);
                     guiLogin.setActionListener(this);
+                    guiLogin.setLocationRelativeTo(null);
                     guiLogin.setVisible(true);
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
@@ -318,7 +321,8 @@ public class ControllerGuiMain implements ActionListener {
                 @Override
                 public void mousePressed(MouseEvent e) {
                     if (e.getClickCount() == 2) {
-                        System.out.println("click en el pedido: " + newOrder.getIdOrder());
+                        System.out.println("click en el pedido: " + newOrder.getIdOrder()+" del mozo : "+ newOrder.getIdWaiter());
+                        //aca tiene que abrir la ventana del login para ese mozo
                     }
                 }
             });
@@ -348,6 +352,7 @@ public class ControllerGuiMain implements ActionListener {
                 }
             }
         }
+        guiMain.revalidate();
     }
 
     private void clearAllOrders() {

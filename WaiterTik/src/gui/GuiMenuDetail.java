@@ -19,6 +19,7 @@ import javax.swing.JTextArea;
 public class GuiMenuDetail extends javax.swing.JPanel {
 
     private int idOrder;
+    private int idWaiter;
     /**
      * Creates new form GuiMenuDetail
      */
@@ -57,6 +58,7 @@ public class GuiMenuDetail extends javax.swing.JPanel {
         txtDetail.setText(detail);
         lblWaiter.setText(name);
         idOrder= (int)order.get("id");
+        idWaiter= (int) order.get("user_id");
     }
 
     /**
@@ -69,6 +71,10 @@ public class GuiMenuDetail extends javax.swing.JPanel {
 
     public JTextArea getTxtDetail() {
         return txtDetail;
+    }
+
+    public int getIdWaiter() {
+        return idWaiter;
     }
 
     
