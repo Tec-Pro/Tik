@@ -46,7 +46,7 @@ public class ControllerGuiMain implements ActionListener {
 
     private static GuiMain guiMain;
     private GuiLogin guiLogin;
-    private InterfaceUser crudUser;
+    private static InterfaceUser crudUser;
     private InterfacePresence crudPresence;
     private Map buttons; //Nos sirve para almacenar a los objetos creados
     private Map buttonsOrder;
@@ -62,7 +62,6 @@ public class ControllerGuiMain implements ActionListener {
 
     public ControllerGuiMain() throws NotBoundException, MalformedURLException, RemoteException {
         guiMain = new GuiMain();
-        guiMain.setActionListener(this);
         buttons = new HashMap();
         orders = new HashMap();
         buttonsOrder = new HashMap();
@@ -82,6 +81,8 @@ public class ControllerGuiMain implements ActionListener {
             addMyComponent(usr);
         }
         loadOrders(-1);
+        guiMain.setActionListener(this);
+
     }
 
     public Map getButtonsOrder() {
@@ -97,6 +98,7 @@ public class ControllerGuiMain implements ActionListener {
         List<Map> products = new LinkedList();
         Map order = null;
         String details = "";
+        String nameWaiter = "";
         try {
             order = crudOrder.getOrder(orderId); //aca esta guardado el numero del pedido y el usuario que lo hizo, lo puse por si hace falta
             products = crudOrder.getOrderProducts(orderId);
@@ -107,6 +109,7 @@ public class ControllerGuiMain implements ActionListener {
         if (order == null) {
             return;
         }
+        nameWaiter = (String) (crudUser.getUser((int) order.get("user_id"))).get("name");
         int productsReady = 0;
         for (Map prod : products) {
             if ((boolean) prod.get("done")) {
@@ -130,25 +133,25 @@ public class ControllerGuiMain implements ActionListener {
             guiMain.addActiveOrder(menuDetail);
 
         }
-         if (productsReady==products.size()) {
-             //pedido pausado
-                guiMain.addPausedOrder(menuDetail);
-                menuDetail.setColor(0);
-                menuDetail.setOrder(order, details);
-            }
+        if (productsReady == products.size()) {
+            //pedido pausado
+            guiMain.addPausedOrder(menuDetail);
+            menuDetail.setColor(0);
+            menuDetail.setOrder(order, details, nameWaiter);
+        }
         if (productsReady == 0) {
             //poner el pedido en rojo, ningun producto esta listo
             menuDetail.setColor(3);
-            menuDetail.setOrder(order, details);
+            menuDetail.setOrder(order, details, nameWaiter);
         } else {
             if (productsReady < products.size()) {
                 //poner el pedido en amarillo , hay producto listos pero no todos
                 menuDetail.setColor(2);
-                menuDetail.setOrder(order, details);
+                menuDetail.setOrder(order, details, nameWaiter);
             } else {
                 //poner pedido en verde , todos los productos estan listos
                 menuDetail.setColor(1);
-                menuDetail.setOrder(order, details);
+                menuDetail.setOrder(order, details, nameWaiter);
             }
         }
     }
@@ -188,8 +191,7 @@ public class ControllerGuiMain implements ActionListener {
                 }
             }
         }
-        
-        
+
         if (e.getSource() == guiMain.getBtnLogin()) {
             try {
                 guiLogin = new GuiLogin(guiMain, true);
@@ -208,11 +210,11 @@ public class ControllerGuiMain implements ActionListener {
             }
         }
         if (e.getSource() == guiMain.getBtnSeeAll()) {
-             try {
-                    loadOrders(-1);
-                } catch (RemoteException ex) {
-                    Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            try {
+                loadOrders(-1);
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         if (guiLogin != null) {
             if (e.getSource() == guiLogin.getBtnAccept()) {
@@ -285,15 +287,19 @@ public class ControllerGuiMain implements ActionListener {
     }
 
     /**
-     * Cargo en la gui todas las ordenes ACTIVAS de un cliente, si el id es -1 trae todos
+     * Cargo en la gui todas las ordenes ACTIVAS de un cliente, si el id es -1
+     * trae todos
+     *
      * @param idUser
-     * @throws RemoteException 
+     * @throws RemoteException
      */
     private void loadOrders(int idUser) throws RemoteException {
         clearAllOrders();
         List<Map> ordersNotClosed = crudOrder.getActiveOrdersByUser(idUser);
         for (Map ord : ordersNotClosed) {
             String details = "";
+            String nameWaiter = (String) (crudUser.getUser((int) ord.get("user_id"))).get("name");
+
             List<Map> products = crudOrder.getOrderProducts((int) ord.get("id"));
             int productsReady = 0;
             int productsCommited = 0;
@@ -301,8 +307,9 @@ public class ControllerGuiMain implements ActionListener {
                 if ((boolean) prod.get("done")) {
                     productsReady++;
                 }
-                if ((boolean) prod.get("commited"))
+                if ((boolean) prod.get("commited")) {
                     productsCommited++;
+                }
                 String name = (String) crudFproduct.getFproduct((int) prod.get("fproduct_id")).get("name");
                 details += ParserFloat.floatToString((float) prod.get("quantity")) + " " + name + "\n";
             }
@@ -316,34 +323,34 @@ public class ControllerGuiMain implements ActionListener {
                 }
             });
             menuDetail = newOrder;
-            if (productsCommited==products.size()  ) {
+            if (productsCommited == products.size()) {
                 guiMain.addPausedOrder(menuDetail);
                 menuDetail.setColor(0);
-                menuDetail.setOrder(ord, details);
-            }
-            else
+                menuDetail.setOrder(ord, details, nameWaiter);
+            } else {
                 guiMain.addActiveOrder(menuDetail);
+            }
 
             if (productsReady == 0) {
                 //poner el pedido en rojo, ningun producto esta listo
                 menuDetail.setColor(3);
-                menuDetail.setOrder(ord, details);
+                menuDetail.setOrder(ord, details, nameWaiter);
             } else {
                 if (productsReady < products.size()) {
                     //poner el pedido en amarillo , hay producto listos pero no todos
                     menuDetail.setColor(2);
-                    menuDetail.setOrder(ord, details);
-                } 
-                if(productsReady == products.size() && productsCommited!=productsReady ){
+                    menuDetail.setOrder(ord, details, nameWaiter);
+                }
+                if (productsReady == products.size() && productsCommited != productsReady) {
                     //poner pedido en verde , todos los productos estan listos
                     menuDetail.setColor(1);
-                    menuDetail.setOrder(ord, details);
+                    menuDetail.setOrder(ord, details, nameWaiter);
                 }
             }
         }
     }
-    
-    private void clearAllOrders(){
+
+    private void clearAllOrders() {
         guiMain.clearAllOrders();
         orders.clear();
     }

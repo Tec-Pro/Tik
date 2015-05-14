@@ -21,10 +21,11 @@ import utils.Pair;
  */
 public class Server extends UnicastRemoteObject implements interfaces.InterfaceServer {
 
-    public static volatile LinkedList<InterfaceClientAdmin> admins;
-    public static volatile LinkedList<InterfaceClientWaiter> waiters;
-    public static volatile LinkedList<InterfaceClientKitchen> chefs;
-    public static volatile LinkedList<InterfaceClientBar> bartenders;
+    public static  LinkedList<InterfaceClientAdmin> admins;
+    public static  LinkedList<InterfaceClientWaiter> waiters;
+    public static  LinkedList<InterfaceClientKitchen> chefs;
+    public static  LinkedList<InterfaceClientBar> bartenders;
+
 
     
     public Server() throws RemoteException {

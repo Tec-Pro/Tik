@@ -180,7 +180,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
     public List<Map> getActiveOrdersByUser(int userId) throws RemoteException {
         Utils.abrirBase();
         if(userId != -1)
-            return Order.find("closed = 0", userId).toMaps();
+            return Order.find("closed = ? AND user_id = ?", 0,userId).toMaps();
         else
             return Order.find("closed = ?", 0).toMaps();
     }

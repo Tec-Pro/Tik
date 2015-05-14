@@ -141,18 +141,18 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
         loadProducts();
     }
     
-    public void addMyComponent(String user) {
-        //instancia nueva a componente
-        ComponentOrderBtn OrderBtn = new ComponentOrderBtn(user);
-        OrderBtn.setBackground(Color.RED);
-        OrderBtn.btn.addActionListener(this);//escucha eventos
-        OrderBtn.setSize(guiMain.getBtnLogin().getSize());
-        guiMain.getPanelActiveOrders().add(OrderBtn);//se añade al jpanel 
-        guiMain.getPanelActiveOrders().revalidate();
-        OrderBtn.setVisible(true);
-        //se añade al MAP
-        controllerGuiMain.getButtonsOrder().put(user, OrderBtn);
-    }
+//    public void addMyComponent(String user) {
+//        //instancia nueva a componente
+//        ComponentOrderBtn OrderBtn = new ComponentOrderBtn(user);
+//        OrderBtn.setBackground(Color.RED);
+//        OrderBtn.btn.addActionListener(this);//escucha eventos
+//        OrderBtn.setSize(guiMain.getBtnLogin().getSize());
+//        guiMain.getPanelActiveOrders().add(OrderBtn);//se añade al jpanel 
+//        guiMain.getPanelActiveOrders().revalidate();
+//        OrderBtn.setVisible(true);
+//        //se añade al MAP
+//        controllerGuiMain.getButtonsOrder().put(user, OrderBtn);
+//    }
 
     private void search() throws RemoteException {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Menu");
@@ -391,7 +391,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                     loadProducts();
                     JOptionPane.showMessageDialog(guiOrder, "Nuevo pedido Enviado!", "Pedido Enviado", JOptionPane.INFORMATION_MESSAGE);
                     guiOrder.getBtnSend().setEnabled(false);
-                    addMyComponent(currentOrder.get("order_number").toString());
+//                    addMyComponent(currentOrder.get("order_number").toString());
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
                 }

@@ -37,6 +37,7 @@ public class CrudPresence extends UnicastRemoteObject implements InterfacePresen
         System.out.println(date.format(now));
         System.out.println(hour.format(now));
         Presence p = Presence.createIt("day", date.format(now), "entry_time", hour.format(now), "user_id", userId);
+        User.findById(userId).set("order_count",0);
         Base.commitTransaction();
         return p.toMap();
     }
