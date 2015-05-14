@@ -5,7 +5,9 @@
  */
 package gui.order;
 
+import java.awt.event.ActionListener;
 import java.util.Map;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -27,6 +29,14 @@ public class GuiKitchenOrderDetails extends javax.swing.JDialog {
         initComponents();
         
     }
+    
+     public void setActionListener(ActionListener lis) {
+        this.btnSendOrderDone.addActionListener(lis);
+    }
+
+     public void setTableModelListener(TableModelListener lis){
+         this.tableOrderProducts.getModel().addTableModelListener(lis);
+     }
 
     /**
      * This method is called from within the constructor to initialize the form.

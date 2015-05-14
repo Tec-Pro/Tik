@@ -7,6 +7,7 @@ package gui.main;
 
 import gui.order.GuiKitchenOrderPane;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import javax.swing.JMenuItem;
@@ -143,6 +144,13 @@ public class GuiKitchenMain extends javax.swing.JFrame {
         getOrdersPanel().revalidate();
     }
 
+    public void setOrderColor(int index, Color color){
+        GuiKitchenOrderPane order = (GuiKitchenOrderPane) getOrdersPanel().getComponent(index);
+        order.setBackground(color);
+        order.revalidate();
+        getOrdersPanel().revalidate();
+    }
+    
     /**
      * @param args the command line arguments
      */
