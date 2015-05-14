@@ -179,9 +179,17 @@ public class ControllerGuiMain implements ActionListener {
             if (itm.equals(command)) {
                 //se recupera el contenido del JTextfield
                 String name = ((ComponentUserLoginBtn) entry.getValue()).btn.getText();
-                //FILTRAR 
+                String split[] = name.split("-");
+                int userId = Integer.parseInt(split[0]);
+                try {
+                    loadOrders(userId);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
+        
+        
         if (e.getSource() == guiMain.getBtnLogin()) {
             try {
                 guiLogin = new GuiLogin(guiMain, true);
@@ -198,6 +206,13 @@ public class ControllerGuiMain implements ActionListener {
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+        if (e.getSource() == guiMain.getBtnSeeAll()) {
+             try {
+                    loadOrders(-1);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
+                }
         }
         if (guiLogin != null) {
             if (e.getSource() == guiLogin.getBtnAccept()) {

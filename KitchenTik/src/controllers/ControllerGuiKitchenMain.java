@@ -67,6 +67,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
         crudPresence = (InterfacePresence) Naming.lookup("//" + Config.ip + "/" + InterfaceName.CRUDPresence);
         crudUser = (InterfaceUser) Naming.lookup("//" + Config.ip + "/" + InterfaceName.CRUDUser);
         crudFProduct = (InterfaceFproduct) Naming.lookup("//" + Config.ip + "/" + InterfaceName.CRUDFproduct);
+        online = new HashSet<Map>();
         for (Map m : crudPresence.getCooks()) {
             online.add(m);
         }
@@ -165,16 +166,16 @@ public class ControllerGuiKitchenMain implements ActionListener {
             final Date date = new Date();
             guiKitchenMain.addElementToOrdersGrid(Integer.toString(id), (String) order.get("description"), dateFormat.format(date),
                     new java.awt.event.MouseAdapter() {
-                        public void mouseClicked(MouseEvent e) {
-                            if (e.getClickCount() == 1) {
-                                try {
-                                    loadGuiOrderDetails(id, (String) order.get("description"), dateFormat.format(date));
-                                } catch (RemoteException ex) {
-                                    Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
-                                }
-                            }
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getClickCount() == 1) {
+                        try {
+                            loadGuiOrderDetails(id, (String) order.get("description"), dateFormat.format(date));
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                    });
+                    }
+                }
+            });
             guiKitchenMain.setOrderColor(guiKitchenMain.getOrdersPanel().getComponentCount() - 1, new Color(255, 0, 0));
             orderList.add(id);
         }
@@ -297,16 +298,16 @@ public class ControllerGuiKitchenMain implements ActionListener {
                 }
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }          
         }
 
         if (ae.getSource() == guiKitchenMain.getMenuItemLoggedUsers()) {
-            new GuiOnlineUsers(guiKitchenMain, true);
+            GuiOnlineUsers gulu = new GuiOnlineUsers(guiKitchenMain, true);
+            gulu.setVisible(true);     
         }
         /* PARA ACTUALIZAR LOS PRODUCTOS LISTOS SE DEBE USAR ESTE METODO
          * SI HAY ALGUNA DUDA LEER SU JAVADOC:
          * crudOrder.updateOrdersReadyProducts(id, list)
          */
     }
-
 }

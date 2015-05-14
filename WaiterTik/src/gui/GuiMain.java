@@ -38,6 +38,7 @@ public class GuiMain extends javax.swing.JFrame {
     public void setActionListener(ActionListener lis) {
         this.btnLogin.addActionListener(lis);
         this.btnNew.addActionListener(lis);
+        this.btnSeeAll.addActionListener(lis);
     }
 
     public JButton getBtnLogin() {
@@ -55,6 +56,12 @@ public class GuiMain extends javax.swing.JFrame {
     public JButton getBtnNew() {
         return btnNew;
     }
+
+    public JButton getBtnSeeAll() {
+        return btnSeeAll;
+    }
+    
+    
 
     public void addActiveOrder(GuiMenuDetail order) {
         if(gridx==3){
@@ -105,6 +112,7 @@ public class GuiMain extends javax.swing.JFrame {
         panelLogin = new javax.swing.JPanel();
         btnLogin = new javax.swing.JButton();
         btnNew = new javax.swing.JButton();
+        btnSeeAll = new javax.swing.JButton();
         jSplitPane1 = new javax.swing.JSplitPane();
         panelActiveSplit = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -139,6 +147,9 @@ public class GuiMain extends javax.swing.JFrame {
 
         btnNew.setText("Nuevo");
         panelLogin.add(btnNew);
+
+        btnSeeAll.setText("Login");
+        panelLogin.add(btnSeeAll);
 
         jSplitPane1.setDividerLocation(600);
         jSplitPane1.setDividerSize(10);
@@ -200,7 +211,7 @@ public class GuiMain extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnlWatch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(pnlWatch, javax.swing.GroupLayout.DEFAULT_SIZE, 773, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -226,7 +237,7 @@ public class GuiMain extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(panelLogin, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(panelLogin, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 493, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -240,11 +251,11 @@ public class GuiMain extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 899, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
         );
 
         pack();
@@ -287,6 +298,7 @@ public class GuiMain extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
     private javax.swing.JButton btnNew;
+    private javax.swing.JButton btnSeeAll;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

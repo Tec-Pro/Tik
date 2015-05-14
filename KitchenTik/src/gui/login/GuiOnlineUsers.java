@@ -32,8 +32,8 @@ public class GuiOnlineUsers extends javax.swing.JDialog {
      */
     public GuiOnlineUsers(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        tableOnlineDefault = (DefaultTableModel) tableOnline.getModel();
         initComponents();
+        tableOnlineDefault = (DefaultTableModel) tableOnline.getModel();
         try {
             crudPresence = (InterfacePresence) Naming.lookup("//" + Config.ip + "/" + InterfaceName.CRUDPresence);
             tableOnlineDefault.setRowCount(0);
