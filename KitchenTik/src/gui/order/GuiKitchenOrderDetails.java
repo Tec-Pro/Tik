@@ -11,6 +11,7 @@ import java.awt.event.WindowAdapter;
 import java.util.Map;
 import javax.swing.event.TableModelListener;
 import javax.swing.JOptionPane;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -57,6 +58,21 @@ public class GuiKitchenOrderDetails extends javax.swing.JDialog {
      }
      
      public void closeWindow(){
+         this.tableOrderProducts.getModel().removeTableModelListener(new TableModelListener() {
+            public void tableChanged(TableModelEvent e) { // When a value in the table changes, I make configurations
+                boolean modify = false;
+                int i = 0;
+                while (i < tableOrderProducts.getModel().getRowCount() && !modify) { // If one value is true, It's able to send and order and check before closing the diag
+                    if ((boolean) tableOrderProducts.getModel().getValueAt(i, 3) == true) {
+                        modify = true;
+                    } else {
+                        i++;
+                    }
+                }
+                setModified(modify);
+                getBtnSendOrderDone().setEnabled(modify);
+            }
+        });
          this.setModal(false);
          this.setVisible(false);
      }
@@ -128,7 +144,7 @@ public class GuiKitchenOrderDetails extends javax.swing.JDialog {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+                java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, true

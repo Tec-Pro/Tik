@@ -76,21 +76,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
         
         dtmOrderDetails = guiOrderDetails.getDefaultTableModelOrderProducts();
 
-        guiOrderDetails.setTableModelListener(new TableModelListener() {
-            public void tableChanged(TableModelEvent e) { // When a value in the table changes, I make configurations
-                boolean modify = false;
-                int i = 0;
-                while (i < dtmOrderDetails.getRowCount() && !modify) { // If one value is true, It's able to send and order and check before closing the diag
-                    if ((boolean) dtmOrderDetails.getValueAt(i, 4) == true) {
-                        modify = true;
-                    } else {
-                        i++;
-                    }
-                }
-                guiOrderDetails.setModified(modify);
-                guiOrderDetails.getBtnSendOrderDone().setEnabled(modify);
-            }
-        });
+        
         guiKitchenMain = new GuiKitchenMain();
         guiKitchenMain.setVisible(true);
         guiKitchenMain.setActionListener(this);
@@ -113,14 +99,29 @@ public class ControllerGuiKitchenMain implements ActionListener {
                 String cook = (String) prod.get("belong");
                 if (cook.equals("Cocina")) { // If the product is for the Kitchen
                     Object rowDtm[] = new Object[4]; // New row
-                    rowDtm[0] = m.get("id");
-                    rowDtm[0] = prod.get("name");
-                    rowDtm[0] = m.get("quantity");
-                    rowDtm[0] = false;
+                    rowDtm[0] = prodID;
+                    rowDtm[1] = prod.get("name");
+                    rowDtm[2] = m.get("quantity");
+                    rowDtm[3] = false;
                     dtmOrderDetails.addRow(rowDtm);
                 }
             }
         }
+        guiOrderDetails.setTableModelListener(new TableModelListener() {
+            public void tableChanged(TableModelEvent e) { // When a value in the table changes, I make configurations
+                boolean modify = false;
+                int i = 0;
+                while (i < dtmOrderDetails.getRowCount() && !modify) { // If one value is true, It's able to send and order and check before closing the diag
+                    if ((boolean) dtmOrderDetails.getValueAt(i, 3) == true) {
+                        modify = true;
+                    } else {
+                        i++;
+                    }
+                }
+                guiOrderDetails.setModified(modify);
+                guiOrderDetails.getBtnSendOrderDone().setEnabled(modify);
+            }
+        });
         guiOrderDetails.setVisible(true);
         guiOrderDetails.toFront();
         guiOrderDetails.setModal(true);
@@ -131,6 +132,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
         Map<String, Object> order = crudOrder.getOrder(id);
         List<Map> orderProducts = crudOrder.getOrderProducts(id);
         for (Map<String, Object> m : orderProducts) { // For each product 
+            System.out.println(m.get("done"));
             if (!((boolean) m.get("done") == true)) { // If it's already made, skip it
                 int prodID = (int) m.get("fproduct_id"); // I obtain the product ID
                 Map<String, Object> prod = crudFProduct.getFproduct(prodID); // I obtain the product (importantly, where it belongs)
@@ -160,11 +162,16 @@ public class ControllerGuiKitchenMain implements ActionListener {
         //Aca debe cargarse el pedido en la gui y/o en la lista de pedidos
         //dependiendo de como sea implementado el controlador
         //RECORDAR QUE EN LA GUI SOLO DEBEN CARGARSE LOS PRODUCTOS CORRESPONDIENTES A COCINA(FILTRAR LA LISTA)
-        final Map<String, Object> order = crudOrder.getOrder(id);
+        Map<String, Object> order = crudOrder.getOrder(id);
         if (itBelongsKitchen(id)) {
              final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
              final Date date = new Date();
-             final String desc = "la vaca"; //(String) order.get("description");
+             final String desc;
+             if ((String) order.get("description") == null){
+                 desc = "";
+             }else{
+                 desc = (String) order.get("description");
+             }
             guiKitchenMain.addElementToOrdersGrid(Integer.toString(id), desc, dateFormat.format(date),
                     new java.awt.event.MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
@@ -225,22 +232,24 @@ public class ControllerGuiKitchenMain implements ActionListener {
             boolean modify = false;
             int i = 0;
             while (i < dtmOrderDetails.getRowCount() && !modify) {
-                if ((boolean) dtmOrderDetails.getValueAt(i, 4) == false) {
+                if ((boolean) dtmOrderDetails.getValueAt(i, 3) == false) {
                     modify = true;
                 } else {
                     i++;
                 }
             }
             for (i = 0; i < dtmOrderDetails.getRowCount(); i++) {
-                dtmOrderDetails.setValueAt(modify, i, 4);
+                dtmOrderDetails.setValueAt(modify, i, 3);
             }
         }
         if (ae.getSource().equals(guiOrderDetails.getBtnSendOrderDone())) { // Send the Order
-            List<Integer> list = null;
+            List<Integer> list = new LinkedList();
             int i = 0;
             while (i < dtmOrderDetails.getRowCount()) { // Add all products that are true
-                if ((boolean) dtmOrderDetails.getValueAt(i, 4) == true) {
-                    list.add((Integer) dtmOrderDetails.getValueAt(i, 0));
+                if ((boolean) dtmOrderDetails.getValueAt(i, 3) == true) {
+                    int id = (Integer)dtmOrderDetails.getValueAt(i, 0);
+                    System.out.println(id);
+                    list.add(id);
                 }
                 i++;
             }

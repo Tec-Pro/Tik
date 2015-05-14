@@ -135,7 +135,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
 
     public void addElementToOrdersGrid(String orderId, String orderDescription, String orderArrivalTime, java.awt.event.MouseAdapter mAdapt) {
         GuiKitchenOrderPane newOrder = new GuiKitchenOrderPane(orderId, orderDescription, orderArrivalTime);
-        newOrder.addMouseListener(mAdapt); 
+        newOrder.getTxtOrderDescription().addMouseListener(mAdapt); 
         getOrdersPanel().add(newOrder);
         getOrdersPanel().revalidate();
     }
