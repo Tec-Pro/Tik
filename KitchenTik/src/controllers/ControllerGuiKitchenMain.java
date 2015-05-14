@@ -110,7 +110,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
             if ((boolean) m.get("done") == false) { // If the product isn't done
                 int prodID = (int) m.get("fproduct_id"); // I obtain the product ID
                 Map<String, Object> prod = crudFProduct.getFproduct(prodID); // I obtain the product (importantly, it's name and if it belongs)
-                String cook = (String) m.get("belong");
+                String cook = (String) prod.get("belong");
                 if (cook.equals("Cocina")) { // If the product is for the Kitchen
                     Object rowDtm[] = new Object[4]; // New row
                     rowDtm[0] = m.get("id");
@@ -134,7 +134,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
             if (!((boolean) m.get("done") == true)) { // If it's already made, skip it
                 int prodID = (int) m.get("fproduct_id"); // I obtain the product ID
                 Map<String, Object> prod = crudFProduct.getFproduct(prodID); // I obtain the product (importantly, where it belongs)
-                String cook = (String) m.get("belong");
+                String cook = (String) prod.get("belong");
                 if (cook.equals("Cocina")) { // Does it belong to cocina?
                     itBelongs = true;
                 }
@@ -162,14 +162,15 @@ public class ControllerGuiKitchenMain implements ActionListener {
         //RECORDAR QUE EN LA GUI SOLO DEBEN CARGARSE LOS PRODUCTOS CORRESPONDIENTES A COCINA(FILTRAR LA LISTA)
         final Map<String, Object> order = crudOrder.getOrder(id);
         if (itBelongsKitchen(id)) {
-            final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-            final Date date = new Date();
-            guiKitchenMain.addElementToOrdersGrid(Integer.toString(id), (String) order.get("description"), dateFormat.format(date),
+             final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+             final Date date = new Date();
+             final String desc = "la vaca"; //(String) order.get("description");
+            guiKitchenMain.addElementToOrdersGrid(Integer.toString(id), desc, dateFormat.format(date),
                     new java.awt.event.MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
-                    if (e.getClickCount() == 1) {
+                    if (e.getClickCount() == 2) {
                         try {
-                            loadGuiOrderDetails(id, (String) order.get("description"), dateFormat.format(date));
+                            loadGuiOrderDetails(id, desc, dateFormat.format(date));
                         } catch (RemoteException ex) {
                             Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
                         }
