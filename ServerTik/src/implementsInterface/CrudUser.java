@@ -173,6 +173,18 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
         return ret;
     }
     
+    public List<Map> getWaiters() throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        List<Map> ret = User.where("position = ?", "Mozo").toMaps();
+        return ret;
+    }
+    
+    public List<Map> getCooks() throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        List<Map> ret = User.where("position = ?", "Cocinero").toMaps();
+        return ret;
+    }
+    
     public boolean validatePass(int id, String pass) throws java.rmi.RemoteException{
         Utils.abrirBase();
         User user = User.findById(id);

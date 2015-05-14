@@ -5,12 +5,16 @@
  */
 package gui.main;
 
+import controllers.ControllerGuiKitchenMain;
 import gui.order.GuiKitchenOrderPane;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.JMenuItem;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import utils.Watch;
 
 /**
@@ -126,8 +130,9 @@ public class GuiKitchenMain extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 
-    public void addElementToOrdersGrid(String orderId, String orderDescription, String orderArrivalTime) {
+    public void addElementToOrdersGrid(final String orderId, final String orderDescription, final String orderArrivalTime, java.awt.event.MouseAdapter mAdapt) {
         GuiKitchenOrderPane newOrder = new GuiKitchenOrderPane(orderId, orderDescription, orderArrivalTime);
+        newOrder.addMouseListener(mAdapt); 
         getOrdersPanel().add(newOrder);
         getOrdersPanel().revalidate();
     }
@@ -150,6 +155,8 @@ public class GuiKitchenMain extends javax.swing.JFrame {
         order.revalidate();
         getOrdersPanel().revalidate();
     }
+    
+    
     
     /**
      * @param args the command line arguments
