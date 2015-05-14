@@ -34,14 +34,7 @@ public class GuiMain extends javax.swing.JFrame {
         watch.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);//Centrado del texto 
         watch.setFont(new java.awt.Font("Arial", 1, 25));//tipo de letra y tamaño
         pnlWatch.add(watch, BorderLayout.CENTER);
-//        panelActiveOrders= new JPanel( new GridBagLayout());
-//        panelPausedOrders= new JPanel( new GridBagLayout());
-//        JScrollPane scrollPanelActive = new JScrollPane();
-        //scrollPanelActive.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-//        scrollPanelActive.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-//        panelActiveSplit.add(new JScrollPane(panelActiveOrders), BorderLayout.CENTER); 
-//        JScrollPane scrollPanelPaused = new JScrollPane(panelPausedOrders);
-//        panelPausedSplit.add(scrollPanelPaused, BorderLayout.CENTER);
+
         clearAllOrders();
     }
 
