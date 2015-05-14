@@ -6,8 +6,11 @@
 package gui.order;
 
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowAdapter;
 import java.util.Map;
 import javax.swing.event.TableModelListener;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -19,8 +22,22 @@ public class GuiKitchenOrderDetails extends javax.swing.JDialog {
     /**
      * Creates new form OrderDetails
      */
+    private int orderID;
+    private boolean modified = false;
+    
     public GuiKitchenOrderDetails(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        this.addWindowListener(new WindowAdapter(){
+                public void windowClosing(WindowEvent e){
+                    int i = 0;
+                    if (modified){ // If there were modifications to the table
+                        i=JOptionPane.showConfirmDialog(null, "Seguro que quiere salir?");
+                    }
+                    if(i==0){
+                        closeWindow();
+                    }
+                }
+            });
         initComponents();
     }
     
@@ -32,12 +49,18 @@ public class GuiKitchenOrderDetails extends javax.swing.JDialog {
     
      public void setActionListener(ActionListener lis) {
         this.btnSendOrderDone.addActionListener(lis);
+        this.btnCheckAll.addActionListener(lis);
     }
 
      public void setTableModelListener(TableModelListener lis){
          this.tableOrderProducts.getModel().addTableModelListener(lis);
      }
-
+     
+     public void closeWindow(){
+         this.setModal(false);
+         this.setVisible(false);
+     }
+     
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -58,8 +81,9 @@ public class GuiKitchenOrderDetails extends javax.swing.JDialog {
         jPanel4 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tableOrderProducts = new javax.swing.JTable();
-        checkBoxCheckAll = new javax.swing.JCheckBox();
         btnSendOrderDone = new javax.swing.JButton();
+        btnCheckAll = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setTitle("Detalles de pedido");
 
@@ -120,9 +144,11 @@ public class GuiKitchenOrderDetails extends javax.swing.JDialog {
         });
         jScrollPane3.setViewportView(tableOrderProducts);
 
-        checkBoxCheckAll.setText("Marcar todo ");
-
         btnSendOrderDone.setText("Pedido listo");
+
+        btnCheckAll.setText("X");
+
+        jLabel1.setText("Marcar todos");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -131,11 +157,13 @@ public class GuiKitchenOrderDetails extends javax.swing.JDialog {
             .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 632, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(checkBoxCheckAll, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addComponent(btnSendOrderDone, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(6, 6, 6)
+                        .addComponent(btnCheckAll, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel1))
+                    .addComponent(btnSendOrderDone, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -143,7 +171,9 @@ public class GuiKitchenOrderDetails extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(checkBoxCheckAll)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCheckAll, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addComponent(btnSendOrderDone))
         );
@@ -231,8 +261,9 @@ public class GuiKitchenOrderDetails extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCheckAll;
     private javax.swing.JButton btnSendOrderDone;
-    private javax.swing.JCheckBox checkBoxCheckAll;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
@@ -255,11 +286,11 @@ public class GuiKitchenOrderDetails extends javax.swing.JDialog {
     }
 
     /**
-     * Devuelve el checkbox que se utiliza para marcar todos los items del pedido.
+     * Devuelve el botón que se utiliza para marcar todos los items del pedido.
      * @return the checkBoxCheckAll
      */
-    public javax.swing.JCheckBox getCheckBoxCheckAll() {
-        return checkBoxCheckAll;
+    public javax.swing.JButton getBtnCheckAll() {
+        return btnCheckAll;
     }
 
     /**
@@ -292,5 +323,26 @@ public class GuiKitchenOrderDetails extends javax.swing.JDialog {
      */
     public javax.swing.JTextPane getTxtOrderDescription() {
         return txtOrderDescription;
+    }
+
+    /**
+     * @param orderID the orderID to set
+     */
+    public void setOrderID(int orderID) {
+        this.orderID = orderID;
+    }
+
+    /**
+     * @param modified the modified to set
+     */
+    public void setModified(boolean modified) {
+        this.modified = modified;
+    }
+
+    /**
+     * @return the orderID
+     */
+    public int getOrderID() {
+        return orderID;
     }
 }
