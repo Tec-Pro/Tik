@@ -173,5 +173,14 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         Server.notifyWaitersOrderReady(idOrder);
         return result;
     }
+
+    @Override
+    public List<Map> getActiveOrdersByUser(int userId) throws RemoteException {
+        Utils.abrirBase();
+        if(userId != -1)
+            return Order.find("closed = 0", userId).toMaps();
+        else
+            return Order.find("closed = ?", 0).toMaps();
+    }
     
 }

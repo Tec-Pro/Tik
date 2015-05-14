@@ -5,6 +5,9 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -17,18 +20,22 @@ import utils.Watch;
  */
 public class GuiMain extends javax.swing.JFrame {
 
+    
+    private int gridx=0;
+    private int gridy=0;
+    private int gridypaused=0;
     /**
      * Creates new form GuiMain
      */
     public GuiMain() {
         initComponents();
         Watch watch = new Watch(0, 0, 0, 0);
-         watch.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);//Centrado del texto 
+        watch.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);//Centrado del texto 
         watch.setFont(new java.awt.Font("Arial", 1, 25));//tipo de letra y tamaño
         pnlWatch.add(watch, BorderLayout.CENTER);
     }
-    
-     public void setActionListener(ActionListener lis) {
+
+    public void setActionListener(ActionListener lis) {
         this.btnLogin.addActionListener(lis);
         this.btnNew.addActionListener(lis);
     }
@@ -38,7 +45,7 @@ public class GuiMain extends javax.swing.JFrame {
     }
 
     public JPanel getPanelActiveOrders() {
-        return panelActiveOrders;
+        return panelActiveSplit;
     }
 
     public JPanel getPanelLogin() {
@@ -49,7 +56,40 @@ public class GuiMain extends javax.swing.JFrame {
         return btnNew;
     }
 
+    public void addActiveOrder(GuiMenuDetail order) {
+        if(gridx==3){
+            gridy++;
+            gridx=0;
+        }
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.weightx=304;
+        constraints.weighty=304;
+        constraints.gridx=gridx;
+        constraints.gridy=gridy;
+        constraints.insets=new Insets(5, 5, 5, 5);
+        panelActiveOrders.add(order, constraints);
+
+        gridx+=1;
+        validate();
+    }
+
     
+        public void addPausedOrder(GuiMenuDetail order) {
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.weightx=304;
+        constraints.weighty=304;
+        constraints.gridy=gridypaused;
+        constraints.gridx=0;
+        constraints.insets=new Insets(5, 5, 5, 5);
+        panelPausedOrders.add(order, constraints);
+        gridypaused+=1;
+        validate();
+    }
+        
+        public void clearAllOrders(){
+            panelActiveOrders.removeAll();
+            panelPausedOrders.removeAll();
+        }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -66,8 +106,12 @@ public class GuiMain extends javax.swing.JFrame {
         btnLogin = new javax.swing.JButton();
         btnNew = new javax.swing.JButton();
         jSplitPane1 = new javax.swing.JSplitPane();
+        panelActiveSplit = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
         panelActiveOrders = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        panelPausedOrders = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         pnlWatch = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -99,22 +143,23 @@ public class GuiMain extends javax.swing.JFrame {
         jSplitPane1.setDividerLocation(600);
         jSplitPane1.setDividerSize(10);
 
-        panelActiveOrders.setBorder(javax.swing.BorderFactory.createTitledBorder("Pedidos activos"));
-        panelActiveOrders.setLayout(new java.awt.GridLayout(3, 6));
-        jSplitPane1.setLeftComponent(panelActiveOrders);
+        panelActiveSplit.setBorder(javax.swing.BorderFactory.createTitledBorder("Pedidos activos"));
+        panelActiveSplit.setLayout(new java.awt.BorderLayout());
+
+        panelActiveOrders.setLayout(new java.awt.GridBagLayout());
+        jScrollPane2.setViewportView(panelActiveOrders);
+
+        panelActiveSplit.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+
+        jSplitPane1.setLeftComponent(panelActiveSplit);
 
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Pedidos pausados"));
+        jPanel6.setLayout(new java.awt.BorderLayout());
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 134, Short.MAX_VALUE)
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1295, Short.MAX_VALUE)
-        );
+        panelPausedOrders.setLayout(new java.awt.GridBagLayout());
+        jScrollPane3.setViewportView(panelPausedOrders);
+
+        jPanel6.add(jScrollPane3, java.awt.BorderLayout.CENTER);
 
         jSplitPane1.setRightComponent(jPanel6);
 
@@ -180,13 +225,13 @@ public class GuiMain extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(panelLogin, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSplitPane1))
-                    .addComponent(panelLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                        .addComponent(jSplitPane1)))
+                .addGap(10, 10, 10))
         );
 
         jScrollPane1.setViewportView(jPanel1);
@@ -195,11 +240,11 @@ public class GuiMain extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 881, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 899, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 532, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE)
         );
 
         pack();
@@ -249,10 +294,14 @@ public class GuiMain extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JLabel lblTurn;
     private javax.swing.JPanel panelActiveOrders;
+    private javax.swing.JPanel panelActiveSplit;
     private javax.swing.JPanel panelLogin;
+    private javax.swing.JPanel panelPausedOrders;
     private javax.swing.JPanel pnlWatch;
     // End of variables declaration//GEN-END:variables
 }
