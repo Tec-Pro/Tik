@@ -7,7 +7,6 @@ package gui.order;
 
 import java.util.Map;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 /**
  *
@@ -52,7 +51,6 @@ public class GuiKitchenOrderDetails extends javax.swing.JDialog {
         checkBoxCheckAll = new javax.swing.JCheckBox();
         btnSendOrderDone = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Detalles de pedido");
 
         labelOrderArrivalTime.setText("TIEMPO ACA");
