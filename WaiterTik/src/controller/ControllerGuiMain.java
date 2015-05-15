@@ -45,12 +45,12 @@ import utils.ParserFloat;
 public class ControllerGuiMain implements ActionListener {
 
     private static GuiMain guiMain;
-    private GuiLogin guiLogin;
+    private static GuiLogin guiLogin;
     private static InterfaceUser crudUser;
     private InterfacePresence crudPresence;
     private Map buttons; //Nos sirve para almacenar a los objetos creados
     private Map buttonsOrder;
-    private Set<Map> online;
+    private static Set<Map> online;
     private GuiOrder guiOrder;
     ControllerGuiOrder controllerGuiOrder;
     private boolean isNewOrder;  //variable de control, para saber que accion se ejecuta.
@@ -59,6 +59,8 @@ public class ControllerGuiMain implements ActionListener {
     private static InterfaceFproduct crudFproduct;
     private static Map orders; //Nos sirve para almacenar a los objetos creados
     private static GuiMenuDetail menuDetail; //para trabajar más facil
+    private static boolean seeOrder;  //variable de control, para saber que accion se ejecuta.
+    private static int orderClic;
 
     public ControllerGuiMain() throws NotBoundException, MalformedURLException, RemoteException {
         guiMain = new GuiMain();
@@ -72,7 +74,8 @@ public class ControllerGuiMain implements ActionListener {
         online = new HashSet<Map>();
         guiOrder = new GuiOrder(guiMain, true);
         controllerGuiOrder = new ControllerGuiOrder(guiOrder);
-        guiLogin = null;
+        guiLogin = new GuiLogin(guiMain, true);
+        guiLogin.setActionListener(this);
         crudOrder = (InterfaceOrder) Naming.lookup("//" + Config.ip + "/" + InterfaceName.CRUDOrder);
         crudFproduct = (InterfaceFproduct) Naming.lookup("//" + Config.ip + "/" + InterfaceName.CRUDFproduct);
         for (Map m : crudPresence.getWaiters()) {
@@ -82,6 +85,7 @@ public class ControllerGuiMain implements ActionListener {
         }
         loadOrders(-1);
         guiMain.setActionListener(this);
+        seeOrder = false;
 
     }
 
@@ -207,15 +211,14 @@ public class ControllerGuiMain implements ActionListener {
 
         if (e.getSource() == guiMain.getBtnLogin()) {
             try {
-                guiLogin = new GuiLogin(guiMain, true);
+                seeOrder = false;
                 Set<Map> offline = new HashSet<Map>();
-                offline.addAll(crudUser.getUsers()); //getWaiters();
+                offline.addAll(crudUser.getWaiters());
                 offline.removeAll(online);
                 if (offline.isEmpty()) {
                     JOptionPane.showMessageDialog(guiMain, "Ocurrió un error, ya estan todos los usuarios logueados", "Error!", JOptionPane.ERROR_MESSAGE);
                 } else {
                     guiLogin.loadCBoxUsers(offline);
-                    guiLogin.setActionListener(this);
                     guiLogin.setLocationRelativeTo(null);
                     guiLogin.setVisible(true);
                 }
@@ -230,16 +233,27 @@ public class ControllerGuiMain implements ActionListener {
                 Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        if (guiLogin != null) {
-            if (e.getSource() == guiLogin.getBtnAccept()) {
-                String user = guiLogin.getcBoxUsers().getItemAt(guiLogin.getcBoxUsers().getSelectedIndex()).toString();
-                String split[] = user.split("-");
-                int userId = Integer.parseInt(split[0]);
+
+        if (e.getSource() == guiLogin.getBtnAccept()) {
+            String user = guiLogin.getcBoxUsers().getItemAt(guiLogin.getcBoxUsers().getSelectedIndex()).toString();
+            String split[] = user.split("-");
+            int userId = Integer.parseInt(split[0]);
+            if (seeOrder) {
+                guiLogin.setVisible(false);
+                guiOrder.setLocationRelativeTo(null);
+                controllerGuiOrder.setIds(orderClic, userId);
+                guiOrder.setVisible(true);
+                try {
+                    controllerGuiOrder.CreateTree();
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
                 try {
                     //crudUser.validatePass(userId, guiLogin.getTxtPass().getText())
                     if (true) {
                         if (isNewOrder) {
-                            guiLogin.dispose();
+                            guiLogin.setVisible(false);
                             guiOrder.setLocationRelativeTo(null);
                             controllerGuiOrder.setIds(null, userId);
                             guiOrder.setVisible(true);
@@ -251,7 +265,7 @@ public class ControllerGuiMain implements ActionListener {
                         } else {
                             addMyComponent(user);
                             crudPresence.create(userId);
-                            guiLogin.dispose();
+                            guiLogin.setVisible(false);
                             online.add(crudUser.getUser(userId));
                         }
                     } else {
@@ -261,9 +275,9 @@ public class ControllerGuiMain implements ActionListener {
                     Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            if (e.getSource() == guiLogin.getBtnCancel()) {
-                guiLogin.dispose();
-            }
+        }
+        if (e.getSource() == guiLogin.getBtnCancel()) {
+            guiLogin.setVisible(false);
         }
         if (e.getSource().equals(guiMain.getBtnNew())) {
             if (online.isEmpty()) {
@@ -271,11 +285,10 @@ public class ControllerGuiMain implements ActionListener {
             } else {
                 try {
                     isNewOrder = true;
-                    guiLogin = new GuiLogin(guiMain, true);
+                    seeOrder = false;
                     Set<Map> offline = new HashSet<Map>();
-                    offline.addAll(crudUser.getUsers());
+                    offline.addAll(crudUser.getWaiters());
                     guiLogin.loadCBoxUsers(offline);
-                    guiLogin.setActionListener(this);
                     guiLogin.setLocationRelativeTo(null);
                     guiLogin.setVisible(true);
                 } catch (RemoteException ex) {
@@ -294,7 +307,9 @@ public class ControllerGuiMain implements ActionListener {
             //si comando de componente es igual a comando pulsado
             if (itm.equals(id)) {
                 //se recupera el panel
+
                 return ((GuiMenuDetail) entry.getValue());
+
                 //FILTRAR 
             }
         }
@@ -333,8 +348,23 @@ public class ControllerGuiMain implements ActionListener {
                 @Override
                 public void mousePressed(MouseEvent e) {
                     if (e.getClickCount() == 2) {
-                        System.out.println("click en el pedido: " + newOrder.getIdOrder() + " del mozo : " + newOrder.getIdWaiter());
-                        //aca tiene que abrir la ventana del login para ese mozo
+                        try {
+                            if (online.contains(crudUser.getUser(newOrder.getIdWaiter()))) {
+                                seeOrder = true;
+                                orderClic = newOrder.getIdOrder();
+                                Set<Map> usr = new HashSet<Map>();
+                                usr.add(crudUser.getUser(newOrder.getIdWaiter()));
+                                guiLogin.loadCBoxUsers(usr);
+                                guiLogin.getcBoxUsers().setSelectedIndex(0);
+                                guiLogin.getcBoxUsers().setEnabled(false);
+                                guiLogin.setLocationRelativeTo(null);
+                                guiLogin.setVisible(true);
+                            } else {
+                                JOptionPane.showMessageDialog(guiMain, "Ocurrió un error, usuario no logeado", "Error!", JOptionPane.ERROR_MESSAGE);
+                            }
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                 }
             });
@@ -384,6 +414,7 @@ public class ControllerGuiMain implements ActionListener {
 
             }
         }
+
         guiMain.revalidate();
     }
 
