@@ -83,6 +83,8 @@ public class ControllerGuiKitchenMain implements ActionListener {
         guiOrderDetails.setActionListener(this);
 
         guiLogin = null;
+        //traigo todos los pedidos que estan abiertos
+        refreshOpenOrders();
     }
 
     private static void loadGuiOrderDetails(int order, String desc, String arrival) throws RemoteException {
@@ -231,6 +233,31 @@ public class ControllerGuiKitchenMain implements ActionListener {
         guiKitchenMain.setOrderColor(i, new Color(255, 0, 0));
     }
 
+    /* Recarga todos los pedidos abiertos, sin realizar aun en cocina en la gui. */
+    //PULIR ESTE METODO PARA QUE TRAIGA LOS PEDIDOS COMO MAXIMO DE DOS DIAS, Y NO TODOS
+    public static void refreshOpenOrders() throws RemoteException{
+        List<Map> allOrders = crudOrder.getAllOrders();//saco todas los pedidos cargados
+        for (Map<String, Object> order : allOrders) {
+            if(order.get("closed").equals(false)){//si el pedido no esta cerrado
+                boolean orderClosed = true;
+                //saco todos los productos asociados al pedido
+                List<Map> orderProducts = crudOrder.getOrderProducts(Integer.parseInt(order.get("id").toString()));
+                Iterator<Map> itr = orderProducts.iterator();
+                while (itr.hasNext() && orderClosed){
+                    Map<String, Object> orderProduct = itr.next();
+                    Map<String, Object> fproduct = crudFProduct.getFproduct(Integer.parseInt(orderProduct.get("fproduct_id").toString()));
+                    //si el producto corresponde a Cocina y no fue hecho
+                    if (fproduct.get("belong").equals("Cocina") && orderProduct.get("done").equals(false)){
+                        orderClosed = false; //marco el pedido como abierto
+                    }
+                }
+                if(!orderClosed){//si el pedido esta abierto (NO CERRADO)
+                    addOrder(Integer.parseInt(order.get("id").toString()));//agrego el pedido en kitchen
+                }
+            }
+        }
+    }
+    
     /**
      *
      * @param ae
