@@ -99,7 +99,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
                 String cook = (String) prod.get("belong");
                 if (cook.equals("Cocina")) { // If the product is for the Kitchen
                     Object rowDtm[] = new Object[4]; // New row
-                    rowDtm[0] = prodID;
+                    rowDtm[0] = m.get("id");
                     rowDtm[1] = prod.get("name");
                     rowDtm[2] = m.get("quantity");
                     rowDtm[3] = false;
@@ -132,16 +132,26 @@ public class ControllerGuiKitchenMain implements ActionListener {
         Map<String, Object> order = crudOrder.getOrder(id);
         List<Map> orderProducts = crudOrder.getOrderProducts(id);
         for (Map<String, Object> m : orderProducts) { // For each product 
-            if (!((boolean) m.get("done") == true)) { // If it's already made, skip it
-                int prodID = (int) m.get("fproduct_id"); // I obtain the product ID
-                Map<String, Object> prod = crudFProduct.getFproduct(prodID); // I obtain the product (importantly, where it belongs)
-                String cook = (String) prod.get("belong");
-                if (cook.equals("Cocina")) { // Does it belong to cocina?
-                    itBelongs = true;
-                }
+            int prodID = (int) m.get("fproduct_id"); // I obtain the product ID
+            Map<String, Object> prod = crudFProduct.getFproduct(prodID); // I obtain the product (importantly, where it belongs)
+            String cook = (String) prod.get("belong");
+            if (cook.equals("Cocina")) { // Does it belong to cocina?
+                itBelongs = true;
             }
         }
         return itBelongs;
+    }
+
+    private static boolean noMoreToCook(int id) throws RemoteException {
+        boolean noMore = true;
+        Map<String, Object> order = crudOrder.getOrder(id);
+        List<Map> orderProducts = crudOrder.getOrderProducts(id);
+        for (Map<String, Object> m : orderProducts) { // For each product 
+            if (((boolean) m.get("done") == false)) {
+                noMore = false;
+            }
+        }
+        return noMore;
     }
 
     /**
@@ -258,7 +268,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
                 Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
             }
             try {
-                if (itBelongsKitchen(guiOrderDetails.getOrderID())) { //if it no longer belongs in the kitchen (no products for the cooks to cook)
+                if (noMoreToCook(guiOrderDetails.getOrderID())) { //if it no longer belongs in the kitchen (no products for the cooks to cook)
                     for (int j = 0; j < orderList.size(); j++) {
                         if (orderList.get(j) == guiOrderDetails.getOrderID()) {
                             orderList.remove(j);
