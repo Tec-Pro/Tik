@@ -11,6 +11,7 @@ import javax.swing.JComboBox;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.ImageIcon;
 import java.awt.image.BufferedImage;
+import java.awt.Image;
 import javax.imageio.ImageIO;
 //import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -102,13 +103,16 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
             lblPhoto.setText("Haga doble click sobre el panel");
         } else {
                 System.out.println(photo);
-                File file = new File(String.format(photo, 0));
+                File file = new File("src/Photos/"+photo);//File file = new File(String.format(photo, 0));
                 BufferedImage image = ImageIO.read(file);
-                ImageIcon imgIcon = new ImageIcon(image);
-                lblPhoto.setIcon(imgIcon);
+                Image scaledImage = image.getScaledInstance(panelImage.getWidth(),panelImage.getHeight(),Image.SCALE_SMOOTH);
+                lblPhoto.setIcon(new ImageIcon(scaledImage));
                 lblPhoto.setText("");        
+                lblPhoto.repaint();
+                lblPhoto.getParent().repaint();
         }
         lblPhoto.updateUI();
+        //Image scaledImage = originalImage.getScaledInstance(jPanel.getWidth(),jPanel.getHeight(),Image.SCALE_SMOOTH);
     }
 
 
@@ -253,6 +257,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         btnModify = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        panelImage = new javax.swing.JPanel();
         lblPhoto = new javax.swing.JLabel();
 
         setClosable(true);
@@ -640,20 +645,36 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
 
         lblPhoto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
+        javax.swing.GroupLayout panelImageLayout = new javax.swing.GroupLayout(panelImage);
+        panelImage.setLayout(panelImageLayout);
+        panelImageLayout.setHorizontalGroup(
+            panelImageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelImageLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblPhoto, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
+        panelImageLayout.setVerticalGroup(
+            panelImageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelImageLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblPhoto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblPhoto, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+                .addComponent(panelImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblPhoto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(panelImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -766,6 +787,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lblTurn;
     private javax.swing.JPanel panelEmployeeSchedule;
     private javax.swing.JPanel panelFields;
+    private javax.swing.JPanel panelImage;
     private javax.swing.JScrollPane scrollEmployeeSchedule;
     private javax.swing.JTable tableEmployeeSchedule;
     private javax.swing.JTable tableUsers;
@@ -974,5 +996,12 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
      */
     public javax.swing.JCheckBox getCheckBoxDischarged() {
         return checkBoxDischarged;
+    }
+
+    /**
+     * @return the panelImage
+     */
+    public javax.swing.JPanel getPanelImage() {
+        return panelImage;
     }
 }

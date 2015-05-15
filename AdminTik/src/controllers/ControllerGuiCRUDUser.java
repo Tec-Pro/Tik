@@ -41,6 +41,7 @@ import utils.ImageFilter;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import utils.InterfaceName;
+import utils.PhotoDialog;
 
 /**
  *
@@ -48,6 +49,7 @@ import utils.InterfaceName;
  */
 public class ControllerGuiCRUDUser implements ActionListener {
 
+    private PhotoDialog imgSelect;
     private final GuiCRUDUser guiUser;
     private final InterfaceUser crudUser;
     private final DefaultTableModel dtmUsers;
@@ -55,11 +57,11 @@ public class ControllerGuiCRUDUser implements ActionListener {
     private boolean createMode = false;
 
     public ControllerGuiCRUDUser(GuiCRUDUser gui) throws NotBoundException, MalformedURLException, RemoteException {
-        crudUser = (InterfaceUser) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDUser);
+        crudUser = (InterfaceUser) Naming.lookup("//" + Config.ip + "/" + InterfaceName.CRUDUser);
         guiUser = gui;
         guiUser.getTableUsers().getSelectionModel().addListSelectionListener(new ListSelectionListener() { // Listener for moving through the tableUsers and refreshing the gui
             @Override
-            public void valueChanged(ListSelectionEvent e) { 
+            public void valueChanged(ListSelectionEvent e) {
                 if (guiUser.getTableUsers().getSelectedRow() != -1) {
                     try {
                         tableUserMouseClicked(null);
@@ -80,7 +82,7 @@ public class ControllerGuiCRUDUser implements ActionListener {
         });
         guiUser.getTableUsers().addMouseListener(new java.awt.event.MouseAdapter() { // Listener for double click and modify on tableUsers
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt){
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 if (evt.getClickCount() == 2) {
                     guiUser.getTableUsers().setEnabled(false);
                     modifyMode = true;
@@ -115,55 +117,35 @@ public class ControllerGuiCRUDUser implements ActionListener {
 
     private void panelPhotoDobleClicked(MouseEvent evt) throws IOException, Exception {
         if (createMode || modifyMode) { //If I'm either creating a new user or modifying an old one, I can change the photo
-            final JFileChooser fc = new JFileChooser();
-            fc.setAcceptAllFileFilterUsed(false);
-            fc.addChoosableFileFilter(new ImageFilter());
-            int returnVal = fc.showOpenDialog(guiUser); // user chooses the image
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = fc.getSelectedFile(); //I get the selected File
-                System.out.println(file.toString());
-                
-                BufferedImage image = ImageIO.read(file); // I take the file and convert it to a BufferedImage
-                ImageExtensions imgEx = new ImageExtensions(); // I create an instance of ImageExtensions
-                String ext = imgEx.getExtension(file); // I extract the extension used
-                
-                int row = guiUser.getTableUsers().getSelectedRow(); // selected row
-                int id = (int) dtmUsers.getValueAt(row, 0); // selected emplyee id
-                Map<String,Object> mapPhoto = crudUser.getUser(id); // get emplyee information
-                
-                String name = (String) mapPhoto.get("name")+(String) mapPhoto.get("surname")+id+"."+ext; //name of the file
-                File destination = new File("src/Photos/"+name); // create the new empty file
-                mapPhoto = null; //initalize the map to use later on
-                StandardCopyOption copyOption = StandardCopyOption.REPLACE_EXISTING;
-                try {
-                    Files.copy(file.toPath(), destination.toPath(), copyOption); //copy file to destination  
-                    mapPhoto =crudUser.modifyPhoto(id, name);
-                } catch(IOException e) {
-                     Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, e);
-                }
-//
-//                ByteArrayOutputStream baos = new ByteArrayOutputStream(); // I create an instance of ByteArrayOutputStream
-//                ImageIO.write( image, ext, baos ); // I take the BufferedImage and it's extension and parse it to a ByteArrayOutputStream
-//                byte[] imageInByte = baos.toByteArray(); // I take the ByteArrayOutputStream and parse it to a byte[]
-//                
-//                System.out.println(imageInByte.toString());
-//                
-//                int row = guiUser.getTableUsers().getSelectedRow();
-//                int id = (int) dtmUsers.getValueAt(row, 0);
-//                Map<String,Object> mapPhoto = crudUser.modifyPhoto(id, imageInByte);
-//                
-                if(mapPhoto == null){
-                    JOptionPane.showMessageDialog(guiUser, "Ups! Error! Intente de nuevo!", "Error", JOptionPane.ERROR_MESSAGE);
-                }else{
-                    loadSelectedUser(id);
-                }
-            } else {
-                //Nothing
+            int row = guiUser.getTableUsers().getSelectedRow(); // selected row
+            int id = (int) dtmUsers.getValueAt(row, 0); // selected emplyee id
+            Map<String, Object> mapPhoto = crudUser.getUser(id); // get emplyee information
+            String name = (String) mapPhoto.get("name") + (String) mapPhoto.get("surname") + id; //name of the file
+            imgSelect = new PhotoDialog(name);
+            name = imgSelect.getName();
+            imgSelect.dispose();
+            System.out.println(name);
+//                BufferedImage image = ImageIO.read(file); // I take the file and convert it to a BufferedImage
+//                ImageExtensions imgEx = new ImageExtensions(); // I create an instance of ImageExtensions
+//                String ext = imgEx.getExtension(file); // I extract the extension used
+            mapPhoto = null; //initalize the map to use later on
+            StandardCopyOption copyOption = StandardCopyOption.REPLACE_EXISTING;
+            try {
+                mapPhoto = crudUser.modifyPhoto(id, name);
+            } catch (IOException e) {
+                Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, e);
             }
-        }
+      
+            if (mapPhoto == null) {
+                JOptionPane.showMessageDialog(guiUser, "Ups! Error! Intente de nuevo!", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                loadSelectedUser(id);
+            }
+            
     }
+}
 
-    private void tableUserMouseClicked(MouseEvent evt) throws RemoteException, Exception {
+private void tableUserMouseClicked(MouseEvent evt) throws RemoteException, Exception {
         if (createMode) {
             //doNothing();
         } else { //selectionMode or modifyMode
@@ -225,7 +207,7 @@ public class ControllerGuiCRUDUser implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(guiUser.getBtnCreate())) { //If the button pressed is Create
             createMode = true;
             guiUser.cleanFields();
@@ -267,9 +249,13 @@ public class ControllerGuiCRUDUser implements ActionListener {
                         guiUser.cleanFields();
                     } else {
                         JOptionPane.showMessageDialog(guiUser, "Problemas! No se pudo crear!", "Error!", JOptionPane.ERROR_MESSAGE);
-                    }
+                    
+
+}
                 } catch (RemoteException ex) {
-                    Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ControllerGuiCRUDUser.class  
+
+.getName()).log(Level.SEVERE, null, ex);
                 }
                 createMode = false;
                 guiUser.initialMode(true);
@@ -308,9 +294,13 @@ public class ControllerGuiCRUDUser implements ActionListener {
                         updateDtmUsers();
                     } else {
                         JOptionPane.showMessageDialog(guiUser, "Problemas! No se pudo modificar!", "Error!", JOptionPane.ERROR_MESSAGE);
-                    }
+                    
+
+}
                 } catch (RemoteException ex) {
-                    Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ControllerGuiCRUDUser.class  
+
+.getName()).log(Level.SEVERE, null, ex);
                 }
                 modifyMode = false;
                 guiUser.initialMode(true);
@@ -342,10 +332,14 @@ public class ControllerGuiCRUDUser implements ActionListener {
                         updateDtmUsers();
                     } else {
                         JOptionPane.showMessageDialog(guiUser, "Problemas! No se pudo borrar!", "Error!", JOptionPane.ERROR_MESSAGE);
-                    }
+                    
+
+}
                 }
             } catch (RemoteException ex) {
-                Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ControllerGuiCRUDUser.class  
+
+.getName()).log(Level.SEVERE, null, ex);
 
             }
         }
