@@ -37,6 +37,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import utils.Config;
 import utils.InterfaceName;
+import java.util.Iterator;
 
 /**
  *
@@ -73,10 +74,9 @@ public class ControllerGuiKitchenMain implements ActionListener {
         }
         guiOrderDetails = new GuiKitchenOrderDetails(guiKitchenMain, false);
         guiOrderDetails.setVisible(false);
-        
+
         dtmOrderDetails = guiOrderDetails.getDefaultTableModelOrderProducts();
 
-        
         guiKitchenMain = new GuiKitchenMain();
         guiKitchenMain.setVisible(true);
         guiKitchenMain.setActionListener(this);
@@ -132,7 +132,6 @@ public class ControllerGuiKitchenMain implements ActionListener {
         Map<String, Object> order = crudOrder.getOrder(id);
         List<Map> orderProducts = crudOrder.getOrderProducts(id);
         for (Map<String, Object> m : orderProducts) { // For each product 
-            System.out.println(m.get("done"));
             if (!((boolean) m.get("done") == true)) { // If it's already made, skip it
                 int prodID = (int) m.get("fproduct_id"); // I obtain the product ID
                 Map<String, Object> prod = crudFProduct.getFproduct(prodID); // I obtain the product (importantly, where it belongs)
@@ -164,26 +163,26 @@ public class ControllerGuiKitchenMain implements ActionListener {
         //RECORDAR QUE EN LA GUI SOLO DEBEN CARGARSE LOS PRODUCTOS CORRESPONDIENTES A COCINA(FILTRAR LA LISTA)
         Map<String, Object> order = crudOrder.getOrder(id);
         if (itBelongsKitchen(id)) {
-             final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-             final Date date = new Date();
-             final String desc;
-             if ((String) order.get("description") == null){
-                 desc = "";
-             }else{
-                 desc = (String) order.get("description");
-             }
+            final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+            final Date date = new Date();
+            final String desc;
+            if ((String) order.get("description") == null) {
+                desc = "";
+            } else {
+                desc = (String) order.get("description");
+            }
             guiKitchenMain.addElementToOrdersGrid(Integer.toString(id), desc, dateFormat.format(date),
                     new java.awt.event.MouseAdapter() {
-                public void mouseClicked(MouseEvent e) {
-                    if (e.getClickCount() == 2) {
-                        try {
-                            loadGuiOrderDetails(id, desc, dateFormat.format(date));
-                        } catch (RemoteException ex) {
-                            Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
+                        public void mouseClicked(MouseEvent e) {
+                            if (e.getClickCount() == 2) {
+                                try {
+                                    loadGuiOrderDetails(id, desc, dateFormat.format(date));
+                                } catch (RemoteException ex) {
+                                    Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
                         }
-                    }
-                }
-            });
+                    });
             guiKitchenMain.setOrderColor(guiKitchenMain.getOrdersPanel().getComponentCount() - 1, new Color(255, 0, 0));
             orderList.add(id);
         }
@@ -247,19 +246,19 @@ public class ControllerGuiKitchenMain implements ActionListener {
             int i = 0;
             while (i < dtmOrderDetails.getRowCount()) { // Add all products that are true
                 if ((boolean) dtmOrderDetails.getValueAt(i, 3) == true) {
-                    int id = (Integer)dtmOrderDetails.getValueAt(i, 0);
-                    System.out.println(id);
+                    int id = (Integer) dtmOrderDetails.getValueAt(i, 0);
                     list.add(id);
                 }
                 i++;
             }
+            List<Map> updateOrder = new LinkedList<Map>();
             try {
-                crudOrder.updateOrdersReadyProducts(guiOrderDetails.getOrderID(), list);
+                updateOrder = crudOrder.updateOrdersReadyProducts(guiOrderDetails.getOrderID(), list);
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
             }
             try {
-                if (!(itBelongsKitchen(guiOrderDetails.getOrderID()))) { //if it no longer belongs in the kitchen (no products for the cooks to cook)
+                if (itBelongsKitchen(guiOrderDetails.getOrderID())) { //if it no longer belongs in the kitchen (no products for the cooks to cook)
                     for (int j = 0; j < orderList.size(); j++) {
                         if (orderList.get(j) == guiOrderDetails.getOrderID()) {
                             orderList.remove(j);
@@ -297,7 +296,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
             try {
                 guiLogin = new GuiLogin(guiKitchenMain, true);
                 Set<Map> offline = new HashSet<Map>();
-                offline.addAll(crudUser.getCooks()); 
+                offline.addAll(crudUser.getCooks());
                 offline.removeAll(online);
                 if (offline.isEmpty()) {
                     JOptionPane.showMessageDialog(guiKitchenMain, "Ocurrió un error, ya estan todos los usuarios logueados", "Error!", JOptionPane.ERROR_MESSAGE);
@@ -308,12 +307,12 @@ public class ControllerGuiKitchenMain implements ActionListener {
                 }
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
-            }          
+            }
         }
 
         if (ae.getSource() == guiKitchenMain.getMenuItemLoggedUsers()) {
             GuiOnlineUsers gulu = new GuiOnlineUsers(guiKitchenMain, true);
-            gulu.setVisible(true);     
+            gulu.setVisible(true);
         }
         /* PARA ACTUALIZAR LOS PRODUCTOS LISTOS SE DEBE USAR ESTE METODO
          * SI HAY ALGUNA DUDA LEER SU JAVADOC:
