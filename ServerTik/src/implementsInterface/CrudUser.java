@@ -5,6 +5,7 @@
  */
 package implementsInterface;
 
+import java.awt.image.BufferedImage;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Date;
@@ -12,10 +13,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import javax.imageio.ImageIO;
 import models.User;
 import org.javalite.activejdbc.Base;
 import utils.Encryption;
+import utils.SerializableBufferedImage;
 import utils.Utils;
 
 /**
@@ -47,7 +56,7 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
             String maritalStatus,
             String bloodType,
             String position,
-            byte[] photo
+            SerializableBufferedImage photo
     ) throws java.rmi.RemoteException {
 
         Utils.abrirBase();
@@ -75,10 +84,14 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
                 "mobile_phone", mobilePhone,
                 "marital_status", maritalStatus,
                 "blood_type", bloodType,
-                "position", position,
-                "photo", photo
+                "position", position
         ).toMap();
         Base.commitTransaction();
+        try {
+            savePhoto(photo, (int) res.get("id"), "jpg");
+        } catch (IOException ex) {
+            Logger.getLogger(CrudUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return res;
     }
 
@@ -100,7 +113,8 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
             String mobilePhone,
             String maritalStatus,
             String bloodType,
-            String position
+            String position,
+            SerializableBufferedImage photo
     ) throws java.rmi.RemoteException {
         Utils.abrirBase();
         User user = User.findById(id);
@@ -133,6 +147,11 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
             Base.openTransaction();
             user.saveIt();
             Base.commitTransaction();
+            try {
+                savePhoto(photo, (int) res.get("id"), "jpg");
+            } catch (IOException ex) {
+                Logger.getLogger(CrudUser.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return res;
     }
@@ -161,33 +180,63 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
         return ret;
     }
 
-    public Map<String, Object> modifyPhoto(int id, String photo) throws java.rmi.RemoteException {
-        Utils.abrirBase();
-        User user = User.findById(id);
-        Map<String, Object> ret = null;
-        if (user != null) {
-            user.setString("photo", photo);
-            user.saveIt();
-            ret = user.toMap();
-        }
-        return ret;
-    }
-    
     public List<Map> getWaiters() throws java.rmi.RemoteException {
         Utils.abrirBase();
         List<Map> ret = User.where("position = ?", "Mozo").toMaps();
         return ret;
     }
-    
+
     public List<Map> getCooks() throws java.rmi.RemoteException {
         Utils.abrirBase();
         List<Map> ret = User.where("position = ?", "Cocinero").toMaps();
         return ret;
     }
-    
-    public boolean validatePass(int id, String pass) throws java.rmi.RemoteException{
+
+    public boolean validatePass(int id, String pass) throws java.rmi.RemoteException {
         Utils.abrirBase();
         User user = User.findById(id);
         return (user.get("pass").equals(pass));
+    }
+
+    public SerializableBufferedImage getPhoto(int idUser) throws java.rmi.RemoteException {
+        BufferedImage img = null;
+        SerializableBufferedImage ret = null;
+        File f = new File(System.getProperty("user.dir") + "/user_images/" + idUser + ".jpg");
+        if (f.exists() && !f.isDirectory()) { /* do something */
+
+            try {
+                img = ImageIO.read(f);
+                ret = new SerializableBufferedImage(img);
+
+            } catch (IOException e) {
+            }
+        }
+        return ret;
+    }
+
+    //metodo que guarda la imagen en disco en formato JPG
+    private void savePhoto(final SerializableBufferedImage imageser, final int idUser, final String extension) throws IOException {
+        Thread thread = new Thread() {
+            public void run() {
+                if (imageser == null) {
+                    File f = new File(System.getProperty("user.dir") + "/user_images/" + idUser + ".jpg");
+                    if (f.exists() && !f.isDirectory()) { /* do something */
+
+                        f.delete();
+                    }
+                } else {
+                    try {
+                        //se escribe en disco
+                        ImageIO.write(imageser.getBImage(), extension, new File(System.getProperty("user.dir") + "/user_images/" + idUser + "." + extension));
+                        ByteArrayOutputStream out = new ByteArrayOutputStream();
+                        ImageIO.write((RenderedImage) imageser.getBImage(), extension, out);
+                        InputStream in = new ByteArrayInputStream(out.toByteArray());
+                    } catch (IOException ex) {
+                        Logger.getLogger(CrudUser.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        };
+        thread.start();
     }
 }

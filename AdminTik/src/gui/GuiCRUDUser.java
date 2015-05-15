@@ -108,6 +108,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         image=null;
         pnlImageUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/sin_imagen_disponible.jpg")));
         pnlImageUser.repaint();
+
     }
 
     public BufferedImage getImage() {

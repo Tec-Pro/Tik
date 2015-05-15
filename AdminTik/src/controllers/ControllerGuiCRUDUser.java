@@ -227,9 +227,7 @@ public class ControllerGuiCRUDUser implements ActionListener {
                     }
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
-                    Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                } 
                 createMode = false;
                 guiUser.initialMode(true);
                 guiUser.enableDischarged(false);
@@ -277,8 +275,6 @@ public class ControllerGuiCRUDUser implements ActionListener {
                         JOptionPane.showMessageDialog(guiUser, "Problemas! No se pudo modificar!", "Error!", JOptionPane.ERROR_MESSAGE);
                     }
                 } catch (RemoteException ex) {
-                    Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
                     Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 modifyMode = false;
