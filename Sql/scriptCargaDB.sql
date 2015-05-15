@@ -55,7 +55,7 @@ INSERT INTO `subcategories` (`id`,`name`,`category_id`) VALUES (5,'Blancas',3);
 INSERT INTO `subcategories` (`id`,`name`,`category_id`) VALUES (6,'Pizza ',6);
 
 #Cargo un mozo
-INSERT INTO `users` (`id`,`name`,`surname`,`pass`,`date_hired`,`date_discharged`,`turn`,`date_of_birth`,`place_of_birth`,`id_type`,`id_number`,`address`,`home_phone`,`emergency_phone`,`mobile_phone`,`marital_status`,`blood_type`,`position`,`photo`) VALUES (1,'Federico','Mollea','ãÌã<$Øˆü§ŒwÌø','2015-04-16',NULL,'Manana','1994-06-18','Río Cuarto','DNI','38182819','San Martín 123','465773','4658883','154281982','Soltero','O+','Mozo',NULL);
+INSERT INTO `users` (`id`,`name`,`surname`,`pass`,`date_hired`,`date_discharged`,`turn`,`date_of_birth`,`place_of_birth`,`id_type`,`id_number`,`address`,`home_phone`,`emergency_phone`,`mobile_phone`,`marital_status`,`blood_type`,`position`) VALUES (1,'Federico','Mollea','ãÌã<$Øˆü§ŒwÌø','2015-04-16',NULL,'Manana','1994-06-18','Río Cuarto','DNI','38182819','San Martín 123','465773','4658883','154281982','Soltero','O+','Mozo');
 
 #Cargo productos / compra
 INSERT INTO `pproducts_purchases` (`id`,`pproduct_id`,`purchase_id`,`amount`,`final_price`) VALUES (8,'6','2','1.0','10.0');
