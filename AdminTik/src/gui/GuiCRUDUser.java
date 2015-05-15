@@ -5,17 +5,20 @@
  */
 package gui;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import java.util.Date;
 import javax.swing.JComboBox;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.ImageIcon;
 import java.awt.image.BufferedImage;
-import java.awt.Image;
 import javax.imageio.ImageIO;
 //import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.File;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import org.edisoncor.gui.panel.PanelImage;
 
 /**
  *
@@ -24,8 +27,8 @@ import java.io.File;
 public class GuiCRUDUser extends javax.swing.JInternalFrame {
 
     private final DefaultTableModel dtmUsers;
-    private ImageIcon photo = null;
-
+    private String namePicture="sin_imagen_disponible.jpg";
+    private BufferedImage image;
     /**
      * Creates new form GuiCRUDUser
      */
@@ -59,8 +62,8 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         boxMaritalStatus.setSelectedIndex(0);
         boxBloodType.setSelectedIndex(0);
         boxPosition.setSelectedIndex(0);
-        photo = null;
-        lblPhoto.setText("Haga doble click sobre el panel");
+        setPictureDefault();
+
     }
 
     public void updateFields(String name,
@@ -79,8 +82,8 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
             String mobilePhone,
             String maritalStatus,
             String bloodType,
-            String position,
-            String photo) throws IOException {
+            String position
+    ) throws IOException {
         txtName.setText(name);
         txtSurname.setText(surname);
         txtAddress.setText(address);
@@ -95,26 +98,32 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         txtHomePhone.setText(homePhone);
         txtEmergencyPhone.setText(emergencyPhone);
         txtMobilePhone.setText(mobilePhone);
-        txtIdNumber.setText(maritalStatus);
         boxMaritalStatus.setSelectedItem(maritalStatus);
         boxBloodType.setSelectedItem(bloodType);
         boxPosition.setSelectedItem(position);
-        if (photo == null) {
-            lblPhoto.setText("Haga doble click sobre el panel");
-        } else {
-                System.out.println(photo);
-                File file = new File("src/Photos/"+photo);//File file = new File(String.format(photo, 0));
-                BufferedImage image = ImageIO.read(file);
-                Image scaledImage = image.getScaledInstance(panelImage.getWidth(),panelImage.getHeight(),Image.SCALE_SMOOTH);
-                lblPhoto.setIcon(new ImageIcon(scaledImage));
-                lblPhoto.setText("");        
-                lblPhoto.repaint();
-                lblPhoto.getParent().repaint();
-        }
-        lblPhoto.updateUI();
-        //Image scaledImage = originalImage.getScaledInstance(jPanel.getWidth(),jPanel.getHeight(),Image.SCALE_SMOOTH);
+
     }
 
+    public void setPictureDefault(){
+        image=null;
+        pnlImageUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/sin_imagen_disponible.jpg")));
+        pnlImageUser.repaint();
+    }
+
+    public BufferedImage getImage() {
+        return image;
+    }
+    
+       public void setPicture(BufferedImage image){
+           if(image!=null){
+        this.image= image;
+        this.namePicture= "hay_imagen";
+        pnlImageUser.setIcon(new javax.swing.ImageIcon(image));
+        pnlImageUser.repaint();
+           }
+           else
+               setPictureDefault();
+    } 
 
     public void modifyMode(boolean b) {
         if (b) {
@@ -126,6 +135,8 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         btnSave.setEnabled(b);
         btnModify.setEnabled(!b);
         btnCreate.setEnabled(!b);
+        this.btnAddPhoto.setEnabled(b);
+        this.btnDeletePhoto.setEnabled(b);
         enableFields(b);
     }
 
@@ -139,6 +150,8 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         btnSave.setEnabled(b);
         btnModify.setEnabled(!b);
         btnCreate.setEnabled(!b);
+        this.btnAddPhoto.setEnabled(b);
+        this.btnDeletePhoto.setEnabled(b);
         enableFields(b);
     }
 
@@ -157,6 +170,8 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         btnSave.setEnabled(!b);
         btnModify.setEnabled(!b);
         btnCreate.setEnabled(b);
+        this.btnAddPhoto.setEnabled(!b);
+        this.btnDeletePhoto.setEnabled(!b);
         enableFields(!b);
         tableUsers.clearSelection();
     }
@@ -167,6 +182,8 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         btnSave.addActionListener(ac);
         btnDelete.addActionListener(ac);
         checkBoxDischarged.addActionListener(ac);
+        this.btnAddPhoto.addActionListener(ac);
+        this.btnDeletePhoto.addActionListener(ac);
     }
 
     private void enableFields(boolean b) {
@@ -195,6 +212,14 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         lblDischargedDate.setEnabled(b);
         dateDischargedDate.setEnabled(b);
         checkBoxDischarged.setSelected(b);
+    }
+
+    public JButton getBtnAddPhoto() {
+        return btnAddPhoto;
+    }
+
+    public JButton getBtnDeletePhoto() {
+        return btnDeletePhoto;
     }
 
     /**
@@ -257,8 +282,9 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         btnModify = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        panelImage = new javax.swing.JPanel();
-        lblPhoto = new javax.swing.JLabel();
+        btnAddPhoto = new javax.swing.JButton();
+        btnDeletePhoto = new javax.swing.JButton();
+        pnlImageUser = new org.edisoncor.gui.panel.PanelImage();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -397,7 +423,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         panelFieldsLayout.setHorizontalGroup(
             panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelFieldsLayout.createSequentialGroup()
-                .addContainerGap(41, Short.MAX_VALUE)
+                .addContainerGap(43, Short.MAX_VALUE)
                 .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelFieldsLayout.createSequentialGroup()
                         .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -469,12 +495,12 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
                             .addComponent(txtMobilePhone, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(15, 15, 15)
                         .addComponent(checkBoxDischarged)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
         panelFieldsLayout.setVerticalGroup(
             panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelFieldsLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(12, Short.MAX_VALUE)
                 .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSurname)
                     .addComponent(lblName)
@@ -594,7 +620,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
                 .addGroup(panelEmployeeScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelEmployeeScheduleLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(scrollEmployeeSchedule, javax.swing.GroupLayout.DEFAULT_SIZE, 527, Short.MAX_VALUE))
+                        .addComponent(scrollEmployeeSchedule, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE))
                     .addGroup(panelEmployeeScheduleLayout.createSequentialGroup()
                         .addGap(26, 26, 26)
                         .addComponent(jLabel1)
@@ -639,27 +665,29 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         btnSave.setText("Guardar");
         jPanel1.add(btnSave);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Foto", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Ubuntu", 1, 15))); // NOI18N
-        jPanel2.setMinimumSize(new java.awt.Dimension(227, 227));
-        jPanel2.setPreferredSize(new java.awt.Dimension(227, 227));
+        jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel2.setPreferredSize(new java.awt.Dimension(200, 200));
 
-        lblPhoto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnAddPhoto.setText("Agregar");
 
-        javax.swing.GroupLayout panelImageLayout = new javax.swing.GroupLayout(panelImage);
-        panelImage.setLayout(panelImageLayout);
-        panelImageLayout.setHorizontalGroup(
-            panelImageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelImageLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblPhoto, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+        btnDeletePhoto.setText("Eliminar");
+
+        pnlImageUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/sin_imagen_disponible.jpg"))); // NOI18N
+        pnlImageUser.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pnlImageUserMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlImageUserLayout = new javax.swing.GroupLayout(pnlImageUser);
+        pnlImageUser.setLayout(pnlImageUserLayout);
+        pnlImageUserLayout.setHorizontalGroup(
+            pnlImageUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
-        panelImageLayout.setVerticalGroup(
-            panelImageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelImageLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblPhoto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+        pnlImageUserLayout.setVerticalGroup(
+            pnlImageUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 278, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -667,15 +695,19 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(panelImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(btnAddPhoto, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
+                .addGap(0, 0, 0)
+                .addComponent(btnDeletePhoto, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE))
+            .addComponent(pnlImageUser, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(panelImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addComponent(pnlImageUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnDeletePhoto, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAddPhoto, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -687,7 +719,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane1))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(panelFields, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -702,9 +734,12 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE))
-                .addGap(10, 10, 10)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
+                        .addGap(10, 10, 10))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(panelEmployeeSchedule, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -745,6 +780,23 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_checkBoxDischargedActionPerformed
 
+    private void pnlImageUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlImageUserMouseClicked
+        if (evt.getClickCount() == 2) {
+            JFrame k = new JFrame("VER  IMAGEN DEL EMPLEADO");
+            k.setResizable(true);
+            k.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            k.setLayout(new BorderLayout());
+            PanelImage p = new PanelImage();
+            p.setIcon(this.pnlImageUser.getIcon());
+            k.add(p);
+            k.setSize(p.getIcon().getIconWidth(), p.getIcon().getIconHeight());
+            k.setLocationRelativeTo(null);
+            k.setVisible(true);
+            k.toFront();
+        }
+
+    }//GEN-LAST:event_pnlImageUserMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox boxBloodType;
@@ -752,8 +804,10 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox boxMaritalStatus;
     private javax.swing.JComboBox boxPosition;
     private javax.swing.JComboBox boxTurn;
+    private javax.swing.JButton btnAddPhoto;
     private javax.swing.JButton btnCreate;
     private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnDeletePhoto;
     private javax.swing.JButton btnModify;
     private javax.swing.JButton btnSave;
     private javax.swing.JCheckBox checkBoxDischarged;
@@ -780,14 +834,13 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lblMobilePhone;
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblPass;
-    private javax.swing.JLabel lblPhoto;
     private javax.swing.JLabel lblPlaceOfBirth;
     private javax.swing.JLabel lblPosition;
     private javax.swing.JLabel lblSurname;
     private javax.swing.JLabel lblTurn;
     private javax.swing.JPanel panelEmployeeSchedule;
     private javax.swing.JPanel panelFields;
-    private javax.swing.JPanel panelImage;
+    private org.edisoncor.gui.panel.PanelImage pnlImageUser;
     private javax.swing.JScrollPane scrollEmployeeSchedule;
     private javax.swing.JTable tableEmployeeSchedule;
     private javax.swing.JTable tableUsers;
@@ -977,31 +1030,12 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         return jPanel2;
     }
 
-    /**
-     * @return the lblPhoto
-     */
-    public javax.swing.JLabel getLblPhoto() {
-        return lblPhoto;
-    }
 
-    /**
-     * @return the photo
-     */
-    public ImageIcon getPhoto() {
-        return photo;
-    }
 
     /**
      * @return the checkBoxDischarged
      */
     public javax.swing.JCheckBox getCheckBoxDischarged() {
         return checkBoxDischarged;
-    }
-
-    /**
-     * @return the panelImage
-     */
-    public javax.swing.JPanel getPanelImage() {
-        return panelImage;
     }
 }
