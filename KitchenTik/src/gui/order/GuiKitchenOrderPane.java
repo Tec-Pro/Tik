@@ -15,6 +15,8 @@ import javax.swing.JTextArea;
  */
 public class GuiKitchenOrderPane extends javax.swing.JPanel {
 
+    private int position;
+    
     /**
      * Creates new form orderPane
      * @param orderId id del pedido.
@@ -153,4 +155,18 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
     private javax.swing.JLabel timeOrderArrival;
     private javax.swing.JTextArea txtOrderDescription;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * @return the position
+     */
+    public int getPosition() {
+        return position;
+    }
+
+    /**
+     * @param position the position to set
+     */
+    public void setPosition(int position) {
+        this.position = position;
+    }
 }

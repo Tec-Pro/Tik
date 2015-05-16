@@ -5,16 +5,13 @@
  */
 package gui.main;
 
-import controllers.ControllerGuiKitchenMain;
 import gui.order.GuiKitchenOrderPane;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.rmi.RemoteException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import utils.Watch;
 
 /**
@@ -23,6 +20,9 @@ import utils.Watch;
  */
 public class GuiKitchenMain extends javax.swing.JFrame {
 
+    private int gridX;
+    private int gridY;
+    
     /**
      * Creates new form GuiKitchenMain
      */
@@ -31,6 +31,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
         Watch watch = new Watch(0, 0, 0, 0);
         watch.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         watch.setFont(new java.awt.Font("Arial", 1, 25));
+        setExtendedState(MAXIMIZED_BOTH);
         watchPanel.add(watch, BorderLayout.CENTER);
     }
 
@@ -54,6 +55,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
         menuItemLoggedUsers = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Cocina");
         setMaximumSize(new java.awt.Dimension(1024, 768));
 
         jScrollPane1.setMaximumSize(new java.awt.Dimension(1024, 768));
@@ -71,8 +73,8 @@ public class GuiKitchenMain extends javax.swing.JFrame {
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(ordersPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(ordersPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
 
         watchPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -135,14 +137,26 @@ public class GuiKitchenMain extends javax.swing.JFrame {
 
     public void addElementToOrdersGrid(String orderId, String orderDescription, String orderArrivalTime, java.awt.event.MouseAdapter mAdapt) {
         GuiKitchenOrderPane newOrder = new GuiKitchenOrderPane(orderId, orderDescription, orderArrivalTime);
-        newOrder.getTxtOrderDescription().addMouseListener(mAdapt); 
-        getOrdersPanel().add(newOrder);
-        getOrdersPanel().revalidate();
+        newOrder.addMouseListener(mAdapt); 
+        if (gridX == 4){
+            gridY++;
+            gridX = 0;
+        }
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridx = gridX;
+        constraints.gridy = gridY;
+        constraints.anchor = GridBagConstraints.NORTHWEST;
+        constraints.insets = new Insets(10,10,10,10);
+        gridX++;
+        ordersPanel.add(newOrder, constraints);
+        newOrder.setColor(0);
+        ordersPanel.revalidate();
     }
     
-    public void removeElementOfOrdersGrid(int index){
-        getOrdersPanel().remove(index);
-        getOrdersPanel().revalidate();
+    public void removeElementOfOrdersGrid(int x, int y){
+        getOrdersPanel().remove(ordersPanel.getComponentAt(x, y));
+        ordersPanel.revalidate();
+        ordersPanel.repaint();
     }
     
     public void updateElementOfOrdersGrid(int index, String orderDescription){

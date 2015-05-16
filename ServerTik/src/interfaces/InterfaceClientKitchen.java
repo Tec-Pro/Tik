@@ -8,6 +8,7 @@ package interfaces;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.Map;
 
 /**
  *
@@ -20,17 +21,17 @@ public interface InterfaceClientKitchen extends Remote {
     
     /**
      * Metodo para avisar desde el Servidor a la Cocina que un nuevo Pedido fue creado
-     * @param id
+     * @param order
      * @throws RemoteException
      */
-    public void newOrder(int id) throws RemoteException;
+    public void newOrder(Map<String,Object> order) throws RemoteException;
     
     /**
      * Metodo para avisar desde el Servidor a la Cocina que un Pedido fue modificado
      * @param id
      * @throws RemoteException
      */
-    public void updatedOrder(int id) throws RemoteException;
+    public void updatedOrder(Map<String,Object> order) throws RemoteException;
     
     
 }

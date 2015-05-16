@@ -50,10 +50,11 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
            OrdersFproducts.create("order_id", newOrder.getId(), "fproduct_id", (int)prod.get("fproductId"), "quantity", (float)prod.get("quantity"), "done", (boolean)prod.get("done"), "commited", (boolean)prod.get("commited"), "issued", (boolean)prod.get("issued")).saveIt();
         }
         Base.commitTransaction();
-        int orderId=newOrder.getInteger("id");
-        Server.notifyKitchenNewOrder(orderId);
-        Server.notifyBarNewOrder(orderId);
-        Server.notifyWaitersOrderReady(orderId);
+        Map<String,Object> orderMap = newOrder.toMap();
+        //int orderId=newOrder.getInteger("id");
+        Server.notifyKitchenNewOrder(orderMap);
+        Server.notifyBarNewOrder(orderMap);
+        Server.notifyWaitersOrderReady(orderMap);
         return newOrder.toMap();
     }
     
@@ -81,9 +82,10 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
              OrdersFproducts.create("order_id", orderId, "fproduct_id", (int)prod.get("fproductId"), "quantity", (float)prod.get("quantity"), "done", (boolean)prod.get("done"), "commited", (boolean)prod.get("commited"), "issued", (boolean)prod.get("issued")).saveIt();
         }
         Base.commitTransaction();
-        Server.notifyKitchenUpdatedOrder(order.getInteger("id"));
-        Server.notifyBarUpdatedOrder(order.getInteger("id"));
-        Server.notifyWaitersOrderReady(order.getInteger("id"));
+        Map<String,Object> orderMap = order.toMap();
+        Server.notifyKitchenUpdatedOrder(orderMap);
+        Server.notifyBarUpdatedOrder(orderMap);
+        Server.notifyWaitersOrderReady(orderMap);
         return true;
     }
 
@@ -123,7 +125,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         Order order = Order.findById(idOrder);      
         order.set("closed", true).saveIt();
         Base.commitTransaction();
-        Server.notifyWaitersOrderReady(idOrder);
+        Server.notifyWaitersOrderReady(order.toMap());
         return true;
     }
 
@@ -139,7 +141,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         }
       
         Base.commitTransaction();
-        Server.notifyWaitersOrderReady(orderId);
+        Server.notifyWaitersOrderReady(getOrder(orderId));
     }
     
     @Override
@@ -171,7 +173,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             result.add(product.toMap());
         }
         Base.commitTransaction();
-        Server.notifyWaitersOrderReady(idOrder);
+        Server.notifyWaitersOrderReady(getOrder(idOrder));
         return result;
     }
 

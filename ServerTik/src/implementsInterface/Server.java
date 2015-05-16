@@ -13,6 +13,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import utils.Pair;
 
@@ -59,16 +60,16 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
     }
 
     //le aviso a los mozos que el pedido con id está listo
-    public static void notifyWaitersOrderReady(int id) throws RemoteException {
+    public static void notifyWaitersOrderReady(Map<String,Object> order) throws RemoteException {
         Iterator<InterfaceClientWaiter> it = waiters.iterator();
         int i = 0;
         while (it.hasNext()) {
             InterfaceClientWaiter client = it.next();
             try {
-                client.readyOrder(id);
+                client.readyOrder(order);
             } catch (java.rmi.ConnectException e) {
                 System.err.println("se rompió porque se cerro un programa seguro" + e);
-                waiters.remove(i);
+                 waiters.remove(i);
                 //despues voy a eliminar este tipo porque la conexión se rechazó por desconectarses
             }
             i++;
@@ -76,13 +77,13 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
     }
 
     //avisa a la cocina que hay un nuevo pedido
-    public static void notifyKitchenNewOrder(int id) throws RemoteException {
+    public static void notifyKitchenNewOrder(Map<String,Object> order) throws RemoteException {
         Iterator<InterfaceClientKitchen> it = chefs.iterator();
         int i = 0;
         while (it.hasNext()) {
             InterfaceClientKitchen client = it.next();
             try {
-                client.newOrder(id);
+                client.newOrder(order);
             } catch (java.rmi.ConnectException e) {
                 System.err.println("se rompió porque se cerro un programa seguro" + e);
                 chefs.remove(i);
@@ -94,13 +95,13 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
     }
     
     //avisa al Bar que un pedido fue modificado
-    public static void notifyBarUpdatedOrder(int id) throws RemoteException {
+    public static void notifyBarUpdatedOrder(Map<String,Object> order) throws RemoteException {
         Iterator<InterfaceClientBar> it = bartenders.iterator();
         int i = 0;
         while (it.hasNext()) {
             InterfaceClientBar client = it.next();
             try {
-                client.updatedOrder(id); 
+                client.updatedOrder(order); 
             } catch (java.rmi.ConnectException e) {
                 System.err.println("se rompió porque se cerro un programa seguro" + e);
                 bartenders.remove(i);
@@ -112,13 +113,13 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
     }
     
     //avisa al Bar que hay un nuevo pedido
-    public static void notifyBarNewOrder(int id) throws RemoteException {
+    public static void notifyBarNewOrder(Map<String,Object> order) throws RemoteException {
         Iterator<InterfaceClientBar> it = bartenders.iterator();
         int i = 0;
         while (it.hasNext()) {
             InterfaceClientBar client = it.next();
             try {
-                client.newOrder(id);
+                client.newOrder(order);
             } catch (java.rmi.ConnectException e) {
                 System.err.println("se rompió porque se cerro un programa seguro" + e);
                 bartenders.remove(i);
@@ -130,13 +131,13 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
     }
     
     //avisa a la cocina que un pedido fue modificado
-    public static void notifyKitchenUpdatedOrder(int id) throws RemoteException {
+    public static void notifyKitchenUpdatedOrder(Map<String,Object> order) throws RemoteException {
         Iterator<InterfaceClientKitchen> it = chefs.iterator();
         int i = 0;
         while (it.hasNext()) {
             InterfaceClientKitchen client = it.next();
             try {
-                client.updatedOrder(id); 
+                client.updatedOrder(order); 
             } catch (java.rmi.ConnectException e) {
                 System.err.println("se rompió porque se cerro un programa seguro" + e);
                 chefs.remove(i);

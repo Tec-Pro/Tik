@@ -9,6 +9,7 @@ import gui.login.GuiLogin;
 import gui.login.GuiOnlineUsers;
 import gui.main.GuiKitchenMain;
 import gui.order.GuiKitchenOrderDetails;
+import gui.order.GuiKitchenOrderPane;
 import interfaces.InterfaceOrder;
 import interfaces.InterfacePresence;
 import interfaces.InterfaceUser;
@@ -164,7 +165,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
      * @param id del pedido
      * @throws RemoteException
      */
-    public static void addOrder(final int id) throws RemoteException {
+    public static void addOrder(final Map<String,Object> order) throws RemoteException {
         /* "order" es el Map de un pedido con la siguiente estructura:
          * {order_number, id, user_id, closed=boolean, description}*/
         /* "orderProducts" es una lista de Maps, de los productos finales que
@@ -173,8 +174,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
         //Aca debe cargarse el pedido en la gui y/o en la lista de pedidos
         //dependiendo de como sea implementado el controlador
         //RECORDAR QUE EN LA GUI SOLO DEBEN CARGARSE LOS PRODUCTOS CORRESPONDIENTES A COCINA(FILTRAR LA LISTA)
-        Map<String, Object> order = crudOrder.getOrder(id);
-        if (itBelongsKitchen(id)) {
+        if (itBelongsKitchen(Integer.parseInt(order.get("id").toString()))) {
             final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
             final Date date = new Date();
             final String desc;
@@ -183,20 +183,19 @@ public class ControllerGuiKitchenMain implements ActionListener {
             } else {
                 desc = (String) order.get("description");
             }
-            guiKitchenMain.addElementToOrdersGrid(Integer.toString(id), desc, dateFormat.format(date),
+            guiKitchenMain.addElementToOrdersGrid(order.get("id").toString(), desc, dateFormat.format(date),
                     new java.awt.event.MouseAdapter() {
                         public void mouseClicked(MouseEvent e) {
                             if (e.getClickCount() == 2) {
                                 try {
-                                    loadGuiOrderDetails(id, desc, dateFormat.format(date));
+                                    loadGuiOrderDetails(Integer.parseInt(order.get("id").toString()),desc,dateFormat.format(date));
                                 } catch (RemoteException ex) {
                                     Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                             }
                         }
                     });
-            guiKitchenMain.setOrderColor(guiKitchenMain.getOrdersPanel().getComponentCount() - 1, new Color(255, 0, 0));
-            orderList.add(id);
+            orderList.add(Integer.parseInt(order.get("id").toString()));
         }
     }
 
@@ -208,7 +207,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
      * @param id del pedido
      * @throws RemoteException
      */
-    public static void updatedOrder(int id) throws RemoteException {
+    public static void updatedOrder(Map<String,Object> order) throws RemoteException {
         /* "order" es el Map de un pedido con la siguiente estructura:
          * {order_number, id, user_id, closed=boolean, description}*/
         /* "orderProducts" es una lista de Maps, de los productos finales que
@@ -218,12 +217,11 @@ public class ControllerGuiKitchenMain implements ActionListener {
         //Aca debe actualizarse el pedido en la gui y/o en la lista de pedidos
         //dependiendo de como sea implementado el controlador
         //RECORDAR QUE EN LA GUI SOLO DEBEN CARGARSE LOS PRODUCTOS CORRESPONDIENTES A COCINA(FILTRAR LA LISTA)
-        Map<String, Object> order = crudOrder.getOrder(id);
         int size = guiKitchenMain.getOrdersPanel().getComponentCount(); // the amount of orders in the order panel
         int i = 0;
         boolean check = false;
         while (i < size || check) {
-            if (orderList.get(i) == id) {
+            if (orderList.get(i) == Integer.parseInt(order.get("id").toString())) {
                 check = true;
             } else {
                 i++;
@@ -252,7 +250,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
                     }
                 }
                 if(!orderClosed){//si el pedido esta abierto (NO CERRADO)
-                    addOrder(Integer.parseInt(order.get("id").toString()));//agrego el pedido en kitchen
+                    addOrder(order);//agrego el pedido en kitchen
                 }
             }
         }
@@ -299,7 +297,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
                     for (int j = 0; j < orderList.size(); j++) {
                         if (orderList.get(j) == guiOrderDetails.getOrderID()) {
                             orderList.remove(j);
-                            guiKitchenMain.removeElementOfOrdersGrid(j);
+                            //guiKitchenMain.removeElementOfOrdersGrid(j);
                         }
                     }
                     guiOrderDetails.closeWindow();

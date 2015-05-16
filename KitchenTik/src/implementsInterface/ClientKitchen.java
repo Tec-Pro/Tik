@@ -7,13 +7,9 @@ package implementsInterface;
 
 import controllers.ControllerGuiKitchenMain;
 import interfaces.InterfaceClientKitchen;
-import interfaces.InterfaceOrder;
-import java.net.MalformedURLException;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Map;
 
 /**
  *
@@ -30,13 +26,13 @@ public class ClientKitchen extends UnicastRemoteObject implements InterfaceClien
     }
 
     @Override
-    public void newOrder(int id) throws RemoteException {
-        ControllerGuiKitchenMain.addOrder(id);
+    public void newOrder(Map<String,Object> order) throws RemoteException {
+        ControllerGuiKitchenMain.addOrder(order);
     }
 
     @Override
-    public void updatedOrder(int id) throws RemoteException {
-        ControllerGuiKitchenMain.updatedOrder(id);
+    public void updatedOrder(Map<String,Object> order) throws RemoteException {
+        ControllerGuiKitchenMain.updatedOrder(order);
     }
     
     
