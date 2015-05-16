@@ -79,6 +79,7 @@ public class GuiMain extends javax.swing.JFrame {
         panelActivedOrders.add(order, constraints);
         gridx += 1;
         validate();
+        panelActivedOrders.validate();
     }
 
     public void addPausedOrder(GuiMenuDetail order) {
@@ -91,6 +92,7 @@ public class GuiMain extends javax.swing.JFrame {
         panelPausedOrders.add(order, constraints);
         gridypaused += 1;
         validate();
+        panelPausedOrders.validate();
     }
 
     public void clearAllOrders() {
@@ -101,6 +103,11 @@ public class GuiMain extends javax.swing.JFrame {
         gridypaused = 0;
     }
 
+    
+    public void revalidateAll(){
+        panelActivedOrders.repaint();
+        panelPausedOrders.repaint();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

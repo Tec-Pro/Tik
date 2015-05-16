@@ -9,8 +9,10 @@ package implementsInterface;
 import controller.ControllerGuiMain;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
 import java.util.Map;
 import javax.swing.JOptionPane;
+import utils.Pair;
 
 /**
  *
@@ -33,7 +35,7 @@ public class ClientWaiter extends UnicastRemoteObject implements interfaces.Inte
     }
 
     @Override
-    public void readyOrder(Map<String,Object> order) throws RemoteException {
-       ControllerGuiMain.UpdateOrder(Integer.parseInt(order.get("id").toString()));
+    public void readyOrder(Pair<Map<String,Object>,List<Map>> order) throws RemoteException {
+       ControllerGuiMain.UpdateOrder();
     }
 }

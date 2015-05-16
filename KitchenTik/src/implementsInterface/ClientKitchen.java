@@ -9,7 +9,9 @@ import controllers.ControllerGuiKitchenMain;
 import interfaces.InterfaceClientKitchen;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
 import java.util.Map;
+import utils.Pair;
 
 /**
  *
@@ -26,12 +28,12 @@ public class ClientKitchen extends UnicastRemoteObject implements InterfaceClien
     }
 
     @Override
-    public void newOrder(Map<String,Object> order) throws RemoteException {
+    public void newOrder(Pair<Map<String,Object>,List<Map>> order) throws RemoteException {
         ControllerGuiKitchenMain.addOrder(order);
     }
 
     @Override
-    public void updatedOrder(Map<String,Object> order) throws RemoteException {
+    public void updatedOrder(Pair<Map<String,Object>,List<Map>> order) throws RemoteException {
         ControllerGuiKitchenMain.updatedOrder(order);
     }
     

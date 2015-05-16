@@ -13,6 +13,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import utils.Pair;
@@ -60,7 +61,7 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
     }
 
     //le aviso a los mozos que el pedido con id está listo
-    public static void notifyWaitersOrderReady(Map<String,Object> order) throws RemoteException {
+    public static void notifyWaitersOrderReady(Pair<Map<String,Object>,List<Map>> order) throws RemoteException {
         Iterator<InterfaceClientWaiter> it = waiters.iterator();
         int i = 0;
         while (it.hasNext()) {
@@ -77,7 +78,7 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
     }
 
     //avisa a la cocina que hay un nuevo pedido
-    public static void notifyKitchenNewOrder(Map<String,Object> order) throws RemoteException {
+    public static void notifyKitchenNewOrder(Pair<Map<String,Object>,List<Map>> order) throws RemoteException {
         Iterator<InterfaceClientKitchen> it = chefs.iterator();
         int i = 0;
         while (it.hasNext()) {
@@ -95,7 +96,7 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
     }
     
     //avisa al Bar que un pedido fue modificado
-    public static void notifyBarUpdatedOrder(Map<String,Object> order) throws RemoteException {
+    public static void notifyBarUpdatedOrder(Pair<Map<String,Object>,List<Map>> order) throws RemoteException {
         Iterator<InterfaceClientBar> it = bartenders.iterator();
         int i = 0;
         while (it.hasNext()) {
@@ -113,7 +114,7 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
     }
     
     //avisa al Bar que hay un nuevo pedido
-    public static void notifyBarNewOrder(Map<String,Object> order) throws RemoteException {
+    public static void notifyBarNewOrder(Pair<Map<String,Object>,List<Map>> order) throws RemoteException {
         Iterator<InterfaceClientBar> it = bartenders.iterator();
         int i = 0;
         while (it.hasNext()) {
@@ -131,7 +132,7 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
     }
     
     //avisa a la cocina que un pedido fue modificado
-    public static void notifyKitchenUpdatedOrder(Map<String,Object> order) throws RemoteException {
+    public static void notifyKitchenUpdatedOrder(Pair<Map<String,Object>,List<Map>> order) throws RemoteException {
         Iterator<InterfaceClientKitchen> it = chefs.iterator();
         int i = 0;
         while (it.hasNext()) {

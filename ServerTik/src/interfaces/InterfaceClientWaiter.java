@@ -8,7 +8,9 @@ package interfaces;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.List;
 import java.util.Map;
+import utils.Pair;
 
 /**
  *
@@ -28,5 +30,5 @@ public interface InterfaceClientWaiter extends Remote {
      * @param id id del pedido puevo
      * @throws RemoteException 
      */
-    public void readyOrder(Map<String,Object> order) throws RemoteException;
+    public void readyOrder(Pair<Map<String,Object>,List<Map>> order) throws RemoteException;
 }

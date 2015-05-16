@@ -39,6 +39,7 @@ import javax.swing.table.DefaultTableModel;
 import utils.Config;
 import utils.InterfaceName;
 import java.util.Iterator;
+import utils.Pair;
 
 /**
  *
@@ -130,10 +131,10 @@ public class ControllerGuiKitchenMain implements ActionListener {
         guiOrderDetails.setModal(true);
     }
 
-    private static boolean itBelongsKitchen(int id) throws RemoteException { // There was either no products to make, or they've all been made allready
+    private static boolean itBelongsKitchen(List<Map> orderProducts) throws RemoteException { // There was either no products to make, or they've all been made allready
         boolean itBelongs = false;
-        Map<String, Object> order = crudOrder.getOrder(id);
-        List<Map> orderProducts = crudOrder.getOrderProducts(id);
+        //Map<String, Object> order = crudOrder.getOrder(id);
+
         for (Map<String, Object> m : orderProducts) { // For each product 
             int prodID = (int) m.get("fproduct_id"); // I obtain the product ID
             Map<String, Object> prod = crudFProduct.getFproduct(prodID); // I obtain the product (importantly, where it belongs)
@@ -165,7 +166,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
      * @param id del pedido
      * @throws RemoteException
      */
-    public static void addOrder(final Map<String,Object> order) throws RemoteException {
+    public static void addOrder(final Pair<Map<String,Object>,List<Map>> order) throws RemoteException {
         /* "order" es el Map de un pedido con la siguiente estructura:
          * {order_number, id, user_id, closed=boolean, description}*/
         /* "orderProducts" es una lista de Maps, de los productos finales que
@@ -174,28 +175,28 @@ public class ControllerGuiKitchenMain implements ActionListener {
         //Aca debe cargarse el pedido en la gui y/o en la lista de pedidos
         //dependiendo de como sea implementado el controlador
         //RECORDAR QUE EN LA GUI SOLO DEBEN CARGARSE LOS PRODUCTOS CORRESPONDIENTES A COCINA(FILTRAR LA LISTA)
-        if (itBelongsKitchen(Integer.parseInt(order.get("id").toString()))) {
+        if (itBelongsKitchen(order.second())) {
             final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
             final Date date = new Date();
             final String desc;
-            if ((String) order.get("description") == null) {
+            if ((String) order.first().get("description") == null) {
                 desc = "";
             } else {
-                desc = (String) order.get("description");
+                desc = (String) order.first().get("description");
             }
-            guiKitchenMain.addElementToOrdersGrid(order.get("id").toString(), desc, dateFormat.format(date),
+            guiKitchenMain.addElementToOrdersGrid(order.first().get("id").toString(), desc, dateFormat.format(date),
                     new java.awt.event.MouseAdapter() {
                         public void mouseClicked(MouseEvent e) {
                             if (e.getClickCount() == 2) {
                                 try {
-                                    loadGuiOrderDetails(Integer.parseInt(order.get("id").toString()),desc,dateFormat.format(date));
+                                    loadGuiOrderDetails(Integer.parseInt(order.first().get("id").toString()),desc,dateFormat.format(date));
                                 } catch (RemoteException ex) {
                                     Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                             }
                         }
                     });
-            orderList.add(Integer.parseInt(order.get("id").toString()));
+            orderList.add(Integer.parseInt(order.first().get("id").toString()));
         }
     }
 
@@ -207,7 +208,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
      * @param id del pedido
      * @throws RemoteException
      */
-    public static void updatedOrder(Map<String,Object> order) throws RemoteException {
+    public static void updatedOrder(Pair<Map<String,Object>,List<Map>> order) throws RemoteException {
         /* "order" es el Map de un pedido con la siguiente estructura:
          * {order_number, id, user_id, closed=boolean, description}*/
         /* "orderProducts" es una lista de Maps, de los productos finales que
@@ -221,13 +222,13 @@ public class ControllerGuiKitchenMain implements ActionListener {
         int i = 0;
         boolean check = false;
         while (i < size || check) {
-            if (orderList.get(i) == Integer.parseInt(order.get("id").toString())) {
+            if (orderList.get(i) == Integer.parseInt(order.first().get("id").toString())) {
                 check = true;
             } else {
                 i++;
             }
         }
-        guiKitchenMain.updateElementOfOrdersGrid(i, (String) order.get("description"));
+        guiKitchenMain.updateElementOfOrdersGrid(i, (String) order.first().get("description"));
         guiKitchenMain.setOrderColor(i, new Color(255, 0, 0));
     }
 
@@ -250,7 +251,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
                     }
                 }
                 if(!orderClosed){//si el pedido esta abierto (NO CERRADO)
-                    addOrder(order);//agrego el pedido en kitchen
+                    addOrder(new Pair(order,orderProducts));//agrego el pedido en kitchen
                 }
             }
         }
@@ -307,6 +308,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
             }
+            guiKitchenMain.validate();
         }
 
         if (guiLogin != null) {

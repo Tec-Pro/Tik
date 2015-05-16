@@ -98,67 +98,8 @@ public class ControllerGuiMain implements ActionListener {
      *
      * @param orderId
      */
-    public static void UpdateOrder(int orderId) throws RemoteException {
-//        List<Map> products = new LinkedList();
-//        Map order = null;
-//        String details = "";
-//        String nameWaiter = "";
-//        try {
-//            order = crudOrder.getOrder(orderId); //aca esta guardado el numero del pedido y el usuario que lo hizo, lo puse por si hace falta
-//            products = crudOrder.getOrderProducts(orderId);
-//
-//        } catch (RemoteException ex) {
-//            Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        if (order == null) {
-//            return;
-//        }
-//        nameWaiter = (String) (crudUser.getUser((int) order.get("user_id"))).get("name");
-//        int productsReady = 0;
-//        for (Map prod : products) {
-//            if ((boolean) prod.get("done")) {
-//                productsReady++;
-//            }
-//            String name = (String) crudFproduct.getFproduct((int) prod.get("fproduct_id")).get("name");
-//            details += ParserFloat.floatToString((float) prod.get("quantity")) + " " + name + "\n";
-//        }
-//        menuDetail = existsOrder(orderId);
-//        if (menuDetail == null) {
-//            final GuiMenuDetail newOrder = new GuiMenuDetail();
-//            newOrder.getTxtDetail().addMouseListener(new MouseAdapter() {//agrego un mouselistener
-//                @Override
-//                public void mousePressed(MouseEvent e) {
-//                    if (e.getClickCount() == 2) {
-//                        System.out.println("click en el pedido: " + newOrder.getIdOrder()+" del mozo : "+ newOrder.getIdWaiter());
-//                        //aca tiene que abrir la ventana del login para ese mozo
-//                    }
-//                }
-//            });
-//            menuDetail = newOrder;
-//            guiMain.addActiveOrder(menuDetail);
-//
-//        }
-//        if (productsReady == products.size()) {
-//            //pedido pausado
-//            guiMain.addPausedOrder(menuDetail);
-//            menuDetail.setColor(0);
-//            menuDetail.setOrder(order, details, nameWaiter);
-//        }
-//        if (productsReady == 0) {
-//            //poner el pedido en rojo, ningun producto esta listo
-//            menuDetail.setColor(3);
-//            menuDetail.setOrder(order, details, nameWaiter);
-//        } else {
-//            if (productsReady < products.size()) {
-//                //poner el pedido en amarillo , hay producto listos pero no todos
-//                menuDetail.setColor(2);
-//                menuDetail.setOrder(order, details, nameWaiter);
-//            } else {
-//                //poner pedido en verde , todos los productos estan listos
-//                menuDetail.setColor(1);
-//                menuDetail.setOrder(order, details, nameWaiter);
-//            }
-//        }
+    public static void UpdateOrder() throws RemoteException {
+
         Thread thread = new Thread() {
             public void run() {
                 try {
@@ -414,8 +355,7 @@ public class ControllerGuiMain implements ActionListener {
 
             }
         }
-
-        guiMain.revalidate();
+        guiMain.revalidateAll();
     }
 
     private static void clearAllOrders() {
