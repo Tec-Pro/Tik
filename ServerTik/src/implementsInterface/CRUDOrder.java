@@ -185,7 +185,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
     @Override
     public boolean closeOrder(int idOrder) throws RemoteException {
         openBase();
-            sql = "UPDATE orders SET closed='1' WHERE order_id= '" + idOrder+ "' ;";
+            sql = "UPDATE orders SET closed='1' WHERE id= '" + idOrder+ "' ;";
             try {
                 stmt.executeUpdate(sql);
                 stmt.close();
