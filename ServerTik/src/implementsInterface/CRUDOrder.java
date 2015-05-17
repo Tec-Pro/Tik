@@ -127,7 +127,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             sql = "select * from orders;";
             java.sql.ResultSet rs = stmt.executeQuery(sql);
 
-            if (rs.next() != false) {
+            while (rs.next() != false) {
                 m = new HashMap();
                 m.put("id", rs.getObject("id"));
                 m.put("order_number", rs.getObject("order_number"));

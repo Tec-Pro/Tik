@@ -173,7 +173,9 @@ public class GuiKitchenMain extends javax.swing.JFrame {
         getOrdersPanel().revalidate();
     }
     
-    
+    public void cleanAllOrders(){
+        ordersPanel.removeAll();
+    }
     
     /**
      * @param args the command line arguments
