@@ -90,6 +90,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
             }
         else
             guiOrder.getLblOrderNum().setText("");
+            guiOrder.getLblTotalPrice().setText("");
         try {
             loadProducts();
         } catch (RemoteException ex) {
@@ -318,8 +319,11 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
     
     /* carga los productos de la order actual */
     private void loadProducts() throws RemoteException{
+        guiOrder.getjTextDescription().setText("");
         if(currentOrderId == null)
             return;
+        
+        float totalPrice = 0; // para actualizar el precio total del pedido
         List<Map> orderProducts = crudOrder.getOrderProducts(currentOrderId);
         for(Map Orderprod : orderProducts){
             Map prod = crudFproduct.getFproduct((int)Orderprod.get("fproduct_id"));
@@ -330,11 +334,14 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
             row[2] = prod.get("name");
             float price = (float)prod.get("sell_price");
             row[3] = ParserFloat.floatToString(price*quantity);
+            totalPrice += price*quantity;
             row[4] = (boolean)Orderprod.get("done");
             row[5] = (boolean)Orderprod.get("commited");
             row[6] = (boolean)Orderprod.get("issued");
             guiOrder.getTableProductsDefault().addRow(row);
-        }    
+        }
+        guiOrder.getjTextDescription().setText(currentOrder.get("description").toString());
+        guiOrder.getLblTotalPrice().setText(ParserFloat.floatToString(totalPrice));
     }
     
     @Override
