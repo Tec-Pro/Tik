@@ -182,12 +182,14 @@ public class ControllerGuiKitchenMain implements ActionListener {
             final String desc;
             String aux = "";
             for (Map m : order.second()) {
-                Map<String, Object> fProduct = crudFProduct.getFproduct(Integer.parseInt(m.get("fproduct_id").toString()));
-                aux = aux + fProduct.get("name") + " x" + m.get("quantity") + "\n";
+                if (!m.get("done").equals(true)) {
+                    Map<String, Object> fProduct = crudFProduct.getFproduct(Integer.parseInt(m.get("fproduct_id").toString()));
+                    aux = aux + fProduct.get("name") + " x" + m.get("quantity") + "\n";
+                }
             }
             desc = aux;
             //concateno id de pedido mas el nombre del mozo que lo pidio
-            String orderName = order.first().get("order_number").toString()+" - "+(crudUser.getUser(Integer.parseInt((order.first().get("user_id")).toString()))).get("name");
+            String orderName = order.first().get("order_number").toString() + " - " + (crudUser.getUser(Integer.parseInt((order.first().get("user_id")).toString()))).get("name");
             guiKitchenMain.addElementToOrdersGrid(orderName, desc, dateFormat.format(date),
                     new java.awt.event.MouseAdapter() {
                         @Override
@@ -225,17 +227,17 @@ public class ControllerGuiKitchenMain implements ActionListener {
         //dependiendo de como sea implementado el controlador
         //RECORDAR QUE EN LA GUI SOLO DEBEN CARGARSE LOS PRODUCTOS CORRESPONDIENTES A COCINA(FILTRAR LA LISTA)
         /*int size = guiKitchenMain.getOrdersPanel().getComponentCount(); // the amount of orders in the order panel
-        int i = 0;
-        boolean check = false;
-        while (i < size || check) {
-            if (orderList.get(i) == Integer.parseInt(order.first().get("id").toString())) {
-                check = true;
-            } else {
-                i++;
-            }
-        }
-        guiKitchenMain.updateElementOfOrdersGrid(i, (String) order.first().get("description"));
-        guiKitchenMain.setOrderColor(i, new Color(255, 0, 0));*/
+         int i = 0;
+         boolean check = false;
+         while (i < size || check) {
+         if (orderList.get(i) == Integer.parseInt(order.first().get("id").toString())) {
+         check = true;
+         } else {
+         i++;
+         }
+         }
+         guiKitchenMain.updateElementOfOrdersGrid(i, (String) order.first().get("description"));
+         guiKitchenMain.setOrderColor(i, new Color(255, 0, 0));*/
         guiKitchenMain.cleanAllOrders();
         refreshOpenOrders();
     }
@@ -309,7 +311,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
                 } else {
                     guiOrderDetails.closeWindow();
                 }
-                
+
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -356,9 +358,5 @@ public class ControllerGuiKitchenMain implements ActionListener {
             GuiOnlineUsers gulu = new GuiOnlineUsers(guiKitchenMain, true);
             gulu.setVisible(true);
         }
-        /* PARA ACTUALIZAR LOS PRODUCTOS LISTOS SE DEBE USAR ESTE METODO
-         * SI HAY ALGUNA DUDA LEER SU JAVADOC:
-         * crudOrder.updateOrdersReadyProducts(id, list)
-         */
     }
 }
