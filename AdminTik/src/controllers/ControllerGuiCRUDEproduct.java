@@ -64,8 +64,8 @@ public class ControllerGuiCRUDEproduct implements ActionListener {
         tableReciper = guiCRUDEProduct.getTableReciper();
         tableProductsDefault = guiCRUDEProduct.getTableProductsDefault();
         tableReciperDefault = guiCRUDEProduct.getTableReciperDefault();
-        crudPproduct = (InterfacePproduct) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDPproduct);
-        crudEproduct = (InterfaceEproduct) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDEproduct);
+        crudPproduct = (InterfacePproduct) InterfaceName.registry.lookup(InterfaceName.CRUDPproduct);
+        crudEproduct = (InterfaceEproduct) InterfaceName.registry.lookup(InterfaceName.CRUDEproduct);
         pproductList = crudPproduct.getPproducts();
         eproductList = crudEproduct.getEproducts();
         editingInformation = false;

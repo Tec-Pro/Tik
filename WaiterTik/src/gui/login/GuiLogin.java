@@ -26,8 +26,8 @@ public class GuiLogin extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
     }
-    
-     public void setActionListener(ActionListener lis) {
+
+    public void setActionListener(ActionListener lis) {
         this.btnAccept.addActionListener(lis);
         this.btnCancel.addActionListener(lis);
     }
@@ -50,13 +50,14 @@ public class GuiLogin extends javax.swing.JDialog {
 
     /**
      * carga el combobox con los usuarios
+     *
      * @param listU
      */
     public void loadCBoxUsers(Set<Map> listU) {
         cBoxUsers.setSelectedIndex(-1);
         cBoxUsers.removeAllItems();
         for (Map usr : listU) {
-            cBoxUsers.addItem((int )usr.get("id")+"-"+(String) usr.get("name") + " " + (String) usr.get("surname"));
+            cBoxUsers.addItem((int) usr.get("id") + "-" + (String) usr.get("name") + " " + (String) usr.get("surname"));
         }
     }
 

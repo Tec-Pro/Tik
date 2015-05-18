@@ -143,7 +143,7 @@ public class Config extends JDialog {
 
         pack();
         setLocationRelativeTo(null);
-		//setVisible(true);
+        //setVisible(true);
 
         try {
             loadProperties();
@@ -180,7 +180,7 @@ public class Config extends JDialog {
 
     public void loadProperties() throws IOException {
         Properties defaultProps = new Properties();
-		// sets default properties
+        // sets default properties
 //		defaultProps.setProperty("host", "www.codejava.net");
 //		defaultProps.setProperty("port", "3306");
 //		defaultProps.setProperty("user", "root");
@@ -209,13 +209,13 @@ public class Config extends JDialog {
         outputStream.close();
     }
 
-    
-        private void createDefaulProperties() throws IOException {
+    private void createDefaulProperties() throws IOException {
         configProps.setProperty("ip", "localhost");
         OutputStream outputStream = new FileOutputStream(configFile);
         configProps.store(outputStream, "host setttings");
         outputStream.close();
     }
+
     /**
      * @param args the command line arguments
      */

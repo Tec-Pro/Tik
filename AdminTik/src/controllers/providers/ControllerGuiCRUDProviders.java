@@ -53,9 +53,9 @@ public class ControllerGuiCRUDProviders implements ActionListener {
      */
     public ControllerGuiCRUDProviders(GuiCRUDProviders guiCProv) throws RemoteException, NotBoundException, MalformedURLException {
         //Busco las clases en el server.
-        this.provider = (InterfaceProvider) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDProvider);
-        this.providersSearch = (InterfaceProvidersSearch) Naming.lookup("//" + Config.ip +"/"+InterfaceName.providersSearch);
-        this.providerCategory = (InterfaceProviderCategory) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDProviderCategory);
+        this.provider = (InterfaceProvider) InterfaceName.registry.lookup(InterfaceName.CRUDProvider);
+        this.providersSearch = (InterfaceProvidersSearch) InterfaceName.registry.lookup(InterfaceName.providersSearch);
+        this.providerCategory = (InterfaceProviderCategory) InterfaceName.registry.lookup(InterfaceName.CRUDProviderCategory);
 
         this.guiCRUDProviders = guiCProv;
         iDCurrentlySelectedProvider = -1;

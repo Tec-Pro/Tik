@@ -53,9 +53,9 @@ public class ControllerGuiTicketsPaid {
         this.guiTicketsPaid = guiTP;
 
         //Busco los métodos del server.
-        this.interfacePurchase = (InterfacePurchase) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDPurchase);
+        this.interfacePurchase = (InterfacePurchase) InterfaceName.registry.lookup(InterfaceName.CRUDPurchase);
 
-        this.interfacePProduct = (InterfacePproduct) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDPproduct);
+        this.interfacePProduct = (InterfacePproduct) InterfaceName.registry.lookup(InterfaceName.CRUDPproduct);
 
         //Seteo el ID del provedor corriente.
         this.currentProviderId = current_id;

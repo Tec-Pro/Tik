@@ -3,16 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package models;
-
 
 import org.javalite.activejdbc.Model;
 
-
-public class EproductsPproducts extends Model { 
+public class EproductsPproducts extends Model {
 
 }
-    
-
-    

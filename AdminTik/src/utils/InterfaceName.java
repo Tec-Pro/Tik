@@ -5,6 +5,8 @@
  */
 package utils;
 
+import java.rmi.registry.Registry;
+
 /**
  *Nombres de interfaces que provienen desde el server
  * @author nico
@@ -24,5 +26,5 @@ public class InterfaceName {
     public static final String CRUDPresence = "CRUDPresence";
     public static final String CRUDOrder = "CRUDOrder";
     public static final String server = "Server";
-
+    public static  Registry registry ;
 }

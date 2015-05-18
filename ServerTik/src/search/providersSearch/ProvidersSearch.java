@@ -21,19 +21,19 @@ import utils.Utils;
  */
 public class ProvidersSearch extends UnicastRemoteObject implements InterfaceProvidersSearch {
 
-    public ProvidersSearch()throws RemoteException{
+    public ProvidersSearch() throws RemoteException {
         super();
     }
-    
+
     @Override
     public List<Map> searchProviders(String search) throws RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
-        List<Map> result = Provider.where("id like ? or name like ? or cuit like ? or address like ? or description like ? or phones like ?","%"+ search +"%","%" + search + "%","%" + search + "%","%" + search + "%","%" + search + "%","%" + search + "%").toMaps();
+        List<Map> result = Provider.where("id like ? or name like ? or cuit like ? or address like ? or description like ? or phones like ?", "%" + search + "%", "%" + search + "%", "%" + search + "%", "%" + search + "%", "%" + search + "%", "%" + search + "%").toMaps();
         Base.commitTransaction();
-         
+
         return result;
-    
+
     }
 
     @Override
@@ -41,11 +41,9 @@ public class ProvidersSearch extends UnicastRemoteObject implements InterfacePro
         Utils.abrirBase();
         Base.openTransaction();
         List<Map> providers = Provider.findBySQL("SELECT * FROM providers JOIN providers_providercategories  ON (providers.id = providers_providercategories.provider_id) WHERE (providers.id LIKE ? OR providers.name LIKE ? OR providers.cuit LIKE ? OR providers.address LIKE ? OR providers.description LIKE ? OR providers.phones LIKE ?) and (providercategory_id = ?)",
-                "%"+ search +"%", "%" + search + "%","%" + search + "%","%" + search + "%","%" + search + "%","%" + search + "%", category_id).toMaps();
+                "%" + search + "%", "%" + search + "%", "%" + search + "%", "%" + search + "%", "%" + search + "%", "%" + search + "%", category_id).toMaps();
         Base.commitTransaction();
         return providers;
     }
-    
-    
 
 }

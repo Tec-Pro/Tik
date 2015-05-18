@@ -37,7 +37,7 @@ public class CrudPresence extends UnicastRemoteObject implements InterfacePresen
         System.out.println(date.format(now));
         System.out.println(hour.format(now));
         Presence p = Presence.createIt("day", date.format(now), "entry_time", hour.format(now), "user_id", userId);
-        User.findById(userId).set("order_count",0);
+        User.findById(userId).set("order_count", 0);
         Base.commitTransaction();
         return p.toMap();
     }
@@ -75,7 +75,7 @@ public class CrudPresence extends UnicastRemoteObject implements InterfacePresen
 
     @Override
     public List<Map> getCooks() throws RemoteException {
-       Utils.abrirBase();
+        Utils.abrirBase();
         List<Map> listP = new LinkedList<Map>();
         for (Map m : Presence.where("departure_time = ?", "00:00:00").toMaps()) {
             if (User.findById(m.get("user_id")).getString("position").equals("Cocinero")) {

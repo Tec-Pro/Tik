@@ -84,8 +84,8 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
         });
 
         tableProductsDefault = guiCRUDPProduct.getTableProductsDefault();
-        pproduct = (InterfacePproduct) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDPproduct);
-        this.provider = (InterfaceProvider) Naming.lookup("//" + Config.ip +"/"+InterfaceName.CRUDProvider);
+        pproduct = (InterfacePproduct) InterfaceName.registry.lookup(InterfaceName.CRUDPproduct);
+        this.provider = (InterfaceProvider) InterfaceName.registry.lookup(InterfaceName.CRUDProvider);
         productList = pproduct.getPproducts();
         refreshList();
     }

@@ -57,7 +57,7 @@ public class ServerTik {
             /*if (System.getSecurityManager() == null){
          System.setSecurityManager(new RMISecurityManager());
          }*/
-            //System.setProperty("java.rmi.server.codebase",getClass().getResource("java.policy").toString());
+        //System.setProperty("java.rmi.server.codebase",getClass().getResource("java.policy").toString());
         //System.setProperty("java.security.policy","/home/agustin/Documentos/ProyectosGithub/Tik/ServerTik/src/java.policy");
         // Creo el registro de objetos remotos, que acepte llamadas en el puerto 1099
         LocateRegistry.createRegistry(1099);

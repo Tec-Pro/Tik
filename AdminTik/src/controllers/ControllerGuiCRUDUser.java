@@ -56,7 +56,7 @@ public class ControllerGuiCRUDUser implements ActionListener {
     private boolean createMode = false;
 
     public ControllerGuiCRUDUser(GuiCRUDUser gui) throws NotBoundException, MalformedURLException, RemoteException {
-        crudUser = (InterfaceUser) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDUser);
+        crudUser = (InterfaceUser) InterfaceName.registry.lookup(InterfaceName.CRUDUser);
         guiUser = gui;
         guiUser.getTableUsers().getSelectionModel().addListSelectionListener(new ListSelectionListener() { // Listener for moving through the tableUsers and refreshing the gui
             @Override

@@ -46,7 +46,7 @@ public class CRUDEproduct extends UnicastRemoteObject implements interfaces.Inte
             EproductsPproducts.create("eproduct_id", ret.getId(), "pproduct_id", prod.first(), "amount", amount).saveIt();
         }
         Base.commitTransaction();
-         
+
         return ret.toMap();
     }
 
@@ -69,11 +69,11 @@ public class CRUDEproduct extends UnicastRemoteObject implements interfaces.Inte
             }
             ret.saveIt();
             Base.commitTransaction();
-             
+
             return ret.toMap();
         } else {
             Base.commitTransaction();
-             
+
             return null;
         }
     }
@@ -93,7 +93,7 @@ public class CRUDEproduct extends UnicastRemoteObject implements interfaces.Inte
             }
             Base.commitTransaction();
         }
-         
+
         return res;
     }
 
@@ -105,7 +105,7 @@ public class CRUDEproduct extends UnicastRemoteObject implements interfaces.Inte
         if (eProd != null) {
             ret = eProd.toMap();
         }
-         
+
         return ret;
     }
 
@@ -113,7 +113,7 @@ public class CRUDEproduct extends UnicastRemoteObject implements interfaces.Inte
     public List<Map> getEproducts() throws RemoteException {
         Utils.abrirBase();
         List<Map> ret = Eproduct.where("removed = ?", 0).toMaps();
-         
+
         return ret;
     }
 
@@ -125,15 +125,15 @@ public class CRUDEproduct extends UnicastRemoteObject implements interfaces.Inte
         if (eProd != null) {
             ret = eProd.getAll(Pproduct.class).toMaps();
         }
-         
+
         return ret;
     }
 
     @Override
     public List<Map> getEproducts(String name) throws java.rmi.RemoteException {
         Utils.abrirBase();
-        List<Map> ret = Eproduct.where("removed = ? and (id like ? or name like ?)", 0, "%"+name+"%", "%"+name+"%").toMaps();
-         
+        List<Map> ret = Eproduct.where("removed = ? and (id like ? or name like ?)", 0, "%" + name + "%", "%" + name + "%").toMaps();
+
         return ret;
     }
 
@@ -145,11 +145,11 @@ public class CRUDEproduct extends UnicastRemoteObject implements interfaces.Inte
         if (eProd != null) {
             ret = eProd.getAll(EproductsPproducts.class).toMaps();
         }
-         
+
         return ret;
 
     }
-    
+
     @Override
     public float calculateProductionPrice(int idEproduct) throws java.rmi.RemoteException {
         Utils.abrirBase();
@@ -157,12 +157,12 @@ public class CRUDEproduct extends UnicastRemoteObject implements interfaces.Inte
         float epPrice = 0;
         if (eProd != null) {
             for (EproductsPproducts ep : eProd.getAll(EproductsPproducts.class)) {
-                    Pproduct pp2 = Pproduct.findById(ep.getInteger("pproduct_id"));
-                    epPrice += pp2.getFloat("unit_price") * ep.getFloat("amount");
-                }
-                
+                Pproduct pp2 = Pproduct.findById(ep.getInteger("pproduct_id"));
+                epPrice += pp2.getFloat("unit_price") * ep.getFloat("amount");
             }
-        
+
+        }
+
         return epPrice;
     }
 }

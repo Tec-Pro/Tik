@@ -35,7 +35,7 @@ public class ControllerGuiCRUDAdmin implements ActionListener {
 
     public ControllerGuiCRUDAdmin(Map<String, Object> admin, GuiCRUDAdmin gui) throws NotBoundException, MalformedURLException, RemoteException {
         currentAdmin = admin;
-        crudAdmin = (InterfaceAdmin) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDAdmin);
+        crudAdmin = (InterfaceAdmin) InterfaceName.registry.lookup(InterfaceName.CRUDAdmin);
         guiAdmin = gui;
         guiAdmin.getTxtName().setEditable(false);
         guiAdmin.getPassField().setEditable(false);

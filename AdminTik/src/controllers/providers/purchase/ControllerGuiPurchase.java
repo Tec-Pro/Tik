@@ -70,9 +70,9 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
      * @throws RemoteException
      */
     public ControllerGuiPurchase(final GuiPurchase guiPurchase) throws NotBoundException, MalformedURLException, RemoteException {
-        this.interfacePurchase = (InterfacePurchase) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDPurchase);
-        this.interfacePproduct = (InterfacePproduct) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDPproduct);
-        this.interfaceProvidersSearch = (InterfaceProvidersSearch) Naming.lookup("//" + Config.ip + "/"+InterfaceName.providersSearch);
+        this.interfacePurchase = (InterfacePurchase) InterfaceName.registry.lookup(InterfaceName.CRUDPurchase);
+        this.interfacePproduct = (InterfacePproduct) InterfaceName.registry.lookup(InterfaceName.CRUDPproduct);
+        this.interfaceProvidersSearch = (InterfaceProvidersSearch) InterfaceName.registry.lookup(InterfaceName.providersSearch);
         this.guiPurchase = guiPurchase;
         this.tblDefaultProduct = this.guiPurchase.getTblDefaultProduct();
         this.tblDefaultProvider = this.guiPurchase.getTblDefaultProvider();

@@ -16,27 +16,25 @@ import utils.Pair;
 /**
  *
  * @author eze
- * 
- * Implementacion de InterfaceClientKitchen
- * (Metodos que podra invocar el Servidor)
- * 
+ *
+ * Implementacion de InterfaceClientKitchen (Metodos que podra invocar el
+ * Servidor)
+ *
  */
 public class ClientKitchen extends UnicastRemoteObject implements InterfaceClientKitchen {
 
-    public ClientKitchen() throws RemoteException{
+    public ClientKitchen() throws RemoteException {
         super();
     }
 
     @Override
-    public void newOrder(Pair<Map<String,Object>,List<Map>> order) throws RemoteException {
+    public void newOrder(Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
         ControllerGuiKitchenMain.addOrder(order);
     }
 
     @Override
-    public void updatedOrder(Pair<Map<String,Object>,List<Map>> order) throws RemoteException {
+    public void updatedOrder(Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
         ControllerGuiKitchenMain.updatedOrder(order);
     }
-    
-    
-    
+
 }

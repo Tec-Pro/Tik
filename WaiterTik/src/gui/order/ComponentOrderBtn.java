@@ -7,11 +7,10 @@ package gui.order;
 import gui.login.*;
 import javax.swing.JButton;
 
-
 public class ComponentOrderBtn extends javax.swing.JPanel {
 
-    
     private String name;
+
     /**
      * Creates new form ComponentUserLoginBtn
      */
@@ -23,7 +22,6 @@ public class ComponentOrderBtn extends javax.swing.JPanel {
         this.setVisible(true);
     }
 
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

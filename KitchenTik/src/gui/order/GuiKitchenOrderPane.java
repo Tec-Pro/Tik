@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package gui.order;
 
 import java.awt.Color;
@@ -16,9 +15,10 @@ import javax.swing.JTextArea;
 public class GuiKitchenOrderPane extends javax.swing.JPanel {
 
     private int position;
-    
+
     /**
      * Creates new form orderPane
+     *
      * @param orderId id del pedido.
      * @param orderDescription descripción del pedido.
      * @param orderArrivalTime tiempo de llegada del pedido.
@@ -31,33 +31,34 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
     }
 
     /**
-     * setea el color del panel 
-     * 0 blanco, 1 verde, 2 amarillo, 3 rojo
-     * @param color 
+     * setea el color del panel 0 blanco, 1 verde, 2 amarillo, 3 rojo
+     *
+     * @param color
      */
-    public void setColor(int color){
-        switch (color){
-           case 0 : 
-                    setBackground(Color.WHITE);
-                    txtOrderDescription.setBackground(Color.WHITE);
-                    break;
-           case 1 : 
-                    setBackground(new java.awt.Color(25, 169, 42));
-                    txtOrderDescription.setBackground(new java.awt.Color(25, 169, 42));
-                    break;
-           case 2 : 
-                    setBackground(new java.awt.Color(253, 216, 47));
-                    txtOrderDescription.setBackground(new java.awt.Color(253, 216, 47));
-                    break; 
-           case 3 : 
-                    setBackground(new java.awt.Color(251, 28, 4));
-                    txtOrderDescription.setBackground(new java.awt.Color(251, 28, 4));
-                    break;      
+    public void setColor(int color) {
+        switch (color) {
+            case 0:
+                setBackground(Color.WHITE);
+                txtOrderDescription.setBackground(Color.WHITE);
+                break;
+            case 1:
+                setBackground(new java.awt.Color(25, 169, 42));
+                txtOrderDescription.setBackground(new java.awt.Color(25, 169, 42));
+                break;
+            case 2:
+                setBackground(new java.awt.Color(253, 216, 47));
+                txtOrderDescription.setBackground(new java.awt.Color(253, 216, 47));
+                break;
+            case 3:
+                setBackground(new java.awt.Color(251, 28, 4));
+                txtOrderDescription.setBackground(new java.awt.Color(251, 28, 4));
+                break;
         }
     }
 
     /**
      * Devuelve el label que debe mostrar el número del pedido.
+     *
      * @return the orderNumber
      */
     public javax.swing.JLabel getOrderNumber() {
@@ -66,6 +67,7 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
 
     /**
      * Devuelve el label que debe mostrar el tiempo de llegada del pedido.
+     *
      * @return the timeOrderArrival
      */
     public javax.swing.JLabel getTimeOrderArrival() {
@@ -74,13 +76,13 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
 
     /**
      * Devuelve el text area que contiene la descripción del pedido.
+     *
      * @return the txtOrderDescription
      */
     public JTextArea getTxtOrderDescription() {
         return txtOrderDescription;
     }
 
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -146,7 +148,6 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;

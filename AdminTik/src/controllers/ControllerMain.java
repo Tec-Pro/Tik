@@ -112,9 +112,9 @@ public class ControllerMain implements ActionListener {
         guiMain.getDesktop().add(guiMenu);
         guiMain.getDesktop().add(guiPurchase);
 
-        InterfaceProvider provider = (InterfaceProvider) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDProvider);
-        InterfaceProviderCategory providerCategory = (InterfaceProviderCategory) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDProviderCategory);
-        InterfaceProvidersSearch providersSearch = (InterfaceProvidersSearch) Naming.lookup("//" + Config.ip + "/"+InterfaceName.providersSearch);
+        InterfaceProvider provider = (InterfaceProvider) InterfaceName.registry.lookup(InterfaceName.CRUDProvider);
+        InterfaceProviderCategory providerCategory = (InterfaceProviderCategory) InterfaceName.registry.lookup(InterfaceName.CRUDProviderCategory);
+        InterfaceProvidersSearch providersSearch = (InterfaceProvidersSearch) InterfaceName.registry.lookup(InterfaceName.providersSearch);
 
         //creo los controladores 
         controllerCRUDAdmin = new ControllerGuiCRUDAdmin(userLogged, guiCRUDAdmin);

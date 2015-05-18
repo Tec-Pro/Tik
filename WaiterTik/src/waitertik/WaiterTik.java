@@ -13,6 +13,8 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -51,7 +53,8 @@ public class WaiterTik {
         boolean connected = false;
         while (!connected) {
             try {
-                ((InterfaceServer) Naming.lookup("//" + Config.ip + "/"+InterfaceName.server)).registerClientWaiter(client);//le digo al server que me conecto y soy un mozo
+                InterfaceName.registry = LocateRegistry.getRegistry(Config.ip, Registry.REGISTRY_PORT);
+                ((InterfaceServer) InterfaceName.registry.lookup(InterfaceName.server)).registerClientWaiter(client);//le digo al server que me conecto y soy un mozo
                 connected = true;
             } catch (RemoteException e) {
                 config = new Config(new javax.swing.JFrame(), true);

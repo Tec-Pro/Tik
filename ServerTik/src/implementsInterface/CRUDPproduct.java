@@ -39,7 +39,7 @@ public class CRUDPproduct extends UnicastRemoteObject implements interfaces.Inte
         if (!measureUnit.equals("unitario")) {
             unitPrice = unitPrice / 1000;
         }
-        Pproduct ret = Pproduct.createIt("name", name, "stock", stock, "measure_unit", measureUnit, "unit_price", unitPrice,"provider_id",idProvider);
+        Pproduct ret = Pproduct.createIt("name", name, "stock", stock, "measure_unit", measureUnit, "unit_price", unitPrice, "provider_id", idProvider);
         Base.commitTransaction();
         return ret.toMap();
     }
@@ -65,7 +65,6 @@ public class CRUDPproduct extends UnicastRemoteObject implements interfaces.Inte
         }
         return res;
     }
-    
 
     @Override
     public boolean delete(int id) throws java.rmi.RemoteException {

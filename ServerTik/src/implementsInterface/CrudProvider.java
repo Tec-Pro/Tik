@@ -34,6 +34,7 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.prov
 
     /**
      * Crea un proveedor en la base de datos.
+     *
      * @param name nombre del proveedor.
      * @param cuit cuit del proveedor.
      * @param address dirección del proveedor.
@@ -53,6 +54,7 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.prov
 
     /**
      * Función que modifica un proveedor existente de la DB.
+     *
      * @param id id del proveedor a modificar.
      * @param name nuevo nombre del proveedor.
      * @param cuit nuevo cuit del proveedor.
@@ -73,13 +75,14 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.prov
             Base.openTransaction();
             provider.saveIt();
             Base.commitTransaction();
-             
+
         }
         return res;
     }
 
     /**
      * Función que elimina un proveedor si existe en la DB.
+     *
      * @param id id del proveedor a eliminar.
      * @return true if the provider was deleted from the database.
      * @throws RemoteException
@@ -99,7 +102,8 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.prov
     }
 
     /**
-     * Función que devuelve el proveedor correspondiente con el id pasado. 
+     * Función que devuelve el proveedor correspondiente con el id pasado.
+     *
      * @param id id del proveedor pedido.
      * @return map representing the requested provider.
      * @throws RemoteException
@@ -113,6 +117,7 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.prov
 
     /**
      * Función que lista todos los proveedores existentes en la DB.
+     *
      * @return a list of maps representing the providers.
      * @throws RemoteException
      */
@@ -125,9 +130,10 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.prov
 
     /**
      * Función que devuelve las categorías de un proveedor específico.
+     *
      * @param id id del proveedor del que se quieren obtener las categorías.
      * @return una lista de Maps que representan las categorías de un proveedor.
-     * @throws RemoteException 
+     * @throws RemoteException
      */
     @Override
     public List<Map> getCategoriesFromProvider(int id) throws RemoteException {
@@ -137,31 +143,33 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.prov
         //busco el proveedor corespondiente al id
         Provider prov = Provider.findById(id);
         /*if (prov != null) {
-            //saco las relaciones con categorias en las cuales se encuentra ese proveedor
-            List<ProvidersProvidercategory> provCategoryList = prov.getAll(ProvidersProvidercategory.class);
-            //si tiene categorias asociadas
-            if (provCategoryList != null) {
-                //saco la categoria de cada relacion y la agrego a la lista resultado
-                Iterator<ProvidersProvidercategory> provCategoryItr = provCategoryList.iterator();
-                while (provCategoryItr.hasNext()) {
-                    ProvidersProvidercategory provCategory = provCategoryItr.next();
-                    Providercategory category = Providercategory.findById(provCategory.getInteger("providercategory_id"));
-                    result.add(category.toMap());
-                }
-            }
-        }*/
+         //saco las relaciones con categorias en las cuales se encuentra ese proveedor
+         List<ProvidersProvidercategory> provCategoryList = prov.getAll(ProvidersProvidercategory.class);
+         //si tiene categorias asociadas
+         if (provCategoryList != null) {
+         //saco la categoria de cada relacion y la agrego a la lista resultado
+         Iterator<ProvidersProvidercategory> provCategoryItr = provCategoryList.iterator();
+         while (provCategoryItr.hasNext()) {
+         ProvidersProvidercategory provCategory = provCategoryItr.next();
+         Providercategory category = Providercategory.findById(provCategory.getInteger("providercategory_id"));
+         result.add(category.toMap());
+         }
+         }
+         }*/
         result = prov.getAll(Providercategory.class).toMaps();
         Base.commitTransaction();
         return result;
     }
-    
+
     /**
      * Función que guarda las nuevas categorías de un proveedor.
+     *
      * @param provider_id id del proveedor al que se le guardan las categorías.
      * @param categoriesToAdd categorías para agregar al proveedor especificado.
-     * @param categoriesToRemove categorías para remover del proveedor especificado.
+     * @param categoriesToRemove categorías para remover del proveedor
+     * especificado.
      * @return un map representando al proveedor especificado.
-     * @throws RemoteException 
+     * @throws RemoteException
      */
     @Override
     public Map<String, Object> saveCategoriesOfProvider(int provider_id, LinkedList categoriesToAdd, LinkedList categoriesToRemove) throws RemoteException {
@@ -172,8 +180,8 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.prov
         for (Iterator it = categoriesToRemove.iterator(); it.hasNext();) {
             int i = (int) it.next();
             Providercategory pc = Providercategory.findById(i);
-            for (Providercategory providerCategory : categoriesFromProvider){
-                if (providerCategory.getId().equals(i)){
+            for (Providercategory providerCategory : categoriesFromProvider) {
+                if (providerCategory.getId().equals(i)) {
                     p.remove(pc);
                     categoriesFromProvider = p.getAll(Providercategory.class);
                 }
@@ -183,7 +191,7 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.prov
             int j = (int) it.next();
             Providercategory pc = Providercategory.findById(j);
             boolean add = true;
-            for (Providercategory providerCategory : categoriesFromProvider){
+            for (Providercategory providerCategory : categoriesFromProvider) {
                 add = !providerCategory.getId().equals(j);
             }
             if (add) {
@@ -193,6 +201,5 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.prov
         Base.commitTransaction();
         return getProvider(provider_id);
     }
-    
 
 }

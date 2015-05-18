@@ -12,5 +12,5 @@ import org.javalite.activejdbc.Model;
  * @author joako
  */
 public class ProvidersProvidercategory extends Model {
-    
+
 }

@@ -41,7 +41,7 @@ public class CrudProviderCategory extends UnicastRemoteObject implements interfa
         Base.openTransaction();
         Map<String, Object> ret = Providercategory.createIt("name", name).toMap();
         Base.commitTransaction();
-         
+
         return ret;
     }
 
@@ -63,7 +63,7 @@ public class CrudProviderCategory extends UnicastRemoteObject implements interfa
             pCategory.saveIt();
             res = pCategory.toMap();
             Base.commitTransaction();
-             
+
         }
         return res;
     }
@@ -98,7 +98,7 @@ public class CrudProviderCategory extends UnicastRemoteObject implements interfa
     public Map<String, Object> getProviderCategory(int id) throws RemoteException {
         Utils.abrirBase();
         Map<String, Object> ret = Providercategory.findById(id).toMap();
-         
+
         return ret;
     }
 
@@ -111,7 +111,7 @@ public class CrudProviderCategory extends UnicastRemoteObject implements interfa
     public List<Map> getProviderCategories() throws RemoteException {
         Utils.abrirBase();
         List<Map> ret = Providercategory.findAll().toMaps();
-         
+
         return ret;
     }
 
@@ -126,12 +126,12 @@ public class CrudProviderCategory extends UnicastRemoteObject implements interfa
         if (provCategoryList != null) {
             //saco los proveedores de esas relaciones, y los agrego a la lista resultado
             Iterator<ProvidersProvidercategory> provCategoryItr = provCategoryList.iterator();
-                while (provCategoryItr.hasNext()) {
-                    ProvidersProvidercategory provCategory = provCategoryItr.next();
-                    Map provider = Provider.findById(provCategory.getInteger("provider_id")).toMap();
-                    result.add(provider);
-                }
-            
+            while (provCategoryItr.hasNext()) {
+                ProvidersProvidercategory provCategory = provCategoryItr.next();
+                Map provider = Provider.findById(provCategory.getInteger("provider_id")).toMap();
+                result.add(provider);
+            }
+
         }
         Base.commitTransaction();
         return result;

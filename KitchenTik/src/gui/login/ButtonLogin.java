@@ -13,6 +13,7 @@ public class ButtonLogin extends javax.swing.JPanel {
 
     /**
      * Creates new form ButtonLogin
+     *
      * @param userName El nombre del usuario que se loguea.
      */
     public ButtonLogin(String userName) {
@@ -45,7 +46,6 @@ public class ButtonLogin extends javax.swing.JPanel {
             .addComponent(btnUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnUserName;

@@ -9,25 +9,21 @@ import gui.login.GuiLogin;
 import gui.login.GuiOnlineUsers;
 import gui.main.GuiKitchenMain;
 import gui.order.GuiKitchenOrderDetails;
-import gui.order.GuiKitchenOrderPane;
+import interfaces.InterfaceFproduct;
 import interfaces.InterfaceOrder;
 import interfaces.InterfacePresence;
 import interfaces.InterfaceUser;
-import interfaces.InterfaceFproduct;
-import java.awt.Color;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -35,10 +31,10 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
-import utils.Config;
 import utils.InterfaceName;
-import java.util.Iterator;
 import utils.Pair;
 
 /**
@@ -66,10 +62,10 @@ public class ControllerGuiKitchenMain implements ActionListener {
      */
     public ControllerGuiKitchenMain() throws NotBoundException, MalformedURLException, RemoteException {
         orderList = new LinkedList<>();
-        crudOrder = (InterfaceOrder) Naming.lookup("//" + Config.ip + "/" + InterfaceName.CRUDOrder);
-        crudPresence = (InterfacePresence) Naming.lookup("//" + Config.ip + "/" + InterfaceName.CRUDPresence);
-        crudUser = (InterfaceUser) Naming.lookup("//" + Config.ip + "/" + InterfaceName.CRUDUser);
-        crudFProduct = (InterfaceFproduct) Naming.lookup("//" + Config.ip + "/" + InterfaceName.CRUDFproduct);
+        crudOrder = (InterfaceOrder) InterfaceName.registry.lookup(InterfaceName.CRUDOrder);
+        crudPresence = (InterfacePresence) InterfaceName.registry.lookup(InterfaceName.CRUDPresence);
+        crudUser = (InterfaceUser) InterfaceName.registry.lookup(InterfaceName.CRUDUser);
+        crudFProduct = (InterfaceFproduct) InterfaceName.registry.lookup(InterfaceName.CRUDFproduct);
         online = new HashSet<>();
         for (Map m : crudPresence.getCooks()) {
             online.add(m);

@@ -72,11 +72,11 @@ public class ControllerGuiMenu extends DefaultTreeCellRenderer implements Action
     private ImageIcon addIcon;
 
     public ControllerGuiMenu(GuiMenu gt, GuiMain gm) throws NotBoundException, MalformedURLException, RemoteException {
-        crudProductCategory = (InterfaceCategory) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDCategory);
+        crudProductCategory = (InterfaceCategory) InterfaceName.registry.lookup(InterfaceName.CRUDCategory);
         guiMenu = gt;
-        crudFproduct = (InterfaceFproduct) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDFproduct);
-        crudPproduct = (InterfacePproduct) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDPproduct);
-        crudEproduct = (InterfaceEproduct) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDEproduct);
+        crudFproduct = (InterfaceFproduct) InterfaceName.registry.lookup(InterfaceName.CRUDFproduct);
+        crudPproduct = (InterfacePproduct) InterfaceName.registry.lookup(InterfaceName.CRUDPproduct);
+        crudEproduct = (InterfaceEproduct) InterfaceName.registry.lookup(InterfaceName.CRUDEproduct);
         guiAddUpdateProductCategory = new GuiAddUpdateProductCategory(gm, true);
         guiAddUpdateProductCategory.setLocationRelativeTo(guiMenu);
         guiAddUpdateProductCategory.setActionListener(this);

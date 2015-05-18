@@ -13,9 +13,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -46,7 +47,8 @@ public class ControllerGuiAdminLogin implements ActionListener {
         boolean connected = false;
         while (!connected) {
             try {
-                crudAdmin = (InterfaceAdmin) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDAdmin);
+                InterfaceName.registry = LocateRegistry.getRegistry(Config.ip, Registry.REGISTRY_PORT);
+                crudAdmin = (InterfaceAdmin) InterfaceName.registry.lookup(InterfaceName.CRUDAdmin);
                 connected = true;
             } catch (RemoteException e) {
                 config = new Config(new javax.swing.JFrame(), true);
@@ -59,7 +61,7 @@ public class ControllerGuiAdminLogin implements ActionListener {
             }
         }
         ClientAdmin client= new ClientAdmin();//creo el cliente este
-        ( (InterfaceServer) Naming.lookup("//" + Config.ip +"/"+InterfaceName.server)).registerClientAdmin(client);//le digo al server que me conecto y soy un mozo
+        ( (InterfaceServer) InterfaceName.registry.lookup(InterfaceName.server)).registerClientAdmin(client);//le digo al server que me conecto y soy un mozo
 
         guiAdminLogin.clearFields();
         guiAdminLogin.setActionListener(this);

@@ -24,13 +24,11 @@ import utils.Pair;
  */
 public class Server extends UnicastRemoteObject implements interfaces.InterfaceServer {
 
-    public static  CopyOnWriteArrayList<InterfaceClientAdmin> admins;
-    public static  CopyOnWriteArrayList<InterfaceClientWaiter> waiters;
-    public static  CopyOnWriteArrayList<InterfaceClientKitchen> chefs;
-    public static  CopyOnWriteArrayList<InterfaceClientBar> bartenders;
+    public static CopyOnWriteArrayList<InterfaceClientAdmin> admins;
+    public static CopyOnWriteArrayList<InterfaceClientWaiter> waiters;
+    public static CopyOnWriteArrayList<InterfaceClientKitchen> chefs;
+    public static CopyOnWriteArrayList<InterfaceClientBar> bartenders;
 
-
-    
     public Server() throws RemoteException {
         super();
         admins = new CopyOnWriteArrayList<>();
@@ -38,13 +36,13 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
         waiters = new CopyOnWriteArrayList<>();
         bartenders = new CopyOnWriteArrayList<>();
     }
-    
+
     @Override
     public void registerClientAdmin(InterfaceClientAdmin client) throws RemoteException {
         admins.add(client);
 
     }
-    
+
     @Override
     public void registerClientBar(InterfaceClientBar client) throws RemoteException {
         bartenders.add(client);
@@ -61,7 +59,7 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
     }
 
     //le aviso a los mozos que el pedido con id está listo
-    public static void notifyWaitersOrderReady(Pair<Map<String,Object>,List<Map>> order) throws RemoteException {
+    public static void notifyWaitersOrderReady(Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
         Iterator<InterfaceClientWaiter> it = waiters.iterator();
         int i = 0;
         while (it.hasNext()) {
@@ -70,7 +68,7 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
                 client.readyOrder(order);
             } catch (java.rmi.ConnectException e) {
                 System.err.println("se rompió porque se cerro un programa seguro" + e);
-                 waiters.remove(i);
+                waiters.remove(i);
                 //despues voy a eliminar este tipo porque la conexión se rechazó por desconectarses
             }
             i++;
@@ -78,7 +76,7 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
     }
 
     //avisa a la cocina que hay un nuevo pedido
-    public static void notifyKitchenNewOrder(Pair<Map<String,Object>,List<Map>> order) throws RemoteException {
+    public static void notifyKitchenNewOrder(Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
         Iterator<InterfaceClientKitchen> it = chefs.iterator();
         int i = 0;
         while (it.hasNext()) {
@@ -94,15 +92,15 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
             i++;
         }
     }
-    
+
     //avisa al Bar que un pedido fue modificado
-    public static void notifyBarUpdatedOrder(Pair<Map<String,Object>,List<Map>> order) throws RemoteException {
+    public static void notifyBarUpdatedOrder(Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
         Iterator<InterfaceClientBar> it = bartenders.iterator();
         int i = 0;
         while (it.hasNext()) {
             InterfaceClientBar client = it.next();
             try {
-                client.updatedOrder(order); 
+                client.updatedOrder(order);
             } catch (java.rmi.ConnectException e) {
                 System.err.println("se rompió porque se cerro un programa seguro" + e);
                 bartenders.remove(i);
@@ -112,9 +110,9 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
             i++;
         }
     }
-    
+
     //avisa al Bar que hay un nuevo pedido
-    public static void notifyBarNewOrder(Pair<Map<String,Object>,List<Map>> order) throws RemoteException {
+    public static void notifyBarNewOrder(Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
         Iterator<InterfaceClientBar> it = bartenders.iterator();
         int i = 0;
         while (it.hasNext()) {
@@ -130,15 +128,15 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
             i++;
         }
     }
-    
+
     //avisa a la cocina que un pedido fue modificado
-    public static void notifyKitchenUpdatedOrder(Pair<Map<String,Object>,List<Map>> order) throws RemoteException {
+    public static void notifyKitchenUpdatedOrder(Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
         Iterator<InterfaceClientKitchen> it = chefs.iterator();
         int i = 0;
         while (it.hasNext()) {
             InterfaceClientKitchen client = it.next();
             try {
-                client.updatedOrder(order); 
+                client.updatedOrder(order);
             } catch (java.rmi.ConnectException e) {
                 System.err.println("se rompió porque se cerro un programa seguro" + e);
                 chefs.remove(i);

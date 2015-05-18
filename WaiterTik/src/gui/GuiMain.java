@@ -48,8 +48,6 @@ public class GuiMain extends javax.swing.JFrame {
         return btnLogin;
     }
 
-
-
     public JPanel getPanelLogin() {
         return panelLogin;
     }
@@ -103,7 +101,7 @@ public class GuiMain extends javax.swing.JFrame {
         gridypaused = 0;
     }
 
-    public void validateAll(){
+    public void validateAll() {
         panelPausedOrders.validate();
         panelActivedOrders.validate();
         panelPausedOrders.repaint();
@@ -111,7 +109,7 @@ public class GuiMain extends javax.swing.JFrame {
         this.validate();
         this.repaint();
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

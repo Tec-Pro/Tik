@@ -55,7 +55,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
 
     private Integer currentOrderId;
     private int currentWaiterId;
-    private Map<String,Object> currentOrder;
+    private Map<String, Object> currentOrder;
     private final GuiOrder guiOrder;
     private final InterfaceCategory crudProductCategory;
     private final InterfaceFproduct crudFproduct;
@@ -71,26 +71,28 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
     private final InterfaceOrder crudOrder;
     private GuiMain guiMain;
     private ControllerGuiMain controllerGuiMain;
-    
+
     /**
      * Setea el id del mozo actual, y el id del pedido actual.
+     *
      * @param orderId si es un nuevo pedido, poner en null
      * @param waiterId
      */
-    public void setIds(Integer orderId, int waiterId){
+    public void setIds(Integer orderId, int waiterId) {
         guiOrder.getTableProductsDefault().setRowCount(0);
         currentOrderId = orderId;
         currentWaiterId = waiterId;
-        if(currentOrderId!= null)
+        if (currentOrderId != null) {
             try {
                 currentOrder = crudOrder.getOrder(currentOrderId);
                 guiOrder.getLblOrderNum().setText(currentOrder.get("order_number").toString());
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
             }
-        else
+        } else {
             guiOrder.getLblOrderNum().setText("");
-            guiOrder.getLblTotalPrice().setText("");
+        }
+        guiOrder.getLblTotalPrice().setText("");
         try {
             loadProducts();
         } catch (RemoteException ex) {
@@ -98,13 +100,13 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
         }
         guiOrder.getBtnSend().setEnabled(false);
     }
-    
+
     public ControllerGuiOrder(GuiOrder go) throws NotBoundException, MalformedURLException, RemoteException {
         guiOrder = go;
         guiOrder.getBtnSend().setEnabled(false);
-        crudProductCategory = (InterfaceCategory) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDCategory);
-        crudFproduct = (InterfaceFproduct) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDFproduct);
-        crudOrder = (InterfaceOrder)Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDOrder) ;
+        crudProductCategory = (InterfaceCategory) InterfaceName.registry.lookup(InterfaceName.CRUDCategory);
+        crudFproduct = (InterfaceFproduct) InterfaceName.registry.lookup(InterfaceName.CRUDFproduct);
+        crudOrder = (InterfaceOrder) InterfaceName.registry.lookup(InterfaceName.CRUDOrder);
         guiOrder.setActionListener(this);
         rootIcon = new ImageIcon(getClass().getResource("/Icons/menu.png"));
         categoryIcon = new ImageIcon(getClass().getResource("/Icons/category.png"));
@@ -119,10 +121,10 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                     currentNode = (DefaultMutableTreeNode) currentSelection.getLastPathComponent();
                     currentSelectedNodeName = currentNode.toString();// nombre de la hoja seleccionada
                     if (currentNode.getLevel() == 3) {
-                        if (me.getClickCount()==2){
-                        guiAmount.getLblProd().setText(currentSelectedNodeName);
-                        guiAmount.setLocationRelativeTo(null);
-                        guiAmount.setVisible(true);
+                        if (me.getClickCount() == 2) {
+                            guiAmount.getLblProd().setText(currentSelectedNodeName);
+                            guiAmount.setLocationRelativeTo(null);
+                            guiAmount.setVisible(true);
                         }
                     }
                 }
@@ -143,7 +145,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
         CreateTree();
         loadProducts();
     }
-    
+
 //    public void addMyComponent(String user) {
 //        //instancia nueva a componente
 //        ComponentOrderBtn OrderBtn = new ComponentOrderBtn(user);
@@ -156,7 +158,6 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
 //        //se añade al MAP
 //        controllerGuiMain.getButtonsOrder().put(user, OrderBtn);
 //    }
-
     private void search() throws RemoteException {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Menu");
         DefaultTreeModel model = new DefaultTreeModel(root);
@@ -316,34 +317,35 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
         guiOrder.getTreeMenu().setModel(modelo);
         guiOrder.getTreeMenu().setCellRenderer(this);
     }
-    
+
     /* carga los productos de la order actual */
-    private void loadProducts() throws RemoteException{
+    private void loadProducts() throws RemoteException {
         guiOrder.getjTextDescription().setText("");
-        if(currentOrderId == null)
+        if (currentOrderId == null) {
             return;
-        
+        }
+
         float totalPrice = 0; // para actualizar el precio total del pedido
         List<Map> orderProducts = crudOrder.getOrderProducts(currentOrderId);
-        for(Map Orderprod : orderProducts){
-            Map prod = crudFproduct.getFproduct((int)Orderprod.get("fproduct_id"));
+        for (Map Orderprod : orderProducts) {
+            Map prod = crudFproduct.getFproduct((int) Orderprod.get("fproduct_id"));
             Object[] row = new Object[7];
             row[0] = prod.get("id");
-            float quantity = (float)Orderprod.get("quantity");
+            float quantity = (float) Orderprod.get("quantity");
             row[1] = quantity;
             row[2] = prod.get("name");
-            float price = (float)prod.get("sell_price");
-            row[3] = ParserFloat.floatToString(price*quantity);
-            totalPrice += price*quantity;
-            row[4] = (boolean)Orderprod.get("done");
-            row[5] = (boolean)Orderprod.get("commited");
-            row[6] = (boolean)Orderprod.get("issued");
+            float price = (float) prod.get("sell_price");
+            row[3] = ParserFloat.floatToString(price * quantity);
+            totalPrice += price * quantity;
+            row[4] = (boolean) Orderprod.get("done");
+            row[5] = (boolean) Orderprod.get("commited");
+            row[6] = (boolean) Orderprod.get("issued");
             guiOrder.getTableProductsDefault().addRow(row);
         }
         guiOrder.getjTextDescription().setText(currentOrder.get("description").toString());
         guiOrder.getLblTotalPrice().setText(ParserFloat.floatToString(totalPrice));
     }
-    
+
     @Override
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded,
             boolean leaf, int row, boolean hasFocus) {
@@ -376,27 +378,27 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        
-       //*******GuiOrder**************//
-        if(e.getSource().equals(guiOrder.getBtnSend())){               
-            if(currentOrderId == null){ //si el pedido es nuevo, carga todos los productos y los envia
-                DefaultTableModel productsTable = guiOrder.getTableProductsDefault();
-                List<Map<String,Object>> products = new LinkedList<>();
 
-                for(int i = 0; i < productsTable.getRowCount(); i++){
-                    Map<String,Object> prodMap = new HashMap();
-                    prodMap.put("fproductId",productsTable.getValueAt(i, 0) );
-                    prodMap.put("quantity",productsTable.getValueAt(i, 1));
+        //*******GuiOrder**************//
+        if (e.getSource().equals(guiOrder.getBtnSend())) {
+            if (currentOrderId == null) { //si el pedido es nuevo, carga todos los productos y los envia
+                DefaultTableModel productsTable = guiOrder.getTableProductsDefault();
+                List<Map<String, Object>> products = new LinkedList<>();
+
+                for (int i = 0; i < productsTable.getRowCount(); i++) {
+                    Map<String, Object> prodMap = new HashMap();
+                    prodMap.put("fproductId", productsTable.getValueAt(i, 0));
+                    prodMap.put("quantity", productsTable.getValueAt(i, 1));
                     prodMap.put("done", productsTable.getValueAt(i, 4));
-                    prodMap.put("commited",productsTable.getValueAt(i, 5) );
-                    prodMap.put("issued",true ); 
+                    prodMap.put("commited", productsTable.getValueAt(i, 5));
+                    prodMap.put("issued", true);
                     products.add(prodMap);
                 }
                 try {
-                    currentOrder = crudOrder.sendOrder(currentWaiterId,guiOrder.getjTextDescription().getText(),products); 
+                    currentOrder = crudOrder.sendOrder(currentWaiterId, guiOrder.getjTextDescription().getText(), products);
                     guiOrder.getLblOrderNum().setText(currentOrder.get("order_number").toString());
-                    long idLong = (long)currentOrder.get("id");
-                    currentOrderId = (int)idLong;
+                    long idLong = (long) currentOrder.get("id");
+                    currentOrderId = (int) idLong;
                     productsTable.setRowCount(0);
                     loadProducts();
                     JOptionPane.showMessageDialog(guiOrder, "Nuevo pedido Enviado!", "Pedido Enviado", JOptionPane.INFORMATION_MESSAGE);
@@ -405,24 +407,23 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }
-            else{ //si el pedido existe agrega los productos que no han sido enviados, y envia el pedido
+            } else { //si el pedido existe agrega los productos que no han sido enviados, y envia el pedido
                 DefaultTableModel productsTable = guiOrder.getTableProductsDefault();
-                List<Map<String,Object>> products = new LinkedList<>();
-                for(int i = 0; i < productsTable.getRowCount(); i++){
-                    boolean issued = (boolean)productsTable.getValueAt(i, 6);
-                    if(!issued){                       
-                        Map<String,Object> prodMap = new HashMap();
-                        prodMap.put("fproductId",productsTable.getValueAt(i, 0) );
-                        prodMap.put("quantity",productsTable.getValueAt(i, 1));
+                List<Map<String, Object>> products = new LinkedList<>();
+                for (int i = 0; i < productsTable.getRowCount(); i++) {
+                    boolean issued = (boolean) productsTable.getValueAt(i, 6);
+                    if (!issued) {
+                        Map<String, Object> prodMap = new HashMap();
+                        prodMap.put("fproductId", productsTable.getValueAt(i, 0));
+                        prodMap.put("quantity", productsTable.getValueAt(i, 1));
                         prodMap.put("done", productsTable.getValueAt(i, 4));
-                        prodMap.put("commited",productsTable.getValueAt(i, 5) );
-                        prodMap.put("issued", true); 
+                        prodMap.put("commited", productsTable.getValueAt(i, 5));
+                        prodMap.put("issued", true);
                         products.add(prodMap);
                     }
                 }
                 try {
-                    if((boolean)currentOrder.get("closed")){
+                    if ((boolean) currentOrder.get("closed")) {
                         JOptionPane.showMessageDialog(guiOrder, "           El pedido esta cerrado \n No se pueden agregar mas productos!", "Atencion", JOptionPane.INFORMATION_MESSAGE);
                         productsTable.setRowCount(0);
                         loadProducts();
@@ -438,27 +439,28 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                 }
             }
         }
-    
-        if(e.getSource().equals(guiOrder.getBtnClose())){ //cierra el pedido          
-            if(currentOrderId == null)
+
+        if (e.getSource().equals(guiOrder.getBtnClose())) { //cierra el pedido          
+            if (currentOrderId == null) {
                 return;
+            }
             try {
                 crudOrder.closeOrder(currentOrderId);
                 currentOrder = crudOrder.getOrder(currentOrderId);
                 JOptionPane.showMessageDialog(guiOrder, "Pedido Cerrado!", "Atencion", JOptionPane.INFORMATION_MESSAGE);
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
-            }        
+            }
         }
-        
-        if(e.getSource().equals(guiOrder.getBtnCommit())){
-            if(currentOrderId == null){
+
+        if (e.getSource().equals(guiOrder.getBtnCommit())) {
+            if (currentOrderId == null) {
                 JOptionPane.showMessageDialog(guiOrder, "El pedido no ha sido creado todavia!", "Atencion", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
-            if((boolean)currentOrder.get("closed")){
-                        JOptionPane.showMessageDialog(guiOrder, "El pedido esta cerrado!", "Atencion", JOptionPane.INFORMATION_MESSAGE);
-                        return;
+            if ((boolean) currentOrder.get("closed")) {
+                JOptionPane.showMessageDialog(guiOrder, "El pedido esta cerrado!", "Atencion", JOptionPane.INFORMATION_MESSAGE);
+                return;
             }
             try {
                 crudOrder.commitProducts(currentOrderId);
@@ -467,10 +469,9 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                 loadProducts();
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
-            }         
+            }
         }
-        
-        
+
         //*******GuiAmount**************//
         if (e.getSource().equals(guiAmount.getBtnAccept())) {
             try {
@@ -481,9 +482,9 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                     row[0] = fp.get("id");
                     row[1] = ParserFloat.stringToFloat(guiAmount.getTxtAmount().getText());
                     row[2] = currentSelectedNodeName;
-                    float price = (float)fp.get("sell_price");
+                    float price = (float) fp.get("sell_price");
                     float amount = ParserFloat.stringToFloat(guiAmount.getTxtAmount().getText());
-                    row[3] = ParserFloat.floatToString(price*amount);
+                    row[3] = ParserFloat.floatToString(price * amount);
                     row[4] = false;
                     row[5] = false;
                     row[6] = false;
@@ -498,7 +499,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                 Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
     }
 
 }

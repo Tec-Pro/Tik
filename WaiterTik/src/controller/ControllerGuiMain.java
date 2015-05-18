@@ -69,15 +69,15 @@ public class ControllerGuiMain implements ActionListener {
         buttonsOrder = new HashMap();
         guiMain.setVisible(true);
         guiMain.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        crudUser = (InterfaceUser) Naming.lookup("//" + Config.ip + "/" + InterfaceName.CRUDUser);
-        crudPresence = (InterfacePresence) Naming.lookup("//" + Config.ip + "/" + InterfaceName.CRUDPresence);
+        crudUser = (InterfaceUser) InterfaceName.registry.lookup(InterfaceName.CRUDUser);
+        crudPresence = (InterfacePresence) InterfaceName.registry.lookup(InterfaceName.CRUDPresence);
         online = new HashSet<Map>();
         guiOrder = new GuiOrder(guiMain, true);
         controllerGuiOrder = new ControllerGuiOrder(guiOrder);
         guiLogin = new GuiLogin(guiMain, true);
         guiLogin.setActionListener(this);
-        crudOrder = (InterfaceOrder) Naming.lookup("//" + Config.ip + "/" + InterfaceName.CRUDOrder);
-        crudFproduct = (InterfaceFproduct) Naming.lookup("//" + Config.ip + "/" + InterfaceName.CRUDFproduct);
+        crudOrder = (InterfaceOrder) InterfaceName.registry.lookup(InterfaceName.CRUDOrder);
+        crudFproduct = (InterfaceFproduct) InterfaceName.registry.lookup(InterfaceName.CRUDFproduct);
         for (Map m : crudPresence.getWaiters()) {
             online.add(m);
             String usr = (int) m.get("id") + "-" + (String) m.get("name") + " " + (String) m.get("surname");
@@ -239,8 +239,6 @@ public class ControllerGuiMain implements ActionListener {
             }
         }
     }
-
- 
 
     /**
      * Cargo en la gui todas las ordenes ACTIVAS de un cliente, si el id es -1

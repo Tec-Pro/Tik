@@ -74,10 +74,10 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
         tableReciper = guiCRUDFProduct.getTableReciper();
         tableProductsDefault = guiCRUDFProduct.getTableProductsDefault();
         tableReciperDefault = guiCRUDFProduct.getTableReciperDefault();
-        crudPproduct = (InterfacePproduct) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDPproduct);
-        crudEproduct = (InterfaceEproduct) Naming.lookup("//" + Config.ip +"/"+InterfaceName.CRUDEproduct);
-        crudFproduct = (InterfaceFproduct) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDFproduct);
-        category = (InterfaceCategory) Naming.lookup("//" + Config.ip + "/"+InterfaceName.CRUDCategory);
+        crudPproduct = (InterfacePproduct) InterfaceName.registry.lookup(InterfaceName.CRUDPproduct);
+        crudEproduct = (InterfaceEproduct) InterfaceName.registry.lookup(InterfaceName.CRUDEproduct);
+        crudFproduct = (InterfaceFproduct) InterfaceName.registry.lookup(InterfaceName.CRUDFproduct);
+        category = (InterfaceCategory) InterfaceName.registry.lookup(InterfaceName.CRUDCategory);
         guiCRUDFProduct.setCRUDCategory(category);
         pproductList = crudPproduct.getPproducts();
         eproductList = crudEproduct.getEproducts();

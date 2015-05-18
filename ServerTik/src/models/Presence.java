@@ -11,5 +11,5 @@ import org.javalite.activejdbc.Model;
  * @author jacinto
  */
 public class Presence extends Model {
-    
+
 }

@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package gui.order;
 
 import java.awt.event.ActionListener;
@@ -22,7 +21,7 @@ import javax.swing.table.DefaultTableModel;
 public class GuiOrder extends javax.swing.JDialog {
 
     DefaultTableModel tableProductsDefault;
-    
+
     public GuiOrder(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -33,11 +32,10 @@ public class GuiOrder extends javax.swing.JDialog {
         return lblTotalPrice;
     }
 
-    
     public JLabel getLblOrderNum() {
         return lblOrderNum;
     }
-    
+
     public JButton getBtnClose() {
         return btnClose;
     }
@@ -53,7 +51,7 @@ public class GuiOrder extends javax.swing.JDialog {
     public JTextArea getjTextDescription() {
         return jTextDescription;
     }
-    
+
     public JTree getTreeMenu() {
         return treeMenu;
     }
@@ -74,12 +72,13 @@ public class GuiOrder extends javax.swing.JDialog {
         return btnSend;
     }
 
-    public void setActionListener(ActionListener al){
+    public void setActionListener(ActionListener al) {
         btnSend.addActionListener(al);
         btnCommit.addActionListener(al);
         btnClose.addActionListener(al);
         btnModify.addActionListener(al);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

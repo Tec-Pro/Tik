@@ -36,7 +36,7 @@ public class Watch extends JLabel implements Runnable {
                 int mesE;
                 mesE = Integer.valueOf(mes) + 1;
 
-                setText("FECHA: " + dia + " / " + mesE + " / " + año + "   HORA: " + hora + ":" + minutos );
+                setText("FECHA: " + dia + " / " + mesE + " / " + año + "   HORA: " + hora + ":" + minutos);
 
                 Thread.sleep(60000);
             } catch (InterruptedException ex) {

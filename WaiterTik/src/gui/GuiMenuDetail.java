@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package gui;
 
 import java.awt.Color;
@@ -20,6 +19,7 @@ public class GuiMenuDetail extends javax.swing.JPanel {
 
     private int idOrder;
     private int idWaiter;
+
     /**
      * Creates new form GuiMenuDetail
      */
@@ -28,41 +28,42 @@ public class GuiMenuDetail extends javax.swing.JPanel {
     }
 
     /**
-     * setea el color del panel 
-     * 0 blanco, 1 verde, 2 amarillo, 3 rojo
-     * @param color 
+     * setea el color del panel 0 blanco, 1 verde, 2 amarillo, 3 rojo
+     *
+     * @param color
      */
-    public void setColor(int color){
-        switch (color){
-           case 0 : 
-                    setBackground(Color.WHITE);
-                    txtDetail.setBackground(Color.WHITE);
-                    break;
-           case 1 : 
-                    setBackground(new java.awt.Color(25, 169, 42));
-                    txtDetail.setBackground(new java.awt.Color(25, 169, 42));
-                    break;
-           case 2 : 
-                    setBackground(new java.awt.Color(253, 216, 47));
-                    txtDetail.setBackground(new java.awt.Color(253, 216, 47));
-                    break; 
-           case 3 : 
-                    setBackground(new java.awt.Color(251, 28, 4));
-                    txtDetail.setBackground(new java.awt.Color(251, 28, 4));
-                    break;      
+    public void setColor(int color) {
+        switch (color) {
+            case 0:
+                setBackground(Color.WHITE);
+                txtDetail.setBackground(Color.WHITE);
+                break;
+            case 1:
+                setBackground(new java.awt.Color(25, 169, 42));
+                txtDetail.setBackground(new java.awt.Color(25, 169, 42));
+                break;
+            case 2:
+                setBackground(new java.awt.Color(253, 216, 47));
+                txtDetail.setBackground(new java.awt.Color(253, 216, 47));
+                break;
+            case 3:
+                setBackground(new java.awt.Color(251, 28, 4));
+                txtDetail.setBackground(new java.awt.Color(251, 28, 4));
+                break;
         }
     }
-    
-    public void setOrder(Map order,String detail,String name){
-        lblId.setText("PEDIDO: "+order.get("order_number").toString());
+
+    public void setOrder(Map order, String detail, String name) {
+        lblId.setText("PEDIDO: " + order.get("order_number").toString());
         txtDetail.setText(detail);
         lblWaiter.setText(name);
-        idOrder= (int)order.get("id");
-        idWaiter= (int) order.get("user_id");
+        idOrder = (int) order.get("id");
+        idWaiter = (int) order.get("user_id");
     }
 
     /**
      * retorna el id de la orden que posee este pedido
+     *
      * @return idOrder
      */
     public int getIdOrder() {
@@ -77,7 +78,6 @@ public class GuiMenuDetail extends javax.swing.JPanel {
         return idWaiter;
     }
 
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -142,7 +142,6 @@ public class GuiMenuDetail extends javax.swing.JPanel {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;

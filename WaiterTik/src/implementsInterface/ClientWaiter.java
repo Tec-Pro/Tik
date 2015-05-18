@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package implementsInterface;
 
 import controller.ControllerGuiMain;
@@ -17,25 +16,26 @@ import utils.Pair;
 /**
  *
  * @author nico
- * 
+ *
  * Con esta clase, logramos que el server "avise" al cliente de algun cambio,
- * invocando el metodo doSomething, más adelante lo que dehería hacer es que 
- * cuando la cocina termine el pedido, mande el aviso al server, el server
- * vea que es un pedido terminado de parte de la cocina, autmaticamente invoca
+ * invocando el metodo doSomething, más adelante lo que dehería hacer es que
+ * cuando la cocina termine el pedido, mande el aviso al server, el server vea
+ * que es un pedido terminado de parte de la cocina, autmaticamente invoca
  * dosomething de esta clase y asi los clietes mozos actualizan sus vistas
  */
 public class ClientWaiter extends UnicastRemoteObject implements interfaces.InterfaceClientWaiter {
+
     @Override
     public void doSomething() throws RemoteException {
         System.out.println("Server invoked doSomething()");
     }
-    
-    public ClientWaiter() throws RemoteException{
+
+    public ClientWaiter() throws RemoteException {
         super();
     }
 
     @Override
-    public void readyOrder(Pair<Map<String,Object>,List<Map>> order) throws RemoteException {
-       ControllerGuiMain.UpdateOrder();
+    public void readyOrder(Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
+        ControllerGuiMain.UpdateOrder();
     }
 }

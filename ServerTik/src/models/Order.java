@@ -6,10 +6,11 @@
 package models;
 
 import org.javalite.activejdbc.Model;
+
 /**
  *
  * @author agustin
  */
 public class Order extends Model {
-    
+
 }

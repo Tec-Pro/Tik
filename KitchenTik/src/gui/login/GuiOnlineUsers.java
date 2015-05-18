@@ -32,17 +32,19 @@ public class GuiOnlineUsers extends javax.swing.JDialog {
      */
     public GuiOnlineUsers(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        initComponents();
-        tableOnlineDefault = (DefaultTableModel) tableOnline.getModel();
         try {
-            crudPresence = (InterfacePresence) Naming.lookup("//" + Config.ip + "/" + InterfaceName.CRUDPresence);
+            initComponents();
+            tableOnlineDefault = (DefaultTableModel) tableOnline.getModel();
+            crudPresence = (InterfacePresence) InterfaceName.registry.lookup(InterfaceName.CRUDPresence);
             tableOnlineDefault.setRowCount(0);
             for (Map m : crudPresence.getCooks()) {
                 Object row[] = new String[1];
-                row[0] = m.get("name").toString() +" "+ m.get("surname").toString();
+                row[0] = m.get("name").toString() + " " + m.get("surname").toString();
                 tableOnlineDefault.addRow(row);
             }
-        } catch (NotBoundException | MalformedURLException | RemoteException ex) {
+        } catch (RemoteException ex) {
+            Logger.getLogger(GuiOnlineUsers.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NotBoundException ex) {
             Logger.getLogger(GuiOnlineUsers.class.getName()).log(Level.SEVERE, null, ex);
         }
 

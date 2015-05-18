@@ -6,7 +6,8 @@
 package utils;
 
 /**
- *Nombres de interfaces que provienen desde el server
+ * Nombres de interfaces que provienen desde el server
+ *
  * @author nico
  */
 public class InterfaceName {

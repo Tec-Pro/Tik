@@ -88,7 +88,7 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
         ).toMap();
         Base.commitTransaction();
         try {
-            savePhoto(photo, (int) res.get("id"), "jpg");
+            savePhoto(photo, res.get("id").toString(), "jpg");
         } catch (IOException ex) {
             Logger.getLogger(CrudUser.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -148,7 +148,7 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
             user.saveIt();
             Base.commitTransaction();
             try {
-                savePhoto(photo, (int) res.get("id"), "jpg");
+                savePhoto(photo, res.get("id").toString(), "jpg");
             } catch (IOException ex) {
                 Logger.getLogger(CrudUser.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -215,7 +215,7 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
     }
 
     //metodo que guarda la imagen en disco en formato JPG
-    private void savePhoto(final SerializableBufferedImage imageser, final int idUser, final String extension) throws IOException {
+    private void savePhoto(final SerializableBufferedImage imageser, final String idUser, final String extension) throws IOException {
         Thread thread = new Thread() {
             public void run() {
                 if (imageser == null) {

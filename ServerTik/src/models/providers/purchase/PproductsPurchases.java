@@ -10,6 +10,6 @@ import org.javalite.activejdbc.Model;
  *
  * @author nico
  */
-public class PproductsPurchases extends Model{
-    
+public class PproductsPurchases extends Model {
+
 }

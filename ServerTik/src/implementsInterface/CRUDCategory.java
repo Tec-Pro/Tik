@@ -218,21 +218,17 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
         }
         return ret;
     }
-    
+
     @Override
     public List<Map> searchCategories(String txt) throws java.rmi.RemoteException {
         Utils.abrirBase();
-        return Category.where("name like ?", "%"+txt+"%").toMaps();
+        return Category.where("name like ?", "%" + txt + "%").toMaps();
     }
-    
+
     @Override
     public List<Map> searchSubcategories(String txt) throws java.rmi.RemoteException {
         Utils.abrirBase();
-        return Subcategory.where("name like ?", "%"+txt+"%").toMaps();
+        return Subcategory.where("name like ?", "%" + txt + "%").toMaps();
     }
-
-   
-
-    
 
 }

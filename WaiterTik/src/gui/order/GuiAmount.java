@@ -32,7 +32,7 @@ public class GuiAmount extends javax.swing.JDialog {
         return txtAmount;
     }
 
-    public void setActionListener(ActionListener al){
+    public void setActionListener(ActionListener al) {
         btnAccept.addActionListener(al);
         btnCancel.addActionListener(al);
     }
@@ -44,8 +44,7 @@ public class GuiAmount extends javax.swing.JDialog {
     public JButton getBtnCancel() {
         return btnCancel;
     }
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -132,8 +131,6 @@ public class GuiAmount extends javax.swing.JDialog {
         this.setVisible(false);
         txtAmount.setText("1");
     }//GEN-LAST:event_btnCancelActionPerformed
-
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAccept;

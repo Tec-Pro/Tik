@@ -25,40 +25,40 @@ public class GuiKitchenOrderDetails extends javax.swing.JDialog {
      */
     private int orderID;
     private boolean modified = false;
-    
+
     public GuiKitchenOrderDetails(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        this.addWindowListener(new WindowAdapter(){
-                public void windowClosing(WindowEvent e){
-                    int i = 0;
-                    if (modified){ // If there were modifications to the table
-                        i=JOptionPane.showConfirmDialog(null, "Seguro que quiere salir?");
-                    }
-                    if(i==0){
-                        closeWindow();
-                    }
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                int i = 0;
+                if (modified) { // If there were modifications to the table
+                    i = JOptionPane.showConfirmDialog(null, "Seguro que quiere salir?");
                 }
-            });
+                if (i == 0) {
+                    closeWindow();
+                }
+            }
+        });
         initComponents();
     }
-    
-    public GuiKitchenOrderDetails(java.awt.Frame parent, boolean modal,Map<String,Object> order) {
+
+    public GuiKitchenOrderDetails(java.awt.Frame parent, boolean modal, Map<String, Object> order) {
         super(parent, modal);
         initComponents();
-        
+
     }
-    
-     public void setActionListener(ActionListener lis) {
+
+    public void setActionListener(ActionListener lis) {
         this.btnSendOrderDone.addActionListener(lis);
         this.btnCheckAll.addActionListener(lis);
     }
 
-     public void setTableModelListener(TableModelListener lis){
-         this.tableOrderProducts.getModel().addTableModelListener(lis);
-     }
-     
-     public void closeWindow(){
-         this.tableOrderProducts.getModel().removeTableModelListener(new TableModelListener() {
+    public void setTableModelListener(TableModelListener lis) {
+        this.tableOrderProducts.getModel().addTableModelListener(lis);
+    }
+
+    public void closeWindow() {
+        this.tableOrderProducts.getModel().removeTableModelListener(new TableModelListener() {
             public void tableChanged(TableModelEvent e) { // When a value in the table changes, I make configurations
                 boolean modify = false;
                 int i = 0;
@@ -73,10 +73,10 @@ public class GuiKitchenOrderDetails extends javax.swing.JDialog {
                 getBtnSendOrderDone().setEnabled(modify);
             }
         });
-         this.setModal(false);
-         this.setVisible(false);
-     }
-     
+        this.setModal(false);
+        this.setVisible(false);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -296,6 +296,7 @@ public class GuiKitchenOrderDetails extends javax.swing.JDialog {
 
     /**
      * Devuelve el botón para avisar que el pedido está listo.
+     *
      * @return the btnSendOrderDone
      */
     public javax.swing.JButton getBtnSendOrderDone() {
@@ -304,6 +305,7 @@ public class GuiKitchenOrderDetails extends javax.swing.JDialog {
 
     /**
      * Devuelve el botón que se utiliza para marcar todos los items del pedido.
+     *
      * @return the checkBoxCheckAll
      */
     public javax.swing.JButton getBtnCheckAll() {
@@ -311,7 +313,9 @@ public class GuiKitchenOrderDetails extends javax.swing.JDialog {
     }
 
     /**
-     * Devuelve el label que se utiliza para mostrar el tiempo de llegada del pedido.
+     * Devuelve el label que se utiliza para mostrar el tiempo de llegada del
+     * pedido.
+     *
      * @return the labelOrderArrivalTime
      */
     public javax.swing.JLabel getLabelOrderArrivalTime() {
@@ -320,22 +324,25 @@ public class GuiKitchenOrderDetails extends javax.swing.JDialog {
 
     /**
      * Devuelve la tabla de los productos del pedido.
+     *
      * @return the tableOrderProducts
      */
     public javax.swing.JTable getTableOrderProducts() {
         return tableOrderProducts;
     }
 
-    
     /**
      * Devuelve el dtm para la tabla de productos del pedido.
+     *
      * @return the defaultTableModel for tableOrderProducts
      */
     public DefaultTableModel getDefaultTableModelOrderProducts() {
-            return (DefaultTableModel) tableOrderProducts.getModel();
+        return (DefaultTableModel) tableOrderProducts.getModel();
     }
+
     /**
      * Devuelve el panel de texto donde va la descripción del pedido.
+     *
      * @return the txtOrderDescription
      */
     public javax.swing.JTextPane getTxtOrderDescription() {

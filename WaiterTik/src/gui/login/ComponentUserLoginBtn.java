@@ -10,8 +10,8 @@ package gui.login;
  */
 public class ComponentUserLoginBtn extends javax.swing.JPanel {
 
-    
     private String name;
+
     /**
      * Creates new form ComponentUserLoginBtn
      */

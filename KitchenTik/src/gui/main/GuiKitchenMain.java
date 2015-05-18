@@ -22,7 +22,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
 
     private int gridX;
     private int gridY;
-    
+
     /**
      * Creates new form GuiKitchenMain
      */
@@ -134,11 +134,10 @@ public class GuiKitchenMain extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-
     public void addElementToOrdersGrid(String orderId, String orderDescription, String orderArrivalTime, java.awt.event.MouseAdapter mAdapt) {
         GuiKitchenOrderPane newOrder = new GuiKitchenOrderPane(orderId, orderDescription, orderArrivalTime);
-        newOrder.addMouseListener(mAdapt); 
-        if (gridX == 4){
+        newOrder.addMouseListener(mAdapt);
+        if (gridX == 4) {
             gridY++;
             gridX = 0;
         }
@@ -146,34 +145,34 @@ public class GuiKitchenMain extends javax.swing.JFrame {
         constraints.gridx = gridX;
         constraints.gridy = gridY;
         constraints.anchor = GridBagConstraints.NORTHWEST;
-        constraints.insets = new Insets(10,10,10,10);
+        constraints.insets = new Insets(10, 10, 10, 10);
         gridX++;
         ordersPanel.add(newOrder, constraints);
         newOrder.setColor(0);
         ordersPanel.revalidate();
     }
-    
-    public void removeElementOfOrdersGrid(int x, int y){
+
+    public void removeElementOfOrdersGrid(int x, int y) {
         getOrdersPanel().remove(ordersPanel.getComponentAt(x, y));
         ordersPanel.revalidate();
         ordersPanel.repaint();
     }
-    
-    public void updateElementOfOrdersGrid(int index, String orderDescription){
+
+    public void updateElementOfOrdersGrid(int index, String orderDescription) {
         GuiKitchenOrderPane order = (GuiKitchenOrderPane) getOrdersPanel().getComponent(index);
         order.getTxtOrderDescription().setText(orderDescription);
         order.revalidate();
         getOrdersPanel().revalidate();
     }
 
-    public void setOrderColor(int index, Color color){
+    public void setOrderColor(int index, Color color) {
         GuiKitchenOrderPane order = (GuiKitchenOrderPane) getOrdersPanel().getComponent(index);
         order.setBackground(color);
         order.revalidate();
         getOrdersPanel().revalidate();
     }
-    
-    public void cleanAllOrders(){
+
+    public void cleanAllOrders() {
         ordersPanel.removeAll();
         gridX = 0;
         gridY = 0;
@@ -182,7 +181,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
         revalidate();
         repaint();
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -242,6 +241,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
 
     /**
      * Devuelve la barra de menú.
+     *
      * @return the jMenuBar1
      */
     public javax.swing.JMenuBar getjMenuBar1() {
@@ -250,6 +250,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
 
     /**
      * Devuelve el botón de usuarios logueados.
+     *
      * @return the menuItemLoggedUsers
      */
     public javax.swing.JMenuItem getMenuItemLoggedUsers() {
@@ -258,6 +259,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
 
     /**
      * Devuelve el botón para loguear un nuevo usuario.
+     *
      * @return the menuItemNewLogin
      */
     public javax.swing.JMenuItem getMenuItemNewLogin() {
@@ -265,7 +267,9 @@ public class GuiKitchenMain extends javax.swing.JFrame {
     }
 
     /**
-     * Devuelve el menú que contiene las opciones de login y ver usuarios logueados.
+     * Devuelve el menú que contiene las opciones de login y ver usuarios
+     * logueados.
+     *
      * @return the menuLogin
      */
     public javax.swing.JMenu getMenuLogin() {
@@ -274,6 +278,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
 
     /**
      * Devuelve el JPanel donde deben ordenarse los pedidos.
+     *
      * @return the ordersPanel
      */
     public javax.swing.JPanel getOrdersPanel() {
@@ -282,6 +287,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
 
     /**
      * Devuelve el panel del reloj.
+     *
      * @return the watchPanel
      */
     public javax.swing.JPanel getWatchPanel() {

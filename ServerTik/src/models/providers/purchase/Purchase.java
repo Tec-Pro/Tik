@@ -13,15 +13,15 @@ import utils.Pair;
  * @author nico
  */
 public class Purchase extends Model {
+
     //Lista de pares <Producto,cantidad>
     private LinkedList<Pair> products;
     private LinkedList<Float> finalPrices;
-    
+
     public Purchase() {
         this.products = null;
         this.finalPrices = null;
     }
-
 
     public LinkedList<Pair> getProducts() {
         return products;

@@ -23,7 +23,7 @@ import utils.Utils;
  *
  * @author jacinto
  */
-public class CRUDPurchase extends UnicastRemoteObject implements InterfacePurchase{
+public class CRUDPurchase extends UnicastRemoteObject implements InterfacePurchase {
 
     public CRUDPurchase() throws RemoteException {
         super();
@@ -52,22 +52,22 @@ public class CRUDPurchase extends UnicastRemoteObject implements InterfacePurcha
                         "final_price", pair.second().second()
                 );
                 if (pproductPurchase != null) {
-                                        Pproduct pproduct = Pproduct.findById(pair.first());
-                                        float stock= pair.second().first();
-                                        float unitPrice= pair.second().second();
-                    switch(pproduct.getString("measure_unit")){
-                         case "gr":
-                                    stock*=1000;
-                                    unitPrice/=1000;
-                                    break;
-                                case "ml":
-                                                                        stock*=1000;
-                                    unitPrice/=1000;
-                                    break;
+                    Pproduct pproduct = Pproduct.findById(pair.first());
+                    float stock = pair.second().first();
+                    float unitPrice = pair.second().second();
+                    switch (pproduct.getString("measure_unit")) {
+                        case "gr":
+                            stock *= 1000;
+                            unitPrice /= 1000;
+                            break;
+                        case "ml":
+                            stock *= 1000;
+                            unitPrice /= 1000;
+                            break;
 
-                            }
-                    pproduct.setFloat("stock",stock+pproduct.getFloat("stock") );
-                    pproduct.setFloat("unit_price",unitPrice );
+                    }
+                    pproduct.setFloat("stock", stock + pproduct.getFloat("stock"));
+                    pproduct.setFloat("unit_price", unitPrice);
                     pproduct.setInteger("provider_id", providerId);
                     pproduct.saveIt();
                 }
@@ -79,58 +79,58 @@ public class CRUDPurchase extends UnicastRemoteObject implements InterfacePurcha
 
     //no se actualiza el stock, supongo que se borran por ser muy viejas
     @Override
-   public boolean delete(Integer idPurchase){
-       Utils.abrirBase();
-       boolean result=false;
-       Base.openTransaction();
-       int delAmount=Purchase.delete("id = ?", idPurchase);
-       if(delAmount==1 && delAmount>0){//se borro una compra, el id es unico entonces debe borrarse solo uno
-           PproductsPurchases.delete("purchase_id = ?", idPurchase);
-           result=true;
-       }
-       Base.commitTransaction();
-       return result;
-   }
-   
+    public boolean delete(Integer idPurchase) {
+        Utils.abrirBase();
+        boolean result = false;
+        Base.openTransaction();
+        int delAmount = Purchase.delete("id = ?", idPurchase);
+        if (delAmount == 1 && delAmount > 0) {//se borro una compra, el id es unico entonces debe borrarse solo uno
+            PproductsPurchases.delete("purchase_id = ?", idPurchase);
+            result = true;
+        }
+        Base.commitTransaction();
+        return result;
+    }
+
     @Override
-  public Pair<Map<String,Object>,List<Map>> getPurchase(Integer idPurchase){
-      Utils.abrirBase();
-      Base.openTransaction();
-      Purchase purchase=Purchase.findById(idPurchase);
-      Map<String,Object> resultPurchase=purchase.toMap();
-      List<Map> resultProducts=purchase.get(PproductsPurchases.class, "purchase_id = ?", idPurchase).toMaps();
-      Base.commitTransaction();
-      return new Pair<>(resultPurchase, resultProducts);
-  }
-  
+    public Pair<Map<String, Object>, List<Map>> getPurchase(Integer idPurchase) {
+        Utils.abrirBase();
+        Base.openTransaction();
+        Purchase purchase = Purchase.findById(idPurchase);
+        Map<String, Object> resultPurchase = purchase.toMap();
+        List<Map> resultProducts = purchase.get(PproductsPurchases.class, "purchase_id = ?", idPurchase).toMaps();
+        Base.commitTransaction();
+        return new Pair<>(resultPurchase, resultProducts);
+    }
+
     @Override
-    public List<Pair<Map<String,Object>,List<Map>>> getPurchasesProvider(Integer idProvider){
-      Utils.abrirBase();
-      Base.openTransaction();
-      LinkedList<Pair<Map<String,Object>,List<Map>>> result= new LinkedList<>();
-      LazyList<Purchase> purchases=Purchase.where("provider_id = ?", idProvider);
-      Iterator<Purchase> it= purchases.iterator();
-      while(it.hasNext()){
-          Purchase p= it.next();
-          Pair<Map<String,Object>,List<Map>> pair= new Pair<>(p.toMap(),p.get(PproductsPurchases.class, "purchase_id = ?", p.getId()).toMaps());
-          result.add(pair);
-      }
-      return result;
-  }
+    public List<Pair<Map<String, Object>, List<Map>>> getPurchasesProvider(Integer idProvider) {
+        Utils.abrirBase();
+        Base.openTransaction();
+        LinkedList<Pair<Map<String, Object>, List<Map>>> result = new LinkedList<>();
+        LazyList<Purchase> purchases = Purchase.where("provider_id = ?", idProvider);
+        Iterator<Purchase> it = purchases.iterator();
+        while (it.hasNext()) {
+            Purchase p = it.next();
+            Pair<Map<String, Object>, List<Map>> pair = new Pair<>(p.toMap(), p.get(PproductsPurchases.class, "purchase_id = ?", p.getId()).toMaps());
+            result.add(pair);
+        }
+        return result;
+    }
 
     @Override
     public List<Pair<Map<String, Object>, List<Map>>> getProviderPurchasesBetweenDates(Integer idProvider, String from, String until) throws RemoteException {
         Utils.abrirBase();
-      Base.openTransaction();
-      LinkedList<Pair<Map<String,Object>,List<Map>>> result= new LinkedList<>();
-      LazyList<Purchase> purchases= Purchase.where("provider_id = ? AND date>= ? AND date <= ?", idProvider,from,until);
-      Iterator<Purchase> it= purchases.iterator();
-      while(it.hasNext()){
-          Purchase p= it.next();
-          Pair<Map<String,Object>,List<Map>> pair= new Pair<>(p.toMap(),p.get(PproductsPurchases.class, "purchase_id = ?", p.getId()).toMaps());
-          result.add(pair);
-      }
-      return result;
+        Base.openTransaction();
+        LinkedList<Pair<Map<String, Object>, List<Map>>> result = new LinkedList<>();
+        LazyList<Purchase> purchases = Purchase.where("provider_id = ? AND date>= ? AND date <= ?", idProvider, from, until);
+        Iterator<Purchase> it = purchases.iterator();
+        while (it.hasNext()) {
+            Purchase p = it.next();
+            Pair<Map<String, Object>, List<Map>> pair = new Pair<>(p.toMap(), p.get(PproductsPurchases.class, "purchase_id = ?", p.getId()).toMaps());
+            result.add(pair);
+        }
+        return result;
     }
-   
+
 }
