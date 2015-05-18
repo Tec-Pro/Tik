@@ -32,7 +32,6 @@ import utils.Utils;
 public class CRUDOrder extends UnicastRemoteObject implements interfaces.InterfaceOrder {
 
     private Connection conn;
-    private Statement stmt;
     private String sql = "";
 
     public CRUDOrder() throws RemoteException {
@@ -65,7 +64,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         //Base.commitTransaction();
 
         final Map<String, Object> orderMap = getOrder(newOrder.getInteger("id"));
-        final Pair<Map<String, Object>, List<Map>> pair =  new Pair(orderMap,getOrderProducts(newOrder.getInteger("id")));
+        final Pair<Map<String, Object>, List<Map>> pair = new Pair(orderMap, getOrderProducts(newOrder.getInteger("id")));
         Thread thread = new Thread() {
             public void run() {
                 try {
@@ -120,10 +119,11 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
      */
     @Override
     public List<Map> getAllOrders() throws RemoteException {
- openBase();
+        openBase();
         Map m = new HashMap();
-        LinkedList<Map> ret= new LinkedList<>();
+        LinkedList<Map> ret = new LinkedList<>();
         try {
+            Statement stmt = conn.createStatement();
             sql = "select * from orders;";
             java.sql.ResultSet rs = stmt.executeQuery(sql);
 
@@ -154,8 +154,9 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
     public List<Map> getOrdersByUser(int userId) throws RemoteException {
         openBase();
         Map m = new HashMap();
-        LinkedList<Map> ret= new LinkedList<>();
+        LinkedList<Map> ret = new LinkedList<>();
         try {
+            Statement stmt = conn.createStatement();
             sql = "select * from orders where user_id = '" + userId + "';";
             java.sql.ResultSet rs = stmt.executeQuery(sql);
 
@@ -185,14 +186,15 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
     @Override
     public boolean closeOrder(int idOrder) throws RemoteException {
         openBase();
-            sql = "UPDATE orders SET closed='1' WHERE id= '" + idOrder+ "' ;";
-            try {
-                stmt.executeUpdate(sql);
-                stmt.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        
+        sql = "UPDATE orders SET closed='1' WHERE id= '" + idOrder + "' ;";
+        try {
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+            stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         List<Map> ret = getOrderProducts(idOrder);
         Map<String, Object> ord = getOrder(idOrder);
         Server.notifyWaitersOrderReady(new Pair(ord, ret));
@@ -202,14 +204,15 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
     @Override
     public void commitProducts(int orderId) throws RemoteException {
         openBase();
-            sql = "UPDATE orders_fproducts SET commited='1' WHERE order_id= '" + orderId+ "' AND done = '1';";
-            try {
-                stmt.executeUpdate(sql);
-                stmt.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        
+        sql = "UPDATE orders_fproducts SET commited='1' WHERE order_id= '" + orderId + "' AND done = '1';";
+        try {
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+            stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         List<Map> ret = getOrderProducts(orderId);
         Map<String, Object> ord = getOrder(orderId);
         Server.notifyWaitersOrderReady(new Pair(ord, ret));
@@ -221,6 +224,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         List<Map> ret = new LinkedList<>();
         try {
             sql = "SELECT * FROM orders_fproducts WHERE order_id = '" + orderId + "';";
+            Statement stmt = conn.createStatement();
             java.sql.ResultSet rs = stmt.executeQuery(sql);
 
             while (rs.next()) {
@@ -248,8 +252,8 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         Map m = new HashMap();
         try {
             sql = "select * from orders where id = '" + orderId + "';";
+            Statement stmt = conn.createStatement();
             java.sql.ResultSet rs;
-            System.out.println(orderId);
             rs = stmt.executeQuery(sql);
 
             if (rs.next() != false) {
@@ -271,22 +275,19 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
 
     @Override
     public List<Map> updateOrdersReadyProducts(Integer idOrder, List<Integer> productsList) throws RemoteException {
-        try {
-            openBase();
-            Iterator<Integer> itr = productsList.iterator();
-            while (itr.hasNext()) {
-                sql = "UPDATE orders_fproducts SET done='1' WHERE id= '" + itr.next() + "';";
-                try {
-                    stmt.executeUpdate(sql);
-                } catch (SQLException ex) {
-                    Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        openBase();
+        Iterator<Integer> itr = productsList.iterator();
+        while (itr.hasNext()) {
+            sql = "UPDATE orders_fproducts SET done='1' WHERE id= '" + itr.next() + "';";
+            try {
+                Statement stmt = conn.createStatement();
+                stmt.executeUpdate(sql);
+                stmt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
             }
-            stmt.close();
-
-        } catch (SQLException ex) {
-            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         List<Map> ret = getOrderProducts(idOrder);
         Map<String, Object> ord = getOrder(idOrder);
         Server.notifyWaitersOrderReady(new Pair(ord, ret));
@@ -304,6 +305,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             } else {
                 sql = "select * from orders where closed = 0 ;";
             }
+            Statement stmt = conn.createStatement();
             java.sql.ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 Map m = new HashMap();
@@ -330,7 +332,6 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
                 Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
             }
             conn = DriverManager.getConnection("jdbc:mysql://localhost/tik", "root", "root");
-            stmt = conn.createStatement();
         } catch (SQLException ex) {
             Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
         }

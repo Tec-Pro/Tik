@@ -48,9 +48,7 @@ public class GuiMain extends javax.swing.JFrame {
         return btnLogin;
     }
 
-    public JPanel getPanelActiveOrders() {
-        return panelActiveSplit;
-    }
+
 
     public JPanel getPanelLogin() {
         return panelLogin;
@@ -78,7 +76,6 @@ public class GuiMain extends javax.swing.JFrame {
         constraints.insets = new Insets(5, 5, 5, 5);
         panelActivedOrders.add(order, constraints);
         gridx += 1;
-        validate();
         panelActivedOrders.validate();
     }
 
@@ -91,23 +88,30 @@ public class GuiMain extends javax.swing.JFrame {
         constraints.insets = new Insets(5, 5, 5, 5);
         panelPausedOrders.add(order, constraints);
         gridypaused += 1;
-        validate();
         panelPausedOrders.validate();
     }
 
     public void clearAllOrders() {
         panelActivedOrders.removeAll();
         panelPausedOrders.removeAll();
+        panelPausedOrders.validate();
+        panelActivedOrders.validate();
+        panelPausedOrders.repaint();
+        panelPausedOrders.repaint();
         gridx = 0;
         gridy = 0;
         gridypaused = 0;
     }
 
-    
-    public void revalidateAll(){
-        panelActivedOrders.repaint();
+    public void validateAll(){
+        panelPausedOrders.validate();
+        panelActivedOrders.validate();
         panelPausedOrders.repaint();
+        panelPausedOrders.repaint();
+        this.validate();
+        this.repaint();
     }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -157,20 +161,23 @@ public class GuiMain extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("SISTEMA MOZOS TIK");
 
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
         panelLogin.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        panelLogin.setLayout(new java.awt.GridLayout(25, 1));
 
         btnLogin.setText("Login");
+        btnLogin.setPreferredSize(new java.awt.Dimension(112, 46));
         panelLogin.add(btnLogin);
 
         btnNew.setText("Nuevo");
+        btnNew.setPreferredSize(new java.awt.Dimension(112, 46));
         panelLogin.add(btnNew);
 
-        btnSeeAll.setText("TODOS ");
+        btnSeeAll.setText("TODOS");
+        btnSeeAll.setPreferredSize(new java.awt.Dimension(112, 46));
         panelLogin.add(btnSeeAll);
 
         pnlWatch.setLayout(new java.awt.BorderLayout());
@@ -193,7 +200,7 @@ public class GuiMain extends javax.swing.JFrame {
         jPanel9.setPreferredSize(new java.awt.Dimension(300, 300));
         jPanel9.setLayout(new java.awt.BorderLayout());
 
-        jSplitPane1.setDividerLocation(600);
+        jSplitPane1.setDividerLocation(800);
         jSplitPane1.setDividerSize(10);
 
         panelActiveSplit.setBorder(javax.swing.BorderFactory.createTitledBorder("Pedidos activos"));
@@ -366,14 +373,14 @@ public class GuiMain extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(panelLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, 791, Short.MAX_VALUE))
+                    .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, 793, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -396,7 +403,7 @@ public class GuiMain extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 899, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

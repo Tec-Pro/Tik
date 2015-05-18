@@ -115,6 +115,7 @@ public class GuiMenuDetail extends javax.swing.JPanel {
         txtDetail.setBackground(new java.awt.Color(253, 216, 47));
         txtDetail.setColumns(20);
         txtDetail.setRows(5);
+        txtDetail.setAutoscrolls(false);
         jScrollPane1.setViewportView(txtDetail);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

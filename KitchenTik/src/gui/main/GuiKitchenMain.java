@@ -55,7 +55,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
         menuItemLoggedUsers = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Cocina");
+        setTitle("SISTEMA COCINA TIK");
         setMaximumSize(new java.awt.Dimension(1024, 768));
 
         jScrollPane1.setMaximumSize(new java.awt.Dimension(1024, 768));
@@ -221,6 +221,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
 
     public void setActionListener(ActionListener lis) {
         this.getMenuItemNewLogin().addActionListener(lis);
+        this.menuItemLoggedUsers.addActionListener(lis);
     }
 
     public void setMouseListener(MouseListener lis) {

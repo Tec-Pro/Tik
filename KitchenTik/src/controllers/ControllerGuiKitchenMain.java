@@ -74,7 +74,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
         for (Map m : crudPresence.getCooks()) {
             online.add(m);
         }
-        guiOrderDetails = new GuiKitchenOrderDetails(guiKitchenMain, false);
+        guiOrderDetails = new GuiKitchenOrderDetails(guiKitchenMain, true);
         guiOrderDetails.setVisible(false);
 
         dtmOrderDetails = guiOrderDetails.getDefaultTableModelOrderProducts();

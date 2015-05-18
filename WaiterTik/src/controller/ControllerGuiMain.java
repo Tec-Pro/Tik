@@ -230,6 +230,7 @@ public class ControllerGuiMain implements ActionListener {
                     Set<Map> offline = new HashSet<Map>();
                     offline.addAll(crudUser.getWaiters());
                     guiLogin.loadCBoxUsers(offline);
+                    guiLogin.getcBoxUsers().setEnabled(true);
                     guiLogin.setLocationRelativeTo(null);
                     guiLogin.setVisible(true);
                 } catch (RemoteException ex) {
@@ -239,23 +240,7 @@ public class ControllerGuiMain implements ActionListener {
         }
     }
 
-    private static GuiMenuDetail existsOrder(int id) {
-        Iterator it = orders.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry entry = (Map.Entry) it.next();
-            //se obtiene el KEY -> identificador unico
-            Integer itm = (Integer) entry.getKey();
-            //si comando de componente es igual a comando pulsado
-            if (itm.equals(id)) {
-                //se recupera el panel
-
-                return ((GuiMenuDetail) entry.getValue());
-
-                //FILTRAR 
-            }
-        }
-        return null;
-    }
+ 
 
     /**
      * Cargo en la gui todas las ordenes ACTIVAS de un cliente, si el id es -1
@@ -355,7 +340,7 @@ public class ControllerGuiMain implements ActionListener {
 
             }
         }
-        guiMain.revalidateAll();
+        guiMain.validateAll();
     }
 
     private static void clearAllOrders() {
