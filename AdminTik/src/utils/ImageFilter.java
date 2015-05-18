@@ -28,10 +28,9 @@ public class ImageFilter extends FileFilter {
             if (/*extension.equals(ImageExtensions.tiff)
                     || extension.equals(ImageExtensions.tif)
                     || */
-                    extension.equals(ImageExtensions.gif)
-                    || extension.equals(ImageExtensions.jpeg)
+                     extension.equals(ImageExtensions.jpeg)
                     || extension.equals(ImageExtensions.jpg)
-                    || extension.equals(ImageExtensions.png)) {
+                    ) {
                 return true;
             } else {
                 return false;
@@ -43,7 +42,7 @@ public class ImageFilter extends FileFilter {
 
     //The description of this filter
     public String getDescription() {
-        return "*.jpeg, *.jpg, *.gif, *.png";
+        return "*.jpeg, *.jpg";
     }
 
 }
