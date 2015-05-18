@@ -194,7 +194,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
                         public void mouseClicked(MouseEvent e) {
                             if (e.getClickCount() == 2) {
                                 try {
-                                    loadGuiOrderDetails(Integer.parseInt(order.first().get("id").toString()), desc, dateFormat.format(date));
+                                    loadGuiOrderDetails(Integer.parseInt(order.first().get("id").toString()), order.first().get("description").toString(), dateFormat.format(date));
                                 } catch (RemoteException ex) {
                                     Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
                                 }
@@ -224,7 +224,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
         //Aca debe actualizarse el pedido en la gui y/o en la lista de pedidos
         //dependiendo de como sea implementado el controlador
         //RECORDAR QUE EN LA GUI SOLO DEBEN CARGARSE LOS PRODUCTOS CORRESPONDIENTES A COCINA(FILTRAR LA LISTA)
-        int size = guiKitchenMain.getOrdersPanel().getComponentCount(); // the amount of orders in the order panel
+        /*int size = guiKitchenMain.getOrdersPanel().getComponentCount(); // the amount of orders in the order panel
         int i = 0;
         boolean check = false;
         while (i < size || check) {
@@ -235,7 +235,9 @@ public class ControllerGuiKitchenMain implements ActionListener {
             }
         }
         guiKitchenMain.updateElementOfOrdersGrid(i, (String) order.first().get("description"));
-        guiKitchenMain.setOrderColor(i, new Color(255, 0, 0));
+        guiKitchenMain.setOrderColor(i, new Color(255, 0, 0));*/
+        guiKitchenMain.cleanAllOrders();
+        refreshOpenOrders();
     }
 
     /* Recarga todos los pedidos abiertos, sin realizar aun en cocina en la gui. */
