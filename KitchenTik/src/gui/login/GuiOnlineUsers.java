@@ -39,14 +39,10 @@ public class GuiOnlineUsers extends javax.swing.JDialog {
             tableOnlineDefault.setRowCount(0);
             for (Map m : crudPresence.getCooks()) {
                 Object row[] = new String[1];
-                row[0] = m.get("name").toString() + m.get("surname").toString();
+                row[0] = m.get("name").toString() +" "+ m.get("surname").toString();
                 tableOnlineDefault.addRow(row);
             }
-        } catch (NotBoundException ex) {
-            Logger.getLogger(GuiOnlineUsers.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(GuiOnlineUsers.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (RemoteException ex) {
+        } catch (NotBoundException | MalformedURLException | RemoteException ex) {
             Logger.getLogger(GuiOnlineUsers.class.getName()).log(Level.SEVERE, null, ex);
         }
 
