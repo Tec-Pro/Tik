@@ -26,16 +26,16 @@ public class ParserFloat {
 
     public static float stringToFloat(String number) {
         float ret;
-        
+
 //        try {
-            try {
-                //ret=Float.valueOf(number);
-                ret=numberFormat.parse(number).floatValue();
-                //ret = Float.parseFloat(number.replace(',', '.'));
-            } catch (ParseException ex) {
-JOptionPane.showMessageDialog(null, "ERROR! el número \"" + number + "\" no respeta el formato\n Se pondrá un -9999", "¡ERROR!", JOptionPane.ERROR_MESSAGE);
+        try {
+            //ret=Float.valueOf(number);
+            ret = numberFormat.parse(number).floatValue();
+            //ret = Float.parseFloat(number.replace(',', '.'));
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(null, "ERROR! el número \"" + number + "\" no respeta el formato\n Se pondrá un -9999", "¡ERROR!", JOptionPane.ERROR_MESSAGE);
             return -9999;
-            }
+        }
 //        } catch (java.lang.NumberFormatException e) {
 //            JOptionPane.showMessageDialog(null, "ERROR! el número \"" + number + "\" no respeta el formato\n Se pondrá un -9999", "¡ERROR!", JOptionPane.ERROR_MESSAGE);
 //            return -9999;

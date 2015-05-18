@@ -5,9 +5,13 @@
  */
 package implementsInterface;
 
+import controllers.ControllerGuiBarMain;
 import interfaces.InterfaceClientBar;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
+import java.util.Map;
+import utils.Pair;
 
 /**
  *
@@ -24,15 +28,13 @@ public class ClientBar extends UnicastRemoteObject implements InterfaceClientBar
     }
 
     @Override
-    public void newOrder(int id) throws RemoteException {
-        //ControllerGuiBarMain.addOrder(id);
-        System.out.println("Llego el pedido: "+id);
+    public void newOrder(Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
+        ControllerGuiBarMain.addOrder(order);
     }
 
     @Override
-    public void updatedOrder(int id) throws RemoteException {
-        //ControllerGuiBarMain.updatedOrder(id);
-        System.out.println("Se actualizo el pedido"+id);
+    public void updatedOrder(Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
+        ControllerGuiBarMain.updatedOrder(order);
     }
     
     

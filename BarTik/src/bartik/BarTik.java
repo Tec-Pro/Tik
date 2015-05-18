@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -40,11 +42,11 @@ public class BarTik {
             UIManager.setLookAndFeel("com.jtattoo.plaf.aero.AeroLookAndFeel");
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
         }
-            
-            // Creo el cliente Kitchen
-            ClientBar client= new ClientBar();
-            //Creo un nuevo archivo de configuracion
-            Config config = new Config(new javax.swing.JFrame(), true);
+
+        // Creo el cliente Kitchen
+        ClientBar client = new ClientBar();
+        //Creo un nuevo archivo de configuracion
+        Config config = new Config(new javax.swing.JFrame(), true);
         try {
             config.loadProperties();
         } catch (IOException ex) {
@@ -53,8 +55,9 @@ public class BarTik {
         boolean connected = false;
         while (!connected) {
             try {
-             // le aviso al server que me conecto y que soy Kitchen
-             ( (InterfaceServer) Naming.lookup("//" + Config.ip + "/"+InterfaceName.server)).registerClientBar(client);
+                InterfaceName.registry = LocateRegistry.getRegistry(Config.ip, Registry.REGISTRY_PORT);
+                // le aviso al server que me conecto y que soy Kitchen
+                ((InterfaceServer) InterfaceName.registry.lookup(InterfaceName.server)).registerClientBar(client);
                 connected = true;
             } catch (RemoteException e) {
                 config = new Config(new javax.swing.JFrame(), true);
@@ -64,11 +67,11 @@ public class BarTik {
                 }
                 connected = false;
             }
-            
-            
+
         }
-        
+
         //Creo el controlador principal
         new ControllerGuiBarMain();
+
     }
 }
