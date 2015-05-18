@@ -175,6 +175,8 @@ public class GuiKitchenMain extends javax.swing.JFrame {
     
     public void cleanAllOrders(){
         ordersPanel.removeAll();
+        gridX = 0;
+        gridY = 0;
         ordersPanel.revalidate();
         ordersPanel.repaint();
         revalidate();
