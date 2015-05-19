@@ -12,7 +12,6 @@ import interfaces.InterfacePproduct;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Iterator;
@@ -28,7 +27,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import utils.Config;
 import utils.GeneralConfig;
 import utils.InterfaceName;
 import utils.Pair;
@@ -52,6 +50,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
     private List<Map> fproductList;
     private List<Map> fproductPproductList;
     private List<Map> fproductEproductList;
+    private List<Map> fproductFproductList;
     InterfacePproduct crudPproduct;
     InterfaceEproduct crudEproduct;
     InterfaceFproduct crudFproduct;
@@ -69,7 +68,6 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
      */
     public ControllerGuiCRUDFproduct(GuiCRUDFProduct guiCRUDFProduct) throws NotBoundException, MalformedURLException, RemoteException {
         this.guiCRUDFProduct = guiCRUDFProduct;
-        guiCRUDFProduct.setActionListener(this);
         tableProducts = guiCRUDFProduct.getTableProducts();
         tableReciper = guiCRUDFProduct.getTableReciper();
         tableProductsDefault = guiCRUDFProduct.getTableProductsDefault();
@@ -114,6 +112,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
                 }
             }
         });
+        guiCRUDFProduct.setActionListener(this);
     }
 
     /**
@@ -127,28 +126,19 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
     }
 
     /**
-     * busca los productos con el parametro de la barra de busqueda, si se esta
-     * creando o ediando un producto final solo encontrara productos primarios y
-     * elaborados, si no solo econtrara productos finales
+     * busca los productos con el parametro de la barra de busqueda, si no se
+     * esta creando o ediando un producto final solo econtrara productos finales
      *
      * @param evt
      * @throws RemoteException
      */
     public void search() throws RemoteException {
-        if (guiCRUDFProduct.getTxtSearch().getText().equals("") || guiCRUDFProduct.getTxtSearch().getText().equals(" ")) {
-            if (editingInformation) {
-                pproductList = crudPproduct.getPproducts();
-                eproductList = crudEproduct.getEproducts();
-            } else {
-                fproductList = crudFproduct.getFproducts();
-            }
+        if (editingInformation) {
+            pproductList = crudPproduct.getPproducts(guiCRUDFProduct.getTxtSearch().getText());
+            eproductList = crudEproduct.getEproducts(guiCRUDFProduct.getTxtSearch().getText());
+            fproductList = crudFproduct.getFproducts(guiCRUDFProduct.getTxtSearch().getText());
         } else {
-            if (editingInformation) {
-                pproductList = crudPproduct.getPproducts(guiCRUDFProduct.getTxtSearch().getText());
-                eproductList = crudEproduct.getEproducts(guiCRUDFProduct.getTxtSearch().getText());
-            } else {
-                fproductList = crudFproduct.getFproducts(guiCRUDFProduct.getTxtSearch().getText());
-            }
+            fproductList = crudFproduct.getFproducts(guiCRUDFProduct.getTxtSearch().getText());
         }
         refreshList();
     }
@@ -179,6 +169,19 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
                 row[2] = "-"; //CATEGORIA
                 row[3] = "Elaborado"; // TIPO
                 tableProductsDefault.addRow(row);
+            }
+            it = fproductList.iterator();
+            while (it.hasNext()) {
+                Map<String, Object> prod = it.next();
+                if (!(prod.get("id").toString().equals(guiCRUDFProduct.getTxtId().getText()))) {
+                    Object row[] = new String[4];
+                    row[0] = prod.get("id").toString();
+                    row[1] = prod.get("name").toString(); //NOMBRE
+                    Map<String, Object> subC = category.getSubcategory(Integer.parseInt(prod.get("subcategory_id").toString()));
+                    row[2] = subC.get("name").toString(); //CATEGORIA
+                    row[3] = "Final"; // TIPO
+                    tableProductsDefault.addRow(row);
+                }
             }
         } else {
             Iterator<Map> it = fproductList.iterator();
@@ -211,6 +214,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
                 fproduct = crudFproduct.getFproduct(id);
                 fproductPproductList = crudFproduct.getFproductPproduts(id);
                 fproductEproductList = crudFproduct.getFproductEproduts(id);
+                fproductFproductList = crudFproduct.getFproductFproduts(id);
                 guiCRUDFProduct.loadProduct(fproduct);
                 float productionPrice = crudFproduct.calculateProductionPrice(id);
                 guiCRUDFProduct.getTxtProductionPrice().setText(ParserFloat.floatToString(productionPrice));
@@ -242,9 +246,14 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
                             if (!quantity.isEmpty()) {
                                 row[2] = quantity; // Cantidad  
                                 row[3] = "unitario"; //unidad de medida
-                                row[4] = "Elaborado";// Tipo  
+                                if (((String) tableProducts.getValueAt(tableProducts.getSelectedRow(), 3)).equals("Elaborado")) {
+                                    row[4] = "Elaborado";// Tipo  
+                                } else {
+                                    row[4] = "Final";// Tipo  
+                                }
                                 tableReciperDefault.addRow(row);
                                 dinamicProductionPrice();
+                                setCellEditor();
                             }
                         }
                     }
@@ -259,7 +268,6 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
                 guiCRUDFProduct.getTxtSellPrice().setText("");
                 guiCRUDFProduct.getTxtSuggestedPrice().setText("");
                 guiCRUDFProduct.getBelong().setSelectedIndex(-1);
-                guiCRUDFProduct.getBelong().removeAllItems();
                 guiCRUDFProduct.getCategory().setSelectedIndex(-1);
                 guiCRUDFProduct.getCategory().removeAllItems();
                 guiCRUDFProduct.getSubcategory().setSelectedIndex(-1);
@@ -370,6 +378,15 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
             row[4] = "Elaborado"; // Tipo  
             tableReciperDefault.addRow(row);
         }
+        for (Map fpFp : fproductFproductList) {
+            Object row[] = new String[5];
+            row[0] = fpFp.get("fproduct_id").toString();
+            row[1] = crudFproduct.getFproduct(Integer.parseInt(fpFp.get("fproduct_id").toString())).get("name").toString(); //NOMBRE
+            row[2] = fpFp.get("amount").toString(); // Cantidad     
+            row[3] = "unitario"; //Unidad de medida
+            row[4] = "Final"; // Tipo  
+            tableReciperDefault.addRow(row);
+        }
         setCellEditor();
     }
 
@@ -386,19 +403,26 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
                     Map pp = crudPproduct.getPproduct(Integer.parseInt(tableReciper.getValueAt(j, 0).toString()));
                     price += ParserFloat.stringToFloat(pp.get("unit_price").toString()) * ParserFloat.stringToFloat(tableReciper.getValueAt(j, 2).toString());
                 } else {
-                    List<Map> leppp = crudEproduct.getEproductPproduts(Integer.parseInt(tableReciper.getValueAt(j, 0).toString()));
-                    float priceEp = 0;
-                    for (Map m : leppp) {
-                        Map pp2 = crudPproduct.getPproduct(Integer.parseInt(m.get("pproduct_id").toString()));
-                        priceEp += ParserFloat.stringToFloat(pp2.get("unit_price").toString()) * ParserFloat.stringToFloat(m.get("amount").toString());
+                    if (tableReciper.getValueAt(j, 4).toString().equals("Elaborado")) {
+                        List<Map> leppp = crudEproduct.getEproductPproduts(Integer.parseInt(tableReciper.getValueAt(j, 0).toString()));
+                        float priceEp = 0;
+                        for (Map m : leppp) {
+                            Map pp2 = crudPproduct.getPproduct(Integer.parseInt(m.get("pproduct_id").toString()));
+                            priceEp += ParserFloat.stringToFloat(pp2.get("unit_price").toString()) * ParserFloat.stringToFloat(m.get("amount").toString());
+                        }
+                        price += priceEp * ParserFloat.stringToFloat(tableReciper.getValueAt(j, 2).toString());
+                    } else {
+                        try {
+                            price += crudFproduct.calculateProductionPrice(Integer.parseInt(tableReciper.getValueAt(j, 0).toString())) * ParserFloat.stringToFloat(tableReciper.getValueAt(j, 2).toString());
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(ControllerGuiCRUDFproduct.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
-                    price += priceEp * ParserFloat.stringToFloat(tableReciper.getValueAt(j, 2).toString());
                 }
             }
         }
         guiCRUDFProduct.getTxtProductionPrice().setText(ParserFloat.floatToString(price));
         guiCRUDFProduct.getTxtSuggestedPrice().setText(ParserFloat.floatToString(price + price * GeneralConfig.percent / 100));
-
     }
 
     @Override
@@ -410,9 +434,10 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
                 guiCRUDFProduct.clicNewProduct();
                 pproductList = crudPproduct.getPproducts();
                 eproductList = crudEproduct.getEproducts();
+                fproductList = crudFproduct.getFproducts();
                 refreshList();
             } catch (RemoteException ex) {
-                Logger.getLogger(ControllerGuiCRUDEproduct.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ControllerGuiCRUDFproduct.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         if (e.getSource() == guiCRUDFProduct.getBtnDelete()) {   //boton eliminar
@@ -441,6 +466,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
             try {
                 pproductList = crudPproduct.getPproducts();
                 eproductList = crudEproduct.getEproducts();
+                fproductList = crudFproduct.getFproducts();
                 refreshList();
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiCRUDFproduct.class.getName()).log(Level.SEVERE, null, ex);
@@ -453,20 +479,24 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
                     int subcategory_id = Integer.parseInt(subC.get("id").toString());//obtener categoria
                     List<Pair> listP = new LinkedList<Pair>();
                     List<Pair> listE = new LinkedList<Pair>();
+                    List<Pair> listF = new LinkedList<Pair>();
                     for (int i = 0; i < tableReciper.getRowCount(); i++) { //cargo la lista de productos
+                        Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), ParserFloat.stringToFloat((String) tableReciper.getValueAt(i, 2)));
                         if (((String) tableReciper.getValueAt(i, 4)).equals("Primario")) {
-                            Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), ParserFloat.stringToFloat((String) tableReciper.getValueAt(i, 2)));
                             listP.add(p);
                         } else {
-                            Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), ParserFloat.stringToFloat((String) tableReciper.getValueAt(i, 2)));
-                            listE.add(p);
+                            if (((String) tableReciper.getValueAt(i, 4)).equals("Elaborado")) {
+                                listE.add(p);
+                            } else {
+                                listF.add(p);
+                            }
                         }
                     }
                     String name = guiCRUDFProduct.getTxtName().getText();
                     String belong = guiCRUDFProduct.getBelong().getSelectedItem().toString();
                     float sellPrice = ParserFloat.stringToFloat(guiCRUDFProduct.getTxtSellPrice().getText());
                     try {
-                        crudFproduct.create(name, subcategory_id, listP, listE, sellPrice, belong);
+                        crudFproduct.create(name, subcategory_id, listP, listE, sellPrice, belong, listF);
                         JOptionPane.showMessageDialog(guiCRUDFProduct, "¡Producto creado exitosamente!");
                         editingInformation = false;
                         guiCRUDFProduct.clicSaveProduct();
@@ -487,13 +517,17 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
                     int subcategory_id = Integer.parseInt(subC.get("id").toString());//obtener categoria
                     List<Pair> listP = new LinkedList<Pair>();
                     List<Pair> listE = new LinkedList<Pair>();
-                    for (int i = 0; i < tableReciper.getRowCount(); i++) {
-                        if (((String) tableReciper.getValueAt(i, 4)).equals("Primario")) { //cargo la lista de productos
-                            Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), ParserFloat.stringToFloat((String) tableReciper.getValueAt(i, 2)));
+                    List<Pair> listF = new LinkedList<Pair>();
+                    for (int i = 0; i < tableReciper.getRowCount(); i++) { //cargo la lista de productos
+                        Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), ParserFloat.stringToFloat((String) tableReciper.getValueAt(i, 2)));
+                        if (((String) tableReciper.getValueAt(i, 4)).equals("Primario")) {
                             listP.add(p);
                         } else {
-                            Pair p = new Pair(Integer.parseInt((String) tableReciper.getValueAt(i, 0)), ParserFloat.stringToFloat((String) tableReciper.getValueAt(i, 2)));
-                            listE.add(p);
+                            if (((String) tableReciper.getValueAt(i, 4)).equals("Elaborado")) {
+                                listE.add(p);
+                            } else {
+                                listF.add(p);
+                            }
                         }
                     }
                     String name = guiCRUDFProduct.getTxtName().getText();
@@ -501,7 +535,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
                     int id = Integer.parseInt(guiCRUDFProduct.getTxtId().getText());
                     float sellPrice = ParserFloat.stringToFloat(guiCRUDFProduct.getTxtSellPrice().getText());
                     try {
-                        crudFproduct.modify(id, name, subcategory_id, listP, listE, sellPrice, belong);
+                        crudFproduct.modify(id, name, subcategory_id, listP, listE, sellPrice, belong, listF);
                         JOptionPane.showMessageDialog(guiCRUDFProduct, "¡Producto modificado exitosamente!");
                         editingInformation = false;
                         guiCRUDFProduct.clicSaveProduct();
@@ -525,7 +559,6 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
             guiCRUDFProduct.getTxtSellPrice().setText("");
             guiCRUDFProduct.getTxtSuggestedPrice().setText("");
             guiCRUDFProduct.getBelong().setSelectedIndex(-1);
-            guiCRUDFProduct.getBelong().removeAllItems();
             guiCRUDFProduct.getCategory().setSelectedIndex(-1);
             guiCRUDFProduct.getCategory().removeAllItems();
             guiCRUDFProduct.getSubcategory().setSelectedIndex(-1);
@@ -548,7 +581,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
             try {
                 search();
             } catch (RemoteException ex) {
-                Logger.getLogger(ControllerGuiCRUDEproduct.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ControllerGuiCRUDFproduct.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         if (e.getSource() == guiCRUDFProduct.getBtnAddCategory()) { //crear una categoria nueva  

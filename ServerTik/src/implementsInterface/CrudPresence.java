@@ -48,9 +48,10 @@ public class CrudPresence extends UnicastRemoteObject implements InterfacePresen
         Base.openTransaction();
         Date now = new Date(System.currentTimeMillis());
         SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
-        Presence p = Presence.findFirst("user_id = ? and day = ?", userId, date.format(now));
-        if (p != null) {
+        List<Presence> listP = Presence.where("user_id = ? and day = '00:00:00'", userId).orderBy("id desc");
+        if (listP != null) {
             SimpleDateFormat hour = new SimpleDateFormat("HH:mm:ss");
+            Presence p = listP.get(0);
             p.set("departure_time", hour.format(now));
             p.saveIt();
             Base.commitTransaction();
@@ -85,5 +86,68 @@ public class CrudPresence extends UnicastRemoteObject implements InterfacePresen
             }
         }
         return listP;
+    }
+
+    @Override
+    public void logoutAllWaiters() throws RemoteException {
+         Utils.abrirBase();
+        Base.openTransaction();
+        Date now = new Date(System.currentTimeMillis());
+        SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+        List<Presence> listP = Presence.where("day = '00:00:00'");
+        for (Presence p : listP) {
+            if (User.findById(p.get("user_id")).getString("position").equals("Mozo")) {
+                SimpleDateFormat hour = new SimpleDateFormat("HH:mm:ss");
+                p.set("departure_time", hour.format(now));
+                p.saveIt();
+            }
+        }
+        Base.commitTransaction();
+    }
+
+    @Override
+    public List<Map> getPresences(int id, String dateFrom, String dateTo) throws RemoteException {
+        Utils.abrirBase();
+        List<Map> list = Presence.where("user_id = ? and (day BETWEEN ? AND ?)", id, dateFrom, dateTo).toMaps();
+        return list;
+    }
+
+    @Override
+    public List<Map> getPresences(int id, String date) throws RemoteException {
+        Utils.abrirBase();
+        List<Map> list = Presence.where("user_id = ? and day = ?", id, date).toMaps();
+        return list;
+    }
+
+    @Override
+    public void logoutAll() throws RemoteException {
+        Utils.abrirBase();
+        Base.openTransaction();
+        Date now = new Date(System.currentTimeMillis());
+        SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+        List<Presence> listP = Presence.where("day = '00:00:00'");
+        for (Presence p : listP) {
+            SimpleDateFormat hour = new SimpleDateFormat("HH:mm:ss");
+            p.set("departure_time", hour.format(now));
+            p.saveIt();
+        }
+        Base.commitTransaction();
+    }
+
+    @Override
+    public void logoutAllCooks() throws RemoteException {
+        Utils.abrirBase();
+        Base.openTransaction();
+        Date now = new Date(System.currentTimeMillis());
+        SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+        List<Presence> listP = Presence.where("day = '00:00:00'");
+        for (Presence p : listP) {
+            if (User.findById(p.get("user_id")).getString("position").equals("Cocinero")) {
+                SimpleDateFormat hour = new SimpleDateFormat("HH:mm:ss");
+                p.set("departure_time", hour.format(now));
+                p.saveIt();
+            }
+        }
+        Base.commitTransaction();
     }
 }

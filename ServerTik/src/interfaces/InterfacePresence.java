@@ -47,4 +47,52 @@ public interface InterfacePresence extends Remote {
      * @throws java.rmi.RemoteException
      */
     public List<Map> getCooks() throws java.rmi.RemoteException;
+    
+    /**
+     * desloguea a todos los mozos
+     *
+     * @throws java.rmi.RemoteException
+     */
+    public void logoutAllWaiters() throws java.rmi.RemoteException;
+    
+    /**
+     * devuelve las asistencias entre dos fechas de un user
+     *
+     * @param userId
+     * @param dateFrom
+     * @param dateTo
+     * 
+     * @return List<Map>
+     * @throws java.rmi.RemoteException
+     */
+    public List<Map> getPresences(int id, String dateFrom, String dateTo) throws java.rmi.RemoteException;
+    
+     /**
+     * devuelve las asistencias de un dia de un user
+     *
+     * @param userId
+     * @param date
+     * 
+     * @return List<Map>
+     * @throws java.rmi.RemoteException
+     */
+    public List<Map> getPresences(int id, String date) throws java.rmi.RemoteException;
+    
+    
+    /**
+     * desloguea a todos
+     *
+     * @throws java.rmi.RemoteException
+     */
+    public void logoutAll() throws java.rmi.RemoteException;
+    
+    /**
+     * desloguea a todos los cocineros
+     *
+     * @throws java.rmi.RemoteException
+     */
+    public void logoutAllCooks() throws java.rmi.RemoteException;
+    
+    
+    
 }
