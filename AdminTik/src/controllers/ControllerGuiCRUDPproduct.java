@@ -123,22 +123,23 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
         Iterator<Map> it = productList.iterator();
         while (it.hasNext()) {
             Map<String, Object> prod = it.next();
-            Object row[] = new String[6];
+            Object row[] = new String[5];
             row[0] = prod.get("id").toString();
             row[1] = prod.get("name").toString(); //NOMBRE
-            row[2] = ParserFloat.floatToString((float) prod.get("stock")); // STOCK 
-            row[3] = prod.get("measure_unit").toString(); // UNIDAD DE MEDIDA            
             if (prod.get("measure_unit").toString().equals("gr")) {
-                row[4] = ParserFloat.floatToString((float) prod.get("unit_price") * 1000); // PRECIO UNITARIO EN UNIDAD GRANDE
-                row[5] = "Kg";
+                row[2] = ParserFloat.floatToString((float) prod.get("stock") * 1000); // STOCK 
+                row[3] = ParserFloat.floatToString((float) prod.get("unit_price") * 1000); // PRECIO UNITARIO EN UNIDAD GRANDE
+                row[4] = "Kg";
             }
             if (prod.get("measure_unit").toString().equals("ml")) {
-                row[4] = ParserFloat.floatToString((float) prod.get("unit_price") * 1000); // PRECIO UNITARIO EN UNIDAD GRANDE
-                row[5] = "Litro";
+                row[2] = ParserFloat.floatToString((float) prod.get("stock") * 1000); // STOCK 
+                row[3] = ParserFloat.floatToString((float) prod.get("unit_price") * 1000); // PRECIO UNITARIO EN UNIDAD GRANDE
+                row[4] = "Litro";
             }
             if (prod.get("measure_unit").toString().equals("unitario")) {
-                row[4] = ParserFloat.floatToString((float) prod.get("unit_price")); // PRECIO UNITARIO
-                row[5] = "unitario";
+                row[2] = ParserFloat.floatToString((float) prod.get("stock")); // STOCK 
+                row[3] = ParserFloat.floatToString((float) prod.get("unit_price")); // PRECIO UNITARIO
+                row[4] = "unitario";
             }
             tableProductsDefault.addRow(row);
         }

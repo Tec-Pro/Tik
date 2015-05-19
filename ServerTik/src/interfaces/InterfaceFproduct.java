@@ -21,15 +21,17 @@ public interface InterfaceFproduct extends Remote {
      * @param name
      * @param subcategory_id
      * @param pProducts es una List<Pair<Integer,Float> con todos los id de
-     * productos primarios y cantidades que forman al producto elaborado
+     * productos primarios y cantidades que forman al producto final
      * @param eProducts es una List<Pair<Integer,Float> con todos los id de
-     * productos elaborados y cantidades que forman al producto elaborado
+     * productos elaborados y cantidades que forman al producto final
      * @param sellPrice
      * @param belong
+     * @param fProducts es una List<Pair<Integer,Float> con todos los id de
+     * productos finales y cantidades que forman al producto final
      * @return Map<String,Object>
      * @throws java.rmi.RemoteException
      */
-    public Map<String, Object> create(String name, int subcategory_id, List<Pair> pProducts, List<Pair> eProducts, float sellPrice, String belong) throws java.rmi.RemoteException;
+    public Map<String, Object> create(String name, int subcategory_id, List<Pair> pProducts, List<Pair> eProducts, float sellPrice, String belong, List<Pair> fProducts) throws java.rmi.RemoteException;
 
     /**
      * Modifica un producto final.
@@ -38,15 +40,17 @@ public interface InterfaceFproduct extends Remote {
      * @param name
      * @param subcategory_id
      * @param pProducts es una List<Pair<Integer,Float> con todos los id de
-     * productos primarios y cantidades que forman al producto elaborado
+     * productos primarios y cantidades que forman al producto final
      * @param eProducts es una List<Pair<Integer,Float> con todos los id de
-     * productos elaborados y cantidades que forman al producto elaborado
+     * productos elaborados y cantidades que forman al producto final
      * @param sellPrice
      * @param belong
+     * @param fProducts es una List<Pair<Integer,Float> con todos los id de
+     * productos finales y cantidades que forman al producto final
      * @return Map<String,Object>
      * @throws java.rmi.RemoteException
      */
-    public Map<String, Object> modify(int id, String name, int subcategory_id, List<Pair> pProducts, List<Pair> eProducts, float sellPrice, String belong) throws java.rmi.RemoteException;
+    public Map<String, Object> modify(int id, String name, int subcategory_id, List<Pair> pProducts, List<Pair> eProducts, float sellPrice, String belong, List<Pair> fProducts) throws java.rmi.RemoteException;
 
     /**
      * Elimina un producto final.
@@ -93,6 +97,15 @@ public interface InterfaceFproduct extends Remote {
     public List<Map> getEproducts(int id) throws java.rmi.RemoteException;
 
     /**
+     * Dado un producto final retonra todos sus productos finales
+     *
+     * @param id
+     * @return List<Map>
+     * @throws java.rmi.RemoteException
+     */
+    public List<Map> getFproducts(int id) throws java.rmi.RemoteException;
+
+    /**
      * Retorna todos los productos fianles.
      *
      * @param name o id
@@ -113,7 +126,7 @@ public interface InterfaceFproduct extends Remote {
     /**
      * Retorna la relacion fproducto eproducto
      *
-     * @param eProductName
+     * @param idFproduct
      * @return List<Map>
      * @throws java.rmi.RemoteException
      */
@@ -127,4 +140,13 @@ public interface InterfaceFproduct extends Remote {
      * @throws java.rmi.RemoteException
      */
     public float calculateProductionPrice(int idFproduct) throws java.rmi.RemoteException;
+
+    /**
+     * Retorna la relacion fproducto fproducto
+     *
+     * @param idFproduct
+     * @return List<Map>
+     * @throws java.rmi.RemoteException
+     */
+    public List<Map> getFproductFproduts(int idFproduct) throws java.rmi.RemoteException;
 }
