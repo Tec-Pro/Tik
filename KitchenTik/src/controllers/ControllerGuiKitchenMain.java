@@ -10,12 +10,16 @@ import gui.login.GuiOnlineUsers;
 import gui.main.GuiKitchenMain;
 import gui.order.GuiKitchenOrderDetails;
 import interfaces.InterfaceFproduct;
+import interfaces.InterfaceGeneralConfig;
 import interfaces.InterfaceOrder;
 import interfaces.InterfacePresence;
 import interfaces.InterfaceUser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -31,9 +35,12 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
 import utils.InterfaceName;
 import utils.Pair;
 
@@ -43,6 +50,7 @@ import utils.Pair;
  */
 public class ControllerGuiKitchenMain implements ActionListener {
 
+    private static InterfaceGeneralConfig generalConfig;
     private static InterfaceOrder crudOrder;
     private static LinkedList<Integer> orderList;
     private final Set<Map> online; // set con los cocineros online
@@ -53,6 +61,10 @@ public class ControllerGuiKitchenMain implements ActionListener {
     private static GuiKitchenOrderDetails guiOrderDetails;
     private static GuiKitchenMain guiKitchenMain;
     private static DefaultTableModel dtmOrderDetails;
+    private static Timer timer;
+    private static final Integer time = 10000;//tiempo de intervalo de actualizacion de retrasos
+    private static Player player;
+    private static final String soundPath = System.getProperty("user.dir") + "/sounds/alarma.mp3";
 
     /**
      *
@@ -66,6 +78,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
         crudPresence = (InterfacePresence) InterfaceName.registry.lookup(InterfaceName.CRUDPresence);
         crudUser = (InterfaceUser) InterfaceName.registry.lookup(InterfaceName.CRUDUser);
         crudFProduct = (InterfaceFproduct) InterfaceName.registry.lookup(InterfaceName.CRUDFproduct);
+        generalConfig = (InterfaceGeneralConfig) InterfaceName.registry.lookup(InterfaceName.GeneralConfig);
         online = new HashSet<>();
         for (Map m : crudPresence.getCooks()) {
             online.add(m);
@@ -83,6 +96,50 @@ public class ControllerGuiKitchenMain implements ActionListener {
         guiLogin = null;
         //traigo todos los pedidos que estan abiertos
         refreshOpenOrders();
+
+        //controlo cada 1minuto si hay algun pedido retrasado
+        timer = new Timer(time, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                //Aca tengo que poner que hago cada cierto tiempo "time"
+                
+                //aca muestro como reproducir un sonido solamente
+                stopSound();
+                playSound();
+            }
+        }
+        );
+        timer.start();
+    }
+
+    //Detiene el sonido que avisa sobre un retraso en un pedido
+    public void stopSound() {
+        if (player != null) {
+            player.close();
+        }
+    }
+
+    //Inicia el sonido que avisa sobre retraso en un pedido
+    public void playSound() {
+        try {
+            FileInputStream fis = new FileInputStream(soundPath);
+            BufferedInputStream bis = new BufferedInputStream(fis);
+            player = new Player(bis);
+        } catch (FileNotFoundException | JavaLayerException e) {
+            System.out.println(e);
+        }
+        // correo el proceso en un nuevo hilo para deterner la ejecucion del programa
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    player.play();
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            }
+        }.start();
+
     }
 
     private static void loadGuiOrderDetails(int order, String desc, String arrival) throws RemoteException {
