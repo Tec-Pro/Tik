@@ -15,8 +15,11 @@ import implementsInterface.CrudPresence;
 import implementsInterface.CrudProvider;
 import implementsInterface.CrudProviderCategory;
 import implementsInterface.CrudUser;
+import implementsInterface.GeneralConfig;
 import implementsInterface.Server;
 import implementsInterface.providers.purchase.CRUDPurchase;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.NetworkInterface;
@@ -38,7 +41,7 @@ public class ServerTik {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws RemoteException, MalformedURLException, InterruptedException, UnknownHostException, SocketException {
+    public static void main(String[] args) throws RemoteException, MalformedURLException, InterruptedException, UnknownHostException, SocketException, IOException {
 
         Enumeration<NetworkInterface> n = NetworkInterface.getNetworkInterfaces();
         for (; n.hasMoreElements();) {
@@ -76,6 +79,11 @@ public class ServerTik {
         CrudProviderCategory CRUDProviderCategory = new CrudProviderCategory();
         ProvidersSearch providerSearch = new ProvidersSearch();
         CrudPresence CRUDPresence = new CrudPresence();
+        GeneralConfig generalConfig = new GeneralConfig();
+        
+        //Cargo las configuraciones generales
+        generalConfig.loadProperties();
+
         //Asocio el objeto remoto 's' a la direccion de mi host seguida de un /nombreAsociado
         Naming.rebind(InterfaceName.CRUDAdmin, CRUDAdmin);
         Naming.rebind(InterfaceName.CRUDPproduct, CRUDPproduct);
@@ -90,6 +98,7 @@ public class ServerTik {
         Naming.rebind(InterfaceName.CRUDPresence, CRUDPresence);
         Naming.rebind(InterfaceName.CRUDOrder, CRUDOrder);
         Naming.rebind(InterfaceName.server, server);
+        Naming.rebind(InterfaceName.GeneralConfig, generalConfig);
 
     }
 

@@ -5,6 +5,8 @@
  */
 package interfaces;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -19,4 +21,6 @@ public interface InterfaceGeneralConfig extends Remote{
     public void loadProperties() throws RemoteException;
             
     public void createDefaultProperties() throws RemoteException;
+    
+    public String getDelayTime() throws RemoteException;
 }
