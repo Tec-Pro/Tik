@@ -8,6 +8,7 @@ import controller.controllerGuiOrder.ControllerGuiOrder;
 import gui.login.GuiLogin;
 import gui.GuiMain;
 import gui.GuiMenuDetail;
+import gui.GuiPanelNew;
 import gui.login.ComponentUserLoginBtn;
 import gui.order.GuiOrder;
 import interfaces.InterfaceFproduct;
@@ -51,24 +52,22 @@ public class ControllerGuiMain implements ActionListener {
     private Map buttons; //Nos sirve para almacenar a los objetos creados
     private Map buttonsOrder;
     private static Set<Map> online;
-    private GuiOrder guiOrder;
-    ControllerGuiOrder controllerGuiOrder;
+    private static GuiOrder guiOrder;
+    static ControllerGuiOrder controllerGuiOrder;
     private boolean isNewOrder;  //variable de control, para saber que accion se ejecuta.
     private static boolean ordersUpdated; //variable estatica para saber cuando la cocina actualizo un pedido 
     private static InterfaceOrder crudOrder;
     private static InterfaceFproduct crudFproduct;
     private static Map orders; //Nos sirve para almacenar a los objetos creados
-    private static GuiMenuDetail menuDetail; //para trabajar más facil
     private static boolean seeOrder;  //variable de control, para saber que accion se ejecuta.
     private static int orderClic;
+    private static int idWaiter; //id del mozo que esta en esta ventana
 
     public ControllerGuiMain() throws NotBoundException, MalformedURLException, RemoteException {
         guiMain = new GuiMain();
         buttons = new HashMap();
         orders = new HashMap();
         buttonsOrder = new HashMap();
-        guiMain.setVisible(true);
-        guiMain.setExtendedState(JFrame.MAXIMIZED_BOTH);
         crudUser = (InterfaceUser) InterfaceName.registry.lookup(InterfaceName.CRUDUser);
         crudPresence = (InterfacePresence) InterfaceName.registry.lookup(InterfaceName.CRUDPresence);
         online = new HashSet<Map>();
@@ -99,11 +98,10 @@ public class ControllerGuiMain implements ActionListener {
      * @param orderId
      */
     public static void UpdateOrder() throws RemoteException {
-
         Thread thread = new Thread() {
             public void run() {
                 try {
-                    loadOrders(-1);
+                    loadOrders(idWaiter);
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -112,6 +110,15 @@ public class ControllerGuiMain implements ActionListener {
         };
 
         thread.start();
+    }
+
+    /**
+     * setea el mensaje "demorado" al pedido con id pasado por parametro
+     *
+     * @param id
+     */
+    public void OrderDelayed(int id) {
+        guiMain.OrderDelayed(id);
     }
 
     public void addMyComponent(String user) {
@@ -249,10 +256,24 @@ public class ControllerGuiMain implements ActionListener {
      */
     private static void loadOrders(int idUser) throws RemoteException {
         clearAllOrders();
+        GuiPanelNew newButton = new GuiPanelNew();
+        newButton.getLblNew().addMouseListener(new MouseAdapter() {//agrego un mouselistener
+            @Override
+            public void mousePressed(MouseEvent e) {
+                guiOrder.setLocationRelativeTo(null);
+                controllerGuiOrder.setIds(null, idWaiter);
+                guiOrder.setVisible(true);
+                try {
+                    controllerGuiOrder.CreateTree();
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        guiMain.addPanelNewOrder(newButton);
         List<Map> ordersNotClosed = crudOrder.getActiveOrdersByUser(idUser);
         for (Map ord : ordersNotClosed) {
             String details = "";
-            String nameWaiter = (String) (crudUser.getUser((int) ord.get("user_id"))).get("name");
 
             List<Map> products = crudOrder.getOrderProducts((int) ord.get("id"));
             int productsReady = 0;
@@ -272,27 +293,47 @@ public class ControllerGuiMain implements ActionListener {
                 @Override
                 public void mousePressed(MouseEvent e) {
                     if (e.getClickCount() == 2) {
+                        orderClic = newOrder.getIdOrder();
+                        guiOrder.setLocationRelativeTo(null);
+                        controllerGuiOrder.setIds(orderClic, idWaiter);
+                        guiOrder.setVisible(true);
                         try {
-                            if (online.contains(crudUser.getUser(newOrder.getIdWaiter()))) {
-                                seeOrder = true;
-                                orderClic = newOrder.getIdOrder();
-                                Set<Map> usr = new HashSet<Map>();
-                                usr.add(crudUser.getUser(newOrder.getIdWaiter()));
-                                guiLogin.loadCBoxUsers(usr);
-                                guiLogin.getcBoxUsers().setSelectedIndex(0);
-                                guiLogin.getcBoxUsers().setEnabled(false);
-                                guiLogin.setLocationRelativeTo(null);
-                                guiLogin.setVisible(true);
-                            } else {
-                                JOptionPane.showMessageDialog(guiMain, "Ocurrió un error, usuario no logeado", "Error!", JOptionPane.ERROR_MESSAGE);
-                            }
+                            controllerGuiOrder.CreateTree();
                         } catch (RemoteException ex) {
                             Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
                         }
+//                        try {
+//                            if (online.contains(crudUser.getUser(newOrder.getIdWaiter()))) {
+//                                seeOrder = true;
+//                                orderClic = newOrder.getIdOrder();
+//                                Set<Map> usr = new HashSet<Map>();
+//                                usr.add(crudUser.getUser(newOrder.getIdWaiter()));
+//                                guiLogin.loadCBoxUsers(usr);
+//                                guiLogin.getcBoxUsers().setSelectedIndex(0);
+//                                guiLogin.getcBoxUsers().setEnabled(false);
+//                                guiLogin.setLocationRelativeTo(null);
+//                                guiLogin.setVisible(true);
+//                            } else {
+//                                JOptionPane.showMessageDialog(guiMain, "Ocurrió un error, usuario no logeado", "Error!", JOptionPane.ERROR_MESSAGE);
+//                            }
+//                        } catch (RemoteException ex) {
+//                            Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
+//                        }
                     }
                 }
             });
-            menuDetail = newOrder;
+            newOrder.getLblDone().addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    System.out.println("done id=" + newOrder.getIdOrder());
+                }
+            });
+            newOrder.getLblCommited().addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    System.out.println("commited id=" + newOrder.getIdOrder());
+                }
+            });
             int status = -1;
             if (productsCommited == products.size() && productsReady == productsCommited) {
                 status = 0;
@@ -311,29 +352,29 @@ public class ControllerGuiMain implements ActionListener {
             }
             switch (status) {
                 case 0:
-                    menuDetail.setColor(0);
-                    menuDetail.setOrder(ord, details, nameWaiter);
-                    guiMain.addPausedOrder(menuDetail);
+                    newOrder.setColor(0);
+                    newOrder.setOrder(ord, details);
+                    guiMain.addActiveOrder(newOrder);
                     break;
 
                 case 3:
                     //poner el pedido en rojo, ningun producto esta listo
-                    menuDetail.setColor(3);
-                    menuDetail.setOrder(ord, details, nameWaiter);
-                    guiMain.addActiveOrder(menuDetail);
+                    newOrder.setColor(3);
+                    newOrder.setOrder(ord, details);
+                    guiMain.addActiveOrder(newOrder);
                     break;
 
                 case 2:
                     //poner el pedido en amarillo , hay producto listos pero no todos
-                    menuDetail.setColor(2);
-                    menuDetail.setOrder(ord, details, nameWaiter);
-                    guiMain.addActiveOrder(menuDetail);
+                    newOrder.setColor(2);
+                    newOrder.setOrder(ord, details);
+                    guiMain.addActiveOrder(newOrder);
                     break;
                 case 1:
                     //poner pedido en verde , todos los productos estan listos
-                    menuDetail.setColor(1);
-                    menuDetail.setOrder(ord, details, nameWaiter);
-                    guiMain.addActiveOrder(menuDetail);
+                    newOrder.setColor(1);
+                    newOrder.setOrder(ord, details);
+                    guiMain.addActiveOrder(newOrder);
                     break;
 
             }
@@ -344,5 +385,18 @@ public class ControllerGuiMain implements ActionListener {
     private static void clearAllOrders() {
         guiMain.clearAllOrders();
         orders.clear();
+    }
+
+    /**
+     * carga la ventana para el usuario con el id pasado por parametro Al
+     * presionar su nombre en la ventana de login se llamara a este metodo
+     *
+     * @param id
+     */
+    public void waiterInit(int id) throws RemoteException {
+        idWaiter = id;
+        guiMain.setVisible(true);
+        guiMain.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        loadOrders(id);
     }
 }

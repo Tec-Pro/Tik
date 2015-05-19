@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.event.MouseListener;
 import java.util.List;
 import java.util.Map;
+import javax.swing.JLabel;
 import javax.swing.JTextArea;
 
 /**
@@ -35,8 +36,8 @@ public class GuiMenuDetail extends javax.swing.JPanel {
     public void setColor(int color) {
         switch (color) {
             case 0:
-                setBackground(Color.WHITE);
-                txtDetail.setBackground(Color.WHITE);
+                setBackground(new Color(0,0,0,65));
+                txtDetail.setBackground(new Color(0,0,0,65));
                 break;
             case 1:
                 setBackground(new java.awt.Color(25, 169, 42));
@@ -53,14 +54,19 @@ public class GuiMenuDetail extends javax.swing.JPanel {
         }
     }
 
-    public void setOrder(Map order, String detail, String name) {
-        lblId.setText("PEDIDO: " + order.get("order_number").toString());
+    public void setOrder(Map order, String detail) {
+        lblId.setText("N° " + order.get("order_number").toString());
         txtDetail.setText(detail);
-        lblWaiter.setText(name);
         idOrder = (int) order.get("id");
         idWaiter = (int) order.get("user_id");
     }
-
+    
+    public void setBelated(boolean b){
+        if (b)
+            lblBelated.setText("DEMORADO");
+        else
+            lblBelated.setText("");
+    }
     /**
      * retorna el id de la orden que posee este pedido
      *
@@ -78,6 +84,16 @@ public class GuiMenuDetail extends javax.swing.JPanel {
         return idWaiter;
     }
 
+    public JLabel getLblCommited() {
+        return lblCommited;
+    }
+
+    public JLabel getLblDone() {
+        return lblDone;
+    }
+    
+    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -89,65 +105,81 @@ public class GuiMenuDetail extends javax.swing.JPanel {
 
         lblId = new javax.swing.JLabel();
         lblTime = new javax.swing.JLabel();
-        lblWaiter = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtDetail = new javax.swing.JTextArea();
+        lblBelated = new javax.swing.JLabel();
+        lblDone = new javax.swing.JLabel();
+        lblCommited = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(253, 216, 47));
         setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        setMaximumSize(new java.awt.Dimension(304, 304));
-        setMinimumSize(new java.awt.Dimension(304, 304));
-        setPreferredSize(new java.awt.Dimension(304, 304));
+        setMaximumSize(new java.awt.Dimension(230, 230));
+        setMinimumSize(new java.awt.Dimension(230, 230));
+        setPreferredSize(new java.awt.Dimension(230, 230));
 
         lblId.setFont(new java.awt.Font("Cantarell", 1, 24)); // NOI18N
-        lblId.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblId.setText("PEDIDO 5");
+        lblId.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblId.setText("N° 5 -");
 
         lblTime.setFont(new java.awt.Font("Cantarell", 1, 24)); // NOI18N
         lblTime.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTime.setText("19:25");
 
-        lblWaiter.setFont(new java.awt.Font("Cantarell", 1, 24)); // NOI18N
-        lblWaiter.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblWaiter.setText("PEDRO");
-
         txtDetail.setEditable(false);
         txtDetail.setBackground(new java.awt.Color(253, 216, 47));
-        txtDetail.setColumns(20);
+        txtDetail.setColumns(14);
         txtDetail.setRows(5);
         txtDetail.setAutoscrolls(false);
         jScrollPane1.setViewportView(txtDetail);
+
+        lblBelated.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
+        lblBelated.setText("DEMORADO");
+
+        lblDone.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/close_icon.png"))); // NOI18N
+
+        lblCommited.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/done_icon.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(lblTime, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblWaiter, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
-                .addContainerGap())
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
+                .addComponent(lblId, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblTime)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblDone))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(lblBelated, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(54, 54, 54)
+                .addComponent(lblCommited, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(lblId, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblId, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTime, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblDone))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblTime, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblWaiter, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblBelated, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblCommited)))
+                .addContainerGap(1, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblBelated;
+    private javax.swing.JLabel lblCommited;
+    private javax.swing.JLabel lblDone;
     private javax.swing.JLabel lblId;
     private javax.swing.JLabel lblTime;
-    private javax.swing.JLabel lblWaiter;
     private javax.swing.JTextArea txtDetail;
     // End of variables declaration//GEN-END:variables
 }

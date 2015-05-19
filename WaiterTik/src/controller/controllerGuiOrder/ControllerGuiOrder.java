@@ -36,6 +36,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -142,10 +143,36 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
             }
 
         });
+        guiOrder.getTableProducts().addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                //Si se hace doble click en la tabla de categorías del proveedor.
+                if (evt.getClickCount() == 2) {
+                    JTable target = (JTable) evt.getSource();
+                    if (target.getSelectedRow() != -1) {
+                        //Elimino la categoría de la tabla.
+                        removeRowProviderCategoriesTable();
+                    }
+                }
+            }
+        });
         CreateTree();
         loadProducts();
     }
 
+    
+     private void removeRowProviderCategoriesTable() {
+        int selectedRow = guiOrder.getTableProducts().getSelectedRow();
+        DefaultTableModel categoryModel = ((DefaultTableModel) guiOrder.getTableProductsDefault());
+        //Me fijo el id de la categoría seleccionada.
+        boolean isDone = (boolean) guiOrder.getTableProducts().getValueAt(selectedRow, 6);
+        if(isDone){
+            JOptionPane.showMessageDialog(guiOrder, "Producto ya enviado, no se puede modificar", "Error", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else{
+            categoryModel.removeRow(selectedRow);
+        }
+    }
 //    public void addMyComponent(String user) {
 //        //instancia nueva a componente
 //        ComponentOrderBtn OrderBtn = new ComponentOrderBtn(user);
