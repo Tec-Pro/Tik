@@ -42,7 +42,7 @@ public class GuiPanelNew extends javax.swing.JPanel {
         lblNew = new javax.swing.JLabel();
 
         setBackground(java.awt.Color.white);
-        setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        setBorder(null);
         setMaximumSize(new java.awt.Dimension(230, 230));
         setMinimumSize(new java.awt.Dimension(230, 230));
         setOpaque(false);
@@ -61,7 +61,7 @@ public class GuiPanelNew extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblNew, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+            .addComponent(lblNew, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 

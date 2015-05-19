@@ -28,4 +28,6 @@ public class InterfaceName {
     public static final String CRUDOrder = "CRUDOrder";
     public static final String server = "Server";
     public static Registry registry;
+    public static final String GeneralConfig = "GeneralConfig";
+
 }

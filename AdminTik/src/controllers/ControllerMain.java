@@ -20,6 +20,7 @@ import gui.main.GuiConfig;
 import gui.main.GuiMain;
 import gui.providers.GuiCRUDProviders;
 import gui.providers.purchases.GuiPurchase;
+import interfaces.InterfaceGeneralConfig;
 import interfaces.providers.InterfaceProvider;
 import interfaces.providers.InterfaceProviderCategory;
 import interfaces.providers.InterfaceProvidersSearch;
@@ -27,6 +28,7 @@ import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -49,7 +51,10 @@ public class ControllerMain implements ActionListener {
 
     public static GuiMain guiMain; //interfaz principal con el desktop, publico para los Dialog.
     private static Map<String, Object> userLogged; //usuario logeado
-
+    
+    //interface configuracion de propiedades en el servidor
+    private static InterfaceGeneralConfig generalConfig;
+    
     //guis
     private static GuiAdminLogin guiAdminLogin; //para poder cerrar sesión
     private static GuiCRUDAdmin guiCRUDAdmin; //gui del crud de admin
@@ -74,6 +79,7 @@ public class ControllerMain implements ActionListener {
     private ControllerGuiMenu controllerGuiMenu;
     private ControllerGuiPurchase controllerGuiPurchase;
 
+    
     public ControllerMain(GuiAdminLogin guiAdminLogin) throws NotBoundException, MalformedURLException, RemoteException {
         this.guiAdminLogin = guiAdminLogin; //hago esto, así si cierra sesión pongo en visible la ventana
         guiMain = new GuiMain();
@@ -115,7 +121,8 @@ public class ControllerMain implements ActionListener {
         InterfaceProvider provider = (InterfaceProvider) InterfaceName.registry.lookup(InterfaceName.CRUDProvider);
         InterfaceProviderCategory providerCategory = (InterfaceProviderCategory) InterfaceName.registry.lookup(InterfaceName.CRUDProviderCategory);
         InterfaceProvidersSearch providersSearch = (InterfaceProvidersSearch) InterfaceName.registry.lookup(InterfaceName.providersSearch);
-
+        generalConfig = (InterfaceGeneralConfig) InterfaceName.registry.lookup(InterfaceName.GeneralConfig);
+        
         //creo los controladores 
         controllerCRUDAdmin = new ControllerGuiCRUDAdmin(userLogged, guiCRUDAdmin);
         controllerCRUDEProduct = new ControllerGuiCRUDEproduct(guiCRUDEProduct);
@@ -260,10 +267,16 @@ public class ControllerMain implements ActionListener {
         //boton configuracion
         if (ae.getSource() == guiMain.getBtnConfig()) {
             GuiConfig guiConfig = new GuiConfig(guiMain, true);
+            try {
+                guiConfig.setTxtDelayTime(generalConfig.getDelayTime());
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
             guiConfig.setLocationRelativeTo(guiMain);
             guiConfig.setVisible(true);
             if (guiConfig.getStatus() == 1) {
                 try {
+                    generalConfig.saveProperties(guiConfig.getTxtDelayTime());
                     GeneralConfig.saveProperties(guiConfig.getPercent());
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(guiMain, "Error al guardar configuracion: " + ex.getMessage());

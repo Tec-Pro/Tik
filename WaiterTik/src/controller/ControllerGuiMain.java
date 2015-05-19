@@ -77,13 +77,13 @@ public class ControllerGuiMain implements ActionListener {
         guiLogin.setActionListener(this);
         crudOrder = (InterfaceOrder) InterfaceName.registry.lookup(InterfaceName.CRUDOrder);
         crudFproduct = (InterfaceFproduct) InterfaceName.registry.lookup(InterfaceName.CRUDFproduct);
-        for (Map m : crudPresence.getWaiters()) {
-            online.add(m);
-            String usr = (int) m.get("id") + "-" + (String) m.get("name") + " " + (String) m.get("surname");
-            addMyComponent(usr);
-        }
+//        for (Map m : crudPresence.getWaiters()) {
+//            online.add(m);
+//            String usr = (int) m.get("id") + "-" + (String) m.get("name") + " " + (String) m.get("surname");
+//            addMyComponent(usr);
+//        }
         loadOrders(-1);
-        guiMain.setActionListener(this);
+//        guiMain.setActionListener(this);
         seeOrder = false;
 
     }
@@ -121,17 +121,17 @@ public class ControllerGuiMain implements ActionListener {
         guiMain.OrderDelayed(id);
     }
 
-    public void addMyComponent(String user) {
-        //instancia nueva a componente
-        ComponentUserLoginBtn cULBtn = new ComponentUserLoginBtn(user);
-        cULBtn.btn.addActionListener(this);//escucha eventos
-        cULBtn.setSize(guiMain.getBtnLogin().getSize());
-        guiMain.getPanelLogin().add(cULBtn);//se añade al jpanel 
-        guiMain.getPanelLogin().revalidate();
-        cULBtn.setVisible(true);
-        //se añade al MAP
-        this.buttons.put(user, cULBtn);
-    }
+//    public void addMyComponent(String user) {
+//        //instancia nueva a componente
+//        ComponentUserLoginBtn cULBtn = new ComponentUserLoginBtn(user);
+//        cULBtn.btn.addActionListener(this);//escucha eventos
+//        cULBtn.setSize(guiMain.getBtnLogin().getSize());
+//        guiMain.getPanelLogin().add(cULBtn);//se añade al jpanel 
+//        guiMain.getPanelLogin().revalidate();
+//        cULBtn.setVisible(true);
+//        //se añade al MAP
+//        this.buttons.put(user, cULBtn);
+//    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -157,94 +157,94 @@ public class ControllerGuiMain implements ActionListener {
             }
         }
 
-        if (e.getSource() == guiMain.getBtnLogin()) {
-            try {
-                seeOrder = false;
-                Set<Map> offline = new HashSet<Map>();
-                offline.addAll(crudUser.getWaiters());
-                offline.removeAll(online);
-                if (offline.isEmpty()) {
-                    JOptionPane.showMessageDialog(guiMain, "Ocurrió un error, ya estan todos los usuarios logueados", "Error!", JOptionPane.ERROR_MESSAGE);
-                } else {
-                    guiLogin.loadCBoxUsers(offline);
-                    guiLogin.setLocationRelativeTo(null);
-                    guiLogin.setVisible(true);
-                }
-            } catch (RemoteException ex) {
-                Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        if (e.getSource() == guiMain.getBtnSeeAll()) {
-            try {
-                loadOrders(-1);
-            } catch (RemoteException ex) {
-                Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-        if (e.getSource() == guiLogin.getBtnAccept()) {
-            String user = guiLogin.getcBoxUsers().getItemAt(guiLogin.getcBoxUsers().getSelectedIndex()).toString();
-            String split[] = user.split("-");
-            int userId = Integer.parseInt(split[0]);
-            if (seeOrder) {
-                guiLogin.setVisible(false);
-                guiOrder.setLocationRelativeTo(null);
-                controllerGuiOrder.setIds(orderClic, userId);
-                guiOrder.setVisible(true);
-                try {
-                    controllerGuiOrder.CreateTree();
-                } catch (RemoteException ex) {
-                    Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } else {
-                try {
-                    //crudUser.validatePass(userId, guiLogin.getTxtPass().getText())
-                    if (true) {
-                        if (isNewOrder) {
-                            guiLogin.setVisible(false);
-                            guiOrder.setLocationRelativeTo(null);
-                            controllerGuiOrder.setIds(null, userId);
-                            guiOrder.setVisible(true);
-                            try {
-                                controllerGuiOrder.CreateTree();
-                            } catch (RemoteException ex) {
-                                Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        } else {
-                            addMyComponent(user);
-                            crudPresence.create(userId);
-                            guiLogin.setVisible(false);
-                            online.add(crudUser.getUser(userId));
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(guiMain, "Ocurrió un error, contraseña incorrecta", "Error!", JOptionPane.ERROR_MESSAGE);
-                    }
-                } catch (RemoteException ex) {
-                    Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-        if (e.getSource() == guiLogin.getBtnCancel()) {
-            guiLogin.setVisible(false);
-        }
-        if (e.getSource().equals(guiMain.getBtnNew())) {
-            if (online.isEmpty()) {
-                JOptionPane.showMessageDialog(guiMain, "Ocurrió un error, no hay mozos logueado", "Error!", JOptionPane.ERROR_MESSAGE);
-            } else {
-                try {
-                    isNewOrder = true;
-                    seeOrder = false;
-                    Set<Map> offline = new HashSet<Map>();
-                    offline.addAll(crudUser.getWaiters());
-                    guiLogin.loadCBoxUsers(offline);
-                    guiLogin.getcBoxUsers().setEnabled(true);
-                    guiLogin.setLocationRelativeTo(null);
-                    guiLogin.setVisible(true);
-                } catch (RemoteException ex) {
-                    Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
+//        if (e.getSource() == guiMain.getBtnLogin()) {
+//            try {
+//                seeOrder = false;
+//                Set<Map> offline = new HashSet<Map>();
+//                offline.addAll(crudUser.getWaiters());
+//                offline.removeAll(online);
+//                if (offline.isEmpty()) {
+//                    JOptionPane.showMessageDialog(guiMain, "Ocurrió un error, ya estan todos los usuarios logueados", "Error!", JOptionPane.ERROR_MESSAGE);
+//                } else {
+//                    guiLogin.loadCBoxUsers(offline);
+//                    guiLogin.setLocationRelativeTo(null);
+//                    guiLogin.setVisible(true);
+//                }
+//            } catch (RemoteException ex) {
+//                Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
+//        if (e.getSource() == guiMain.getBtnSeeAll()) {
+//            try {
+//                loadOrders(-1);
+//            } catch (RemoteException ex) {
+//                Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
+//
+//        if (e.getSource() == guiLogin.getBtnAccept()) {
+//            String user = guiLogin.getcBoxUsers().getItemAt(guiLogin.getcBoxUsers().getSelectedIndex()).toString();
+//            String split[] = user.split("-");
+//            int userId = Integer.parseInt(split[0]);
+//            if (seeOrder) {
+//                guiLogin.setVisible(false);
+//                guiOrder.setLocationRelativeTo(null);
+//                controllerGuiOrder.setIds(orderClic, userId);
+//                guiOrder.setVisible(true);
+//                try {
+//                    controllerGuiOrder.CreateTree();
+//                } catch (RemoteException ex) {
+//                    Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            } else {
+//                try {
+//                    //crudUser.validatePass(userId, guiLogin.getTxtPass().getText())
+//                    if (true) {
+//                        if (isNewOrder) {
+//                            guiLogin.setVisible(false);
+//                            guiOrder.setLocationRelativeTo(null);
+//                            controllerGuiOrder.setIds(null, userId);
+//                            guiOrder.setVisible(true);
+//                            try {
+//                                controllerGuiOrder.CreateTree();
+//                            } catch (RemoteException ex) {
+//                                Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
+//                            }
+//                        } else {
+//                            addMyComponent(user);
+//                            crudPresence.create(userId);
+//                            guiLogin.setVisible(false);
+//                            online.add(crudUser.getUser(userId));
+//                        }
+//                    } else {
+//                        JOptionPane.showMessageDialog(guiMain, "Ocurrió un error, contraseña incorrecta", "Error!", JOptionPane.ERROR_MESSAGE);
+//                    }
+//                } catch (RemoteException ex) {
+//                    Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        }
+//        if (e.getSource() == guiLogin.getBtnCancel()) {
+//            guiLogin.setVisible(false);
+//        }
+//        if (e.getSource().equals(guiMain.getBtnNew())) {
+//            if (online.isEmpty()) {
+//                JOptionPane.showMessageDialog(guiMain, "Ocurrió un error, no hay mozos logueado", "Error!", JOptionPane.ERROR_MESSAGE);
+//            } else {
+//                try {
+//                    isNewOrder = true;
+//                    seeOrder = false;
+//                    Set<Map> offline = new HashSet<Map>();
+//                    offline.addAll(crudUser.getWaiters());
+//                    guiLogin.loadCBoxUsers(offline);
+//                    guiLogin.getcBoxUsers().setEnabled(true);
+//                    guiLogin.setLocationRelativeTo(null);
+//                    guiLogin.setVisible(true);
+//                } catch (RemoteException ex) {
+//                    Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        }
     }
 
     /**
