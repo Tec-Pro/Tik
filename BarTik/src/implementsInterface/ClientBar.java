@@ -29,7 +29,7 @@ public class ClientBar extends UnicastRemoteObject implements InterfaceClientBar
 
     @Override
     public void newOrder(Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
-        ControllerGuiBarMain.addOrder(order);
+        ControllerGuiBarMain.addBarOrder(order);
     }
 
     @Override

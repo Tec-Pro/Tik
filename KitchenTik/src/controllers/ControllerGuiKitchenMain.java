@@ -9,6 +9,7 @@ import gui.login.GuiLogin;
 import gui.login.GuiOnlineUsers;
 import gui.main.GuiKitchenMain;
 import gui.order.GuiKitchenOrderDetails;
+import gui.order.GuiKitchenOrderPane;
 import interfaces.InterfaceFproduct;
 import interfaces.InterfaceGeneralConfig;
 import interfaces.InterfaceOrder;
@@ -60,6 +61,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
     private GuiLogin guiLogin;
     private static GuiKitchenOrderDetails guiOrderDetails;
     private static GuiKitchenMain guiKitchenMain;
+    private static GuiKitchenOrderPane guiOrderPane;
     private static DefaultTableModel dtmOrderDetails;
     private static Timer timer;
     private static final Integer time = 10000;//tiempo de intervalo de actualizacion de retrasos
@@ -89,9 +91,11 @@ public class ControllerGuiKitchenMain implements ActionListener {
         dtmOrderDetails = guiOrderDetails.getDefaultTableModelOrderProducts();
 
         guiKitchenMain = new GuiKitchenMain();
+        guiOrderPane = new GuiKitchenOrderPane();
         guiKitchenMain.setVisible(true);
         guiKitchenMain.setActionListener(this);
         guiOrderDetails.setActionListener(this);
+        guiOrderPane.setActionListener(this);
 
         guiLogin = null;
         //traigo todos los pedidos que estan abiertos
@@ -243,8 +247,12 @@ public class ControllerGuiKitchenMain implements ActionListener {
             desc = aux;
             //concateno id de pedido mas el nombre del mozo que lo pidio
             String orderName = order.first().get("order_number").toString() + " - " + (crudUser.getUser(Integer.parseInt((order.first().get("user_id")).toString()))).get("name");
-            guiKitchenMain.addElementToOrdersGrid(orderName, desc, dateFormat.format(date),
-                    new java.awt.event.MouseAdapter() {
+            guiOrderPane = new GuiKitchenOrderPane();
+            guiOrderPane.getTxtOrderDescription().setText(desc);
+            guiOrderPane.getTimeOrderArrival().setText(dateFormat.format(date));
+            guiOrderPane.getOrderNumber().setText(orderName);
+            guiOrderPane.addMouseListener(new java.awt.event.MouseAdapter() {
+                    
                         @Override
                         public void mouseClicked(MouseEvent e) {
                             if (e.getClickCount() == 2) {
@@ -256,6 +264,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
                             }
                         }
                     });
+            guiKitchenMain.addElementToOrdersGrid(guiOrderPane);
             orderList.add(Integer.parseInt(order.first().get("id").toString()));
         }
     }

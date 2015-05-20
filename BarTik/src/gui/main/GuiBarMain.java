@@ -20,8 +20,10 @@ import utils.Watch;
  */
 public class GuiBarMain extends javax.swing.JFrame {
 
-    private int gridX;
-    private int gridY;
+    private int barOrdersGridX;
+    private int barOrdersGridY;
+    private int kitchenOrdersGridX;
+    private int kitchenOrdersGridY;
 
     /**
      * Creates new form GuiKitchenMain
@@ -33,6 +35,10 @@ public class GuiBarMain extends javax.swing.JFrame {
         watch.setFont(new java.awt.Font("Arial", 1, 25));
         setExtendedState(MAXIMIZED_BOTH);
         watchPanel.add(watch, BorderLayout.CENTER);
+        barOrdersGridX = 0;
+        barOrdersGridY  = 0;
+        kitchenOrdersGridX = 0;
+        kitchenOrdersGridY = 0;
     }
 
     /**
@@ -47,7 +53,11 @@ public class GuiBarMain extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel2 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
+        jSplitPane1 = new javax.swing.JSplitPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
         ordersPanel = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        kitchenOrdersPanel = new javax.swing.JPanel();
         watchPanel = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuLogin = new javax.swing.JMenu();
@@ -61,19 +71,28 @@ public class GuiBarMain extends javax.swing.JFrame {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        jSplitPane1.setResizeWeight(0.85);
+
         ordersPanel.setLayout(new java.awt.GridBagLayout());
+        jScrollPane2.setViewportView(ordersPanel);
+
+        jSplitPane1.setTopComponent(jScrollPane2);
+
+        kitchenOrdersPanel.setLayout(new java.awt.GridBagLayout());
+        jScrollPane3.setViewportView(kitchenOrdersPanel);
+
+        jSplitPane1.setRightComponent(jScrollPane3);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(ordersPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 725, Short.MAX_VALUE)
+            .addComponent(jSplitPane1)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(ordersPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
+            .addComponent(jSplitPane1)
         );
 
         watchPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -119,36 +138,53 @@ public class GuiBarMain extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void addElementToOrdersGrid(String orderId, String orderDescription, String orderArrivalTime, java.awt.event.MouseAdapter mAdapt) {
-        GuiBarOrderPane newOrder = new GuiBarOrderPane(orderId, orderDescription, orderArrivalTime);
-        newOrder.addMouseListener(mAdapt);
-        if (gridX == 4) {
-            gridY++;
-            gridX = 0;
-        }
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.gridx = gridX;
-        constraints.gridy = gridY;
-        constraints.anchor = GridBagConstraints.NORTHWEST;
-        constraints.insets = new Insets(10, 10, 10, 10);
-        gridX++;
-        ordersPanel.add(newOrder, constraints);
+    /**
+     * 
+     * @param newOrder panel a agregar
+     * @param whichGrid grilla a la cual va, 0 para bar, 1 para cocina
+     */
+    public void addElementToOrdersGrid(GuiBarOrderPane newOrder, int whichGrid) {
         newOrder.setColor(0);
-        ordersPanel.revalidate();
+        //Si la grid a la que va es la del bar, which grid debería ser 0.
+        if (whichGrid == 0){
+            if (barOrdersGridX == 5){
+                barOrdersGridY++;
+                barOrdersGridX  = 0;
+            }
+            GridBagConstraints constraints = new GridBagConstraints();
+            constraints.gridx = barOrdersGridX;
+            constraints.gridy = barOrdersGridY;
+            constraints.anchor = GridBagConstraints.NORTHWEST;
+            constraints.insets = new Insets(10, 10, 10, 10);
+            barOrdersGridX++;
+            ordersPanel.add(newOrder, constraints);
+            ordersPanel.revalidate();
+            ordersPanel.repaint();
+        } else if (whichGrid == 1){
+            if (kitchenOrdersGridX == 5){
+                kitchenOrdersGridY++;
+                kitchenOrdersGridX  = 0;
+            }
+            GridBagConstraints constraints = new GridBagConstraints();
+            constraints.gridx = kitchenOrdersGridX;
+            constraints.gridy = kitchenOrdersGridY;
+            constraints.anchor = GridBagConstraints.NORTHWEST;
+            constraints.insets = new Insets(10, 10, 10, 10);
+            kitchenOrdersGridX++;
+            kitchenOrdersPanel.add(newOrder, constraints);
+            kitchenOrdersPanel.revalidate();
+            kitchenOrdersPanel.repaint();
+        }  
     }
 
     public void removeElementOfOrdersGrid(int x, int y) {
@@ -173,10 +209,15 @@ public class GuiBarMain extends javax.swing.JFrame {
 
     public void cleanAllOrders() {
         ordersPanel.removeAll();
-        gridX = 0;
-        gridY = 0;
+        kitchenOrdersPanel.removeAll();
+        barOrdersGridX = 0;
+        barOrdersGridY = 0;   
+        kitchenOrdersGridX = 0;
+        kitchenOrdersGridY = 0;
         ordersPanel.revalidate();
         ordersPanel.repaint();
+        kitchenOrdersPanel.revalidate();
+        kitchenOrdersPanel.repaint();
         revalidate();
         repaint();
     }
@@ -232,6 +273,10 @@ public class GuiBarMain extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JPanel kitchenOrdersPanel;
     private javax.swing.JMenuItem menuItemLoggedUsers;
     private javax.swing.JMenuItem menuItemNewLogin;
     private javax.swing.JMenu menuLogin;

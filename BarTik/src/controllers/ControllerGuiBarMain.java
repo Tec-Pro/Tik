@@ -9,12 +9,14 @@ import gui.login.GuiLogin;
 import gui.login.GuiOnlineUsers;
 import gui.main.GuiBarMain;
 import gui.order.GuiBarOrderDetails;
+import gui.order.GuiBarOrderPane;
 import interfaces.InterfaceFproduct;
 import interfaces.InterfaceOrder;
 import interfaces.InterfacePresence;
 import interfaces.InterfaceUser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
@@ -53,6 +55,7 @@ public class ControllerGuiBarMain implements ActionListener {
     private static GuiBarOrderDetails guiOrderDetails;
     private static GuiBarMain guiBarMain;
     private static DefaultTableModel dtmOrderDetails;
+    private static GuiBarOrderPane guiOrderPane;
 
     /**
      *
@@ -74,11 +77,14 @@ public class ControllerGuiBarMain implements ActionListener {
         guiOrderDetails.setVisible(false);
 
         dtmOrderDetails = guiOrderDetails.getDefaultTableModelOrderProducts();
-
+        
+        guiOrderPane = new GuiBarOrderPane();
+        
         guiBarMain = new GuiBarMain();
         guiBarMain.setVisible(true);
         guiBarMain.setActionListener(this);
         guiOrderDetails.setActionListener(this);
+        guiOrderPane.setActionListener(this);
 
         guiLogin = null;
         //traigo todos los pedidos que estan abiertos
@@ -163,7 +169,7 @@ public class ControllerGuiBarMain implements ActionListener {
      * @param order
      * @throws RemoteException
      */
-    public static void addOrder(final Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
+    public static void addBarOrder(final Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
         /* "order" es el Map de un pedido con la siguiente estructura:
          * {order_number, id, user_id, closed=boolean, description}*/
         /* "orderProducts" es una lista de Maps, de los productos finales que
@@ -186,19 +192,21 @@ public class ControllerGuiBarMain implements ActionListener {
             desc = aux;
             //concateno id de pedido mas el nombre del mozo que lo pidio
             String orderName = order.first().get("order_number").toString() + " - " + (crudUser.getUser(Integer.parseInt((order.first().get("user_id")).toString()))).get("name");
-            guiBarMain.addElementToOrdersGrid(orderName, desc, dateFormat.format(date),
-                    new java.awt.event.MouseAdapter() {
-                        @Override
-                        public void mouseClicked(MouseEvent e) {
-                            if (e.getClickCount() == 2) {
-                                try {
-                                    loadGuiOrderDetails(Integer.parseInt(order.first().get("id").toString()), order.first().get("description").toString(), dateFormat.format(date));
-                                } catch (RemoteException ex) {
-                                    Logger.getLogger(ControllerGuiBarMain.class.getName()).log(Level.SEVERE, null, ex);
-                                }
-                            }
-                        }
-                    });
+            guiOrderPane = new GuiBarOrderPane();
+            guiOrderPane.getTxtOrderDescription().setText(desc);
+            guiOrderPane.getTimeOrderArrival().setText(dateFormat.format(date));
+            guiOrderPane.getOrderNumber().setText(orderName);
+            guiBarMain.addElementToOrdersGrid(guiOrderPane,0);
+            guiOrderPane.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                try {
+                    loadGuiOrderDetails(Integer.parseInt(order.first().get("order_number").toString()), date.toString(), order.first().get("description").toString());
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiBarMain.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            }});
             orderList.add(Integer.parseInt(order.first().get("id").toString()));
         }
     }
@@ -257,7 +265,7 @@ public class ControllerGuiBarMain implements ActionListener {
                     }
                 }
                 if (!orderClosed) {//si el pedido esta abierto (NO CERRADO)
-                    addOrder(new Pair(order, orderProducts));//agrego el pedido en bar
+                    addBarOrder(new Pair(order, orderProducts));//agrego el pedido en bar
                 }
             }
         }
