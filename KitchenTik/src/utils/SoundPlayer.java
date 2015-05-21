@@ -12,7 +12,8 @@ import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 
 /**
- *
+ * Esta clase se utilizara para reproducir un sonido
+ * Se debera especificar la ruta de localizacion del sonido en el atributo "soundPath"
  * @author eze
  */
 public class SoundPlayer {
@@ -29,10 +30,7 @@ public class SoundPlayer {
 
     //Inicia el sonido que avisa sobre retraso en un pedido
     public void playSound() {
-        //si habia un sonido reproduciendose, lo cierro para reproducir uno nuevo
-        if (player != null) {
-            player.close();
-        }
+        stopSound();//si habia un sonido reproduciendose, lo cierro para reproducir uno nuevo
         try {
             FileInputStream fis = new FileInputStream(soundPath);
             BufferedInputStream bis = new BufferedInputStream(fis);

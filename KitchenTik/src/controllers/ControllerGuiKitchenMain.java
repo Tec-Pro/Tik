@@ -15,6 +15,8 @@ import interfaces.InterfaceGeneralConfig;
 import interfaces.InterfaceOrder;
 import interfaces.InterfacePresence;
 import interfaces.InterfaceUser;
+import java.awt.Component;
+import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -36,6 +38,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -52,21 +55,29 @@ import utils.SoundPlayer;
  */
 public class ControllerGuiKitchenMain implements ActionListener {
 
-    private static InterfaceGeneralConfig generalConfig;
-    private static InterfaceOrder crudOrder;
-    private static LinkedList<Integer> orderList;
-    private final Set<Map> online; // set con los cocineros online
-    private final InterfacePresence crudPresence;
-    private static InterfaceUser crudUser;
-    private static InterfaceFproduct crudFProduct;
+    //Guis
     private GuiLogin guiLogin;
     private static GuiKitchenOrderDetails guiOrderDetails;
     private static GuiKitchenMain guiKitchenMain;
     private static GuiKitchenOrderPane guiOrderPane;
-    private static DefaultTableModel dtmOrderDetails;
+    //Interfaces
+    private static InterfaceGeneralConfig generalConfig;
+    private static InterfaceOrder crudOrder;
+    private static InterfaceFproduct crudFProduct;
+    private static InterfaceUser crudUser;
+    private final InterfacePresence crudPresence;
+    //Conjunto(set) con los cocineros online
+    private final Set<Map> online;
+    private static LinkedList<Integer> orderList;
+    //Atributos para el control de retrasos en pedidos
     private static Timer timer;
     private static final Integer time = 10000;//tiempo de intervalo de actualizacion de retrasos
     private static SoundPlayer soundPlayer;
+    //lista de ordersPanels con todos los paneles de la gui
+    private static LinkedList<GuiKitchenOrderPane> listOrdersPanels;
+    //
+    private static DefaultTableModel dtmOrderDetails;
+    
 
     /**
      *
@@ -97,23 +108,35 @@ public class ControllerGuiKitchenMain implements ActionListener {
         guiKitchenMain.setActionListener(this);
         guiOrderDetails.setActionListener(this);
         guiOrderPane.setActionListener(this);
-
+        listOrdersPanels = new LinkedList<>();
         guiLogin = null;
         //traigo todos los pedidos que estan abiertos
         refreshOpenOrders();
-
+        
         //controlo cada 1minuto si hay algun pedido retrasado
         timer = new Timer(time, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                //Aca tengo que poner que hago cada cierto tiempo "time"
-                
-                //aca muestro como reproducir un sonido solamente
-                soundPlayer.playSound();
+                //Cada cierto tiempo "time" hago una busqueda de las ordenes retrasadas
+                searchDelayedOrders();
             }
         }
         );
         timer.start();
+    }
+    
+    private static void searchDelayedOrders(){
+        Iterator<GuiKitchenOrderPane> itr = listOrdersPanels.iterator();
+        while( itr.hasNext()){
+            GuiKitchenOrderPane orderPane = itr.next();
+            /*Aca debo calcular si el pedido esta retrasado en base al archivo de configuracion traido
+             *del servidor, comparar los minutos con el de cada panel, y si esta retrasado emitir una 
+             *alerta tanto visual como sonora */
+                //aca muestro como reproducir un sonido solamente
+                //soundPlayer.playSound();
+            
+            System.out.println("Tiempo de arribo: "+orderPane.getLblTimeOrderArrival().getText());
+        }
     }
 
     private static void loadGuiOrderDetails(int order, String desc, String arrival) throws RemoteException {
@@ -219,8 +242,8 @@ public class ControllerGuiKitchenMain implements ActionListener {
             String orderName = order.first().get("order_number").toString() + " - " + (crudUser.getUser(Integer.parseInt((order.first().get("user_id")).toString()))).get("name");
             guiOrderPane = new GuiKitchenOrderPane();
             guiOrderPane.getTxtOrderDescription().setText(desc);
-            guiOrderPane.getTimeOrderArrival().setText(dateFormat.format(date));
-            guiOrderPane.getOrderNumber().setText(orderName);
+            guiOrderPane.getLblTimeOrderArrival().setText(dateFormat.format(date));
+            guiOrderPane.getLblOrderNumber().setText(orderName);
             guiOrderPane.addMouseListener(new java.awt.event.MouseAdapter() {
                     
                         @Override
@@ -235,6 +258,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
                         }
                     });
             guiKitchenMain.addElementToOrdersGrid(guiOrderPane);
+            listOrdersPanels.add(guiOrderPane);
             orderList.add(Integer.parseInt(order.first().get("id").toString()));
         }
     }
@@ -277,6 +301,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
     /* Recarga todos los pedidos abiertos, sin realizar aun en cocina en la gui. */
     //PULIR ESTE METODO PARA QUE TRAIGA LOS PEDIDOS COMO MAXIMO DE DOS DIAS, Y NO TODOS
     public static void refreshOpenOrders() throws RemoteException {
+        listOrdersPanels = new LinkedList<>();//reinicio la lista de ordersPanels para que se actualice en addOrder
         List<Map> allOrders = crudOrder.getAllOrders();//saco todas los pedidos cargados
         for (Map<String, Object> order : allOrders) {
             if (order.get("closed").equals(false)) {//si el pedido no esta cerrado

@@ -20,17 +20,14 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
     /**
      * Creates new form orderPane
      *
-     * @param orderId id del pedido.
-     * @param orderDescription descripción del pedido.
-     * @param orderArrivalTime tiempo de llegada del pedido.
      */
     public GuiKitchenOrderPane() {
         initComponents();
     }
 
     public GuiKitchenOrderPane(String orderName, String desc, String date) {
-        orderNumber.setText(orderName);
-        timeOrderArrival.setText(date);
+        lblOrderNumber.setText(orderName);
+        lblTimeOrderArrival.setText(date);
         txtOrderDescription.setText(desc);
         initComponents();
     }
@@ -66,8 +63,8 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
      *
      * @return the orderNumber
      */
-    public javax.swing.JLabel getOrderNumber() {
-        return orderNumber;
+    public javax.swing.JLabel getLblOrderNumber() {
+        return lblOrderNumber;
     }
 
     /**
@@ -75,8 +72,8 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
      *
      * @return the timeOrderArrival
      */
-    public javax.swing.JLabel getTimeOrderArrival() {
-        return timeOrderArrival;
+    public javax.swing.JLabel getLblTimeOrderArrival() {
+        return lblTimeOrderArrival;
     }
 
     /**
@@ -100,8 +97,8 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtOrderDescription = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
-        orderNumber = new javax.swing.JLabel();
-        timeOrderArrival = new javax.swing.JLabel();
+        lblOrderNumber = new javax.swing.JLabel();
+        lblTimeOrderArrival = new javax.swing.JLabel();
         btnOrderReady = new javax.swing.JButton();
         btnPostpone = new javax.swing.JButton();
 
@@ -120,11 +117,11 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Cantarell", 0, 24)); // NOI18N
         jLabel1.setText("Pedido:");
 
-        orderNumber.setFont(new java.awt.Font("Cantarell", 0, 18)); // NOI18N
-        orderNumber.setText("n° de pedido");
+        lblOrderNumber.setFont(new java.awt.Font("Cantarell", 0, 18)); // NOI18N
+        lblOrderNumber.setText("n° de pedido");
 
-        timeOrderArrival.setFont(new java.awt.Font("Cantarell", 0, 15)); // NOI18N
-        timeOrderArrival.setText("Hora de llegada del pedido");
+        lblTimeOrderArrival.setFont(new java.awt.Font("Cantarell", 0, 15)); // NOI18N
+        lblTimeOrderArrival.setText("Hora de llegada del pedido");
 
         btnOrderReady.setFont(new java.awt.Font("Cantarell", 0, 14)); // NOI18N
         btnOrderReady.setText("Pedido Listo");
@@ -141,11 +138,11 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1)
-                    .addComponent(timeOrderArrival, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblTimeOrderArrival, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(orderNumber))
+                        .addComponent(lblOrderNumber))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(btnOrderReady, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -159,9 +156,9 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(orderNumber))
+                    .addComponent(lblOrderNumber))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(timeOrderArrival)
+                .addComponent(lblTimeOrderArrival)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -177,8 +174,8 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
     private javax.swing.JButton btnPostpone;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel orderNumber;
-    private javax.swing.JLabel timeOrderArrival;
+    private javax.swing.JLabel lblOrderNumber;
+    private javax.swing.JLabel lblTimeOrderArrival;
     private javax.swing.JTextArea txtOrderDescription;
     // End of variables declaration//GEN-END:variables
 

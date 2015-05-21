@@ -22,6 +22,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
 
     private int gridX;
     private int gridY;
+    private static final int maxGridX = 5;
 
     /**
      * Creates new form GuiKitchenMain
@@ -134,8 +135,12 @@ public class GuiKitchenMain extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     *
+     * @param newOrder
+     */
     public void addElementToOrdersGrid(GuiKitchenOrderPane newOrder){
-        if (gridX == 5) {
+        if (gridX == maxGridX) {
             gridY++;
             gridX = 0;
         }
@@ -150,12 +155,22 @@ public class GuiKitchenMain extends javax.swing.JFrame {
         ordersPanel.revalidate();
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     */
     public void removeElementOfOrdersGrid(int x, int y) {
         getOrdersPanel().remove(ordersPanel.getComponentAt(x, y));
         ordersPanel.revalidate();
         ordersPanel.repaint();
     }
 
+    /**
+     *
+     * @param index
+     * @param orderDescription
+     */
     public void updateElementOfOrdersGrid(int index, String orderDescription) {
         GuiKitchenOrderPane order = (GuiKitchenOrderPane) getOrdersPanel().getComponent(index);
         order.getTxtOrderDescription().setText(orderDescription);
@@ -163,6 +178,11 @@ public class GuiKitchenMain extends javax.swing.JFrame {
         getOrdersPanel().revalidate();
     }
 
+    /**
+     *
+     * @param index
+     * @param color
+     */
     public void setOrderColor(int index, Color color) {
         GuiKitchenOrderPane order = (GuiKitchenOrderPane) getOrdersPanel().getComponent(index);
         order.setBackground(color);
@@ -170,6 +190,9 @@ public class GuiKitchenMain extends javax.swing.JFrame {
         getOrdersPanel().revalidate();
     }
 
+    /**
+     *
+     */
     public void cleanAllOrders() {
         ordersPanel.removeAll();
         gridX = 0;
@@ -209,6 +232,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new GuiKitchenMain().setVisible(true);
             }
@@ -216,11 +240,19 @@ public class GuiKitchenMain extends javax.swing.JFrame {
 
     }
 
+    /**
+     *
+     * @param lis
+     */
     public void setActionListener(ActionListener lis) {
         this.getMenuItemNewLogin().addActionListener(lis);
         this.menuItemLoggedUsers.addActionListener(lis);
     }
 
+    /**
+     *
+     * @param lis
+     */
     public void setMouseListener(MouseListener lis) {
         this.getOrdersPanel().addMouseListener(lis);
     }
@@ -292,4 +324,28 @@ public class GuiKitchenMain extends javax.swing.JFrame {
         return watchPanel;
     }
 
+    /**
+     *
+     * @return indice de la columna en la ultima fila de la grilla contenedora de paneles
+     */
+    public int getGridX() {
+        return gridX;
+    }
+
+    /**
+     *
+     * @return indice de la ultima fila de la grilla contenedora de paneles
+     */
+    public int getGridY() {
+        return gridY;
+    }
+
+    /**
+     *
+     * @return indice del maximo anchor de la grilla contenedora de paneles
+     */
+    public static int getMaxGridX() {
+        return maxGridX;
+    }
+  
 }
