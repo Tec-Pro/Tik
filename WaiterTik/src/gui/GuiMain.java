@@ -7,14 +7,8 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionListener;
 import java.util.LinkedList;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import utils.Watch;
 
 /**
@@ -32,6 +26,7 @@ public class GuiMain extends javax.swing.JFrame {
      */
     public GuiMain() {
         initComponents();
+        setVisible(false);
         Watch watch = new Watch(0, 0, 0, 0);
         watch.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);//Centrado del texto 
         watch.setFont(new java.awt.Font("Arial", 1, 25));//tipo de letra y tamaño
@@ -288,7 +283,7 @@ public class GuiMain extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GuiMain().setVisible(true);
+                new GuiMain().setVisible(false);
             }
         });
     }
