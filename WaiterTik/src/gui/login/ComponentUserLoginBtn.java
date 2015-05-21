@@ -35,6 +35,9 @@ public class ComponentUserLoginBtn extends javax.swing.JPanel {
 
         btn = new javax.swing.JButton();
 
+        btn.setMaximumSize(new java.awt.Dimension(100, 100));
+        btn.setMinimumSize(new java.awt.Dimension(100, 100));
+        btn.setPreferredSize(new java.awt.Dimension(100, 100));
         btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnActionPerformed(evt);
@@ -49,7 +52,7 @@ public class ComponentUserLoginBtn extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btn, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 

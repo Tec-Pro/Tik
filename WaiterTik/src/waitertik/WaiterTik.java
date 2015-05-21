@@ -68,7 +68,6 @@ public class WaiterTik {
         }
 
         ControllerGuiMain c = new ControllerGuiMain();
-        c.waiterInit(1);//cargo para probar con el mozo con id 1
     }
 
 }
