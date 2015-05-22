@@ -7,7 +7,6 @@ package implementsInterface;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +28,7 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
 
     }
 
+    @Override
     public boolean categoryExists(String name) throws java.rmi.RemoteException {
         Utils.abrirBase();
         boolean res = false;
@@ -40,6 +40,7 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
         return res;
     }
 
+    @Override
     public boolean subCategoryExists(String name) throws java.rmi.RemoteException {
         Utils.abrirBase();
         boolean res = false;
@@ -51,6 +52,7 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
         return res;
     }
 
+    @Override
     public Map<String, Object> create(String name) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
@@ -63,6 +65,7 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
         return res;
     }
 
+    @Override
     public Map<String, Object> modify(int id, String name) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Category category = Category.findById(id);
@@ -76,6 +79,7 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
         return category.toMap();
     }
 
+    @Override
     public boolean delete(int id) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Category category = Category.findById(id);
@@ -96,6 +100,7 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
         return res;
     }
 
+    @Override
     public List<Map> getCategories() throws java.rmi.RemoteException {
         Utils.abrirBase();
         List<Map> ret = Category.findAll().toMaps();
@@ -103,6 +108,7 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
         return ret;
     }
 
+    @Override
     public Map<String, Object> getCategory(int id) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Map<String, Object> ret = Category.findById(id).toMap();
@@ -110,6 +116,7 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
         return ret;
     }
 
+    @Override
     public Map<String, Object> getCategoryByName(String name) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Map<String, Object> ret = Category.first("name = ?", name).toMap();
@@ -117,6 +124,7 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
         return ret;
     }
 
+    @Override
     public Map<String, Object> addSubcategory(int id, String name) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
@@ -132,6 +140,7 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
         return ret;
     }
 
+    @Override
     public boolean deleteSubcategory(int id) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
@@ -150,6 +159,7 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
         return ret;
     }
 
+    @Override
     public Map<String, Object> modifySubcategory(int id, String name) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
@@ -165,6 +175,7 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
         return ret;
     }
 
+    @Override
     public List<Map> getSubcategoriesCategory(int id) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Category category = Category.findById(id);
@@ -176,6 +187,7 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
         return ret;
     }
 
+    @Override
     public List<Map> getSubcategoriesCategory() throws java.rmi.RemoteException {
         Utils.abrirBase();
         List<Map> ret = Subcategory.findAll().toMaps();
@@ -183,6 +195,7 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
         return ret;
     }
 
+    @Override
     public Map<String, Object> getSubcategory(int id) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Subcategory subcategory = Subcategory.findById(id);
@@ -194,6 +207,7 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
         return ret;
     }
 
+    @Override
     public Map<String, Object> getSubcategory(String name) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Map<String, Object> ret = Subcategory.findFirst("name = ?", name).toMap();
@@ -209,6 +223,7 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
         return ret;
     }
 
+    @Override
     public Map<String, Object> getCategoryOfSubcategory(int id) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Subcategory subcategory = Subcategory.findById(id);

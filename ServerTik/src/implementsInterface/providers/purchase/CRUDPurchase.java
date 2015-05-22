@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
 import models.Pproduct;
 import models.providers.purchase.PproductsPurchases;
 import models.providers.purchase.Purchase;
@@ -104,30 +105,30 @@ public class CRUDPurchase extends UnicastRemoteObject implements InterfacePurcha
     }
 
     @Override
-    public List<Pair<Map<String, Object>, List<Map>>> getPurchasesProvider(Integer idProvider) {
+    public List<Pair<SortedMap<String, Object>, List<Map>>> getPurchasesProvider(Integer idProvider) {
         Utils.abrirBase();
         Base.openTransaction();
-        LinkedList<Pair<Map<String, Object>, List<Map>>> result = new LinkedList<>();
+        LinkedList<Pair<SortedMap<String, Object>, List<Map>>> result = new LinkedList<>();
         LazyList<Purchase> purchases = Purchase.where("provider_id = ?", idProvider);
         Iterator<Purchase> it = purchases.iterator();
         while (it.hasNext()) {
             Purchase p = it.next();
-            Pair<Map<String, Object>, List<Map>> pair = new Pair<>(p.toMap(), p.get(PproductsPurchases.class, "purchase_id = ?", p.getId()).toMaps());
+            Pair<SortedMap<String, Object>, List<Map>> pair = new Pair<>(p.toMap(), p.get(PproductsPurchases.class, "purchase_id = ?", p.getId()).toMaps());
             result.add(pair);
         }
         return result;
     }
 
     @Override
-    public List<Pair<Map<String, Object>, List<Map>>> getProviderPurchasesBetweenDates(Integer idProvider, String from, String until) throws RemoteException {
+    public List<Pair<SortedMap<String, Object>, List<Map>>> getProviderPurchasesBetweenDates(Integer idProvider, String from, String until) throws RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
-        LinkedList<Pair<Map<String, Object>, List<Map>>> result = new LinkedList<>();
+        LinkedList<Pair<SortedMap<String, Object>, List<Map>>> result = new LinkedList<>();
         LazyList<Purchase> purchases = Purchase.where("provider_id = ? AND date>= ? AND date <= ?", idProvider, from, until);
         Iterator<Purchase> it = purchases.iterator();
         while (it.hasNext()) {
             Purchase p = it.next();
-            Pair<Map<String, Object>, List<Map>> pair = new Pair<>(p.toMap(), p.get(PproductsPurchases.class, "purchase_id = ?", p.getId()).toMaps());
+            Pair<SortedMap<String, Object>, List<Map>> pair = new Pair<>(p.toMap(), p.get(PproductsPurchases.class, "purchase_id = ?", p.getId()).toMaps());
             result.add(pair);
         }
         return result;

@@ -10,6 +10,7 @@ import java.rmi.RemoteException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
 import utils.Pair;
 
 /**
@@ -57,7 +58,7 @@ public interface InterfacePurchase extends Remote {
      * @return
      * @throws RemoteException
      */
-    public List<Pair<Map<String, Object>, List<Map>>> getPurchasesProvider(Integer idProvider) throws java.rmi.RemoteException;
+    public List<Pair<SortedMap<String, Object>, List<Map>>> getPurchasesProvider(Integer idProvider) throws java.rmi.RemoteException;
 
     /**
      * obtiene las compras de un proveedor dada dos fechas
@@ -68,6 +69,6 @@ public interface InterfacePurchase extends Remote {
      * @return
      * @throws RemoteException
      */
-    public List<Pair<Map<String, Object>, List<Map>>> getProviderPurchasesBetweenDates(Integer idProvider, String from, String until) throws java.rmi.RemoteException;
+    public List<Pair<SortedMap<String, Object>, List<Map>>> getProviderPurchasesBetweenDates(Integer idProvider, String from, String until) throws java.rmi.RemoteException;
 
 }
