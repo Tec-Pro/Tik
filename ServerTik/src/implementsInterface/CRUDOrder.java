@@ -236,6 +236,8 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
                 m.put("done", rs.getObject("done"));
                 m.put("commited", rs.getObject("commited"));
                 m.put("issued", rs.getObject("issued"));
+                m.put("created_at", rs.getObject("created_at"));
+                m.put("updated_at", rs.getObject("updated_at"));
                 ret.add(m);
             }
             rs.close();
