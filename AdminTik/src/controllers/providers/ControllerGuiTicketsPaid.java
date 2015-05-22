@@ -20,6 +20,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTable;
@@ -61,7 +62,7 @@ public class ControllerGuiTicketsPaid {
         this.currentProviderId = current_id;
 
         //Obtengo las compras realizadas al proveedor corriente.
-        List<Pair<Map<String, Object>, List<Map>>> purchasesProvider = this.interfacePurchase.getPurchasesProvider(currentProviderId);
+        List<Pair<SortedMap<String, Object>, List<Map>>> purchasesProvider = this.interfacePurchase.getPurchasesProvider(currentProviderId);
 
         //Cargo las compras realizadas en la tabla.
         loadTicketsTable(purchasesProvider);
@@ -99,7 +100,7 @@ public class ControllerGuiTicketsPaid {
                     //Si hay una fecha seleccionada, limpio los componentes y filtro las compras.
                     if (guiTicketsPaid.getStringDateUntil() != null) {
                         guiTicketsPaid.cleanComponents();
-                        List<Pair<Map<String, Object>, List<Map>>> purchasesProvider = interfacePurchase.getProviderPurchasesBetweenDates(currentProviderId, guiTicketsPaid.getStringDateFrom(), guiTicketsPaid.getStringDateUntil());
+                        List<Pair<SortedMap<String, Object>, List<Map>>> purchasesProvider = interfacePurchase.getProviderPurchasesBetweenDates(currentProviderId, guiTicketsPaid.getStringDateFrom(), guiTicketsPaid.getStringDateUntil());
                         //Cargo la tabla con las compras filtradas.
                         loadTicketsTable(purchasesProvider);
                     }
@@ -119,7 +120,7 @@ public class ControllerGuiTicketsPaid {
                     if (guiTicketsPaid.getStringDateFrom() != null) {
                         guiTicketsPaid.cleanComponents();
                         //Filtro las compras y las cargo en la tabla.
-                        List<Pair<Map<String, Object>, List<Map>>> purchasesProvider = interfacePurchase.getProviderPurchasesBetweenDates(currentProviderId, guiTicketsPaid.getStringDateFrom(), guiTicketsPaid.getStringDateUntil());
+                        List<Pair<SortedMap<String, Object>, List<Map>>> purchasesProvider = interfacePurchase.getProviderPurchasesBetweenDates(currentProviderId, guiTicketsPaid.getStringDateFrom(), guiTicketsPaid.getStringDateUntil());
                         loadTicketsTable(purchasesProvider);
                     }
                 } catch (RemoteException ex) {
@@ -135,12 +136,12 @@ public class ControllerGuiTicketsPaid {
      * @param purchasesProvider lista de compras a un proveedor.
      * @throws RemoteException 
      */
-    private void loadTicketsTable(List<Pair<Map<String, Object>, List<Map>>> purchasesProvider) throws RemoteException {
+    private void loadTicketsTable(List<Pair<SortedMap<String, Object>, List<Map>>> purchasesProvider) throws RemoteException {
         if (!purchasesProvider.isEmpty()) {
             DefaultTableModel dtmPurchasesProvider = (DefaultTableModel) this.guiTicketsPaid.getTableProviderCurrentAccount().getModel();
             dtmPurchasesProvider.setRowCount(0);
             Object[] row = new Object[7];
-            for (Pair<Map<String, Object>, List<Map>> purchase : purchasesProvider) {
+            for (Pair<SortedMap<String, Object>, List<Map>> purchase : purchasesProvider) {
                 row[0] = purchase.first().get("id");
                 row[1] = purchase.first().get("date");
                 row[2] = purchase.first().get("date_paid");
