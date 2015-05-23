@@ -25,7 +25,7 @@ public interface InterfaceOrder extends Remote {
      * @return
      * @throws java.rmi.RemoteException
      */
-    public Map<String, Object> sendOrder(int userId, String description, List<Map<String, Object>> fproducts) throws java.rmi.RemoteException;
+     public Map<String, Object> sendOrder(int userId, String description, int persons, List<Map<String, Object>> fproducts) throws java.rmi.RemoteException;
 
     /**
      *
@@ -34,7 +34,7 @@ public interface InterfaceOrder extends Remote {
      * @return
      * @throws RemoteException
      */
-    public boolean addProducts(int orderId, List<Map<String, Object>> fproducts) throws java.rmi.RemoteException;
+    public boolean updateOrder(int orderId, String description, int persons, List<Map<String, Object>> fproducts) throws java.rmi.RemoteException;
 
     /**
      *

@@ -53,11 +53,11 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
      * @throws RemoteException
      */
     @Override
-    public Map<String, Object> sendOrder(int userId, String description, List<Map<String, Object>> fproducts) throws RemoteException {
+    public Map<String, Object> sendOrder(int userId, String description, int persons, List<Map<String, Object>> fproducts) throws RemoteException {
         // campos que deberia tener el map: ("fproductId","quantity","done","commited","issued")
         Utils.abrirBase();
         //Base.openTransaction();
-        Order newOrder = Order.createIt("user_id", userId, "order_number", getOrdersCount(userId) + 1, "description", description, "closed", false);
+        Order newOrder = Order.createIt("user_id", userId, "order_number", getOrdersCount(userId) + 1, "description", description, "closed", false, "persons",persons);
         for (Map<String, Object> prod : fproducts) {
             OrdersFproducts.createIt("order_id", newOrder.getId(), "fproduct_id", (int) prod.get("fproductId"), "quantity", (float) prod.get("quantity"), "done", (boolean) prod.get("done"), "commited", (boolean) prod.get("commited"), "issued", (boolean) prod.get("issued"));
         }
@@ -88,7 +88,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
      * @throws RemoteException
      */
     @Override
-    public boolean addProducts(int orderId, List<Map<String, Object>> fproducts) throws RemoteException {
+    public boolean updateOrder(int orderId, String description, int persons, List<Map<String, Object>> fproducts) throws RemoteException {
         // campos que deberia tener el map: ("fproductId","quantity","done","commited","issued")
         Utils.abrirBase();
         Base.openTransaction();
@@ -100,6 +100,9 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         if ((boolean) order.get("closed")) {
             return false;
         }
+        order.set("description", description);
+        order.set("persons", persons);
+        order.saveIt();
         for (Map<String, Object> prod : fproducts) {
             OrdersFproducts.create("order_id", orderId, "fproduct_id", (int) prod.get("fproductId"), "quantity", (float) prod.get("quantity"), "done", (boolean) prod.get("done"), "commited", (boolean) prod.get("commited"), "issued", (boolean) prod.get("issued")).saveIt();
         }
@@ -167,6 +170,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
                 m.put("user_id", rs.getObject("user_id"));
                 m.put("description", rs.getObject("description"));
                 m.put("closed", rs.getObject("closed"));
+                m.put("persons", rs.getObject("persons"));
                 ret.add(m);
             }
             rs.close();
@@ -265,6 +269,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
                 m.put("user_id", rs.getObject("user_id"));
                 m.put("description", rs.getObject("description"));
                 m.put("closed", rs.getObject("closed"));
+                m.put("persons", rs.getObject("persons"));
             }
             rs.close();
             stmt.close();
@@ -316,6 +321,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
                 m.put("user_id", rs.getObject("user_id"));
                 m.put("description", rs.getObject("description"));
                 m.put("closed", rs.getObject("closed"));
+                m.put("persons", rs.getObject("persons"));
                 ret.add(m);
             }
             rs.close();

@@ -34,6 +34,7 @@ public class GuiMain extends javax.swing.JFrame {
         pnlWatch.add(watch, BorderLayout.CENTER);
         orders = new LinkedList<GuiMenuDetail>();
         clearAllOrders();
+        setDefaultCloseOperation(HIDE_ON_CLOSE);
     }
 
 

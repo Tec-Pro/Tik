@@ -21,20 +21,23 @@ public interface InterfaceOrder extends Remote {
      *
      * @param userId
      * @param description
+     * @param persons
      * @param fproducts
      * @return
      * @throws java.rmi.RemoteException
      */
-    public Map<String, Object> sendOrder(int userId, String description, List<Map<String, Object>> fproducts) throws java.rmi.RemoteException;
+    public Map<String, Object> sendOrder(int userId, String description, int persons, List<Map<String, Object>> fproducts) throws java.rmi.RemoteException;
 
     /**
      *
      * @param orderId
+     * @param description
+     * @param persons
      * @param fproducts
      * @return
      * @throws RemoteException
      */
-    public boolean addProducts(int orderId, List<Map<String, Object>> fproducts) throws java.rmi.RemoteException;
+    public boolean updateOrder(int orderId, String description, int persons, List<Map<String, Object>> fproducts) throws java.rmi.RemoteException;
 
     /**
      *

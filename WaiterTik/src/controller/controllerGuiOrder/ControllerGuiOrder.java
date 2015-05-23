@@ -99,12 +99,12 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
         } catch (RemoteException ex) {
             Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
-        guiOrder.getBtnSend().setEnabled(false);
+        //guiOrder.getBtnSend().setEnabled(false);
     }
 
     public ControllerGuiOrder(GuiOrder go) throws NotBoundException, MalformedURLException, RemoteException {
         guiOrder = go;
-        guiOrder.getBtnSend().setEnabled(false);
+        //guiOrder.getBtnSend().setEnabled(false);
         crudProductCategory = (InterfaceCategory) InterfaceName.registry.lookup(InterfaceName.CRUDCategory);
         crudFproduct = (InterfaceFproduct) InterfaceName.registry.lookup(InterfaceName.CRUDFproduct);
         crudOrder = (InterfaceOrder) InterfaceName.registry.lookup(InterfaceName.CRUDOrder);
@@ -348,6 +348,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
     /* carga los productos de la order actual */
     private void loadProducts() throws RemoteException {
         guiOrder.getjTextDescription().setText("");
+        guiOrder.getjSpinnerPersons().setValue(0);
         if (currentOrderId == null) {
             return;
         }
@@ -370,6 +371,10 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
             guiOrder.getTableProductsDefault().addRow(row);
         }
         guiOrder.getjTextDescription().setText(currentOrder.get("description").toString());
+        Integer persons = (Integer)currentOrder.get("persons");
+        if(persons == null)
+            persons = 0;
+        guiOrder.getjSpinnerPersons().setValue(persons);
         guiOrder.getLblTotalPrice().setText(ParserFloat.floatToString(totalPrice));
     }
 
@@ -425,14 +430,15 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                     products.add(prodMap);
                 }
                 try {
-                    currentOrder = crudOrder.sendOrder(currentWaiterId, guiOrder.getjTextDescription().getText(), products);
+                    int persons = (Integer)guiOrder.getjSpinnerPersons().getValue();
+                    currentOrder = crudOrder.sendOrder(currentWaiterId, guiOrder.getjTextDescription().getText(), persons, products);
                     guiOrder.getLblOrderNum().setText(currentOrder.get("order_number").toString());
                     long idLong = (long) currentOrder.get("id");
                     currentOrderId = (int) idLong;
                     productsTable.setRowCount(0);
                     loadProducts();
-                    JOptionPane.showMessageDialog(guiOrder, "Nuevo pedido Enviado!", "Pedido Enviado", JOptionPane.INFORMATION_MESSAGE);
-                    guiOrder.getBtnSend().setEnabled(false);
+                   // JOptionPane.showMessageDialog(guiOrder, "Nuevo pedido Enviado!", "Pedido Enviado", JOptionPane.INFORMATION_MESSAGE);
+                   // guiOrder.getBtnSend().setEnabled(false);
 //                    addMyComponent(currentOrder.get("order_number").toString());
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
@@ -459,20 +465,25 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                         loadProducts();
                         return;
                     }
-                    crudOrder.addProducts(currentOrderId, products);
+                    int persons = (Integer)guiOrder.getjSpinnerPersons().getValue();
+                    crudOrder.updateOrder(currentOrderId, guiOrder.getjTextDescription().getText(), persons, products);
                     productsTable.setRowCount(0);
                     loadProducts();
-                    JOptionPane.showMessageDialog(guiOrder, "Productos Agregados y Enviados!", "Pedido Enviado", JOptionPane.INFORMATION_MESSAGE);
-                    guiOrder.getBtnSend().setEnabled(false);
+                    JOptionPane.showMessageDialog(guiOrder, "Pedido Actualizado!", "Pedido Enviado", JOptionPane.INFORMATION_MESSAGE);
+                    //guiOrder.getBtnSend().setEnabled(false);
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             guiOrder.setVisible(false);
             guiOrder.getParent().setVisible(false);
+            
         }
 
-        if (e.getSource().equals(guiOrder.getBtnClose())) { //cierra el pedido          
+        if (e.getSource().equals(guiOrder.getBtnClose())) { //cierra el pedido
+            int r = JOptionPane.showConfirmDialog(null, "Desea cerrar el pedido");
+            if(r!=0)
+                return;
             if (currentOrderId == null) {
                 return;
             }
@@ -526,7 +537,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                 }
                 guiAmount.getTxtAmount().setText("1");
                 guiAmount.setVisible(false);
-                guiOrder.getBtnSend().setEnabled(true);
+               // guiOrder.getBtnSend().setEnabled(true);
                 
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
