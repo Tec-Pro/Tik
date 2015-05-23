@@ -46,7 +46,7 @@ public class ControllerGuiMain implements ActionListener {
     private static int orderClic;
     private static int idWaiter; //id del mozo que esta en esta ventana
     private ControllerGuiLoginGrid controllerGuiLoginGrid;
-    private GuiLoginGrid guiLoginGrid;
+    private static GuiLoginGrid guiLoginGrid;
 
     public ControllerGuiMain() throws NotBoundException, MalformedURLException, RemoteException {
         guiMain = new GuiMain();
@@ -61,7 +61,11 @@ public class ControllerGuiMain implements ActionListener {
         guiLoginGrid = new GuiLoginGrid();
         controllerGuiLoginGrid = new ControllerGuiLoginGrid(guiLoginGrid, this);        
     }
-
+    
+    public static void setLoginGridVisible(boolean isVisible){
+        guiLoginGrid.setVisible(isVisible);
+    }
+    
     public Map getButtonsOrder() {
         return buttonsOrder;
     }

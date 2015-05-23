@@ -6,7 +6,9 @@
 package controller.controllerGuiOrder;
 
 import controller.ControllerGuiMain;
+import controller.login.ControllerGuiLoginGrid;
 import gui.GuiMain;
+import gui.login.GuiLoginGrid;
 import gui.order.ComponentOrderBtn;
 import gui.order.GuiAmount;
 import gui.order.GuiOrder;
@@ -477,7 +479,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
             }
             guiOrder.setVisible(false);
             guiOrder.getParent().setVisible(false);
-            
+            controllerGuiMain.setLoginGridVisible(true);
         }
 
         if (e.getSource().equals(guiOrder.getBtnClose())) { //cierra el pedido
@@ -494,6 +496,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
             }
+            guiOrder.setVisible(false);
         }
 
         if (e.getSource().equals(guiOrder.getBtnCommit())) {
