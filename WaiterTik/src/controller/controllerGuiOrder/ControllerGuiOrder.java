@@ -289,6 +289,10 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
         DefaultTreeModel modelo = new DefaultTreeModel(root);
         guiOrder.getTreeMenu().setModel(modelo);
         guiOrder.getTreeMenu().setCellRenderer(this);
+        //abro todas las ramas
+        for (int i = 0; i < guiOrder.getTreeMenu().getRowCount(); i++) {
+            guiOrder.getTreeMenu().expandRow(i);
+        }
     }
 
     public DefaultMutableTreeNode searchNode(String nodeStr, DefaultMutableTreeNode root) {
