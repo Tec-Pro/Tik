@@ -408,6 +408,9 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
 
         //*******GuiOrder**************//
         if (e.getSource().equals(guiOrder.getBtnSend())) {
+            int r = JOptionPane.showConfirmDialog(null, "Desea enviar el pedido");
+            if(r!=0)
+                return;
             if (currentOrderId == null) { //si el pedido es nuevo, carga todos los productos y los envia
                 DefaultTableModel productsTable = guiOrder.getTableProductsDefault();
                 List<Map<String, Object>> products = new LinkedList<>();
@@ -465,6 +468,8 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                     Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+            guiOrder.setVisible(false);
+            guiOrder.getParent().setVisible(false);
         }
 
         if (e.getSource().equals(guiOrder.getBtnClose())) { //cierra el pedido          
@@ -522,6 +527,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                 guiAmount.getTxtAmount().setText("1");
                 guiAmount.setVisible(false);
                 guiOrder.getBtnSend().setEnabled(true);
+                
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
             }

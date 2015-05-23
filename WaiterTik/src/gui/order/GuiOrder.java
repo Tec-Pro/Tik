@@ -26,6 +26,7 @@ public class GuiOrder extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         tableProductsDefault = (DefaultTableModel) tableProducts.getModel();
+        setDefaultCloseOperation(HIDE_ON_CLOSE);
     }
 
     public JLabel getLblTotalPrice() {
