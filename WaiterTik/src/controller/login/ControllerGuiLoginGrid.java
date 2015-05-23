@@ -38,6 +38,7 @@ public class ControllerGuiLoginGrid implements ActionListener {
     private Set<Map> online;
     private Map buttons; //Nos sirve para almacenar a los objetos creados
     private ControllerGuiMain controllerGuiMain;
+    private boolean newLog;
 
     public ControllerGuiLoginGrid(GuiLoginGrid guiLoginGrid, ControllerGuiMain controllerGuiMain) throws NotBoundException, MalformedURLException, RemoteException {
         this.guiLoginGrid = guiLoginGrid;
@@ -54,6 +55,7 @@ public class ControllerGuiLoginGrid implements ActionListener {
             addMyComponent(usr);
         }
         this.guiLoginGrid.setActionListener(this);
+        newLog = false;
     }
 
     /**
@@ -89,11 +91,15 @@ public class ControllerGuiLoginGrid implements ActionListener {
                 String name = ((ComponentUserLoginBtn) entry.getValue()).btn.getText();
                 String split[] = name.split("-");
                 int userId = Integer.parseInt(split[0]);
+                Set<Map> usr = new HashSet<Map>();
                 try {
-                    controllerGuiMain.waiterInit(userId);
+                    usr.add(crudUser.getUser(userId));
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiLoginGrid.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                newLog = false;
+                guiLogin.loadCBoxUsers(usr);
+                guiLogin.setVisible(true);
             }
         }
         if (e.getSource() == guiLoginGrid.getBtnLogin()) {
@@ -107,6 +113,7 @@ public class ControllerGuiLoginGrid implements ActionListener {
             if (offline.isEmpty()) {
                 JOptionPane.showMessageDialog(guiLoginGrid, "Ocurrió un error, ya estan todos los usuarios logueados", "Error!", JOptionPane.ERROR_MESSAGE);
             } else {
+                newLog = true;
                 guiLogin.loadCBoxUsers(offline);
                 guiLogin.setLocationRelativeTo(null);
                 guiLogin.setVisible(true);
@@ -117,13 +124,23 @@ public class ControllerGuiLoginGrid implements ActionListener {
             String split[] = user.split("-");
             int userId = Integer.parseInt(split[0]);
             if (true) {   // crudUser.validatePass(userId, guiLogin.getTxtPass().getText())
-                addMyComponent(user);
-                try {
-                    crudPresence.create(userId);
-                    guiLogin.setVisible(false);
-                    online.add(crudUser.getUser(userId));
-                } catch (RemoteException ex) {
-                    Logger.getLogger(ControllerGuiLoginGrid.class.getName()).log(Level.SEVERE, null, ex);
+                if (newLog) {
+                    addMyComponent(user);
+                    try {
+                        crudPresence.create(userId);
+                        guiLogin.setVisible(false);
+                        online.add(crudUser.getUser(userId));
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(ControllerGuiLoginGrid.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    try {
+                        guiLogin.setVisible(false);
+                        guiLoginGrid.setVisible(false);
+                        controllerGuiMain.waiterInit(userId);
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(ControllerGuiLoginGrid.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             } else {
                 JOptionPane.showMessageDialog(guiLoginGrid, "Ocurrió un error, contraseña incorrecta", "Error!", JOptionPane.ERROR_MESSAGE);

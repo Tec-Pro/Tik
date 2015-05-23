@@ -45,6 +45,7 @@ public class GuiLoginGrid extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         jScrollPane1 = new javax.swing.JScrollPane();
         panelLogin = new javax.swing.JPanel();
@@ -54,11 +55,14 @@ public class GuiLoginGrid extends javax.swing.JFrame {
 
         panelLogin.setLayout(new java.awt.GridBagLayout());
 
-        btnLogin.setText("Login");
+        btnLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/plus.png"))); // NOI18N
         btnLogin.setMaximumSize(new java.awt.Dimension(100, 100));
         btnLogin.setMinimumSize(new java.awt.Dimension(100, 100));
         btnLogin.setPreferredSize(new java.awt.Dimension(100, 100));
-        panelLogin.add(btnLogin, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        panelLogin.add(btnLogin, gridBagConstraints);
 
         jScrollPane1.setViewportView(panelLogin);
 
