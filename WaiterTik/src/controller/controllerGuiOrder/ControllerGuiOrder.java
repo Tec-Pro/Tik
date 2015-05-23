@@ -138,7 +138,13 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
             @Override
             public void keyReleased(KeyEvent evt) {
                 try {
-                    search();
+                    if(evt.getKeyCode() == KeyEvent.VK_ENTER){ 
+                        search();
+                    }
+                    if(guiOrder.getTxtSearch().getText().length() == 0){
+                        CreateTree();
+                    }
+                        
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
                 }
