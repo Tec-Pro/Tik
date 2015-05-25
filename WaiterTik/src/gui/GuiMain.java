@@ -4,10 +4,13 @@
  */
 package gui;
 
+import controller.ControllerGuiMain;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.LinkedList;
 import utils.Watch;
 
@@ -35,6 +38,12 @@ public class GuiMain extends javax.swing.JFrame {
         orders = new LinkedList<GuiMenuDetail>();
         clearAllOrders();
         setDefaultCloseOperation(HIDE_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter(){
+                @Override
+                public void windowClosing(WindowEvent e){
+                    ControllerGuiMain.setLoginGridVisible(true);
+                }
+            });
     }
 
 
@@ -91,7 +100,7 @@ public class GuiMain extends javax.swing.JFrame {
             }
         }
     }
-
+    
         /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

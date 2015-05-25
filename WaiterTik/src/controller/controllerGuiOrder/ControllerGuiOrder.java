@@ -425,9 +425,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
 
         //*******GuiOrder**************//
         if (e.getSource().equals(guiOrder.getBtnSend())) {
-            int r = JOptionPane.showConfirmDialog(null, "Desea enviar el pedido");
-            if(r!=0)
-                return;
+           
             if (currentOrderId == null) { //si el pedido es nuevo, carga todos los productos y los envia
                 DefaultTableModel productsTable = guiOrder.getTableProductsDefault();
                 List<Map<String, Object>> products = new LinkedList<>();
@@ -449,7 +447,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                     currentOrderId = (int) idLong;
                     productsTable.setRowCount(0);
                     loadProducts();
-                   // JOptionPane.showMessageDialog(guiOrder, "Nuevo pedido Enviado!", "Pedido Enviado", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(guiOrder, "Nuevo pedido Enviado!", "Pedido Enviado", JOptionPane.INFORMATION_MESSAGE);
                    // guiOrder.getBtnSend().setEnabled(false);
 //                    addMyComponent(currentOrder.get("order_number").toString());
                 } catch (RemoteException ex) {
@@ -487,9 +485,20 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                     Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            guiOrder.setVisible(false);
-            guiOrder.getParent().setVisible(false);
-            controllerGuiMain.setLoginGridVisible(true);
+            int r = JOptionPane.showConfirmDialog(null, "Quiere hacer algo mas?");
+            if(r==0){
+                guiOrder.setVisible(false);
+                return;
+            }
+            else{
+                if(r==1){
+                    guiOrder.setVisible(false);
+                    guiOrder.getParent().setVisible(false);
+                    controllerGuiMain.setLoginGridVisible(true);
+                }
+                else
+                    return;
+            }
         }
 
         if (e.getSource().equals(guiOrder.getBtnClose())) { //cierra el pedido
