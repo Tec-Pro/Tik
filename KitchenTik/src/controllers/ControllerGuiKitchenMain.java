@@ -15,36 +15,34 @@ import interfaces.InterfaceGeneralConfig;
 import interfaces.InterfaceOrder;
 import interfaces.InterfacePresence;
 import interfaces.InterfaceUser;
-import java.awt.Component;
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
-import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.Player;
 import utils.InterfaceName;
 import utils.Pair;
 import utils.SoundPlayer;
@@ -71,13 +69,12 @@ public class ControllerGuiKitchenMain implements ActionListener {
     private static LinkedList<Integer> orderList;
     //Atributos para el control de retrasos en pedidos
     private static Timer timer;
-    private static final Integer time = 10000;//tiempo de intervalo de actualizacion de retrasos
+    private static final Integer time = 10000;//tiempo de intervalo de actualizacion de retrasos(actualmente 1minuto)
     private static SoundPlayer soundPlayer;
     //lista de ordersPanels con todos los paneles de la gui
     private static LinkedList<GuiKitchenOrderPane> listOrdersPanels;
     //
     private static DefaultTableModel dtmOrderDetails;
-    
 
     /**
      *
@@ -112,30 +109,57 @@ public class ControllerGuiKitchenMain implements ActionListener {
         guiLogin = null;
         //traigo todos los pedidos que estan abiertos
         refreshOpenOrders();
-        
+
         //controlo cada 1minuto si hay algun pedido retrasado
         timer = new Timer(time, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                //Cada cierto tiempo "time" hago una busqueda de las ordenes retrasadas
-                searchDelayedOrders();
+                try {
+                    //Cada cierto tiempo "time" hago una busqueda de las ordenes retrasadas
+                    searchDelayedOrders();
+                } catch (ParseException ex) {
+                    Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
         );
         timer.start();
     }
+
+    public static Map computeDiff(Date date1, Date date2) {
+        long diffInMillies = date2.getTime() - date1.getTime();
+        LinkedList<TimeUnit> units = new LinkedList(EnumSet.allOf(TimeUnit.class));
+        Collections.reverse(units);
+        Map result = new LinkedHashMap();
+        long milliesRest = diffInMillies;
+        for (TimeUnit unit : units) {
+            long diff = unit.convert(milliesRest, TimeUnit.MILLISECONDS);
+            long diffInMilliesForUnit = unit.toMillis(diff);
+            milliesRest = milliesRest - diffInMilliesForUnit;
+            result.put(unit, diff);
+        }
+        return result;
+    }
     
-    private static void searchDelayedOrders(){
+    
+    private static void searchDelayedOrders() throws ParseException {
         Iterator<GuiKitchenOrderPane> itr = listOrdersPanels.iterator();
-        while( itr.hasNext()){
+        while (itr.hasNext()) {
             GuiKitchenOrderPane orderPane = itr.next();
             /*Aca debo calcular si el pedido esta retrasado en base al archivo de configuracion traido
              *del servidor, comparar los minutos con el de cada panel, y si esta retrasado emitir una 
              *alerta tanto visual como sonora */
                 //aca muestro como reproducir un sonido solamente
-                //soundPlayer.playSound();
-            
-            System.out.println("Tiempo de arribo: "+orderPane.getLblTimeOrderArrival().getText());
+            //soundPlayer.playSound();
+
+            final Date currentTime = new Date();
+            final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+            Date timeOrderArrival = new Date();
+            timeOrderArrival.setHours((dateFormat.parse(orderPane.getLblTimeOrderArrival().getText())).getHours());
+            timeOrderArrival.setMinutes((dateFormat.parse(orderPane.getLblTimeOrderArrival().getText())).getMinutes());
+            timeOrderArrival.setSeconds((dateFormat.parse(orderPane.getLblTimeOrderArrival().getText())).getSeconds());
+            System.out.println("Hora pedido: "+timeOrderArrival+" Hora actual: "+currentTime);
+            System.out.println("Diferencia horaria: "+computeDiff(timeOrderArrival, currentTime));
         }
     }
 
@@ -240,23 +264,20 @@ public class ControllerGuiKitchenMain implements ActionListener {
             desc = aux;
             //concateno id de pedido mas el nombre del mozo que lo pidio
             String orderName = order.first().get("order_number").toString() + " - " + (crudUser.getUser(Integer.parseInt((order.first().get("user_id")).toString()))).get("name");
-            guiOrderPane = new GuiKitchenOrderPane();
-            guiOrderPane.getTxtOrderDescription().setText(desc);
-            guiOrderPane.getLblTimeOrderArrival().setText(dateFormat.format(date));
-            guiOrderPane.getLblOrderNumber().setText(orderName);
+            Integer orderId = Integer.parseInt(order.first().get("id").toString());
+            guiOrderPane = new GuiKitchenOrderPane(orderName, desc, dateFormat.format(date), orderId);
             guiOrderPane.addMouseListener(new java.awt.event.MouseAdapter() {
-                    
-                        @Override
-                        public void mouseClicked(MouseEvent e) {
-                            if (e.getClickCount() == 2) {
-                                try {
-                                    loadGuiOrderDetails(Integer.parseInt(order.first().get("id").toString()), order.first().get("description").toString(), dateFormat.format(date));
-                                } catch (RemoteException ex) {
-                                    Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
-                                }
-                            }
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getClickCount() == 2) {
+                        try {
+                            loadGuiOrderDetails(Integer.parseInt(order.first().get("id").toString()), order.first().get("description").toString(), dateFormat.format(date));
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                    });
+                    }
+                }
+            });
             guiKitchenMain.addElementToOrdersGrid(guiOrderPane);
             listOrdersPanels.add(guiOrderPane);
             orderList.add(Integer.parseInt(order.first().get("id").toString()));

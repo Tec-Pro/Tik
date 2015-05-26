@@ -16,6 +16,7 @@ import javax.swing.JTextArea;
 public class GuiKitchenOrderPane extends javax.swing.JPanel {
 
     private int position;
+    private Integer orderId;
 
     /**
      * Creates new form orderPane
@@ -25,11 +26,19 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
         initComponents();
     }
 
-    public GuiKitchenOrderPane(String orderName, String desc, String date) {
+    /**
+     *
+     * @param orderName nombre del pedido
+     * @param desc descripcion del pedido
+     * @param date hora del pedido
+     * @param ordId id del pedido
+     */
+    public GuiKitchenOrderPane(String orderName, String desc, String date, Integer ordId) {
+        initComponents();
         lblOrderNumber.setText(orderName);
         lblTimeOrderArrival.setText(date);
         txtOrderDescription.setText(desc);
-        initComponents();
+        this.orderId = ordId;
     }
 
     /**
@@ -187,6 +196,13 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
     }
 
     /**
+     * @return the orderId
+     */
+    public Integer getOrderId() {
+        return orderId;
+    }
+
+    /**
      * @param position the position to set
      */
     public void setPosition(int position) {
@@ -207,6 +223,10 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
         return btnPostpone;
     }
     
+    /**
+     *
+     * @param lis
+     */
     public void setActionListener(ActionListener lis){
         this.btnPostpone.addActionListener(lis);
         this.btnOrderReady.addActionListener(lis);
