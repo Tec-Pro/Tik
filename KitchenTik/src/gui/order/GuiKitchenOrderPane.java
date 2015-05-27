@@ -23,6 +23,7 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
     private Pair<Map<String, Object>, List<Map>> order;
     boolean modified = false;
     private Timer timer;
+    private boolean activeTimer;
 
     /**
      * Creates new form orderPane
@@ -30,6 +31,7 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
      */
     public GuiKitchenOrderPane() {
         initComponents();
+        activeTimer = false;
     }
 
     /**
@@ -45,6 +47,7 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
         lblTimeOrderArrival.setText(date);
         txtOrderDescription.setText(desc);
         this.order = order;
+        activeTimer = false;
     }
 
     /**
@@ -112,9 +115,20 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
     public void setTimer(ActionListener lis, int start,int delay){
         timer = new Timer(start,lis);
         timer.setDelay(delay);
+        activeTimer = true;
         timer.start();
     }
 
+    /**
+     * Metodo que finaliza la accion ejecutada por el timer
+     */
+    public void stopTimer(){
+        if (timer != null){
+            timer.stop();
+            activeTimer = false;
+        }
+    }
+    
     /**
      * Devuelve el label que debe mostrar el número del pedido.
      *
@@ -243,6 +257,14 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
      */
     public int getPosition() {
         return position;
+    }
+
+    /**
+     *
+     * @return true si el timer esta activo
+     */
+    public boolean isActiveTimer() {
+        return activeTimer;
     }
 
     /**

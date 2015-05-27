@@ -159,11 +159,23 @@ public class ControllerGuiKitchenMain implements ActionListener {
             Map<String, Object> diff = computeDiff(timeOrderArrival, currentTime);//diferencia entre horas
             //Si transcurrieron mas minutos de los especificados por el usuario en la configuracion
             //Y ademas el pedido no esta pospuesto (No esta coloreado en amarillo)
-            if (orderPane.getColor() != 2 &&(Integer.parseInt(diff.get("MINUTES").toString()) >= Integer.parseInt(generalConfig.getDelayTime())
+            if (orderPane.getColor() != 2 && (Integer.parseInt(diff.get("MINUTES").toString()) >= Integer.parseInt(generalConfig.getDelayTime())
                     || Integer.parseInt(diff.get("HOURS").toString()) > 0
                     || Integer.parseInt(diff.get("DAYS").toString()) > 0)) {
                 soundPlayer.playSound();//Alerta sonora
-                orderPane.setColor(3);//Se colorea en rojo el pedido retrasado
+                if(!orderPane.isActiveTimer()){
+                    //Parpadea el color del panel, en rojo, avisando que el pedido se retraso
+                    orderPane.setTimer(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            if (orderPane.getColor() == 3) {
+                                orderPane.setColor(0);
+                            } else {
+                                orderPane.setColor(3);
+                            }
+                        }
+                    }, 3600, 500);
+                }
                 orderPane.getBtnPostpone().setEnabled(true);
                 orderPane.getBtnPostpone().addMouseListener(new java.awt.event.MouseAdapter() {
                     @Override
@@ -171,6 +183,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
                         orderPane.setColor(2);//Coloreo en amarillo el pedido, en señal de pospuesto
                         soundPlayer.stopSound();
                         orderPane.getBtnPostpone().setEnabled(false);
+                        orderPane.stopTimer();
                     }
                 });
                 System.out.println("El pedido: " + orderPane.getLblOrderNumber().getText() + " esta retrasado.");
