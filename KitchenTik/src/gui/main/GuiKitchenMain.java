@@ -12,6 +12,10 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import utils.Watch;
 
 /**
@@ -45,6 +49,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel2 = new org.edisoncor.gui.panel.PanelImage();
         jPanel4 = new javax.swing.JPanel();
@@ -54,6 +59,13 @@ public class GuiKitchenMain extends javax.swing.JFrame {
         menuLogin = new javax.swing.JMenu();
         menuItemNewLogin = new javax.swing.JMenuItem();
         menuItemLoggedUsers = new javax.swing.JMenuItem();
+        menuConfig = new javax.swing.JMenu();
+        menuItemGeneralConfig = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        menuItemAbout = new javax.swing.JMenuItem();
+
+        jCheckBoxMenuItem1.setSelected(true);
+        jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SISTEMA COCINA TIK");
@@ -120,6 +132,30 @@ public class GuiKitchenMain extends javax.swing.JFrame {
 
         jMenuBar1.add(menuLogin);
 
+        menuConfig.setText("Configuracion");
+
+        menuItemGeneralConfig.setText("Configuraciones Generales");
+        menuItemGeneralConfig.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemGeneralConfigActionPerformed(evt);
+            }
+        });
+        menuConfig.add(menuItemGeneralConfig);
+
+        jMenuBar1.add(menuConfig);
+
+        jMenu1.setText("Acerca de");
+
+        menuItemAbout.setText("Tec-Pro Software");
+        menuItemAbout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemAboutActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuItemAbout);
+
+        jMenuBar1.add(jMenu1);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -139,6 +175,20 @@ public class GuiKitchenMain extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void menuItemGeneralConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemGeneralConfigActionPerformed
+        try {
+            new GuiConfig(this, true);
+        } catch (RemoteException ex) {
+            Logger.getLogger(GuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NotBoundException ex) {
+            Logger.getLogger(GuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_menuItemGeneralConfigActionPerformed
+
+    private void menuItemAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemAboutActionPerformed
+        new GuiAbout(this, true);
+    }//GEN-LAST:event_menuItemAboutActionPerformed
 
     /**
      *
@@ -263,10 +313,15 @@ public class GuiKitchenMain extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private org.edisoncor.gui.panel.PanelImage jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JMenu menuConfig;
+    private javax.swing.JMenuItem menuItemAbout;
+    private javax.swing.JMenuItem menuItemGeneralConfig;
     private javax.swing.JMenuItem menuItemLoggedUsers;
     private javax.swing.JMenuItem menuItemNewLogin;
     private javax.swing.JMenu menuLogin;
