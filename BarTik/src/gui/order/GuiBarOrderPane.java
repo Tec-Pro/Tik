@@ -7,8 +7,11 @@ package gui.order;
 
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JTextArea;
 import javax.swing.Timer;
+import utils.Pair;
 
 /**
  *
@@ -17,24 +20,34 @@ import javax.swing.Timer;
 public class GuiBarOrderPane extends javax.swing.JPanel {
 
     private int position;
+    private Pair<Map<String, Object>, List<Map>> order;
+    boolean modified = false;
     private Timer timer;
+    private boolean activeTimer;
 
     /**
      * Creates new form orderPane
      *
-     * @param orderId id del pedido.
-     * @param orderDescription descripción del pedido.
-     * @param orderArrivalTime tiempo de llegada del pedido.
      */
     public GuiBarOrderPane() {
         initComponents();
+        activeTimer = false;
     }
 
-    public GuiBarOrderPane(String orderName, String desc, String date) {
-        orderNumber.setText(orderName);
-        timeOrderArrival.setText(date);
-        txtOrderDescription.setText(desc);
+    /**
+     *
+     * @param orderName nombre del pedido
+     * @param desc descripcion del pedido
+     * @param date hora del pedido
+     * @param ordId id del pedido
+     */
+    public GuiBarOrderPane(String orderName, String desc, String date, Pair<Map<String, Object>, List<Map>> order) {
         initComponents();
+        lblOrderNumber.setText(orderName);
+        lblTimeOrderArrival.setText(date);
+        txtOrderDescription.setText(desc);
+        this.order = order;
+        activeTimer = false;
     }
 
     /**
@@ -64,6 +77,36 @@ public class GuiBarOrderPane extends javax.swing.JPanel {
     }
     
     /**
+     *
+     * @return 0 si el color es Blanco,
+     *         1 si el color es Verde,
+     *         2 si el color es Amarillo,
+     *         3 si el color es Rojo,
+     *         -1 si no es ninguno de los anteriores.
+     */
+    public int getColor() {
+        Color background = getBackground();
+        if(background.equals(Color.WHITE)){
+            return 0;
+        }else{
+            if(background.equals(Color.GREEN)){
+                return 1;
+            }else{
+                if(background.equals(Color.YELLOW)){
+                    return 2;
+                }else{
+                    if(background.equals(Color.RED)){
+                        return 3;
+                    }else{
+                        return -1;
+                    }
+                }
+            }
+        }   
+    }
+    
+    
+    /**
      * Metodo que inicia un timer para ejecutar una acción cada cierto tiempo.
      * @param lis listener que invoca la acción a ejecutar
      * @param start tiempo de comienzo medido en milisegundos
@@ -72,16 +115,27 @@ public class GuiBarOrderPane extends javax.swing.JPanel {
     public void setTimer(ActionListener lis, int start,int delay){
         timer = new Timer(start,lis);
         timer.setDelay(delay);
+        activeTimer = true;
         timer.start();
     }
 
+    /**
+     * Metodo que finaliza la accion ejecutada por el timer
+     */
+    public void stopTimer(){
+        if (timer != null){
+            timer.stop();
+            activeTimer = false;
+        }
+    }
+    
     /**
      * Devuelve el label que debe mostrar el número del pedido.
      *
      * @return the orderNumber
      */
-    public javax.swing.JLabel getOrderNumber() {
-        return orderNumber;
+    public javax.swing.JLabel getLblOrderNumber() {
+        return lblOrderNumber;
     }
 
     /**
@@ -89,8 +143,8 @@ public class GuiBarOrderPane extends javax.swing.JPanel {
      *
      * @return the timeOrderArrival
      */
-    public javax.swing.JLabel getTimeOrderArrival() {
-        return timeOrderArrival;
+    public javax.swing.JLabel getLblTimeOrderArrival() {
+        return lblTimeOrderArrival;
     }
 
     /**
@@ -114,8 +168,8 @@ public class GuiBarOrderPane extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtOrderDescription = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
-        orderNumber = new javax.swing.JLabel();
-        timeOrderArrival = new javax.swing.JLabel();
+        lblOrderNumber = new javax.swing.JLabel();
+        lblTimeOrderArrival = new javax.swing.JLabel();
         btnOrderReady = new javax.swing.JButton();
         btnPostpone = new javax.swing.JButton();
 
@@ -134,14 +188,15 @@ public class GuiBarOrderPane extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Cantarell", 0, 24)); // NOI18N
         jLabel1.setText("N°");
 
-        orderNumber.setFont(new java.awt.Font("Cantarell", 0, 18)); // NOI18N
-        orderNumber.setText("n° de pedido");
+        lblOrderNumber.setFont(new java.awt.Font("Cantarell", 0, 18)); // NOI18N
+        lblOrderNumber.setText("n° de pedido");
 
-        timeOrderArrival.setFont(new java.awt.Font("Cantarell", 0, 15)); // NOI18N
-        timeOrderArrival.setText("Hora de llegada del pedido");
+        lblTimeOrderArrival.setFont(new java.awt.Font("Cantarell", 0, 15)); // NOI18N
+        lblTimeOrderArrival.setText("Hora de llegada del pedido");
 
         btnOrderReady.setFont(new java.awt.Font("Cantarell", 0, 14)); // NOI18N
         btnOrderReady.setText("Pedido Listo");
+        btnOrderReady.setEnabled(false);
 
         btnPostpone.setFont(new java.awt.Font("Cantarell", 0, 14)); // NOI18N
         btnPostpone.setText("Posponer");
@@ -155,17 +210,15 @@ public class GuiBarOrderPane extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1)
-                    .addComponent(timeOrderArrival, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblTimeOrderArrival, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(orderNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(btnOrderReady, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnPostpone, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblOrderNumber, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(btnOrderReady, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnPostpone, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -175,9 +228,9 @@ public class GuiBarOrderPane extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(orderNumber))
+                    .addComponent(lblOrderNumber))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(timeOrderArrival)
+                .addComponent(lblTimeOrderArrival)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -193,8 +246,8 @@ public class GuiBarOrderPane extends javax.swing.JPanel {
     private javax.swing.JButton btnPostpone;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel orderNumber;
-    private javax.swing.JLabel timeOrderArrival;
+    private javax.swing.JLabel lblOrderNumber;
+    private javax.swing.JLabel lblTimeOrderArrival;
     private javax.swing.JTextArea txtOrderDescription;
     // End of variables declaration//GEN-END:variables
 
@@ -203,6 +256,21 @@ public class GuiBarOrderPane extends javax.swing.JPanel {
      */
     public int getPosition() {
         return position;
+    }
+
+    /**
+     *
+     * @return true si el timer esta activo
+     */
+    public boolean isActiveTimer() {
+        return activeTimer;
+    }
+
+    /**
+     * @return the orderId
+     */
+    public Integer getOrderId() {
+        return (Integer) order.first().get("user_id");
     }
 
     /**
@@ -226,8 +294,27 @@ public class GuiBarOrderPane extends javax.swing.JPanel {
         return btnPostpone;
     }
     
+    /**
+     *
+     * @param lis
+     */
     public void setActionListener(ActionListener lis){
         this.btnPostpone.addActionListener(lis);
         this.btnOrderReady.addActionListener(lis);
+    }
+
+    /**
+     * @return the modified
+     */
+    public boolean isModified() {
+        return modified;
+    }
+
+    /**
+     * @param modified the modified to set
+     */
+    public void setModified(boolean modified) {
+        this.modified = modified;
+        btnOrderReady.setEnabled(modified);
     }
 }

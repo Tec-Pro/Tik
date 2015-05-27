@@ -11,6 +11,7 @@ import gui.main.GuiBarMain;
 import gui.order.GuiBarOrderDetails;
 import gui.order.GuiBarOrderPane;
 import interfaces.InterfaceFproduct;
+import interfaces.InterfaceGeneralConfig;
 import interfaces.InterfaceOrder;
 import interfaces.InterfacePresence;
 import interfaces.InterfaceUser;
@@ -21,23 +22,31 @@ import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import utils.InterfaceName;
 import utils.Pair;
+import utils.SoundPlayer;
 
 /**
  *
@@ -45,18 +54,29 @@ import utils.Pair;
  */
 public class ControllerGuiBarMain implements ActionListener {
 
-    private static InterfaceOrder crudOrder;
-    private static LinkedList<Integer> orderList;
-    private final Set<Map> online; // set con los cocineros online
-    private final InterfacePresence crudPresence;
-    private static InterfaceUser crudUser;
-    private static InterfaceFproduct crudFProduct;
+    //Guis
     private GuiLogin guiLogin;
     private static GuiBarOrderDetails guiOrderDetails;
     private static GuiBarMain guiBarMain;
-    private static DefaultTableModel dtmOrderDetails;
     private static GuiBarOrderPane guiOrderPane;
-    private int color;
+    //Interfaces
+    private static InterfaceOrder crudOrder;
+    private static InterfaceUser crudUser;
+    private static InterfaceFproduct crudFProduct;
+    private final InterfacePresence crudPresence;
+    private static InterfaceGeneralConfig generalConfig;
+    //Conjunto(set) con los barman online
+    private final Set<Map> online;
+    //Atributos para el control de retrasos en pedidos
+    private static Timer timer;
+    private static final Integer time = 10000;//tiempo de intervalo de actualizacion de retrasos(actualmente 10 segundos)
+    private static SoundPlayer soundPlayer;
+    //lista de ordersPanels con todos los paneles de la gui
+    private static LinkedList<GuiBarOrderPane> listOrdersPanels;
+    //
+    private static LinkedList<Integer> orderList;
+    private static DefaultTableModel dtmOrderDetails;
+    
 
     /**
      *
@@ -65,12 +85,15 @@ public class ControllerGuiBarMain implements ActionListener {
      * @throws RemoteException
      */
     public ControllerGuiBarMain() throws NotBoundException, MalformedURLException, RemoteException {
+        soundPlayer = new SoundPlayer();
         orderList = new LinkedList<>();
         crudOrder = (InterfaceOrder) InterfaceName.registry.lookup(InterfaceName.CRUDOrder);
         crudPresence = (InterfacePresence) InterfaceName.registry.lookup(InterfaceName.CRUDPresence);
         crudUser = (InterfaceUser) InterfaceName.registry.lookup(InterfaceName.CRUDUser);
         crudFProduct = (InterfaceFproduct) InterfaceName.registry.lookup(InterfaceName.CRUDFproduct);
+        generalConfig = (InterfaceGeneralConfig) InterfaceName.registry.lookup(InterfaceName.GeneralConfig);
         online = new HashSet<>();
+        listOrdersPanels = new LinkedList<>();
         for (Map m : crudPresence.getCooks()) {
             online.add(m);
         }
@@ -87,24 +110,95 @@ public class ControllerGuiBarMain implements ActionListener {
         guiOrderDetails.setActionListener(this);
         guiOrderPane.setActionListener(this);
 
-        color = 3;
-        //Timer que hace que el color parpadee mover esto donde se vaya a usar.
-        guiOrderPane.setTimer(new ActionListener() {
-            
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                
-                guiOrderPane.setColor(color);
-                if (color == 3)
-                    color = 0;
-                else 
-                    color = 3;
-            }
-        }, 3600,500); //Modificar estos valores por el tiempo de tolerancia y el tiempo de animación.
         guiLogin = null;
+        
         //traigo todos los pedidos que estan abiertos
         refreshOpenOrders();
+        //controlo cada cierto tiempo("time") si hay algun pedido retrasado
+        timer = new Timer(time, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                try {
+                    //Cada cierto tiempo "time" hago una busqueda de las ordenes retrasadas
+                    searchDelayedOrders();
+                } catch (ParseException | RemoteException ex) {
+                    Logger.getLogger(ControllerGuiBarMain.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        );
+        timer.start();
+        
     }
+    
+    /**
+     * Computa la diferencia entre dos fechas dadas.
+     *
+     * @param date1 Fecha menor (fecha de creacion del pedido)
+     * @param date2 Fecha mayor (fecha actual)
+     * @return Map con la diferencia entre ambas fechas. (Formato del Map:
+     * {DAYS, HOURS, MINUTES, SECONDS, MILLISECONDS, MICROSECONDS, NANOSECONDS})
+     */
+    public static Map<String, Object> computeDiff(Date date1, Date date2) {
+        long diffInMillies = date2.getTime() - date1.getTime();
+        LinkedList<TimeUnit> units = new LinkedList(EnumSet.allOf(TimeUnit.class));
+        Collections.reverse(units);
+        Map result = new LinkedHashMap();
+        long milliesRest = diffInMillies;
+        for (TimeUnit unit : units) {
+            long diff = unit.convert(milliesRest, TimeUnit.MILLISECONDS);
+            long diffInMilliesForUnit = unit.toMillis(diff);
+            milliesRest = milliesRest - diffInMilliesForUnit;
+            result.put(unit.toString(), diff);
+        }
+        return result;
+    }
+
+    private static void searchDelayedOrders() throws ParseException, RemoteException {
+        Iterator<GuiBarOrderPane> itr = listOrdersPanels.iterator();
+        //Recorro todos los paneles de la gridbaglayout
+        while (itr.hasNext()) {
+            final GuiBarOrderPane orderPane = itr.next();//saco el panel actual
+            final Timestamp currentTime = new Timestamp(System.currentTimeMillis());//hora y fecha actual
+            Timestamp timeOrderArrival = Timestamp.valueOf(orderPane.getLblTimeOrderArrival().getText());//hora y fecha del pedido
+            Map<String, Object> diff = computeDiff(timeOrderArrival, currentTime);//diferencia entre horas
+            //Si transcurrieron mas minutos de los especificados por el usuario en la configuracion
+            //Y ademas el pedido no esta pospuesto (No esta coloreado en amarillo)
+            if (orderPane.getColor() != 2 && (Integer.parseInt(diff.get("MINUTES").toString()) >= Integer.parseInt(generalConfig.getDelayTime())
+                    || Integer.parseInt(diff.get("HOURS").toString()) > 0
+                    || Integer.parseInt(diff.get("DAYS").toString()) > 0)) {
+                soundPlayer.playSound();//Alerta sonora
+                if(!orderPane.isActiveTimer()){
+                    //Parpadea el color del panel, en rojo, avisando que el pedido se retraso
+                    orderPane.setTimer(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            if (orderPane.getColor() == 3) {
+                                orderPane.setColor(0);
+                            } else {
+                                orderPane.setColor(3);
+                            }
+                        }
+                    }, 3600, 500);
+                }
+                orderPane.getBtnPostpone().setEnabled(true);
+                orderPane.getBtnPostpone().addMouseListener(new java.awt.event.MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        orderPane.setColor(2);//Coloreo en amarillo el pedido, en señal de pospuesto
+                        soundPlayer.stopSound();
+                        orderPane.getBtnPostpone().setEnabled(false);
+                        orderPane.stopTimer();
+                    }
+                });
+                System.out.println("El pedido: " + orderPane.getLblOrderNumber().getText() + " esta retrasado.");
+                System.out.println("Tiempo de retraso: " + diff.toString());
+                System.out.println("");
+            }
+
+        }
+    }
+    
 
     private static void loadGuiOrderDetails(int order, String desc, String arrival) throws RemoteException {
         guiOrderDetails.getLabelOrderArrivalTime().setText(arrival);
@@ -194,14 +288,16 @@ public class ControllerGuiBarMain implements ActionListener {
         //dependiendo de como sea implementado el controlador
         //RECORDAR QUE EN LA GUI SOLO DEBEN CARGARSE LOS PRODUCTOS CORRESPONDIENTES A COCINA(FILTRAR LA LISTA)
         if (itBelongsBar(order.second())) {
-            final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-            final Date date = new Date();
+            Timestamp date = Timestamp.valueOf("1990-01-01 01:01:01");//inicio la fecha con un valor minimo
             final String desc;
             String aux = "";
             for (Map m : order.second()) {
                 if (!m.get("done").equals(true)) {
                     Map<String, Object> fProduct = crudFProduct.getFproduct(Integer.parseInt(m.get("fproduct_id").toString()));
                     aux = aux + fProduct.get("name") + " x" + m.get("quantity") + "\n";
+                    if (date.before(Timestamp.valueOf(m.get("updated_at").toString()))) {
+                        date = Timestamp.valueOf(m.get("updated_at").toString());
+                    }
                 }
             }
             desc = aux;
@@ -209,10 +305,11 @@ public class ControllerGuiBarMain implements ActionListener {
             String orderName = order.first().get("order_number").toString() + " - " + (crudUser.getUser(Integer.parseInt((order.first().get("user_id")).toString()))).get("name");
             guiOrderPane = new GuiBarOrderPane();
             guiOrderPane.getTxtOrderDescription().setText(desc);
-            guiOrderPane.getTimeOrderArrival().setText(dateFormat.format(date));
-            guiOrderPane.getOrderNumber().setText(orderName);
+            guiOrderPane.getLblTimeOrderArrival().setText(date.toString());
+            guiOrderPane.getLblOrderNumber().setText(orderName);
             guiBarMain.addElementToOrdersGrid(guiOrderPane,0);
-            guiOrderPane.addMouseListener(new MouseAdapter() {
+            // MAX CORREGIR ESTO //
+            /*guiOrderPane.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 try {
@@ -221,8 +318,10 @@ public class ControllerGuiBarMain implements ActionListener {
                     Logger.getLogger(ControllerGuiBarMain.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
-            }});
+            }});*/
+            // CORREGIR LO COMENTADO, ES VIEJO, ACTUALIZAR //
             orderList.add(Integer.parseInt(order.first().get("id").toString()));
+            listOrdersPanels.add(guiOrderPane);
         }
     }
 
@@ -264,6 +363,7 @@ public class ControllerGuiBarMain implements ActionListener {
     /* Recarga todos los pedidos abiertos, sin realizar aun en cocina en la gui. */
     //PULIR ESTE METODO PARA QUE TRAIGA LOS PEDIDOS COMO MAXIMO DE DOS DIAS, Y NO TODOS
     public static void refreshOpenOrders() throws RemoteException {
+        listOrdersPanels = new LinkedList<>();//reinicio la lista de ordersPanels para que se actualice en addOrder
         List<Map> allOrders = crudOrder.getAllOrders();//saco todas los pedidos cargados
         for (Map<String, Object> order : allOrders) {
             if (order.get("closed").equals(false)) {//si el pedido no esta cerrado

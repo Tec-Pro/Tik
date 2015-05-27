@@ -39,20 +39,16 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
                   <Component id="jScrollPane1" max="32767" attributes="0"/>
-                  <Component id="timeOrderArrival" alignment="0" max="32767" attributes="0"/>
+                  <Component id="lblTimeOrderArrival" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="orderNumber" min="-2" pref="140" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="btnOrderReady" min="-2" pref="103" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="btnPostpone" min="-2" pref="95" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblOrderNumber" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="btnOrderReady" min="-2" pref="103" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="btnPostpone" min="-2" pref="95" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -66,10 +62,10 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="orderNumber" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblOrderNumber" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="timeOrderArrival" min="-2" max="-2" attributes="0"/>
+              <Component id="lblTimeOrderArrival" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="111" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -110,7 +106,7 @@
         <Property name="text" type="java.lang.String" value="N&#xb0;"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="orderNumber">
+    <Component class="javax.swing.JLabel" name="lblOrderNumber">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Cantarell" size="18" style="0"/>
@@ -118,7 +114,7 @@
         <Property name="text" type="java.lang.String" value="n&#xb0; de pedido"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="timeOrderArrival">
+    <Component class="javax.swing.JLabel" name="lblTimeOrderArrival">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Cantarell" size="15" style="0"/>
@@ -132,6 +128,7 @@
           <Font name="Cantarell" size="14" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Pedido Listo"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btnPostpone">

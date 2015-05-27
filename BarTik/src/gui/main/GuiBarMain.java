@@ -12,6 +12,10 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import utils.Watch;
 
 /**
@@ -65,6 +69,10 @@ public class GuiBarMain extends javax.swing.JFrame {
         menuLogin = new javax.swing.JMenu();
         menuItemNewLogin = new javax.swing.JMenuItem();
         menuItemLoggedUsers = new javax.swing.JMenuItem();
+        menuConfig = new javax.swing.JMenu();
+        menuItemGeneralConfig = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        menuItemAbout = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SISTEMA BAR TIK");
@@ -148,6 +156,30 @@ public class GuiBarMain extends javax.swing.JFrame {
 
         jMenuBar1.add(menuLogin);
 
+        menuConfig.setText("Configuracion");
+
+        menuItemGeneralConfig.setText("Configuraciones Generales");
+        menuItemGeneralConfig.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemGeneralConfigActionPerformed(evt);
+            }
+        });
+        menuConfig.add(menuItemGeneralConfig);
+
+        jMenuBar1.add(menuConfig);
+
+        jMenu1.setText("Acerca de");
+
+        menuItemAbout.setText("Tec-Pro Software");
+        menuItemAbout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemAboutActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuItemAbout);
+
+        jMenuBar1.add(jMenu1);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -167,6 +199,18 @@ public class GuiBarMain extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void menuItemGeneralConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemGeneralConfigActionPerformed
+        try {
+            (new GuiConfig(this, true)).setVisible(true);
+        } catch (RemoteException | NotBoundException ex) {
+            Logger.getLogger(GuiBarMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_menuItemGeneralConfigActionPerformed
+
+    private void menuItemAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemAboutActionPerformed
+        (new GuiAbout(this, true)).setVisible(true);
+    }//GEN-LAST:event_menuItemAboutActionPerformed
 
     /**
      * 
@@ -289,6 +333,7 @@ public class GuiBarMain extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private org.edisoncor.gui.panel.PanelImage jPanel2;
     private javax.swing.JPanel jPanel4;
@@ -297,6 +342,9 @@ public class GuiBarMain extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSplitPane jSplitPane1;
     private org.edisoncor.gui.panel.PanelImage kitchenOrdersPanel;
+    private javax.swing.JMenu menuConfig;
+    private javax.swing.JMenuItem menuItemAbout;
+    private javax.swing.JMenuItem menuItemGeneralConfig;
     private javax.swing.JMenuItem menuItemLoggedUsers;
     private javax.swing.JMenuItem menuItemNewLogin;
     private javax.swing.JMenu menuLogin;
