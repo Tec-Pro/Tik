@@ -128,6 +128,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
 
     /**
      * Computa la diferencia entre dos fechas dadas.
+     *
      * @param date1 Fecha menor (fecha de creacion del pedido)
      * @param date2 Fecha mayor (fecha actual)
      * @return Map con la diferencia entre ambas fechas. (Formato del Map:
@@ -152,18 +153,28 @@ public class ControllerGuiKitchenMain implements ActionListener {
         Iterator<GuiKitchenOrderPane> itr = listOrdersPanels.iterator();
         //Recorro todos los paneles de la gridbaglayout
         while (itr.hasNext()) {
-            GuiKitchenOrderPane orderPane = itr.next();//saco el panel actual
+            final GuiKitchenOrderPane orderPane = itr.next();//saco el panel actual
             final Timestamp currentTime = new Timestamp(System.currentTimeMillis());//hora y fecha actual
             Timestamp timeOrderArrival = Timestamp.valueOf(orderPane.getLblTimeOrderArrival().getText());//hora y fecha del pedido
             Map<String, Object> diff = computeDiff(timeOrderArrival, currentTime);//diferencia entre horas
             //Si transcurrieron mas minutos de los especificados por el usuario en la configuracion
-            if (Integer.parseInt(diff.get("MINUTES").toString()) >= Integer.parseInt(generalConfig.getDelayTime())
+            //Y ademas el pedido no esta pospuesto (No esta coloreado en amarillo)
+            if (orderPane.getColor() != 2 &&(Integer.parseInt(diff.get("MINUTES").toString()) >= Integer.parseInt(generalConfig.getDelayTime())
                     || Integer.parseInt(diff.get("HOURS").toString()) > 0
-                    || Integer.parseInt(diff.get("DAYS").toString()) > 0) {
-                //soundPlayer.playSound();//Alerta sonora
-                //ACA DEBE LANZARSE LA ALERTA VISUAL EN CADA PANEL DE PEDIDO RETRASADO
+                    || Integer.parseInt(diff.get("DAYS").toString()) > 0)) {
+                soundPlayer.playSound();//Alerta sonora
+                orderPane.setColor(3);//Se colorea en rojo el pedido retrasado
+                orderPane.getBtnPostpone().setEnabled(true);
+                orderPane.getBtnPostpone().addMouseListener(new java.awt.event.MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        orderPane.setColor(2);//Coloreo en amarillo el pedido, en señal de pospuesto
+                        soundPlayer.stopSound();
+                        orderPane.getBtnPostpone().setEnabled(false);
+                    }
+                });
                 System.out.println("El pedido: " + orderPane.getLblOrderNumber().getText() + " esta retrasado.");
-                System.out.println("Tiempo de retraso: "+diff.toString());
+                System.out.println("Tiempo de retraso: " + diff.toString());
                 System.out.println("");
             }
 
@@ -232,7 +243,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
         for (Map m : order.second()) {
             aux = aux + m.get("name") + " x" + m.get("quantity") + "\n";
             //calculo la hora del pedido en base al ultimo producto añadido al mismo
-            if(date.before(Timestamp.valueOf(m.get("updated_at").toString()))){
+            if (date.before(Timestamp.valueOf(m.get("updated_at").toString()))) {
                 date = Timestamp.valueOf(m.get("updated_at").toString());
             }
         }
@@ -289,14 +300,6 @@ public class ControllerGuiKitchenMain implements ActionListener {
             }
         });
 
-        guiOrderPane.getBtnPostpone().addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                //  BOTON POSTPONER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            }
-        });
 //        final GuiMenuDetail newOrder = new GuiMenuDetail();
 //            newOrder.getTxtDetail().addMouseListener(new MouseAdapter() {//agrego un mouselistener
 //                @Override

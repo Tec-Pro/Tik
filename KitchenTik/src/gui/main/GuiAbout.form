@@ -87,8 +87,8 @@
             <BevelBorder bevelType="1"/>
           </Border>
         </Property>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/Images/TecProBanner.jpg"/>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new javax.swing.ImageIcon(getClass().getResource(&quot;/images/TecProBanner.jpg&quot;))" type="code"/>
         </Property>
       </Properties>
 
@@ -181,8 +181,8 @@
         </Component>
         <Container class="org.edisoncor.gui.panel.PanelImage" name="panelImage1">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Images/TecPro.png"/>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="new javax.swing.ImageIcon(getClass().getResource(&quot;/images/TecPro.png&quot;))" type="code"/>
             </Property>
           </Properties>
 

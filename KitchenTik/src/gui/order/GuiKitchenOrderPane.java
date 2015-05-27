@@ -74,6 +74,36 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
     }
     
     /**
+     *
+     * @return 0 si el color es Blanco,
+     *         1 si el color es Verde,
+     *         2 si el color es Amarillo,
+     *         3 si el color es Rojo,
+     *         -1 si no es ninguno de los anteriores.
+     */
+    public int getColor() {
+        Color background = getBackground();
+        if(background.equals(Color.WHITE)){
+            return 0;
+        }else{
+            if(background.equals(Color.GREEN)){
+                return 1;
+            }else{
+                if(background.equals(Color.YELLOW)){
+                    return 2;
+                }else{
+                    if(background.equals(Color.RED)){
+                        return 3;
+                    }else{
+                        return -1;
+                    }
+                }
+            }
+        }   
+    }
+    
+    
+    /**
      * Metodo que inicia un timer para ejecutar una acción cada cierto tiempo.
      * @param lis listener que invoca la acción a ejecutar
      * @param start tiempo de comienzo medido en milisegundos

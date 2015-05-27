@@ -178,7 +178,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
 
     private void menuItemGeneralConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemGeneralConfigActionPerformed
         try {
-            new GuiConfig(this, true);
+            (new GuiConfig(this, true)).setVisible(true);
         } catch (RemoteException ex) {
             Logger.getLogger(GuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NotBoundException ex) {
@@ -187,7 +187,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
     }//GEN-LAST:event_menuItemGeneralConfigActionPerformed
 
     private void menuItemAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemAboutActionPerformed
-        new GuiAbout(this, true);
+        (new GuiAbout(this, true)).setVisible(true);
     }//GEN-LAST:event_menuItemAboutActionPerformed
 
     /**

@@ -56,7 +56,7 @@ public class GuiAbout extends javax.swing.JDialog {
         });
 
         panelImage2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
-        panelImage2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/TecProBanner.jpg"))); // NOI18N
+        panelImage2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/TecProBanner.jpg")));
 
         javax.swing.GroupLayout panelImage2Layout = new javax.swing.GroupLayout(panelImage2);
         panelImage2.setLayout(panelImage2Layout);
@@ -80,7 +80,7 @@ public class GuiAbout extends javax.swing.JDialog {
         jLabel1.setText("Tec Pro");
         jLabel1.setToolTipText("");
 
-        panelImage1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/TecPro.png"))); // NOI18N
+        panelImage1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/TecPro.png")));
 
         javax.swing.GroupLayout panelImage1Layout = new javax.swing.GroupLayout(panelImage1);
         panelImage1.setLayout(panelImage1Layout);
