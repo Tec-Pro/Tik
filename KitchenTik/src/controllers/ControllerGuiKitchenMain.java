@@ -160,7 +160,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
             if (Integer.parseInt(diff.get("MINUTES").toString()) >= Integer.parseInt(generalConfig.getDelayTime())
                     || Integer.parseInt(diff.get("HOURS").toString()) > 0
                     || Integer.parseInt(diff.get("DAYS").toString()) > 0) {
-                soundPlayer.playSound();//Alerta sonora
+                //soundPlayer.playSound();//Alerta sonora
                 //ACA DEBE LANZARSE LA ALERTA VISUAL EN CADA PANEL DE PEDIDO RETRASADO
                 System.out.println("El pedido: " + orderPane.getLblOrderNumber().getText() + " esta retrasado.");
                 System.out.println("Tiempo de retraso: "+diff.toString());
