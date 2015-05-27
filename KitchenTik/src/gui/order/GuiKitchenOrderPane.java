@@ -7,7 +7,10 @@ package gui.order;
 
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JTextArea;
+import utils.Pair;
 
 /**
  *
@@ -16,7 +19,8 @@ import javax.swing.JTextArea;
 public class GuiKitchenOrderPane extends javax.swing.JPanel {
 
     private int position;
-    private Integer orderId;
+    private Pair<Map<String, Object>, List<Map>> order;
+    boolean modified = false;
 
     /**
      * Creates new form orderPane
@@ -33,12 +37,12 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
      * @param date hora del pedido
      * @param ordId id del pedido
      */
-    public GuiKitchenOrderPane(String orderName, String desc, String date, Integer ordId) {
+    public GuiKitchenOrderPane(String orderName, String desc, String date, Pair<Map<String, Object>, List<Map>> order) {
         initComponents();
         lblOrderNumber.setText(orderName);
         lblTimeOrderArrival.setText(date);
         txtOrderDescription.setText(desc);
-        this.orderId = ordId;
+        this.order = order;
     }
 
     /**
@@ -134,6 +138,7 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
 
         btnOrderReady.setFont(new java.awt.Font("Cantarell", 0, 14)); // NOI18N
         btnOrderReady.setText("Pedido Listo");
+        btnOrderReady.setEnabled(false);
 
         btnPostpone.setFont(new java.awt.Font("Cantarell", 0, 14)); // NOI18N
         btnPostpone.setText("Posponer");
@@ -199,7 +204,7 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
      * @return the orderId
      */
     public Integer getOrderId() {
-        return orderId;
+        return (Integer) order.first().get("user_id");
     }
 
     /**
@@ -230,5 +235,20 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
     public void setActionListener(ActionListener lis){
         this.btnPostpone.addActionListener(lis);
         this.btnOrderReady.addActionListener(lis);
+    }
+
+    /**
+     * @return the modified
+     */
+    public boolean isModified() {
+        return modified;
+    }
+
+    /**
+     * @param modified the modified to set
+     */
+    public void setModified(boolean modified) {
+        this.modified = modified;
+        btnOrderReady.setEnabled(modified);
     }
 }

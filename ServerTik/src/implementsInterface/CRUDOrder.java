@@ -54,7 +54,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
      */
     @Override
     public Map<String, Object> sendOrder(int userId, String description, int persons, List<Map<String, Object>> fproducts) throws RemoteException {
-        // campos que deberia tener el map: ("fproductId","quantity","done","commited","issued")
+        // campos que deberia tener el map: ("fproductId","name","quantity","done","commited","issued")
         Utils.abrirBase();
         Base.openTransaction();
         Order newOrder = Order.createIt("user_id", userId, "order_number", getOrdersCount(userId) + 1, "description", description, "closed", false, "persons", persons);
@@ -66,6 +66,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             
             Map<String, Object> addProd = new HashMap(); //Create a map with the product
             addProd.put("fproduct_id", (int) prod.get("fproductId"));
+            addProd.put("name", prod.get("name"));
             addProd.put("quantity", (float) prod.get("quantity"));
             addProd.put("done", (boolean) prod.get("done"));
             addProd.put("commited", (boolean) prod.get("commited"));
@@ -108,7 +109,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
      */
     @Override
     public boolean updateOrder(int orderId, String description, int persons, List<Map<String, Object>> fproducts) throws RemoteException {
-        // campos que deberia tener el map: ("fproductId","quantity","done","commited","issued")
+        // campos que deberia tener el map: ("fproductId","name","quantity","done","commited","issued")
         Utils.abrirBase();
         Base.openTransaction();
         Order order = Order.findById(orderId);
@@ -132,6 +133,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
 
                 Map<String, Object> addProd = new HashMap(); //Create a map with the product
                 addProd.put("fproduct_id", (int) prod.get("fproductId"));
+                addProd.put("name", prod.get("name"));
                 addProd.put("quantity", (float) prod.get("quantity"));
                 addProd.put("done", (boolean) prod.get("done"));
                 addProd.put("commited", (boolean) prod.get("commited"));

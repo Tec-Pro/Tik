@@ -17,6 +17,7 @@ import interfaces.InterfacePresence;
 import interfaces.InterfaceUser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
@@ -66,7 +67,6 @@ public class ControllerGuiKitchenMain implements ActionListener {
     private final InterfacePresence crudPresence;
     //Conjunto(set) con los cocineros online
     private final Set<Map> online;
-    private static LinkedList<Integer> orderList;
     //Atributos para el control de retrasos en pedidos
     private static Timer timer;
     private static final Integer time = 10000;//tiempo de intervalo de actualizacion de retrasos(actualmente 1minuto)
@@ -84,7 +84,6 @@ public class ControllerGuiKitchenMain implements ActionListener {
      */
     public ControllerGuiKitchenMain() throws NotBoundException, MalformedURLException, RemoteException {
         soundPlayer = new SoundPlayer();
-        orderList = new LinkedList<>();
         crudOrder = (InterfaceOrder) InterfaceName.registry.lookup(InterfaceName.CRUDOrder);
         crudPresence = (InterfacePresence) InterfaceName.registry.lookup(InterfaceName.CRUDPresence);
         crudUser = (InterfaceUser) InterfaceName.registry.lookup(InterfaceName.CRUDUser);
@@ -140,8 +139,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
         }
         return result;
     }
-    
-    
+
     private static void searchDelayedOrders() throws ParseException {
         Iterator<GuiKitchenOrderPane> itr = listOrdersPanels.iterator();
         while (itr.hasNext()) {
@@ -149,7 +147,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
             /*Aca debo calcular si el pedido esta retrasado en base al archivo de configuracion traido
              *del servidor, comparar los minutos con el de cada panel, y si esta retrasado emitir una 
              *alerta tanto visual como sonora */
-                //aca muestro como reproducir un sonido solamente
+            //aca muestro como reproducir un sonido solamente
             //soundPlayer.playSound();
 
             final Date currentTime = new Date();
@@ -158,32 +156,23 @@ public class ControllerGuiKitchenMain implements ActionListener {
             timeOrderArrival.setHours((dateFormat.parse(orderPane.getLblTimeOrderArrival().getText())).getHours());
             timeOrderArrival.setMinutes((dateFormat.parse(orderPane.getLblTimeOrderArrival().getText())).getMinutes());
             timeOrderArrival.setSeconds((dateFormat.parse(orderPane.getLblTimeOrderArrival().getText())).getSeconds());
-            System.out.println("Hora pedido: "+timeOrderArrival+" Hora actual: "+currentTime);
-            System.out.println("Diferencia horaria: "+computeDiff(timeOrderArrival, currentTime));
+            System.out.println("Hora pedido: " + timeOrderArrival + " Hora actual: " + currentTime);
+            System.out.println("Diferencia horaria: " + computeDiff(timeOrderArrival, currentTime));
         }
     }
 
-    private static void loadGuiOrderDetails(int order, String desc, String arrival) throws RemoteException {
-        guiOrderDetails.getLabelOrderArrivalTime().setText(arrival);
-        guiOrderDetails.getTxtOrderDescription().setText(desc);
+    private static void loadGuiOrderDetails(final Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
+        guiOrderDetails.getTxtOrderDescription().setText((String) order.first().get("description"));
         guiOrderDetails.getBtnSendOrderDone().setEnabled(false);
-        guiOrderDetails.setOrderID(order);
+        guiOrderDetails.setOrderID( (Integer) order.first().get("id"));
         dtmOrderDetails.setRowCount(0);
-        List<Map> map = crudOrder.getOrderProducts(order); // I obtain all the products
-        for (Map<String, Object> m : map) { // For each product
-            if ((boolean) m.get("done") == false) { // If the product isn't done
-                int prodID = (int) m.get("fproduct_id"); // I obtain the product ID
-                Map<String, Object> prod = crudFProduct.getFproduct(prodID); // I obtain the product (importantly, it's name and if it belongs)
-                String cook = (String) prod.get("belong");
-                if (cook.equals("Cocina")) { // If the product is for the Kitchen
-                    Object rowDtm[] = new Object[4]; // New row
-                    rowDtm[0] = m.get("id");
-                    rowDtm[1] = prod.get("name");
-                    rowDtm[2] = m.get("quantity");
-                    rowDtm[3] = false;
-                    dtmOrderDetails.addRow(rowDtm);
-                }
-            }
+        for (Map<String, Object> m : order.second()) { // For each product
+                Object rowDtm[] = new Object[4]; // New row
+                rowDtm[0] = m.get("id");
+                rowDtm[1] = m.get("name");
+                rowDtm[2] = m.get("quantity");
+                rowDtm[3] = false;
+                dtmOrderDetails.addRow(rowDtm);
         }
         guiOrderDetails.setTableModelListener(new TableModelListener() {
             @Override
@@ -204,21 +193,6 @@ public class ControllerGuiKitchenMain implements ActionListener {
         guiOrderDetails.setVisible(true);
         guiOrderDetails.toFront();
         guiOrderDetails.setModal(true);
-    }
-
-    private static boolean itBelongsKitchen(List<Map> orderProducts) throws RemoteException { // There was either no products to make, or they've all been made allready
-        boolean itBelongs = false;
-        //Map<String, Object> order = crudOrder.getOrder(id);
-
-        for (Map<String, Object> m : orderProducts) { // For each product 
-            int prodID = (int) m.get("fproduct_id"); // I obtain the product ID
-            Map<String, Object> prod = crudFProduct.getFproduct(prodID); // I obtain the product (importantly, where it belongs)
-            String cook = (String) prod.get("belong");
-            if (cook.equals("Cocina")) { // Does it belong to cocina?
-                itBelongs = true;
-            }
-        }
-        return itBelongs;
     }
 
     private static boolean noMoreToCook(int id) throws RemoteException {
@@ -242,46 +216,106 @@ public class ControllerGuiKitchenMain implements ActionListener {
      * @throws RemoteException
      */
     public static void addOrder(final Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
-        /* "order" es el Map de un pedido con la siguiente estructura:
-         * {order_number, id, user_id, closed=boolean, description}*/
-        /* "orderProducts" es una lista de Maps, de los productos finales que
-         * contiene el pedido "order", cada Map tiene la siguiente estructura:
-         * {id, done=boolean, issued=boolean, fproduct_id, quantity, order_id, commited=boolean}*/
-        //Aca debe cargarse el pedido en la gui y/o en la lista de pedidos
-        //dependiendo de como sea implementado el controlador
-        //RECORDAR QUE EN LA GUI SOLO DEBEN CARGARSE LOS PRODUCTOS CORRESPONDIENTES A COCINA(FILTRAR LA LISTA)
-        if (itBelongsKitchen(order.second())) {
-            final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-            final Date date = new Date();
-            final String desc;
-            String aux = "";
-            for (Map m : order.second()) {
-                if (!m.get("done").equals(true)) {
-                    Map<String, Object> fProduct = crudFProduct.getFproduct(Integer.parseInt(m.get("fproduct_id").toString()));
-                    aux = aux + fProduct.get("name") + " x" + m.get("quantity") + "\n";
-                }
-            }
-            desc = aux;
-            //concateno id de pedido mas el nombre del mozo que lo pidio
-            String orderName = order.first().get("order_number").toString() + " - " + (crudUser.getUser(Integer.parseInt((order.first().get("user_id")).toString()))).get("name");
-            Integer orderId = Integer.parseInt(order.first().get("id").toString());
-            guiOrderPane = new GuiKitchenOrderPane(orderName, desc, dateFormat.format(date), orderId);
-            guiOrderPane.addMouseListener(new java.awt.event.MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    if (e.getClickCount() == 2) {
-                        try {
-                            loadGuiOrderDetails(Integer.parseInt(order.first().get("id").toString()), order.first().get("description").toString(), dateFormat.format(date));
-                        } catch (RemoteException ex) {
-                            Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+
+        final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        final Date date = new Date();
+        
+        final String desc;
+        String aux = "";
+        for (Map m : order.second()) {
+            aux = aux + m.get("name") + " x" + m.get("quantity") + "\n";
+        }
+        desc = aux;
+        
+        //concateno id de pedido mas el nombre del mozo que lo pidio
+        String orderName = order.first().get("order_number").toString() + " - " + (crudUser.getUser(Integer.parseInt((order.first().get("user_id")).toString()))).get("name");
+        Integer orderId = Integer.parseInt(order.first().get("id").toString());
+        guiOrderPane = new GuiKitchenOrderPane(orderName, desc, dateFormat.format(date), order);
+        guiOrderPane.getTxtOrderDescription().addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    try {
+                        loadGuiOrderDetails(order);
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-            });
-            guiKitchenMain.addElementToOrdersGrid(guiOrderPane);
-            listOrdersPanels.add(guiOrderPane);
-            orderList.add(Integer.parseInt(order.first().get("id").toString()));
-        }
+            }
+        });
+        guiOrderPane.getBtnOrderReady().addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                List<Integer> list = new LinkedList();
+                int i = 0;
+                while (i < dtmOrderDetails.getRowCount()) { // Add all products that are true
+                    if ((boolean) dtmOrderDetails.getValueAt(i, 3) == true) {
+                        int id = (Integer) dtmOrderDetails.getValueAt(i, 0);
+                        list.add(id);
+                    }
+                    i++;
+                }
+                List<Map> updateOrder = new LinkedList<>();
+                try {
+                    updateOrder = crudOrder.updateOrdersReadyProducts(guiOrderDetails.getOrderID(), list);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                try {
+                    if (list.size() == dtmOrderDetails.getRowCount()) { //si la lista de productos hechos es igual a la cantidad de productos en la tabla
+                        guiKitchenMain.cleanAllOrders();//borro todas las ordenes de la gui
+                        refreshOpenOrders(); //Actualizo la gui de pedidos para eliminar el que se realizo
+                        guiOrderDetails.closeWindow();
+                    } else {
+                        guiOrderDetails.closeWindow();
+                    }
+                    
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                guiKitchenMain.validate();
+                guiOrderPane.setModified(false);
+            }
+        });
+       
+        guiOrderPane.getBtnPostpone().addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                
+            }
+        });
+//        final GuiMenuDetail newOrder = new GuiMenuDetail();
+//            newOrder.getTxtDetail().addMouseListener(new MouseAdapter() {//agrego un mouselistener
+//                @Override
+//                public void mousePressed(MouseEvent e) {
+//                    if (e.getClickCount() == 2) {
+//                        orderClic = newOrder.getIdOrder();
+//                        guiOrder.setLocationRelativeTo(null);
+//                        controllerGuiOrder.setIds(orderClic, idWaiter);
+//                        guiOrder.setVisible(true);
+//                        try {
+//                            controllerGuiOrder.CreateTree();
+//                        } catch (RemoteException ex) {
+//                            Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
+//                        }
+//                    }
+//                }
+//            });
+//            newOrder.getLblDone().addMouseListener(new MouseAdapter() {
+//                @Override
+//                public void mousePressed(MouseEvent e) {
+//                    System.out.println("done id=" + newOrder.getIdOrder());
+//                }
+//            });
+//            newOrder.getLblCommited().addMouseListener(new MouseAdapter() {
+//                @Override
+//                public void mousePressed(MouseEvent e) {
+//                    System.out.println("commited id=" + newOrder.getIdOrder());
+//                }
+//            });
+        guiKitchenMain.addElementToOrdersGrid(guiOrderPane);
+        listOrdersPanels.add(guiOrderPane);
+
     }
 
     /**
@@ -395,7 +429,6 @@ public class ControllerGuiKitchenMain implements ActionListener {
             }
             guiKitchenMain.validate();
         }
-
         if (guiLogin != null) {
             if (ae.getSource() == guiLogin.getBtnAccept()) {
                 String user = guiLogin.getcBoxUsers().getItemAt(guiLogin.getcBoxUsers().getSelectedIndex()).toString();
