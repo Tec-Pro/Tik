@@ -22,6 +22,7 @@ import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -69,7 +70,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
     private final Set<Map> online;
     //Atributos para el control de retrasos en pedidos
     private static Timer timer;
-    private static final Integer time = 10000;//tiempo de intervalo de actualizacion de retrasos(actualmente 1minuto)
+    private static final Integer time = 10000;//tiempo de intervalo de actualizacion de retrasos(actualmente 10 segundos)
     private static SoundPlayer soundPlayer;
     //lista de ordersPanels con todos los paneles de la gui
     private static LinkedList<GuiKitchenOrderPane> listOrdersPanels;
@@ -116,7 +117,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
                 try {
                     //Cada cierto tiempo "time" hago una busqueda de las ordenes retrasadas
                     searchDelayedOrders();
-                } catch (ParseException ex) {
+                } catch (ParseException | RemoteException ex) {
                     Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -125,7 +126,14 @@ public class ControllerGuiKitchenMain implements ActionListener {
         timer.start();
     }
 
-    public static Map computeDiff(Date date1, Date date2) {
+    /**
+     * Computa la diferencia entre dos fechas dadas.
+     * @param date1 Fecha menor (fecha de creacion del pedido)
+     * @param date2 Fecha mayor (fecha actual)
+     * @return Map con la diferencia entre ambas fechas. (Formato del Map:
+     * {DAYS, HOURS, MINUTES, SECONDS, MILLISECONDS, MICROSECONDS, NANOSECONDS})
+     */
+    public static Map<String, Object> computeDiff(Date date1, Date date2) {
         long diffInMillies = date2.getTime() - date1.getTime();
         LinkedList<TimeUnit> units = new LinkedList(EnumSet.allOf(TimeUnit.class));
         Collections.reverse(units);
@@ -135,44 +143,45 @@ public class ControllerGuiKitchenMain implements ActionListener {
             long diff = unit.convert(milliesRest, TimeUnit.MILLISECONDS);
             long diffInMilliesForUnit = unit.toMillis(diff);
             milliesRest = milliesRest - diffInMilliesForUnit;
-            result.put(unit, diff);
+            result.put(unit.toString(), diff);
         }
         return result;
     }
 
-    private static void searchDelayedOrders() throws ParseException {
+    private static void searchDelayedOrders() throws ParseException, RemoteException {
         Iterator<GuiKitchenOrderPane> itr = listOrdersPanels.iterator();
+        //Recorro todos los paneles de la gridbaglayout
         while (itr.hasNext()) {
-            GuiKitchenOrderPane orderPane = itr.next();
-            /*Aca debo calcular si el pedido esta retrasado en base al archivo de configuracion traido
-             *del servidor, comparar los minutos con el de cada panel, y si esta retrasado emitir una 
-             *alerta tanto visual como sonora */
-            //aca muestro como reproducir un sonido solamente
-            //soundPlayer.playSound();
+            GuiKitchenOrderPane orderPane = itr.next();//saco el panel actual
+            final Timestamp currentTime = new Timestamp(System.currentTimeMillis());//hora y fecha actual
+            Timestamp timeOrderArrival = Timestamp.valueOf(orderPane.getLblTimeOrderArrival().getText());//hora y fecha del pedido
+            Map<String, Object> diff = computeDiff(timeOrderArrival, currentTime);//diferencia entre horas
+            //Si transcurrieron mas minutos de los especificados por el usuario en la configuracion
+            if (Integer.parseInt(diff.get("MINUTES").toString()) >= Integer.parseInt(generalConfig.getDelayTime())
+                    || Integer.parseInt(diff.get("HOURS").toString()) > 0
+                    || Integer.parseInt(diff.get("DAYS").toString()) > 0) {
+                soundPlayer.playSound();//Alerta sonora
+                //ACA DEBE LANZARSE LA ALERTA VISUAL EN CADA PANEL DE PEDIDO RETRASADO
+                System.out.println("El pedido: " + orderPane.getLblOrderNumber().getText() + " esta retrasado.");
+                System.out.println("Tiempo de retraso: "+diff.toString());
+                System.out.println("");
+            }
 
-            final Date currentTime = new Date();
-            final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-            Date timeOrderArrival = new Date();
-            timeOrderArrival.setHours((dateFormat.parse(orderPane.getLblTimeOrderArrival().getText())).getHours());
-            timeOrderArrival.setMinutes((dateFormat.parse(orderPane.getLblTimeOrderArrival().getText())).getMinutes());
-            timeOrderArrival.setSeconds((dateFormat.parse(orderPane.getLblTimeOrderArrival().getText())).getSeconds());
-            System.out.println("Hora pedido: " + timeOrderArrival + " Hora actual: " + currentTime);
-            System.out.println("Diferencia horaria: " + computeDiff(timeOrderArrival, currentTime));
         }
     }
 
     private static void loadGuiOrderDetails(final Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
         guiOrderDetails.getTxtOrderDescription().setText((String) order.first().get("description"));
         guiOrderDetails.getBtnSendOrderDone().setEnabled(false);
-        guiOrderDetails.setOrderID( (Integer) order.first().get("id"));
+        guiOrderDetails.setOrderID((Integer) order.first().get("id"));
         dtmOrderDetails.setRowCount(0);
         for (Map<String, Object> m : order.second()) { // For each product
-                Object rowDtm[] = new Object[4]; // New row
-                rowDtm[0] = m.get("id");
-                rowDtm[1] = m.get("name");
-                rowDtm[2] = m.get("quantity");
-                rowDtm[3] = false;
-                dtmOrderDetails.addRow(rowDtm);
+            Object rowDtm[] = new Object[4]; // New row
+            rowDtm[0] = m.get("id");
+            rowDtm[1] = m.get("name");
+            rowDtm[2] = m.get("quantity");
+            rowDtm[3] = false;
+            dtmOrderDetails.addRow(rowDtm);
         }
         guiOrderDetails.setTableModelListener(new TableModelListener() {
             @Override
@@ -217,20 +226,22 @@ public class ControllerGuiKitchenMain implements ActionListener {
      */
     public static void addOrder(final Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
 
-        final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        final Date date = new Date();
-        
+        Timestamp date = Timestamp.valueOf("1990-01-01 01:01:01");//inicio la fecha con un valor minimo
         final String desc;
         String aux = "";
         for (Map m : order.second()) {
             aux = aux + m.get("name") + " x" + m.get("quantity") + "\n";
+            //calculo la hora del pedido en base al ultimo producto añadido al mismo
+            if(date.before(Timestamp.valueOf(m.get("updated_at").toString()))){
+                date = Timestamp.valueOf(m.get("updated_at").toString());
+            }
         }
         desc = aux;
-        
+
         //concateno id de pedido mas el nombre del mozo que lo pidio
         String orderName = order.first().get("order_number").toString() + " - " + (crudUser.getUser(Integer.parseInt((order.first().get("user_id")).toString()))).get("name");
         Integer orderId = Integer.parseInt(order.first().get("id").toString());
-        guiOrderPane = new GuiKitchenOrderPane(orderName, desc, dateFormat.format(date), order);
+        guiOrderPane = new GuiKitchenOrderPane(orderName, desc, date.toString(), order);
         guiOrderPane.getTxtOrderDescription().addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -269,7 +280,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
                     } else {
                         guiOrderDetails.closeWindow();
                     }
-                    
+
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -277,7 +288,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
                 guiOrderPane.setModified(false);
             }
         });
-       
+
         guiOrderPane.getBtnPostpone().addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
