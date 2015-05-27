@@ -387,7 +387,8 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
             }
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/tik", "root", "root");
+            if (conn ==null || conn.isClosed())
+                conn = DriverManager.getConnection("jdbc:mysql://localhost/tik", "root", "root");
         } catch (SQLException ex) {
             Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
         }

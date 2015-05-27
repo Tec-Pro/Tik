@@ -20,6 +20,7 @@ public class GuiLoginGrid extends javax.swing.JFrame {
     public GuiLoginGrid() {
         initComponents();
         setVisible(true);
+        setLocationRelativeTo(null);
     }
     
     public void setActionListener(ActionListener lis) {
@@ -48,11 +49,12 @@ public class GuiLoginGrid extends javax.swing.JFrame {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        panelLogin = new javax.swing.JPanel();
+        panelLogin = new org.edisoncor.gui.panel.PanelImage();
         btnLogin = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        panelLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fondo gris.png"))); // NOI18N
         panelLogin.setLayout(new java.awt.GridBagLayout());
 
         btnLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/plus.png"))); // NOI18N
@@ -117,6 +119,6 @@ public class GuiLoginGrid extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton btnLogin;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JPanel panelLogin;
+    private org.edisoncor.gui.panel.PanelImage panelLogin;
     // End of variables declaration//GEN-END:variables
 }

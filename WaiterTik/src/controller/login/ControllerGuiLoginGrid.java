@@ -99,6 +99,7 @@ public class ControllerGuiLoginGrid implements ActionListener {
                 }
                 newLog = false;
                 guiLogin.loadCBoxUsers(usr);
+                guiLogin.setLocationRelativeTo(null);
                 guiLogin.setVisible(true);
             }
         }

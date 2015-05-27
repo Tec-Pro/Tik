@@ -35,6 +35,7 @@ public class ComponentUserLoginBtn extends javax.swing.JPanel {
 
         btn = new javax.swing.JButton();
 
+        setOpaque(false);
         setPreferredSize(new java.awt.Dimension(125, 100));
 
         btn.setMaximumSize(new java.awt.Dimension(100, 100));

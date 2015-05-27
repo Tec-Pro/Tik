@@ -234,8 +234,10 @@ public class ControllerGuiMain implements ActionListener {
      */
     public void waiterInit(int id) throws RemoteException {
         idWaiter = id;
+        System.out.println(id);
+        loadOrders(id);
         guiMain.setVisible(true);
         guiMain.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        loadOrders(id);
+        
     }
 }

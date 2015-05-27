@@ -68,7 +68,10 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
                 client.readyOrder(order);
             } catch (java.rmi.ConnectException e) {
                 System.err.println("se rompió porque se cerro un programa seguro" + e);
-                waiters.remove(i);
+                try {
+                    waiters.remove(i);
+                } catch (java.lang.ArrayIndexOutOfBoundsException errs) {
+                }
                 //despues voy a eliminar este tipo porque la conexión se rechazó por desconectarses
             }
             i++;
