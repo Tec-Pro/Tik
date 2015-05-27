@@ -87,7 +87,7 @@ public class GuiKitchenOrderDetails extends javax.swing.JDialog {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jPanel1 = new javax.swing.JPanel();
+        jPanel1 = new org.edisoncor.gui.panel.PanelImage();
         orderTimePanel = new javax.swing.JPanel();
         labelOrderArrivalTime = new javax.swing.JLabel();
         jSplitPane2 = new javax.swing.JSplitPane();
@@ -104,6 +104,10 @@ public class GuiKitchenOrderDetails extends javax.swing.JDialog {
         setTitle("Detalles de pedido");
         setPreferredSize(new java.awt.Dimension(700, 550));
 
+        jPanel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fondo gris.png"))); // NOI18N
+
+        orderTimePanel.setOpaque(false);
+
         labelOrderArrivalTime.setText("TIEMPO ACA");
 
         javax.swing.GroupLayout orderTimePanelLayout = new javax.swing.GroupLayout(orderTimePanel);
@@ -119,6 +123,8 @@ public class GuiKitchenOrderDetails extends javax.swing.JDialog {
 
         jSplitPane2.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
+        orderDescriptionPanel.setOpaque(false);
+
         txtOrderDescription.setEditable(false);
         jScrollPane2.setViewportView(txtOrderDescription);
 
@@ -130,12 +136,12 @@ public class GuiKitchenOrderDetails extends javax.swing.JDialog {
         );
         orderDescriptionPanelLayout.setVerticalGroup(
             orderDescriptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(orderDescriptionPanelLayout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
         );
 
         jSplitPane2.setTopComponent(orderDescriptionPanel);
+
+        jPanel4.setOpaque(false);
 
         tableOrderProducts.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -185,8 +191,7 @@ public class GuiKitchenOrderDetails extends javax.swing.JDialog {
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnCheckAll, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
@@ -281,7 +286,7 @@ public class GuiKitchenOrderDetails extends javax.swing.JDialog {
     private javax.swing.JButton btnCheckAll;
     private javax.swing.JButton btnSendOrderDone;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
+    private org.edisoncor.gui.panel.PanelImage jPanel1;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

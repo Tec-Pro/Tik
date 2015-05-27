@@ -46,7 +46,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jPanel2 = new javax.swing.JPanel();
+        jPanel2 = new org.edisoncor.gui.panel.PanelImage();
         jPanel4 = new javax.swing.JPanel();
         ordersPanel = new javax.swing.JPanel();
         watchPanel = new javax.swing.JPanel();
@@ -61,8 +61,12 @@ public class GuiKitchenMain extends javax.swing.JFrame {
 
         jScrollPane1.setMaximumSize(new java.awt.Dimension(1024, 768));
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fondo gris.png"))); // NOI18N
 
+        jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel4.setOpaque(false);
+
+        ordersPanel.setOpaque(false);
         ordersPanel.setLayout(new java.awt.GridBagLayout());
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -74,11 +78,12 @@ public class GuiKitchenMain extends javax.swing.JFrame {
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(ordersPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+                .addComponent(ordersPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)
                 .addGap(0, 0, 0))
         );
 
         watchPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        watchPanel.setOpaque(false);
         watchPanel.setLayout(new java.awt.BorderLayout());
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -96,7 +101,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(31, 31, 31)
-                .addComponent(watchPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(watchPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(22, 22, 22))
@@ -259,7 +264,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JPanel jPanel2;
+    private org.edisoncor.gui.panel.PanelImage jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenuItem menuItemLoggedUsers;

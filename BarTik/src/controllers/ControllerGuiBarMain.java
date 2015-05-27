@@ -56,6 +56,7 @@ public class ControllerGuiBarMain implements ActionListener {
     private static GuiBarMain guiBarMain;
     private static DefaultTableModel dtmOrderDetails;
     private static GuiBarOrderPane guiOrderPane;
+    private int color;
 
     /**
      *
@@ -86,6 +87,20 @@ public class ControllerGuiBarMain implements ActionListener {
         guiOrderDetails.setActionListener(this);
         guiOrderPane.setActionListener(this);
 
+        color = 3;
+        //Timer que hace que el color parpadee mover esto donde se vaya a usar.
+        guiOrderPane.setTimer(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                guiOrderPane.setColor(color);
+                if (color == 3)
+                    color = 0;
+                else 
+                    color = 3;
+            }
+        }, 3600,500); //Modificar estos valores por el tiempo de tolerancia y el tiempo de animación.
         guiLogin = null;
         //traigo todos los pedidos que estan abiertos
         refreshOpenOrders();

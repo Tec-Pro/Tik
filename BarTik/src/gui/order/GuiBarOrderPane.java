@@ -8,6 +8,7 @@ package gui.order;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import javax.swing.JTextArea;
+import javax.swing.Timer;
 
 /**
  *
@@ -16,6 +17,7 @@ import javax.swing.JTextArea;
 public class GuiBarOrderPane extends javax.swing.JPanel {
 
     private int position;
+    private Timer timer;
 
     /**
      * Creates new form orderPane
@@ -47,18 +49,30 @@ public class GuiBarOrderPane extends javax.swing.JPanel {
                 txtOrderDescription.setBackground(Color.WHITE);
                 break;
             case 1:
-                setBackground(new java.awt.Color(25, 169, 42));
-                txtOrderDescription.setBackground(new java.awt.Color(25, 169, 42));
+                setBackground(Color.GREEN);
+                txtOrderDescription.setBackground(Color.GREEN);
                 break;
             case 2:
-                setBackground(new java.awt.Color(253, 216, 47));
-                txtOrderDescription.setBackground(new java.awt.Color(253, 216, 47));
+                setBackground(Color.YELLOW);
+                txtOrderDescription.setBackground(Color.YELLOW);
                 break;
             case 3:
-                setBackground(new java.awt.Color(251, 28, 4));
-                txtOrderDescription.setBackground(new java.awt.Color(251, 28, 4));
+                setBackground(Color.RED);
+                txtOrderDescription.setBackground(Color.RED);
                 break;
         }
+    }
+    
+    /**
+     * Metodo que inicia un timer para ejecutar una acción cada cierto tiempo.
+     * @param lis listener que invoca la acción a ejecutar
+     * @param start tiempo de comienzo medido en milisegundos
+     * @param delay tiempo entre eventos.
+     */
+    public void setTimer(ActionListener lis, int start,int delay){
+        timer = new Timer(start,lis);
+        timer.setDelay(delay);
+        timer.start();
     }
 
     /**
@@ -118,7 +132,7 @@ public class GuiBarOrderPane extends javax.swing.JPanel {
         jScrollPane1.setViewportView(txtOrderDescription);
 
         jLabel1.setFont(new java.awt.Font("Cantarell", 0, 24)); // NOI18N
-        jLabel1.setText("Pedido:");
+        jLabel1.setText("N°");
 
         orderNumber.setFont(new java.awt.Font("Cantarell", 0, 18)); // NOI18N
         orderNumber.setText("n° de pedido");
@@ -143,13 +157,15 @@ public class GuiBarOrderPane extends javax.swing.JPanel {
                     .addComponent(jScrollPane1)
                     .addComponent(timeOrderArrival, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(orderNumber))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(btnOrderReady, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnPostpone, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(orderNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(btnOrderReady, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnPostpone, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );

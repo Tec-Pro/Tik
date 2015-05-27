@@ -24,15 +24,17 @@ public class GuiBarMain extends javax.swing.JFrame {
     private int barOrdersGridY;
     private int kitchenOrdersGridX;
     private int kitchenOrdersGridY;
+    private Watch watch;
 
     /**
      * Creates new form GuiKitchenMain
      */
     public GuiBarMain() {
         initComponents();
-        Watch watch = new Watch(0, 0, 0, 0);
+        watch = new Watch(0, 0, 0, 0);
         watch.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         watch.setFont(new java.awt.Font("Arial", 1, 25));
+        watch.setForeground(Color.white);
         setExtendedState(MAXIMIZED_BOTH);
         watchPanel.add(watch, BorderLayout.CENTER);
         barOrdersGridX = 0;
@@ -51,13 +53,13 @@ public class GuiBarMain extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jPanel2 = new javax.swing.JPanel();
+        jPanel2 = new org.edisoncor.gui.panel.PanelImage();
         jPanel4 = new javax.swing.JPanel();
         jSplitPane1 = new javax.swing.JSplitPane();
         jScrollPane2 = new javax.swing.JScrollPane();
-        ordersPanel = new javax.swing.JPanel();
+        ordersPanel = new org.edisoncor.gui.panel.PanelImage();
         jScrollPane3 = new javax.swing.JScrollPane();
-        kitchenOrdersPanel = new javax.swing.JPanel();
+        kitchenOrdersPanel = new org.edisoncor.gui.panel.PanelImage();
         watchPanel = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuLogin = new javax.swing.JMenu();
@@ -69,15 +71,27 @@ public class GuiBarMain extends javax.swing.JFrame {
 
         jScrollPane1.setMaximumSize(new java.awt.Dimension(1024, 768));
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fondo gris.png"))); // NOI18N
 
+        jPanel4.setBorder(null);
+        jPanel4.setOpaque(false);
+
+        jSplitPane1.setBorder(null);
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-        jSplitPane1.setResizeWeight(0.85);
+        jSplitPane1.setResizeWeight(0.75);
 
+        jScrollPane2.setBorder(null);
+        jScrollPane2.setViewportBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jScrollPane2.setOpaque(false);
+
+        ordersPanel.setBorder(null);
         ordersPanel.setLayout(new java.awt.GridBagLayout());
         jScrollPane2.setViewportView(ordersPanel);
 
         jSplitPane1.setTopComponent(jScrollPane2);
+
+        jScrollPane3.setViewportBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jScrollPane3.setOpaque(false);
 
         kitchenOrdersPanel.setLayout(new java.awt.GridBagLayout());
         jScrollPane3.setViewportView(kitchenOrdersPanel);
@@ -92,10 +106,12 @@ public class GuiBarMain extends javax.swing.JFrame {
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
         );
 
         watchPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        watchPanel.setForeground(new java.awt.Color(254, 254, 254));
+        watchPanel.setOpaque(false);
         watchPanel.setLayout(new java.awt.BorderLayout());
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -113,7 +129,7 @@ public class GuiBarMain extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(31, 31, 31)
-                .addComponent(watchPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(watchPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(22, 22, 22))
@@ -138,11 +154,15 @@ public class GuiBarMain extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 622, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
 
         pack();
@@ -270,17 +290,17 @@ public class GuiBarMain extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JPanel jPanel2;
+    private org.edisoncor.gui.panel.PanelImage jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSplitPane jSplitPane1;
-    private javax.swing.JPanel kitchenOrdersPanel;
+    private org.edisoncor.gui.panel.PanelImage kitchenOrdersPanel;
     private javax.swing.JMenuItem menuItemLoggedUsers;
     private javax.swing.JMenuItem menuItemNewLogin;
     private javax.swing.JMenu menuLogin;
-    private javax.swing.JPanel ordersPanel;
+    private org.edisoncor.gui.panel.PanelImage ordersPanel;
     private javax.swing.JPanel watchPanel;
     // End of variables declaration//GEN-END:variables
 
@@ -339,4 +359,8 @@ public class GuiBarMain extends javax.swing.JFrame {
         return watchPanel;
     }
 
+    public Watch getWatch(){
+        return watch;
+    }
+    
 }
