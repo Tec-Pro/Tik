@@ -163,7 +163,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
                     || Integer.parseInt(diff.get("HOURS").toString()) > 0
                     || Integer.parseInt(diff.get("DAYS").toString()) > 0)) {
                 soundPlayer.playSound();//Alerta sonora
-                if(!orderPane.isActiveTimer()){
+                if (!orderPane.isActiveTimer()) {
                     //Parpadea el color del panel, en rojo, avisando que el pedido se retraso
                     orderPane.setTimer(new ActionListener() {
                         @Override
@@ -254,14 +254,15 @@ public class ControllerGuiKitchenMain implements ActionListener {
         final String desc;
         String aux = "";
         for (Map m : order.second()) {
+            System.out.println(m.get("name"));
             aux = aux + m.get("name") + " x" + m.get("quantity") + "\n";
             //calculo la hora del pedido en base al ultimo producto añadido al mismo
-            if (date.before(Timestamp.valueOf(m.get("updated_at").toString()))) {
-                date = Timestamp.valueOf(m.get("updated_at").toString());
-            }
+//            if (date.before(Timestamp.valueOf(m.get("updated_at").toString()))) {
+//                date = Timestamp.valueOf(m.get("updated_at").toString());
+//            }
         }
         desc = aux;
-
+        System.out.println(desc);
         //concateno id de pedido mas el nombre del mozo que lo pidio
         String orderName = order.first().get("order_number").toString() + " - " + (crudUser.getUser(Integer.parseInt((order.first().get("user_id")).toString()))).get("name");
         Integer orderId = Integer.parseInt(order.first().get("id").toString());
@@ -283,11 +284,9 @@ public class ControllerGuiKitchenMain implements ActionListener {
             public void mousePressed(MouseEvent e) {
                 List<Integer> list = new LinkedList();
                 int i = 0;
-                while (i < dtmOrderDetails.getRowCount()) { // Add all products that are true
-                    if ((boolean) dtmOrderDetails.getValueAt(i, 3) == true) {
-                        int id = (Integer) dtmOrderDetails.getValueAt(i, 0);
-                        list.add(id);
-                    }
+                while (i < dtmOrderDetails.getRowCount()) { // Add all products that are true  
+                    int id = (Integer) dtmOrderDetails.getValueAt(i, 0);
+                    list.add(id);
                     i++;
                 }
                 List<Map> updateOrder = new LinkedList<>();
@@ -300,8 +299,6 @@ public class ControllerGuiKitchenMain implements ActionListener {
                     if (list.size() == dtmOrderDetails.getRowCount()) { //si la lista de productos hechos es igual a la cantidad de productos en la tabla
                         guiKitchenMain.cleanAllOrders();//borro todas las ordenes de la gui
                         refreshOpenOrders(); //Actualizo la gui de pedidos para eliminar el que se realizo
-                        guiOrderDetails.closeWindow();
-                    } else {
                         guiOrderDetails.closeWindow();
                     }
 

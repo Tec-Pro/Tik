@@ -56,7 +56,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
     public Map<String, Object> sendOrder(int userId, String description, int persons, List<Map<String, Object>> fproducts) throws RemoteException {
         // campos que deberia tener el map: ("fproductId","name","quantity","done","commited","issued")
         Utils.abrirBase();
-        Base.openTransaction();
+        //Base.openTransaction();
         Order newOrder = Order.createIt("user_id", userId, "order_number", getOrdersCount(userId) + 1, "description", description, "closed", false, "persons", persons);
         
         List<Map> listBar = new LinkedList();
@@ -66,25 +66,25 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             
             Map<String, Object> addProd = new HashMap(); //Create a map with the product
             addProd.put("fproduct_id", (int) prod.get("fproductId"));
-            addProd.put("name", prod.get("name"));
             addProd.put("quantity", (float) prod.get("quantity"));
             addProd.put("done", (boolean) prod.get("done"));
             addProd.put("commited", (boolean) prod.get("commited"));
             addProd.put("issued", (boolean) prod.get("issued"));
             
             Fproduct finalProd = Fproduct.findById((int) prod.get("fproductId")); //get the final product to verify where it belongs
-            if (finalProd.get("belong") == "Cocina") {
+            addProd.put("name", finalProd.get("name"));
+            if (finalProd.get("belong").equals("Cocina")) {
                 listCook.add(addProd);
             } else { // belongs to bar
                 listBar.add(addProd);
             }
         }
-        Base.commitTransaction();
-
+        //Base.commitTransaction();
         final Map<String, Object> orderMap = getOrder(newOrder.getInteger("id"));
         final Pair<Map<String, Object>, List<Map>> pair = new Pair(orderMap, getOrderProducts(newOrder.getInteger("id")));
         final Pair<Map<String, Object>, List<Map>> pairCook = new Pair(orderMap, listCook);
         final Pair<Map<String, Object>, List<Map>> pairBar = new Pair(orderMap, listBar);
+        
         Thread thread = new Thread() {
             public void run() {
                 try {
@@ -129,6 +129,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         
         for (Map<String, Object> prod : fproducts) {
             OrdersFproducts.create("order_id", orderId, "fproduct_id", (int) prod.get("fproductId"), "quantity", (float) prod.get("quantity"), "done", (boolean) prod.get("done"), "commited", (boolean) prod.get("commited"), "issued", (boolean) prod.get("issued")).saveIt();
+            
             if (!((boolean) prod.get("done"))) { // If not done
 
                 Map<String, Object> addProd = new HashMap(); //Create a map with the product
