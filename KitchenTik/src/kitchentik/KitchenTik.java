@@ -7,11 +7,8 @@ package kitchentik;
 
 import controllers.ControllerGuiKitchenMain;
 import implementsInterface.ClientKitchen;
-import interfaces.InterfaceOrder;
 import interfaces.InterfaceServer;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;

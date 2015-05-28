@@ -23,9 +23,7 @@ import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.EnumSet;
@@ -198,7 +196,6 @@ public class ControllerGuiBarMain implements ActionListener {
 
         }
     }
-    
 
     private static void loadGuiOrderDetails(int order, String desc, String arrival) throws RemoteException {
         guiOrderDetails.getLabelOrderArrivalTime().setText(arrival);
@@ -295,9 +292,9 @@ public class ControllerGuiBarMain implements ActionListener {
                 if (!m.get("done").equals(true)) {
                     Map<String, Object> fProduct = crudFProduct.getFproduct(Integer.parseInt(m.get("fproduct_id").toString()));
                     aux = aux + fProduct.get("name") + " x" + m.get("quantity") + "\n";
-                    if (date.before(Timestamp.valueOf(m.get("updated_at").toString()))) {
-                        date = Timestamp.valueOf(m.get("updated_at").toString());
-                    }
+                }
+                if (date.before(Timestamp.valueOf(m.get("updated_at").toString()))) {
+                    date = Timestamp.valueOf(m.get("updated_at").toString());
                 }
             }
             desc = aux;
@@ -308,18 +305,17 @@ public class ControllerGuiBarMain implements ActionListener {
             guiOrderPane.getLblTimeOrderArrival().setText(date.toString());
             guiOrderPane.getLblOrderNumber().setText(orderName);
             guiBarMain.addElementToOrdersGrid(guiOrderPane,0);
-            // MAX CORREGIR ESTO //
-            /*guiOrderPane.addMouseListener(new MouseAdapter() {
+            final String dateAux = date.toString();
+            guiOrderPane.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 try {
-                    loadGuiOrderDetails(Integer.parseInt(order.first().get("order_number").toString()), date.toString(), order.first().get("description").toString());
+                    loadGuiOrderDetails(Integer.parseInt(order.first().get("order_number").toString()), dateAux, order.first().get("description").toString());
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiBarMain.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
-            }});*/
-            // CORREGIR LO COMENTADO, ES VIEJO, ACTUALIZAR //
+            }});
             orderList.add(Integer.parseInt(order.first().get("id").toString()));
             listOrdersPanels.add(guiOrderPane);
         }
@@ -335,27 +331,6 @@ public class ControllerGuiBarMain implements ActionListener {
      * @throws RemoteException
      */
     public static void updatedOrder(Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
-        /* "order" es el Map de un pedido con la siguiente estructura:
-         * {order_number, id, user_id, closed=boolean, description}*/
-        /* "orderProducts" es una lista de Maps, de los productos finales que
-         * contiene el pedido "order", cada Map tiene la siguiente estructura:
-         * {id, done=boolean, issued=boolean, fproduct_id, quantity, order_id, commited=boolean}*/
-        //List<Map> orderProducts = crudOrder.getOrderProducts(id);
-        //Aca debe actualizarse el pedido en la gui y/o en la lista de pedidos
-        //dependiendo de como sea implementado el controlador
-        //RECORDAR QUE EN LA GUI SOLO DEBEN CARGARSE LOS PRODUCTOS CORRESPONDIENTES A COCINA(FILTRAR LA LISTA)
-        /*int size = guiBarMain.getOrdersPanel().getComponentCount(); // the amount of orders in the order panel
-         int i = 0;
-         boolean check = false;
-         while (i < size || check) {
-         if (orderList.get(i) == Integer.parseInt(order.first().get("id").toString())) {
-         check = true;
-         } else {
-         i++;
-         }
-         }
-         guiBarMain.updateElementOfOrdersGrid(i, (String) order.first().get("description"));
-         guiBarMain.setOrderColor(i, new Color(255, 0, 0));*/
         guiBarMain.cleanAllOrders();
         refreshOpenOrders();
     }

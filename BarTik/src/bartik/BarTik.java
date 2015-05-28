@@ -9,7 +9,6 @@ import controllers.ControllerGuiBarMain;
 import implementsInterface.ClientBar;
 import interfaces.InterfaceServer;
 import java.io.IOException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;

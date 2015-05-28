@@ -20,11 +20,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.Order;
 import models.OrdersFproducts;
-import models.Fproduct;
 import org.javalite.activejdbc.Base;
+import org.javalite.activejdbc.Model;
 import utils.Pair;
 import utils.Utils;
-import java.sql.Timestamp;
 
 /**
  *
@@ -55,42 +54,22 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
      */
     @Override
     public Map<String, Object> sendOrder(int userId, String description, int persons, List<Map<String, Object>> fproducts) throws RemoteException {
-        // campos que deberia tener el map: ("fproductId","name","quantity","done","commited","issued")
+        // campos que deberia tener el map: ("fproductId","quantity","done","commited","issued")
         Utils.abrirBase();
         //Base.openTransaction();
-        Order newOrder = Order.createIt("user_id", userId, "order_number", getOrdersCount(userId) + 1, "description", description, "closed", false, "persons", persons);
-        
-        List<Map> listBar = new LinkedList();
-        List<Map> listCook = new LinkedList();
+        Order newOrder = Order.createIt("user_id", userId, "order_number", getOrdersCount(userId) + 1, "description", description, "closed", false, "persons",persons);
         for (Map<String, Object> prod : fproducts) {
-            OrdersFproducts.create("order_id", newOrder.getId(), "fproduct_id", (int) prod.get("fproductId"), "quantity", (float) prod.get("quantity"), "done", (boolean) prod.get("done"), "commited", (boolean) prod.get("commited"), "issued", (boolean) prod.get("issued")).saveIt();
-            
-            Map<String, Object> addProd = new HashMap(); //Create a map with the product
-            addProd.put("fproduct_id", (int) prod.get("fproductId"));
-            addProd.put("quantity", (float) prod.get("quantity"));
-            addProd.put("done", (boolean) prod.get("done"));
-            addProd.put("commited", (boolean) prod.get("commited"));
-            addProd.put("issued", (boolean) prod.get("issued"));
-            
-            Fproduct finalProd = Fproduct.findById((int) prod.get("fproductId")); //get the final product to verify where it belongs
-            addProd.put("name", finalProd.get("name"));
-            if (finalProd.get("belong").equals("Cocina")) {
-                listCook.add(addProd);
-            } else { // belongs to bar
-                listBar.add(addProd);
-            }
+            OrdersFproducts.createIt("order_id", newOrder.getId(), "fproduct_id", (int) prod.get("fproductId"), "quantity", (float) prod.get("quantity"), "done", (boolean) prod.get("done"), "commited", (boolean) prod.get("commited"), "issued", (boolean) prod.get("issued"));
         }
         //Base.commitTransaction();
+
         final Map<String, Object> orderMap = getOrder(newOrder.getInteger("id"));
         final Pair<Map<String, Object>, List<Map>> pair = new Pair(orderMap, getOrderProducts(newOrder.getInteger("id")));
-        final Pair<Map<String, Object>, List<Map>> pairCook = new Pair(orderMap, listCook);
-        final Pair<Map<String, Object>, List<Map>> pairBar = new Pair(orderMap, listBar);
-        
         Thread thread = new Thread() {
             public void run() {
                 try {
-                    Server.notifyKitchenNewOrder(pairCook);
-                    Server.notifyBarNewOrder(pairBar);
+                    Server.notifyKitchenNewOrder(pair);
+                    Server.notifyBarNewOrder(pair);
                     Server.notifyWaitersOrderReady(pair);
                 } catch (RemoteException ex) {
                     Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
@@ -110,7 +89,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
      */
     @Override
     public boolean updateOrder(int orderId, String description, int persons, List<Map<String, Object>> fproducts) throws RemoteException {
-        // campos que deberia tener el map: ("fproductId","name","quantity","done","commited","issued")
+        // campos que deberia tener el map: ("fproductId","quantity","done","commited","issued")
         Utils.abrirBase();
         Base.openTransaction();
         Order order = Order.findById(orderId);
@@ -124,46 +103,15 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         order.set("description", description);
         order.set("persons", persons);
         order.saveIt();
-        
-        List<Map> listBar = new LinkedList();
-        List<Map> listCook = new LinkedList();
-        
         for (Map<String, Object> prod : fproducts) {
             OrdersFproducts.create("order_id", orderId, "fproduct_id", (int) prod.get("fproductId"), "quantity", (float) prod.get("quantity"), "done", (boolean) prod.get("done"), "commited", (boolean) prod.get("commited"), "issued", (boolean) prod.get("issued")).saveIt();
-            
-            if (!((boolean) prod.get("done"))) { // If not done
-
-                Map<String, Object> addProd = new HashMap(); //Create a map with the product
-                addProd.put("fproduct_id", (int) prod.get("fproductId"));
-                addProd.put("name", prod.get("name"));
-                addProd.put("quantity", (float) prod.get("quantity"));
-                addProd.put("done", (boolean) prod.get("done"));
-                addProd.put("commited", (boolean) prod.get("commited"));
-                addProd.put("issued", (boolean) prod.get("issued"));
-                addProd.put("created_at", prod.get("created_at"));
-                addProd.put("updated_at", prod.get("updated_at"));
-                
-                Fproduct finalProd = Fproduct.findById((int) prod.get("fproductId")); //get the final product to verify where it belongs
-                if (finalProd.get("belong") == "Cocina") {
-                    listCook.add(addProd);
-                } else { // belongs to bar
-                    listBar.add(addProd);
-                }
-            }
         }
         Base.commitTransaction();
         Map<String, Object> orderMap = order.toMap();
         Pair<Map<String, Object>, List<Map>> pair = new Pair<>(orderMap, order.getAll(OrdersFproducts.class).toMaps());
+        Server.notifyKitchenUpdatedOrder(pair);
+        Server.notifyBarUpdatedOrder(pair);
         Server.notifyWaitersOrderReady(pair);
-
-        if (!(listCook.isEmpty())) { //if there are products to update for the Kitchen
-            pair = new Pair<>(orderMap, listCook);
-            Server.notifyKitchenUpdatedOrder(pair);
-        }
-        if (!(listBar.isEmpty())) { //if there are products to update for the Bar
-            pair = new Pair<>(orderMap, listBar);
-            Server.notifyBarUpdatedOrder(pair);
-        }
         return true;
     }
 
@@ -391,8 +339,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
             }
-            if (conn ==null || conn.isClosed())
-                conn = DriverManager.getConnection("jdbc:mysql://localhost/tik", "root", "root");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/tik", "root", "root");
         } catch (SQLException ex) {
             Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
