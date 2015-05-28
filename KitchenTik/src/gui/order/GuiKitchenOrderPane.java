@@ -19,7 +19,6 @@ import utils.Pair;
  */
 public class GuiKitchenOrderPane extends javax.swing.JPanel {
 
-    private int position;
     private Pair<Map<String, Object>, List<Map>> order;
     boolean modified = false;
     private Timer timer;
@@ -251,13 +250,6 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     /**
-     * @return the position
-     */
-    public int getPosition() {
-        return position;
-    }
-
-    /**
      *
      * @return true si el timer esta activo
      */
@@ -269,14 +261,7 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
      * @return the orderId
      */
     public Integer getOrderId() {
-        return (Integer) order.first().get("user_id");
-    }
-
-    /**
-     * @param position the position to set
-     */
-    public void setPosition(int position) {
-        this.position = position;
+        return (Integer) getOrder().first().get("user_id");
     }
 
     /**
@@ -315,5 +300,19 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
     public void setModified(boolean modified) {
         this.modified = modified;
         btnOrderReady.setEnabled(modified);
+    }
+
+    /**
+     * @return the order
+     */
+    public Pair<Map<String, Object>, List<Map>> getOrder() {
+        return order;
+    }
+
+    /**
+     * @param order the order to set
+     */
+    public void setOrder(Pair<Map<String, Object>, List<Map>> order) {
+        this.order = order;
     }
 }

@@ -14,8 +14,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import utils.Pair;
 import utils.Watch;
 
 /**
@@ -212,11 +215,17 @@ public class GuiKitchenMain extends javax.swing.JFrame {
 
     /**
      *
-     * @param x
-     * @param y
+     * @param index
      */
-    public void removeElementOfOrdersGrid(int x, int y) {
-        getOrdersPanel().remove(ordersPanel.getComponentAt(x, y));
+    public void removeElementOfOrdersGrid(int index) {
+        int aux = 0;
+        while (index>=maxGridX){
+            aux++;
+            index = index-maxGridX;
+        }
+        System.out.println("removido posicion: "+index+" "+aux);
+        //ordersPanel.remove(index);
+        getOrdersPanel().remove(ordersPanel.getComponentAt(index, aux));
         ordersPanel.revalidate();
         ordersPanel.repaint();
     }
@@ -226,10 +235,17 @@ public class GuiKitchenMain extends javax.swing.JFrame {
      * @param index
      * @param orderDescription
      */
-    public void updateElementOfOrdersGrid(int index, String orderDescription) {
-        GuiKitchenOrderPane order = (GuiKitchenOrderPane) getOrdersPanel().getComponent(index);
-        order.getTxtOrderDescription().setText(orderDescription);
-        order.revalidate();
+    public void updateElementOfOrdersGrid(int index, Pair<Map<String, Object>, List<Map>> order) {
+        GuiKitchenOrderPane orderPane = (GuiKitchenOrderPane) getOrdersPanel().getComponent(index);
+        
+        final String desc;
+        String aux = orderPane.getTxtOrderDescription().getText();
+        for (Map m : order.second()) {
+            aux = aux + m.get("name") + " x" + m.get("quantity") + "\n";
+        }
+        orderPane.getTxtOrderDescription().setText(aux);
+        orderPane.setOrder(order);
+        orderPane.revalidate();
         getOrdersPanel().revalidate();
     }
 

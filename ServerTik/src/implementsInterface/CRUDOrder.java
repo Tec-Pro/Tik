@@ -24,6 +24,7 @@ import models.Fproduct;
 import org.javalite.activejdbc.Base;
 import utils.Pair;
 import utils.Utils;
+import java.sql.Timestamp;
 
 /**
  *
@@ -139,6 +140,8 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
                 addProd.put("done", (boolean) prod.get("done"));
                 addProd.put("commited", (boolean) prod.get("commited"));
                 addProd.put("issued", (boolean) prod.get("issued"));
+                addProd.put("created_at", prod.get("created_at"));
+                addProd.put("updated_at", prod.get("updated_at"));
                 
                 Fproduct finalProd = Fproduct.findById((int) prod.get("fproductId")); //get the final product to verify where it belongs
                 if (finalProd.get("belong") == "Cocina") {
