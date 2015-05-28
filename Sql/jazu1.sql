@@ -1,7 +1,8 @@
 CREATE TABLE `tik`.`fproducts_fproducts` (
-  `id` `id` INT NOT NULL AUTO_INCREMENT,
-  `fproduct_id` INT NULL,
-  `fproduct_id2` INT NULL,
-  `amount` FLOAT NULL,
-  PRIMARY KEY (`id`));
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fproduct_id` INT DEFAULT NULL,
+  `fproduct_id2` INT DEFAULT NULL,
+  `amount` FLOAT DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE=InnoDB DEFAULT CHARSET=latin1;
 	
