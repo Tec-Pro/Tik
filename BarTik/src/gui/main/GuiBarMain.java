@@ -93,6 +93,7 @@ public class GuiBarMain extends javax.swing.JFrame {
         jScrollPane2.setOpaque(false);
 
         ordersPanel.setBorder(null);
+        ordersPanel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fondo gris.png"))); // NOI18N
         ordersPanel.setLayout(new java.awt.GridBagLayout());
         jScrollPane2.setViewportView(ordersPanel);
 
@@ -101,6 +102,7 @@ public class GuiBarMain extends javax.swing.JFrame {
         jScrollPane3.setViewportBorder(javax.swing.BorderFactory.createEtchedBorder());
         jScrollPane3.setOpaque(false);
 
+        kitchenOrdersPanel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fondo gris.png"))); // NOI18N
         kitchenOrdersPanel.setLayout(new java.awt.GridBagLayout());
         jScrollPane3.setViewportView(kitchenOrdersPanel);
 
