@@ -18,14 +18,12 @@ import interfaces.InterfaceUser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.EnumSet;
@@ -41,9 +39,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableModel;
 import utils.InterfaceName;
 import utils.Pair;
 import utils.SoundPlayer;
@@ -54,16 +49,14 @@ import utils.SoundPlayer;
  */
 public class ControllerGuiKitchenMain implements ActionListener {
 
-    
     //Guis
     private GuiLogin guiLogin;
-    private static GuiKitchenOrderDetails guiOrderDetails;
     private static GuiKitchenMain guiKitchenMain;
     private static GuiKitchenOrderPane guiOrderPane;
     //Interfaces
     private static InterfaceGeneralConfig generalConfig;
     private static InterfaceOrder crudOrder;
-    private static InterfaceFproduct crudFProduct;
+    //private static InterfaceFproduct crudFProduct;
     private static InterfaceUser crudUser;
     private final InterfacePresence crudPresence;
     //Conjunto(set) con los cocineros online
@@ -76,8 +69,6 @@ public class ControllerGuiKitchenMain implements ActionListener {
     private static LinkedList<GuiKitchenOrderPane> listOrdersPanels;
 
     private static LinkedList<Integer> orderList;
-    //
-    private static DefaultTableModel dtmOrderDetails;
 
     /**
      *
@@ -91,22 +82,16 @@ public class ControllerGuiKitchenMain implements ActionListener {
         crudOrder = (InterfaceOrder) InterfaceName.registry.lookup(InterfaceName.CRUDOrder);
         crudPresence = (InterfacePresence) InterfaceName.registry.lookup(InterfaceName.CRUDPresence);
         crudUser = (InterfaceUser) InterfaceName.registry.lookup(InterfaceName.CRUDUser);
-        crudFProduct = (InterfaceFproduct) InterfaceName.registry.lookup(InterfaceName.CRUDFproduct);
+        //    crudFProduct = (InterfaceFproduct) InterfaceName.registry.lookup(InterfaceName.CRUDFproduct);
         generalConfig = (InterfaceGeneralConfig) InterfaceName.registry.lookup(InterfaceName.GeneralConfig);
         online = new HashSet<>();
         for (Map m : crudPresence.getCooks()) {
             online.add(m);
         }
-        guiOrderDetails = new GuiKitchenOrderDetails(guiKitchenMain, true);
-        guiOrderDetails.setVisible(false);
-
-        dtmOrderDetails = guiOrderDetails.getDefaultTableModelOrderProducts();
-
         guiKitchenMain = new GuiKitchenMain();
         guiOrderPane = new GuiKitchenOrderPane();
         guiKitchenMain.setVisible(true);
         guiKitchenMain.setActionListener(this);
-        guiOrderDetails.setActionListener(this);
         guiOrderPane.setActionListener(this);
         listOrdersPanels = new LinkedList<>();
         guiLogin = null;
@@ -197,129 +182,74 @@ public class ControllerGuiKitchenMain implements ActionListener {
         }
     }
 
-    private static void loadGuiOrderDetails(int order, String desc, String arrival) throws RemoteException {
-        guiOrderDetails.getLabelOrderArrivalTime().setText(arrival);
-        guiOrderDetails.getTxtOrderDescription().setText(desc);
-        guiOrderDetails.getBtnSendOrderDone().setEnabled(false);
-        guiOrderDetails.setOrderID(order);
-        dtmOrderDetails.setRowCount(0);
-        List<Map> map = crudOrder.getOrderProducts(order); // I obtain all the products
-        for (Map<String, Object> m : map) { // For each product
-            if ((boolean) m.get("done") == false) { // If the product isn't done
-                int prodID = (int) m.get("fproduct_id"); // I obtain the product ID
-                Map<String, Object> prod = crudFProduct.getFproduct(prodID); // I obtain the product (importantly, it's name and if it belongs)
-                String cook = (String) prod.get("belong");
-                if (cook.equals("Cocina")) { // If the product is for the Kitchen
-                    Object rowDtm[] = new Object[4]; // New row
-                    rowDtm[0] = m.get("id");
-                    rowDtm[1] = prod.get("name");
-                    rowDtm[2] = m.get("quantity");
-                    rowDtm[3] = false;
-                    dtmOrderDetails.addRow(rowDtm);
-                }
-            }
-        }
-        guiOrderDetails.setTableModelListener(new TableModelListener() {
-            @Override
-            public void tableChanged(TableModelEvent e) { // When a value in the table changes, I make configurations
-                boolean modify = false;
-                int i = 0;
-                while (i < dtmOrderDetails.getRowCount() && !modify) { // If one value is true, It's able to send and order and check before closing the diag
-                    if ((boolean) dtmOrderDetails.getValueAt(i, 3) == true) {
-                        modify = true;
-                    } else {
-                        i++;
-                    }
-                }
-                guiOrderDetails.setModified(modify);
-                guiOrderDetails.getBtnSendOrderDone().setEnabled(modify);
-            }
-        });
-        guiOrderDetails.setVisible(true);
-        guiOrderDetails.toFront();
-        guiOrderDetails.setModal(true);
-    }
-
-    private static boolean itBelongsKitchen(List<Map> orderProducts) throws RemoteException { // There was either no products to make, or they've all been made allready
-        boolean itBelongs = false;
-        //Map<String, Object> order = crudOrder.getOrder(id);
-
-        for (Map<String, Object> m : orderProducts) { // For each product 
-            int prodID = (int) m.get("fproduct_id"); // I obtain the product ID
-            Map<String, Object> prod = crudFProduct.getFproduct(prodID); // I obtain the product (importantly, where it belongs)
-            String cook = (String) prod.get("belong");
-            if (cook.equals("Cocina")) { // Does it belong to cocina?
-                itBelongs = true;
-            }
-        }
-        return itBelongs;
-    }
-
-    private static boolean noMoreToCook(int id) throws RemoteException {
-        boolean noMore = true;
-        Map<String, Object> order = crudOrder.getOrder(id);
-        List<Map> orderProducts = crudOrder.getOrderProducts(id);
-        for (Map<String, Object> m : orderProducts) { // For each product 
-            if (((boolean) m.get("done") == false)) {
-                noMore = false;
-            }
-        }
-        return noMore;
-    }
-
     /**
      * Metodo invocado por el servidor cuando se crea un nuevo Pedido/Orden en
      * el modulo Waiter. Este metodo cargara el pedido creado en la gui
      * correspondiente
      *
-     * @param order
+     * @param order Map con la estructura : order.first : {id, order_number,
+     * user_id, description, closed, persons, user_name} order.second : {id,
+     * order_id, fproduct_id, quantity, done=boolean, created_at =
+     * string(timestamp), updated_at = String(timestamp), name}
      * @throws RemoteException
      */
     public static void addOrder(final Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
-        /* "order" es el Map de un pedido con la siguiente estructura:
-         * {order_number, id, user_id, closed=boolean, description}*/
-        /* "orderProducts" es una lista de Maps, de los productos finales que
-         * contiene el pedido "order", cada Map tiene la siguiente estructura:
-         * {id, done=boolean, issued=boolean, fproduct_id, quantity, order_id, commited=boolean}*/
-        //Aca debe cargarse el pedido en la gui y/o en la lista de pedidos
-        //dependiendo de como sea implementado el controlador
-        //RECORDAR QUE EN LA GUI SOLO DEBEN CARGARSE LOS PRODUCTOS CORRESPONDIENTES A COCINA(FILTRAR LA LISTA)
-        if (itBelongsKitchen(order.second())) {
-            Timestamp date = Timestamp.valueOf("1990-01-01 01:01:01");//inicio la fecha con un valor minimo
-            final String desc;
-            String aux = "";
-            for (Map m : order.second()) {
-                if (!m.get("done").equals(true)) {
-                    Map<String, Object> fProduct = crudFProduct.getFproduct(Integer.parseInt(m.get("fproduct_id").toString()));
-                    aux = aux + fProduct.get("name") + " x" + m.get("quantity") + "\n";
-                }
-                //calculo la hora del pedido en base al ultimo producto añadido al mismo
-                if (date.before(Timestamp.valueOf(m.get("updated_at").toString()))) {
-                    date = Timestamp.valueOf(m.get("updated_at").toString());
-                }
+        Timestamp date = Timestamp.valueOf("1990-01-01 01:01:01");//inicio la fecha con un valor minimo
+        final String desc;
+        String auxDesc = "";
+        for (Map m : order.second()) {
+            //calculo la descripcion
+            auxDesc = auxDesc + m.get("name") + " x" + m.get("quantity") + "\n";
+            //calculo la hora del pedido en base al ultimo producto añadido al mismo
+            if (date.before(Timestamp.valueOf(m.get("updated_at").toString()))) {
+                date = Timestamp.valueOf(m.get("updated_at").toString());
             }
-            desc = aux;
-            //concateno id de pedido mas el nombre del mozo que lo pidio
-            String orderName = order.first().get("order_number").toString() + " - " + (crudUser.getUser(Integer.parseInt((order.first().get("user_id")).toString()))).get("name");
-            Integer orderId = Integer.parseInt(order.first().get("id").toString());
-            guiOrderPane = new GuiKitchenOrderPane(orderName, desc, date.toString(), order);
-            final String dateAux = date.toString();
-            guiOrderPane.addMouseListener(new java.awt.event.MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    if (e.getClickCount() == 2) {
-                        try {
-                            loadGuiOrderDetails(Integer.parseInt(order.first().get("id").toString()), order.first().get("description").toString(), dateAux);
-                        } catch (RemoteException ex) {
-                            Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        desc = auxDesc;
+        //concateno id de pedido mas el nombre del mozo que lo pidio
+        String orderName = order.first().get("order_number").toString() + " - " + order.first().get("user_name").toString();
+        final String dateAux = date.toString();
+        guiOrderPane = new GuiKitchenOrderPane(order.first(), orderName, desc, date.toString(), order.second());
+        guiOrderPane.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    try {
+                        GuiKitchenOrderDetails guiOrderDetails = new GuiKitchenOrderDetails(guiKitchenMain, true);
+                        ControllerGuiOrderDetails controllerGuiOrderDetails = new ControllerGuiOrderDetails(guiOrderDetails, order);
+                        guiOrderDetails.setVisible(true);
+                        guiOrderDetails.toFront();
+                        guiOrderDetails.setModal(true);
+                        //Si el controlador me dice que debo borrar el orderPane
+                        if(controllerGuiOrderDetails.removeThisPane() != null && controllerGuiOrderDetails.removeThisPane()){
+                            int i = 0;
+                            boolean stop = false;
+                            while(i<guiKitchenMain.getOrdersPanel().getComponentCount() && !stop){
+                                if(guiOrderPane.getOrderId() == ((GuiKitchenOrderPane)guiKitchenMain.getOrdersPanel().getComponent(i)).getOrderId()){
+                                    guiKitchenMain.getOrdersPanel().remove(i);
+                                    stop = true;
+                                }
+                                i++;
+                            }
                         }
+                        guiKitchenMain.validate();
+                    } catch (RemoteException | NotBoundException ex) {
+                        Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-            });
-            guiKitchenMain.addElementToOrdersGrid(guiOrderPane);
-            listOrdersPanels.add(guiOrderPane);
-            orderList.add(Integer.parseInt(order.first().get("id").toString()));
-            listOrdersPanels.add(guiOrderPane);
+            }
+        });
+        guiKitchenMain.addElementToOrdersGrid(guiOrderPane);
+        orderList.add(Integer.parseInt(order.first().get("id").toString()));
+        listOrdersPanels.add(guiOrderPane);
+    }
+
+    private static void removeListeners(GuiKitchenOrderPane orderPane) {
+        MouseListener[] mouseListeners = orderPane.getMouseListeners();
+        if (mouseListeners != null && mouseListeners.length != 0) {
+            for (MouseListener mL : mouseListeners) {
+                orderPane.removeMouseListener(mL);
+            }
         }
     }
 
@@ -329,35 +259,107 @@ public class ControllerGuiKitchenMain implements ActionListener {
      * modificado en la
      *
      *
-     * @param order
+     * @param order Map con la estructura : order.first : {id, order_number,
+     * user_id, description, closed, persons, user_name} order.second : {id,
+     * order_id, fproduct_id, quantity, done=boolean, created_at =
+     * string(timestamp), updated_at = String(timestamp), name}
      * @throws RemoteException
      */
-    public static void updatedOrder(Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
-        guiKitchenMain.cleanAllOrders();
-        refreshOpenOrders();
+    public static void updatedOrder(final Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
+        int componentCount = guiKitchenMain.getOrdersPanel().getComponentCount();
+        int i = 0;
+        boolean stop = false;
+        //Si no encuentra el panel en la gridbag, quiere decir que no esta por lo tanto debo agregarlo
+        while (i < componentCount && !stop) {
+            GuiKitchenOrderPane orderPane = (GuiKitchenOrderPane) guiKitchenMain.getOrdersPanel().getComponent(i);
+            if (orderPane.getOrderId().equals(Integer.parseInt(order.first().get("id").toString()))) {
+                soundPlayer.stopSound();
+                orderPane.stopTimer();
+                //elimino los listener del orderPane
+                removeListeners(orderPane);
+                //inicio la fecha con un valor minimo
+                Timestamp date = Timestamp.valueOf("1990-01-01 01:01:01");
+                final String desc;
+                String auxDesc = "";
+                for (Map m : order.second()) {
+                    //calculo la descripcion
+                    auxDesc = auxDesc + m.get("name") + " x" + m.get("quantity") + "\n";
+                    //calculo la hora del pedido en base al ultimo producto añadido al mismo
+                    if (date.before(Timestamp.valueOf(m.get("updated_at").toString()))) {
+                        date = Timestamp.valueOf(m.get("updated_at").toString());
+                    }
+                }
+                desc = auxDesc;
+                //concateno id de pedido mas el nombre del mozo que lo pidio
+                String orderName = order.first().get("order_number").toString() + " - " + order.first().get("user_name").toString();
+                final String dateAux = date.toString();
+                //Seteo color, numero de orden+nomnre, descripcion, pedido, lista orderProducts, tiempo del pedido
+                orderPane.setColor(1);//seteo color para indicar que tiene prod nuevos
+                orderPane.setLblOrderNumber(orderName);
+                orderPane.setTxtOrderDescription(desc);
+                orderPane.setOrder(order.first());
+                orderPane.setOrderProducts(order.second());
+                orderPane.setLblTimeOrderArrival(dateAux);
+                //seteo nuevos listeners en el orderPane
+                orderPane.addMouseListener(new java.awt.event.MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        if (e.getClickCount() == 2) {
+                            try {
+                                GuiKitchenOrderDetails guiOrderDetails = new GuiKitchenOrderDetails(guiKitchenMain, true);
+                                ControllerGuiOrderDetails controllerGuiOrderDetails = new ControllerGuiOrderDetails(guiOrderDetails, order);
+                                guiOrderDetails.setVisible(true);
+                                guiOrderDetails.toFront();
+                                guiOrderDetails.setModal(true);
+                                //Si el controlador me dice que debo borrar el orderPane
+                                if(controllerGuiOrderDetails.removeThisPane()){
+                                    int i = 0;
+                                    boolean stop = false;
+                                    while(i<guiKitchenMain.getOrdersPanel().getComponentCount() && !stop){
+                                    if(guiOrderPane.getOrderId() == ((GuiKitchenOrderPane)guiKitchenMain.getOrdersPanel().getComponent(i)).getOrderId()){
+                                    guiKitchenMain.getOrdersPanel().remove(i);
+                                    stop = true;
+                                }
+                                i++;
+                            }
+                                
+                                }
+                                guiKitchenMain.validate();
+                            } catch (RemoteException | NotBoundException ex) {
+                                Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }
+                });
+                orderPane.revalidate();
+                orderPane.repaint();
+                stop = true;
+            }
+            i++;
+        }
+        //Si el panel no fue encontrado
+        if (!stop) {
+            addOrder(order);//creo el pedido nuevo
+        }
+
     }
 
     /* Recarga todos los pedidos abiertos, sin realizar aun en cocina en la gui. */
     //PULIR ESTE METODO PARA QUE TRAIGA LOS PEDIDOS COMO MAXIMO DE DOS DIAS, Y NO TODOS
     public static void refreshOpenOrders() throws RemoteException {
         listOrdersPanels = new LinkedList<>();//reinicio la lista de ordersPanels para que se actualice en addOrder
-        List<Map> allOrders = crudOrder.getAllOrders();//saco todas los pedidos cargados
-        for (Map<String, Object> order : allOrders) {
+        Pair<List<Map>, List<Map>> allOrders = crudOrder.getAllOrdersForKitchen();//saco todas los pedidos y productos cargados para la cocina
+        for (Map<String, Object> order : allOrders.first()) { //Para cada pedido
             if (order.get("closed").equals(false)) {//si el pedido no esta cerrado
-                boolean orderClosed = true;
                 //saco todos los productos asociados al pedido
-                List<Map> orderProducts = crudOrder.getOrderProducts(Integer.parseInt(order.get("id").toString()));
-                Iterator<Map> itr = orderProducts.iterator();
-                while (itr.hasNext() && orderClosed) {
-                    Map<String, Object> orderProduct = itr.next();
-                    Map<String, Object> fproduct = crudFProduct.getFproduct(Integer.parseInt(orderProduct.get("fproduct_id").toString()));
-                    //si el producto corresponde a Cocina y no fue hecho
-                    if (fproduct.get("belong").equals("Cocina") && orderProduct.get("done").equals(false)) {
-                        orderClosed = false; //marco el pedido como abierto
+                List<Map<String, Object>> listOrderProducts = new LinkedList<>();
+                for (Map<String, Object> orderProducts : allOrders.second()) {
+                    if (orderProducts.get("order_id").equals(order.get("id"))) {//si el producto corresponde al pedido, lo pongo en su lista
+                        listOrderProducts.add(orderProducts);
                     }
                 }
-                if (!orderClosed) {//si el pedido esta abierto (NO CERRADO)
-                    addOrder(new Pair(order, orderProducts));//agrego el pedido en kitchen
+                if (!listOrderProducts.isEmpty()) {//si el pedido tiene al menos un producto en la cocina
+                    addOrder(new Pair(order, listOrderProducts));//agrego el pedido en kitchen
                 }
             }
         }
@@ -369,51 +371,6 @@ public class ControllerGuiKitchenMain implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent ae) {
-        if (ae.getSource().equals(guiOrderDetails.getBtnCheckAll())) { // If one value is false, I set them all with true. If they're all true, I set them all with false.
-            boolean modify = false;
-            int i = 0;
-            while (i < dtmOrderDetails.getRowCount() && !modify) {
-                if ((boolean) dtmOrderDetails.getValueAt(i, 3) == false) {
-                    modify = true;
-                } else {
-                    i++;
-                }
-            }
-            for (i = 0; i < dtmOrderDetails.getRowCount(); i++) {
-                dtmOrderDetails.setValueAt(modify, i, 3);
-            }
-        }
-        if (ae.getSource().equals(guiOrderDetails.getBtnSendOrderDone())) { // Send the Order
-            List<Integer> list = new LinkedList();
-            int i = 0;
-            while (i < dtmOrderDetails.getRowCount()) { // Add all products that are true
-                if ((boolean) dtmOrderDetails.getValueAt(i, 3) == true) {
-                    int id = (Integer) dtmOrderDetails.getValueAt(i, 0);
-                    list.add(id);
-                }
-                i++;
-            }
-            List<Map> updateOrder = new LinkedList<>();
-            try {
-                updateOrder = crudOrder.updateOrdersReadyProducts(guiOrderDetails.getOrderID(), list);
-            } catch (RemoteException ex) {
-                Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            try {
-                if (list.size() == dtmOrderDetails.getRowCount()) { //si la lista de productos hechos es igual a la cantidad de productos en la tabla
-                    guiKitchenMain.cleanAllOrders();//borro todas las ordenes de la gui
-                    refreshOpenOrders(); //Actualizo la gui de pedidos para eliminar el que se realizo
-                    guiOrderDetails.closeWindow();
-                } else {
-                    guiOrderDetails.closeWindow();
-                }
-
-            } catch (RemoteException ex) {
-                Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            guiKitchenMain.validate();
-        }
-
         if (guiLogin != null) {
             if (ae.getSource() == guiLogin.getBtnAccept()) {
                 String user = guiLogin.getcBoxUsers().getItemAt(guiLogin.getcBoxUsers().getSelectedIndex()).toString();
@@ -455,4 +412,9 @@ public class ControllerGuiKitchenMain implements ActionListener {
             gulu.setVisible(true);
         }
     }
+    
+    /*Falta corregir que se borren los paneles despues de enviar todos los productos hechos(la funcionalidad anda igual)
+     * El boton cerrar pedido de orderpane
+    */
+    
 }

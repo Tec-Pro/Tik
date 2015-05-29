@@ -34,7 +34,7 @@ public class ClientKitchen extends UnicastRemoteObject implements InterfaceClien
 
     @Override
     public void updatedOrder(Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
-        ControllerGuiKitchenMain.updatedOrder(order);
+       ControllerGuiKitchenMain.updatedOrder(order);
     }
 
 }

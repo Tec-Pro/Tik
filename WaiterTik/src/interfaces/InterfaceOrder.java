@@ -9,6 +9,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
+import utils.Pair;
 
 /**
  *
@@ -108,4 +109,28 @@ public interface InterfaceOrder extends Remote {
      * @throws java.rmi.RemoteException
      */
     public List<Map> getActiveOrdersByUser(int userId) throws java.rmi.RemoteException;
+    
+    /**
+     * 
+     * @return Par de listas :
+     *      pair.first = lista de Maps pedidos, con el formato: 
+     *                      {id, order_number, user_id, description, closed, persons, user_name}
+     *      pair.second = lista de Maps productos de los pedidos, con el formato:
+     *                      {id, order_id, fproduct_id, quantity, done=boolean,
+     *                          created_at = string(timestamp), updated_at = String(timestamp), name}  
+     * @throws RemoteException
+     */
+    public Pair<List<Map>, List<Map>> getAllOrdersForBar() throws java.rmi.RemoteException;
+    
+    /**
+     *
+     * @return Par de listas :
+     *      pair.first = lista de Maps pedidos, con el formato: 
+     *                      {id, order_number, user_id, description, closed, persons, user_name}
+     *      pair.second = lista de Maps productos de los pedidos, con el formato:
+     *                      {id, order_id, fproduct_id, quantity, done=boolean,
+     *                          created_at = string(timestamp), updated_at = String(timestamp), name} 
+     * @throws RemoteException
+     */
+    public Pair<List<Map>, List<Map>> getAllOrdersForKitchen() throws java.rmi.RemoteException;
 }

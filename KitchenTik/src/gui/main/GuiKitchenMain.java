@@ -244,7 +244,8 @@ public class GuiKitchenMain extends javax.swing.JFrame {
             aux = aux + m.get("name") + " x" + m.get("quantity") + "\n";
         }
         orderPane.getTxtOrderDescription().setText(aux);
-        orderPane.setOrder(order);
+        orderPane.setOrder(order.first());
+        orderPane.setOrderProducts(order.second());
         orderPane.revalidate();
         getOrdersPanel().revalidate();
     }

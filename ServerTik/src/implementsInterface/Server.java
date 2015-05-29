@@ -67,7 +67,7 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
             try {
                 client.readyOrder(order);
             } catch (java.rmi.ConnectException e) {
-                System.err.println("se rompió porque se cerro un programa seguro" + e);
+                System.err.println("Se rompió porque se cerro el programa de mozos seguramente.o" + e);
                 waiters.remove(i);
                 //despues voy a eliminar este tipo porque la conexión se rechazó por desconectarses
             }
@@ -84,7 +84,7 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
             try {
                 client.newOrder(order);
             } catch (java.rmi.ConnectException e) {
-                System.err.println("se rompió porque se cerro un programa seguro" + e);
+                System.err.println("Se rompió porque se cerro el programa de cocina seguramente." + e);
                 chefs.remove(i);
                 //despues voy a eliminar este tipo porque la conexión se rechazó por desconectarses
             }
@@ -102,7 +102,7 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
             try {
                 client.updatedOrder(order);
             } catch (java.rmi.ConnectException e) {
-                System.err.println("se rompió porque se cerro un programa seguro" + e);
+                System.err.println("Se rompió porque se cerro el programa de bar seguramente." + e);
                 bartenders.remove(i);
                 //despues voy a eliminar este tipo porque la conexión se rechazó por desconectarses
             }
@@ -120,7 +120,7 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
             try {
                 client.newOrder(order);
             } catch (java.rmi.ConnectException e) {
-                System.err.println("se rompió porque se cerro un programa seguro" + e);
+                System.err.println("Se rompió porque se cerro el programa de bar seguramente." + e);
                 bartenders.remove(i);
                 //despues voy a eliminar este tipo porque la conexión se rechazó por desconectarses
             }
@@ -138,7 +138,7 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
             try {
                 client.updatedOrder(order);
             } catch (java.rmi.ConnectException e) {
-                System.err.println("se rompió porque se cerro un programa seguro" + e);
+                System.err.println("Se rompió porque se cerro el programa de cocina seguramente." + e);
                 chefs.remove(i);
                 //despues voy a eliminar este tipo porque la conexión se rechazó por desconectarses
             }

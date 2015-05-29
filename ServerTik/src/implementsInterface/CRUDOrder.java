@@ -34,6 +34,10 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
     private Connection conn;
     private String sql = "";
 
+    /**
+     *
+     * @throws RemoteException
+     */
     public CRUDOrder() throws RemoteException {
         super();
         openBase();
@@ -57,19 +61,23 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         // campos que deberia tener el map: ("fproductId","quantity","done","commited","issued")
         Utils.abrirBase();
         //Base.openTransaction();
-        Order newOrder = Order.createIt("user_id", userId, "order_number", getOrdersCount(userId) + 1, "description", description, "closed", false, "persons",persons);
+        final Order newOrder = Order.createIt("user_id", userId, "order_number", getOrdersCount(userId) + 1, "description", description, "closed", false, "persons", persons);
         for (Map<String, Object> prod : fproducts) {
             OrdersFproducts.createIt("order_id", newOrder.getId(), "fproduct_id", (int) prod.get("fproductId"), "quantity", (float) prod.get("quantity"), "done", (boolean) prod.get("done"), "commited", (boolean) prod.get("commited"), "issued", (boolean) prod.get("issued"));
         }
         //Base.commitTransaction();
-
-        final Map<String, Object> orderMap = getOrder(newOrder.getInteger("id"));
-        final Pair<Map<String, Object>, List<Map>> pair = new Pair(orderMap, getOrderProducts(newOrder.getInteger("id")));
         Thread thread = new Thread() {
             public void run() {
                 try {
-                    Server.notifyKitchenNewOrder(pair);
-                    Server.notifyBarNewOrder(pair);
+                    Pair<Map<String, Object>, List<Map>> mapBar = obtainOrdersBar(newOrder.getInteger("id"));
+                    Pair<Map<String, Object>, List<Map>> mapKitchen = obtainOrdersKitchen(newOrder.getInteger("id"));
+                    if (mapKitchen != null) {
+                        Server.notifyKitchenNewOrder(mapKitchen);
+                    }
+                    if (mapBar != null) {
+                        Server.notifyBarNewOrder(mapBar);
+                    }
+                    Pair<Map<String,Object>,List<Map>> pair = new Pair(getOrder(newOrder.getInteger("id")), getAllOrders());
                     Server.notifyWaitersOrderReady(pair);
                 } catch (RemoteException ex) {
                     Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
@@ -88,7 +96,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
      * @throws RemoteException
      */
     @Override
-    public boolean updateOrder(int orderId, String description, int persons, List<Map<String, Object>> fproducts) throws RemoteException {
+    public boolean updateOrder(final int orderId, String description, int persons, List<Map<String, Object>> fproducts) throws RemoteException {
         // campos que deberia tener el map: ("fproductId","quantity","done","commited","issued")
         Utils.abrirBase();
         Base.openTransaction();
@@ -107,11 +115,25 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             OrdersFproducts.create("order_id", orderId, "fproduct_id", (int) prod.get("fproductId"), "quantity", (float) prod.get("quantity"), "done", (boolean) prod.get("done"), "commited", (boolean) prod.get("commited"), "issued", (boolean) prod.get("issued")).saveIt();
         }
         Base.commitTransaction();
-        Map<String, Object> orderMap = order.toMap();
-        Pair<Map<String, Object>, List<Map>> pair = new Pair<>(orderMap, order.getAll(OrdersFproducts.class).toMaps());
-        Server.notifyKitchenUpdatedOrder(pair);
-        Server.notifyBarUpdatedOrder(pair);
-        Server.notifyWaitersOrderReady(pair);
+        Thread thread = new Thread() {
+            public void run() {
+                try {
+                    Pair<Map<String, Object>, List<Map>> mapBar = obtainOrdersBar(orderId);
+                    Pair<Map<String, Object>, List<Map>> mapKitchen = obtainOrdersKitchen(orderId);
+                    if (mapKitchen != null) {
+                        Server.notifyKitchenUpdatedOrder(mapKitchen);
+                    }
+                    if (mapBar != null) {
+                        Server.notifyBarUpdatedOrder(mapBar);
+                    }
+                    Pair<Map<String,Object>,List<Map>> pair = new Pair(getOrder(orderId), getAllOrders());
+                    Server.notifyWaitersOrderReady(pair);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        };
+        thread.start();
         return true;
     }
 
@@ -127,7 +149,8 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         LinkedList<Map> ret = new LinkedList<>();
         try {
             Statement stmt = conn.createStatement();
-            sql = "select * from orders;";
+            sql = "SELECT orders.id,order_number,user_id,description,closed,persons,name FROM orders"
+                    + " INNER JOIN users WHERE orders.user_id = users.id;";
             java.sql.ResultSet rs = stmt.executeQuery(sql);
 
             while (rs.next() != false) {
@@ -137,6 +160,8 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
                 m.put("user_id", rs.getObject("user_id"));
                 m.put("description", rs.getObject("description"));
                 m.put("closed", rs.getObject("closed"));
+                m.put("persons", rs.getObject("persons"));
+                m.put("user_name", rs.getObject("name"));
                 ret.add(m);
             }
             rs.close();
@@ -257,7 +282,8 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         openBase();
         Map m = new HashMap();
         try {
-            sql = "select * from orders where id = '" + orderId + "';";
+            sql = "SELECT orders.id,order_number,user_id,description,closed,persons,name FROM orders"
+                    + " INNER JOIN users WHERE orders.user_id = users.id AND orders.id = '" + orderId + "';";
             Statement stmt = conn.createStatement();
             java.sql.ResultSet rs;
             rs = stmt.executeQuery(sql);
@@ -270,6 +296,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
                 m.put("description", rs.getObject("description"));
                 m.put("closed", rs.getObject("closed"));
                 m.put("persons", rs.getObject("persons"));
+                m.put("user_name", rs.getObject("name"));
             }
             rs.close();
             stmt.close();
@@ -345,4 +372,145 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         }
 
     }
+
+    private Pair<Map<String, Object>, List<Map>> obtainOrdersKitchen(Integer orderId) throws RemoteException {
+        final Map<String, Object> orderMap = getOrder(orderId);
+        openBase();
+        List<Map> result = new LinkedList<>();
+        try {
+            sql = "SELECT orders_fproducts.id,order_id,fproduct_id,quantity,done,commited,issued,created_at,updated_at,name"
+                    + " FROM orders_fproducts INNER JOIN fproducts WHERE orders_fproducts.fproduct_id = fproducts.id AND"
+                    + " fproducts.belong = 'Cocina' AND orders_fproducts.order_id = '" + orderId + "' AND orders_fproducts.done = 0;";
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                Map m = new HashMap();
+                m.put("id", rs.getObject("id"));
+                m.put("order_id", rs.getObject("order_id"));
+                m.put("fproduct_id", rs.getObject("fproduct_id"));
+                m.put("quantity", rs.getObject("quantity"));
+                m.put("done", rs.getObject("done"));
+                m.put("created_at", rs.getObject("created_at"));
+                m.put("updated_at", rs.getObject("updated_at"));
+                m.put("name", rs.getObject("name"));
+                result.add(m);
+            }
+            rs.close();
+            stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (result.isEmpty()) {
+            return null;
+        } else {
+            final Pair<Map<String, Object>, List<Map>> pair = new Pair(orderMap, result);
+            return pair;
+        }
+    }
+
+    private Pair<Map<String, Object>, List<Map>> obtainOrdersBar(Integer orderId) throws RemoteException {
+        final Map<String, Object> orderMap = getOrder(orderId);
+        openBase();
+        List<Map> result = new LinkedList<>();
+        try {
+            sql = "SELECT orders_fproducts.id,order_id,fproduct_id,quantity,done,commited,issued,created_at,updated_at,name"
+                    + " FROM orders_fproducts INNER JOIN fproducts WHERE orders_fproducts.fproduct_id = fproducts.id AND"
+                    + " fproducts.belong = 'Bar' AND orders_fproducts.order_id = '" + orderId + "' AND orders_fproducts.done = 0;";
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                Map m = new HashMap();
+                m.put("id", rs.getObject("id"));
+                m.put("order_id", rs.getObject("order_id"));
+                m.put("fproduct_id", rs.getObject("fproduct_id"));
+                m.put("quantity", rs.getObject("quantity"));
+                m.put("done", rs.getObject("done"));
+                m.put("created_at", rs.getObject("created_at"));
+                m.put("updated_at", rs.getObject("updated_at"));
+                m.put("name", rs.getObject("name"));
+                result.add(m);
+            }
+            rs.close();
+            stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (result.isEmpty()) {
+            return null;
+        } else {
+            final Pair<Map<String, Object>, List<Map>> pair = new Pair(orderMap, result);
+            return pair;
+        }
+    }
+
+    @Override
+    public Pair<List<Map>, List<Map>> getAllOrdersForKitchen() throws RemoteException {
+        openBase();
+        Map m = new HashMap();
+        LinkedList<Map> listOrdersFproducts = new LinkedList<>();
+        try {
+            Statement stmt = conn.createStatement();
+            String sqlOrdersFproducts = "SELECT orders_fproducts.id,order_id,fproduct_id,quantity,done,commited,issued,created_at,updated_at,name"
+                    + " FROM orders_fproducts INNER JOIN fproducts WHERE orders_fproducts.fproduct_id = fproducts.id AND"
+                    + " fproducts.belong = 'Cocina' AND orders_fproducts.done = 0;";
+
+            java.sql.ResultSet rs = stmt.executeQuery(sqlOrdersFproducts);
+
+            while (rs.next() != false) {
+                m = new HashMap();
+                m.put("id", rs.getObject("id"));
+                m.put("order_id", rs.getObject("order_id"));
+                m.put("fproduct_id", rs.getObject("fproduct_id"));
+                m.put("quantity", rs.getObject("quantity"));
+                m.put("done", rs.getObject("done"));
+                m.put("created_at", rs.getObject("created_at"));
+                m.put("updated_at", rs.getObject("updated_at"));
+                m.put("name", rs.getObject("name"));
+                listOrdersFproducts.add(m);
+            }
+            rs.close();
+            stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        final Pair<List<Map>, List<Map>> pair = new Pair(getAllOrders(), listOrdersFproducts);
+        return pair;
+    }
+
+    @Override
+    public Pair<List<Map>, List<Map>> getAllOrdersForBar() throws RemoteException {
+        openBase();
+        Map m = new HashMap();
+        LinkedList<Map> listOrdersFproducts = new LinkedList<>();
+        try {
+            Statement stmt = conn.createStatement();
+            String sqlOrdersFproducts = "SELECT orders_fproducts.id,order_id,fproduct_id,quantity,done,commited,issued,created_at,updated_at,name"
+                    + " FROM orders_fproducts INNER JOIN fproducts WHERE orders_fproducts.fproduct_id = fproducts.id AND"
+                    + " fproducts.belong = 'Bar' AND orders_fproducts.done = 0;";
+
+            java.sql.ResultSet rs = stmt.executeQuery(sqlOrdersFproducts);
+
+            while (rs.next() != false) {
+                m = new HashMap();
+                m.put("id", rs.getObject("id"));
+                m.put("order_id", rs.getObject("order_id"));
+                m.put("fproduct_id", rs.getObject("fproduct_id"));
+                m.put("quantity", rs.getObject("quantity"));
+                m.put("done", rs.getObject("done"));
+                m.put("created_at", rs.getObject("created_at"));
+                m.put("updated_at", rs.getObject("updated_at"));
+                m.put("name", rs.getObject("name"));
+                listOrdersFproducts.add(m);
+            }
+            rs.close();
+            stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        final Pair<List<Map>, List<Map>> pair = new Pair(getAllOrders(), listOrdersFproducts);
+        return pair;
+    }
+
 }

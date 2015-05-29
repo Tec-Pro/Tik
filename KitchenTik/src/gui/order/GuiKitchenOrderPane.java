@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
+import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.Timer;
 import utils.Pair;
@@ -19,10 +20,11 @@ import utils.Pair;
  */
 public class GuiKitchenOrderPane extends javax.swing.JPanel {
 
-    private Pair<Map<String, Object>, List<Map>> order;
+    private List<Map> orderProducts;
     boolean modified = false;
     private Timer timer;
     private boolean activeTimer;
+    private Map<String,Object> order;
 
     /**
      * Creates new form orderPane
@@ -35,16 +37,17 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
 
     /**
      *
+     * @param order pedido
      * @param orderName nombre del pedido
      * @param desc descripcion del pedido
      * @param date hora del pedido
-     * @param ordId id del pedido
-     */
-    public GuiKitchenOrderPane(String orderName, String desc, String date, Pair<Map<String, Object>, List<Map>> order) {
+     * @param orderProducts lista de productos del pedido    */
+    public GuiKitchenOrderPane(Map order, String orderName, String desc, String date, List<Map> orderProducts) {
         initComponents();
         lblOrderNumber.setText(orderName);
         lblTimeOrderArrival.setText(date);
         txtOrderDescription.setText(desc);
+        this.orderProducts = orderProducts;
         this.order = order;
         activeTimer = false;
     }
@@ -261,7 +264,7 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
      * @return the orderId
      */
     public Integer getOrderId() {
-        return (Integer) getOrder().first().get("user_id");
+        return Integer.parseInt(order.get("id").toString());
     }
 
     /**
@@ -303,16 +306,38 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
     }
 
     /**
-     * @return the order
+     * @return lista de productos del pedidos
      */
-    public Pair<Map<String, Object>, List<Map>> getOrder() {
-        return order;
+    public List<Map> getOrderProducts() {
+        return orderProducts;
     }
 
     /**
-     * @param order the order to set
+     * @param orderP lista de pedidos a setear
      */
-    public void setOrder(Pair<Map<String, Object>, List<Map>> order) {
+    public void setOrderProducts(List<Map> orderP) {
+        this.orderProducts = orderP;
+    }
+
+    public void setOrder(Map<String, Object> order) {
         this.order = order;
     }
+    
+    public Map<String, Object> getOrder() {
+        return order;
+    }
+
+    public void setLblOrderNumber(String lblOrderNumber) {
+        this.lblOrderNumber.setText(lblOrderNumber);
+    }
+
+    public void setLblTimeOrderArrival(String lblTimeOrderArrival) {
+        this.lblTimeOrderArrival.setText(lblTimeOrderArrival);
+    }
+
+    public void setTxtOrderDescription(String txtOrderDescription) {
+        this.txtOrderDescription.setText(txtOrderDescription);
+    }
+    
+    
 }
