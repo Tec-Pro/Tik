@@ -91,6 +91,10 @@ public class ControllerGuiOrderDetails implements ActionListener {
     public Boolean removeThisPane(){
         return this.removeThisPane;
     }
+
+    public Integer getOrderId() {
+        return Integer.parseInt(order.first().get("id").toString());
+    }
     
     @Override
     public void actionPerformed(ActionEvent ae) {

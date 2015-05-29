@@ -33,6 +33,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -208,8 +209,8 @@ public class ControllerGuiKitchenMain implements ActionListener {
         desc = auxDesc;
         //concateno id de pedido mas el nombre del mozo que lo pidio
         String orderName = order.first().get("order_number").toString() + " - " + order.first().get("user_name").toString();
-        final String dateAux = date.toString();
         guiOrderPane = new GuiKitchenOrderPane(order.first(), orderName, desc, date.toString(), order.second());
+        //Si hago doble click en el panel de un pedido
         guiOrderPane.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -221,22 +222,59 @@ public class ControllerGuiKitchenMain implements ActionListener {
                         guiOrderDetails.toFront();
                         guiOrderDetails.setModal(true);
                         //Si el controlador me dice que debo borrar el orderPane
-                        if(controllerGuiOrderDetails.removeThisPane() != null && controllerGuiOrderDetails.removeThisPane()){
-                            int i = 0;
+                        if (controllerGuiOrderDetails.removeThisPane() != null && controllerGuiOrderDetails.removeThisPane()) {
                             boolean stop = false;
-                            while(i<guiKitchenMain.getOrdersPanel().getComponentCount() && !stop){
-                                if(guiOrderPane.getOrderId() == ((GuiKitchenOrderPane)guiKitchenMain.getOrdersPanel().getComponent(i)).getOrderId()){
-                                    guiKitchenMain.getOrdersPanel().remove(i);
+                            Iterator<GuiKitchenOrderPane> itr = listOrdersPanels.iterator();
+                            while (!stop && itr.hasNext()) {
+                                GuiKitchenOrderPane guiOP = itr.next();
+                                if (Objects.equals(guiOP.getOrderId(), controllerGuiOrderDetails.getOrderId())) {
                                     stop = true;
+                                    guiKitchenMain.getOrdersPanel().remove(guiOP);
+                                    guiKitchenMain.getOrdersPanel().revalidate();
+                                    guiKitchenMain.getOrdersPanel().repaint();
+                                    listOrdersPanels.remove(guiOP);
                                 }
-                                i++;
+
                             }
                         }
                         guiKitchenMain.validate();
+                        guiKitchenMain.repaint();
                     } catch (RemoteException | NotBoundException ex) {
                         Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
+            }
+
+        });
+        //Si hago click en el boton de "Pedido Listo" de un panel
+        guiOrderPane.getBtnOrderReady().addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                final Integer orderId = Integer.parseInt(order.first().get("id").toString());
+                List<Integer> listOrderProductsId = new LinkedList<>();
+                for (Map<String, Object> m : order.second()) {
+                    listOrderProductsId.add(Integer.parseInt(m.get("id").toString()));
+                }
+                try {
+                    crudOrder.updateOrdersReadyProducts(orderId, listOrderProductsId);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                boolean stop = false;
+                Iterator<GuiKitchenOrderPane> itr = listOrdersPanels.iterator();
+                while (!stop && itr.hasNext()) {
+                    GuiKitchenOrderPane guiOP = itr.next();
+                    if (Objects.equals(guiOP.getOrderId(), orderId)) {
+                        stop = true;
+                        guiKitchenMain.getOrdersPanel().remove(guiOP);
+                        guiKitchenMain.getOrdersPanel().revalidate();
+                        guiKitchenMain.getOrdersPanel().repaint();
+                        listOrdersPanels.remove(guiOP);
+                    }
+
+                }
+                guiKitchenMain.validate();
+                guiKitchenMain.repaint();
             }
         });
         guiKitchenMain.addElementToOrdersGrid(guiOrderPane);
@@ -271,7 +309,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
         boolean stop = false;
         //Si no encuentra el panel en la gridbag, quiere decir que no esta por lo tanto debo agregarlo
         while (i < componentCount && !stop) {
-            GuiKitchenOrderPane orderPane = (GuiKitchenOrderPane) guiKitchenMain.getOrdersPanel().getComponent(i);
+            final GuiKitchenOrderPane orderPane = (GuiKitchenOrderPane) guiKitchenMain.getOrdersPanel().getComponent(i);
             if (orderPane.getOrderId().equals(Integer.parseInt(order.first().get("id").toString()))) {
                 soundPlayer.stopSound();
                 orderPane.stopTimer();
@@ -301,34 +339,71 @@ public class ControllerGuiKitchenMain implements ActionListener {
                 orderPane.setOrderProducts(order.second());
                 orderPane.setLblTimeOrderArrival(dateAux);
                 //seteo nuevos listeners en el orderPane
+                //Si hago doble click en el panel de un pedido
                 orderPane.addMouseListener(new java.awt.event.MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         if (e.getClickCount() == 2) {
                             try {
+                                orderPane.setColor(0);//si ve los pedidos en la gui de detalles vuelvo el color del panel a Blanco
                                 GuiKitchenOrderDetails guiOrderDetails = new GuiKitchenOrderDetails(guiKitchenMain, true);
                                 ControllerGuiOrderDetails controllerGuiOrderDetails = new ControllerGuiOrderDetails(guiOrderDetails, order);
                                 guiOrderDetails.setVisible(true);
                                 guiOrderDetails.toFront();
                                 guiOrderDetails.setModal(true);
                                 //Si el controlador me dice que debo borrar el orderPane
-                                if(controllerGuiOrderDetails.removeThisPane()){
-                                    int i = 0;
+                                if (controllerGuiOrderDetails.removeThisPane() != null && controllerGuiOrderDetails.removeThisPane()) {
                                     boolean stop = false;
-                                    while(i<guiKitchenMain.getOrdersPanel().getComponentCount() && !stop){
-                                    if(guiOrderPane.getOrderId() == ((GuiKitchenOrderPane)guiKitchenMain.getOrdersPanel().getComponent(i)).getOrderId()){
-                                    guiKitchenMain.getOrdersPanel().remove(i);
-                                    stop = true;
-                                }
-                                i++;
-                            }
-                                
+                                    Iterator<GuiKitchenOrderPane> itr = listOrdersPanels.iterator();
+                                    while (!stop && itr.hasNext()) {
+                                        GuiKitchenOrderPane guiOP = itr.next();
+                                        if (Objects.equals(guiOP.getOrderId(), controllerGuiOrderDetails.getOrderId())) {
+                                            stop = true;
+                                            guiKitchenMain.getOrdersPanel().remove(guiOP);
+                                            guiKitchenMain.getOrdersPanel().revalidate();
+                                            guiKitchenMain.getOrdersPanel().repaint();
+                                            listOrdersPanels.remove(guiOP);
+                                        }
+
+                                    }
                                 }
                                 guiKitchenMain.validate();
+                                guiKitchenMain.repaint();
                             } catch (RemoteException | NotBoundException ex) {
                                 Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
+                    }
+                });
+                //Si hago click en el boton de "Pedido Listo" de un panel
+                guiOrderPane.getBtnOrderReady().addMouseListener(new java.awt.event.MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        final Integer orderId = Integer.parseInt(order.first().get("id").toString());
+                        List<Integer> listOrderProductsId = new LinkedList<>();
+                        for (Map<String, Object> m : order.second()) {
+                            listOrderProductsId.add(Integer.parseInt(m.get("id").toString()));
+                        }
+                        try {
+                            crudOrder.updateOrdersReadyProducts(orderId, listOrderProductsId);
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        boolean stop = false;
+                        Iterator<GuiKitchenOrderPane> itr = listOrdersPanels.iterator();
+                        while (!stop && itr.hasNext()) {
+                            GuiKitchenOrderPane guiOP = itr.next();
+                            if (Objects.equals(guiOP.getOrderId(), orderId)) {
+                                stop = true;
+                                guiKitchenMain.getOrdersPanel().remove(guiOP);
+                                guiKitchenMain.getOrdersPanel().revalidate();
+                                guiKitchenMain.getOrdersPanel().repaint();
+                                listOrdersPanels.remove(guiOP);
+                            }
+
+                        }
+                        guiKitchenMain.validate();
+                        guiKitchenMain.repaint();
                     }
                 });
                 orderPane.revalidate();
@@ -412,9 +487,4 @@ public class ControllerGuiKitchenMain implements ActionListener {
             gulu.setVisible(true);
         }
     }
-    
-    /*Falta corregir que se borren los paneles despues de enviar todos los productos hechos(la funcionalidad anda igual)
-     * El boton cerrar pedido de orderpane
-    */
-    
 }
