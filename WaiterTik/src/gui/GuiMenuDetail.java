@@ -36,8 +36,8 @@ public class GuiMenuDetail extends javax.swing.JPanel {
     public void setColor(int color) {
         switch (color) {
             case 0:
-                setBackground(new Color(0,0,0,65));
-                txtDetail.setBackground(new Color(0,0,0,65));
+                setBackground(Color.white);
+                txtDetail.setBackground(Color.white);
                 break;
             case 1:
                 setBackground(new java.awt.Color(25, 169, 42));
@@ -50,6 +50,10 @@ public class GuiMenuDetail extends javax.swing.JPanel {
             case 3:
                 setBackground(new java.awt.Color(251, 28, 4));
                 txtDetail.setBackground(new java.awt.Color(251, 28, 4));
+                break;
+            case 4:
+                setBackground(new Color(0,0,0,65));
+                txtDetail.setBackground(new Color(0,0,0,65));
                 break;
         }
     }

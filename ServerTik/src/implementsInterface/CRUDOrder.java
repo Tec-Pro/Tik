@@ -105,8 +105,8 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             System.err.println("order not found!");
             return false;
         }
-        if ((boolean) order.get("closed")) {
-            return false;
+        if ((boolean) order.get("closed")) {// reabro el pedido si esta cerrado
+            order.set("closed",0);
         }
         order.set("description", description);
         order.set("persons", persons);
@@ -188,7 +188,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             sql = "select * from orders where user_id = '" + userId + "';";
             java.sql.ResultSet rs = stmt.executeQuery(sql);
 
-            if (rs.next() != false) {
+            while (rs.next() != false) {
                 m = new HashMap();
                 m.put("id", rs.getObject("id"));
                 m.put("order_number", rs.getObject("order_number"));
@@ -218,6 +218,10 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         sql = "UPDATE orders SET closed='1' WHERE id= '" + idOrder + "' ;";
         try {
             Statement stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+            stmt.close();
+            sql="UPDATE orders_fproducts SET paid = 1 WHERE order_id = '"+idOrder+"';";
+            stmt = conn.createStatement();
             stmt.executeUpdate(sql);
             stmt.close();
         } catch (SQLException ex) {
@@ -267,6 +271,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
                 m.put("issued", rs.getObject("issued"));
                 m.put("created_at", rs.getObject("created_at"));
                 m.put("updated_at", rs.getObject("updated_at"));
+                m.put("paid", rs.getObject("paid"));
                 ret.add(m);
             }
             rs.close();
@@ -335,7 +340,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         List<Map> ret = new LinkedList<>();
         try {
             if (userId != -1) {
-                sql = "select * from orders where closed =0 AND user_id = '" + userId + "';";
+                sql = "select * from orders where closed = '0' AND user_id = '" + userId + "';";
             } else {
                 sql = "select * from orders where closed = 0 ;";
             }
@@ -366,7 +371,8 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
             }
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/tik", "root", "root");
+            if(conn==null || conn.isClosed())
+                conn = DriverManager.getConnection("jdbc:mysql://localhost/tik", "root", "root");
         } catch (SQLException ex) {
             Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
         }

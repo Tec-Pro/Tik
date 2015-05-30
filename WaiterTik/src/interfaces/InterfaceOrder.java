@@ -105,6 +105,7 @@ public interface InterfaceOrder extends Remote {
      * retorna las ordenes activas de un id, si es -1 retorna todas
      *
      * @param userId
+     * @param all
      * @return
      * @throws java.rmi.RemoteException
      */

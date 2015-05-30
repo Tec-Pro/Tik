@@ -9,9 +9,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.LinkedList;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import utils.Watch;
 
 /**
@@ -83,6 +86,7 @@ public class GuiMain extends javax.swing.JFrame {
         panelActivedOrders.removeAll();
         gridx = 0;
         gridy = 0;
+        validateAll();
     }
 
     public void validateAll() {
@@ -100,6 +104,15 @@ public class GuiMain extends javax.swing.JFrame {
             }
         }
     }
+    
+    public void setActionListener(ActionListener lis){
+        chkAllOrders.addActionListener(lis);
+    }
+
+    public JCheckBox getChkAllOrders() {
+        return chkAllOrders;
+    }
+    
     
         /**
      * This method is called from within the constructor to initialize the form.
@@ -119,6 +132,7 @@ public class GuiMain extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         lblTurn = new javax.swing.JLabel();
+        chkAllOrders = new javax.swing.JCheckBox();
         jScrollPane4 = new javax.swing.JScrollPane();
         panelActivedOrders = new org.edisoncor.gui.panel.PanelImage();
         jPanel15 = new javax.swing.JPanel();
@@ -181,20 +195,31 @@ public class GuiMain extends javax.swing.JFrame {
 
         pnlWatch.add(jPanel3, java.awt.BorderLayout.LINE_START);
 
+        chkAllOrders.setBackground(java.awt.Color.black);
+        chkAllOrders.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
+        chkAllOrders.setForeground(java.awt.Color.white);
+        chkAllOrders.setText("VER TODAS");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnlWatch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(chkAllOrders)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlWatch, javax.swing.GroupLayout.DEFAULT_SIZE, 770, Short.MAX_VALUE)
+                .addGap(21, 21, 21))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnlWatch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(chkAllOrders)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(pnlWatch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -233,7 +258,7 @@ public class GuiMain extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 930, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, 0))
         );
@@ -298,6 +323,7 @@ public class GuiMain extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox chkAllOrders;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel15;

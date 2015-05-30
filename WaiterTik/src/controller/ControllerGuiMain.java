@@ -27,6 +27,7 @@ import interfaces.InterfaceOrder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import javax.swing.JOptionPane;
 import utils.ParserFloat;
 
 /**
@@ -56,10 +57,11 @@ public class ControllerGuiMain implements ActionListener {
         controllerGuiOrder = new ControllerGuiOrder(guiOrder);
         crudOrder = (InterfaceOrder) InterfaceName.registry.lookup(InterfaceName.CRUDOrder);
         crudFproduct = (InterfaceFproduct) InterfaceName.registry.lookup(InterfaceName.CRUDFproduct);
-        loadOrders(-1);
+        loadOrders(-1,guiMain.getChkAllOrders().isSelected());
         
         guiLoginGrid = new GuiLoginGrid();
-        controllerGuiLoginGrid = new ControllerGuiLoginGrid(guiLoginGrid, this);        
+        controllerGuiLoginGrid = new ControllerGuiLoginGrid(guiLoginGrid, this);  
+        guiMain.setActionListener(this);
     }
     
     public static void setLoginGridVisible(boolean isVisible){
@@ -79,7 +81,7 @@ public class ControllerGuiMain implements ActionListener {
         Thread thread = new Thread() {
             public void run() {
                 try {
-                    loadOrders(idWaiter);
+                    loadOrders(idWaiter,guiMain.getChkAllOrders().isSelected());
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -100,7 +102,21 @@ public class ControllerGuiMain implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {        
+    public void actionPerformed(ActionEvent e) {  
+        if(e.getSource().equals(guiMain.getChkAllOrders())){
+                    Thread thread = new Thread() {
+            public void run() {
+                try {
+                    loadOrders(idWaiter,guiMain.getChkAllOrders().isSelected());
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        };
+
+        thread.start();
+        }
     }
 
     /**
@@ -110,7 +126,7 @@ public class ControllerGuiMain implements ActionListener {
      * @param idUser
      * @throws RemoteException
      */
-    private static void loadOrders(int idUser) throws RemoteException {
+    private static void loadOrders(int idUser, boolean all) throws RemoteException {
         clearAllOrders();
         GuiPanelNew newButton = new GuiPanelNew();
         newButton.getLblNew().addMouseListener(new MouseAdapter() {//agrego un mouselistener
@@ -127,7 +143,11 @@ public class ControllerGuiMain implements ActionListener {
             }
         });
         guiMain.addPanelNewOrder(newButton);
-        List<Map> ordersNotClosed = crudOrder.getActiveOrdersByUser(idUser);
+        List<Map> ordersNotClosed;
+        if(!all)
+             ordersNotClosed = crudOrder.getActiveOrdersByUser(idUser);
+        else
+             ordersNotClosed = crudOrder.getOrdersByUser(idUser);
         for (Map ord : ordersNotClosed) {
             String details = "";
 
@@ -164,13 +184,25 @@ public class ControllerGuiMain implements ActionListener {
             newOrder.getLblDone().addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    System.out.println("done id=" + newOrder.getIdOrder());
+                    int r = JOptionPane.showConfirmDialog(null, "Desea cerrar el pedido?");
+                    if(r==JOptionPane.YES_OPTION){
+                        try {
+                            crudOrder.closeOrder(newOrder.getIdOrder());
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
                 }
             });
             newOrder.getLblCommited().addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    System.out.println("commited id=" + newOrder.getIdOrder());
+                    try {
+                        crudOrder.commitProducts( newOrder.getIdOrder());
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(ControllerGuiMain.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
                 }
             });
             int status = -1;
@@ -188,6 +220,9 @@ public class ControllerGuiMain implements ActionListener {
                         }
                     }
                 }
+            }
+            if((boolean)ord.get("closed")){ //si la orden esta cerrada
+                status =4;
             }
             switch (status) {
                 case 0:
@@ -215,7 +250,12 @@ public class ControllerGuiMain implements ActionListener {
                     newOrder.setOrder(ord, details);
                     guiMain.addActiveOrder(newOrder);
                     break;
-
+                case 4:
+                    //poner pedido en invisible , la ordene sta cerrada
+                    newOrder.setColor(4);
+                    newOrder.setOrder(ord, details);
+                    guiMain.addActiveOrder(newOrder);
+                    break;
             }
         }
         guiMain.validateAll();
@@ -235,7 +275,7 @@ public class ControllerGuiMain implements ActionListener {
     public void waiterInit(int id) throws RemoteException {
         idWaiter = id;
         System.out.println(id);
-        loadOrders(id);
+        loadOrders(id,guiMain.getChkAllOrders().isSelected());
         guiMain.setVisible(true);
         guiMain.setExtendedState(JFrame.MAXIMIZED_BOTH);
         

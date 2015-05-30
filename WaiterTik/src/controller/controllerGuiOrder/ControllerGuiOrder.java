@@ -369,17 +369,19 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
         List<Map> orderProducts = crudOrder.getOrderProducts(currentOrderId);
         for (Map Orderprod : orderProducts) {
             Map prod = crudFproduct.getFproduct((int) Orderprod.get("fproduct_id"));
-            Object[] row = new Object[7];
+            Object[] row = new Object[8];
             row[0] = prod.get("id");
             float quantity = (float) Orderprod.get("quantity");
             row[1] = quantity;
             row[2] = prod.get("name");
             float price = (float) prod.get("sell_price");
             row[3] = ParserFloat.floatToString(price * quantity);
-            totalPrice += price * quantity;
+            if(!(boolean) Orderprod.get("paid"))
+                totalPrice += price * quantity;
             row[4] = (boolean) Orderprod.get("done");
             row[5] = (boolean) Orderprod.get("commited");
             row[6] = (boolean) Orderprod.get("issued");
+            row[7] = (boolean) Orderprod.get("paid");
             guiOrder.getTableProductsDefault().addRow(row);
         }
         guiOrder.getjTextDescription().setText(currentOrder.get("description").toString());
@@ -470,10 +472,12 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                 }
                 try {
                     if ((boolean) currentOrder.get("closed")) {
-                        JOptionPane.showMessageDialog(guiOrder, "           El pedido esta cerrado \n No se pueden agregar mas productos!", "Atencion", JOptionPane.INFORMATION_MESSAGE);
-                        productsTable.setRowCount(0);
-                        loadProducts();
-                        return;
+                        int res=JOptionPane.showConfirmDialog(guiOrder, "           El pedido esta cerrado \n Desea agregar más productos?", "Atencion", JOptionPane.OK_CANCEL_OPTION);
+                        if(res==JOptionPane.CANCEL_OPTION){
+                            productsTable.setRowCount(0);
+                            loadProducts();
+                            return;
+                        }
                     }
                     int persons = (Integer)guiOrder.getjSpinnerPersons().getValue();
                     crudOrder.updateOrder(currentOrderId, guiOrder.getjTextDescription().getText(), persons, products);
@@ -543,7 +547,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                 List<Map> fproducts = crudFproduct.getFproducts(currentSelectedNodeName);
                 if (fproducts.size() == 1) {
                     Map<String, Object> fp = fproducts.get(0);
-                    Object[] row = new Object[7];
+                    Object[] row = new Object[8];
                     row[0] = fp.get("id");
                     row[1] = ParserFloat.stringToFloat(guiAmount.getTxtAmount().getText());
                     row[2] = currentSelectedNodeName;
@@ -553,6 +557,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                     row[4] = false;
                     row[5] = false;
                     row[6] = false;
+                    row[7] = false;
                     guiOrder.getTableProductsDefault().addRow(row);
                 } else {
                     JOptionPane.showMessageDialog(guiOrder, "No se encontro el producto o existen varios productos con el mismo nombre", "Atencion!", JOptionPane.WARNING_MESSAGE);
