@@ -10,7 +10,6 @@ import gui.login.GuiOnlineUsers;
 import gui.main.GuiKitchenMain;
 import gui.order.GuiKitchenOrderDetails;
 import gui.order.GuiKitchenOrderPane;
-import interfaces.InterfaceFproduct;
 import interfaces.InterfaceGeneralConfig;
 import interfaces.InterfaceOrder;
 import interfaces.InterfacePresence;
@@ -57,7 +56,6 @@ public class ControllerGuiKitchenMain implements ActionListener {
     //Interfaces
     private static InterfaceGeneralConfig generalConfig;
     private static InterfaceOrder crudOrder;
-    //private static InterfaceFproduct crudFProduct;
     private static InterfaceUser crudUser;
     private final InterfacePresence crudPresence;
     //Conjunto(set) con los cocineros online
@@ -83,7 +81,6 @@ public class ControllerGuiKitchenMain implements ActionListener {
         crudOrder = (InterfaceOrder) InterfaceName.registry.lookup(InterfaceName.CRUDOrder);
         crudPresence = (InterfacePresence) InterfaceName.registry.lookup(InterfaceName.CRUDPresence);
         crudUser = (InterfaceUser) InterfaceName.registry.lookup(InterfaceName.CRUDUser);
-        //    crudFProduct = (InterfaceFproduct) InterfaceName.registry.lookup(InterfaceName.CRUDFproduct);
         generalConfig = (InterfaceGeneralConfig) InterfaceName.registry.lookup(InterfaceName.GeneralConfig);
         online = new HashSet<>();
         for (Map m : crudPresence.getCooks()) {
@@ -151,7 +148,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
             if (orderPane.getColor() != 2 && (Integer.parseInt(diff.get("MINUTES").toString()) >= Integer.parseInt(generalConfig.getDelayTime())
                     || Integer.parseInt(diff.get("HOURS").toString()) > 0
                     || Integer.parseInt(diff.get("DAYS").toString()) > 0)) {
-                soundPlayer.playSound();//Alerta sonora
+                            soundPlayer.playSound();//Alerta sonora
                 if (!orderPane.isActiveTimer()) {
                     //Parpadea el color del panel, en rojo, avisando que el pedido se retraso
                     orderPane.setTimer(new ActionListener() {
@@ -195,18 +192,9 @@ public class ControllerGuiKitchenMain implements ActionListener {
      * @throws RemoteException
      */
     public static void addOrder(final Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
-        Timestamp date = Timestamp.valueOf("1990-01-01 01:01:01");//inicio la fecha con un valor minimo
-        final String desc;
-        String auxDesc = "";
-        for (Map m : order.second()) {
-            //calculo la descripcion
-            auxDesc = auxDesc + m.get("name") + " x" + m.get("quantity") + "\n";
-            //calculo la hora del pedido en base al ultimo producto añadido al mismo
-            if (date.before(Timestamp.valueOf(m.get("updated_at").toString()))) {
-                date = Timestamp.valueOf(m.get("updated_at").toString());
-            }
-        }
-        desc = auxDesc;
+        //calculo la hora y descripcion del pedido
+        final String desc = calculateDescription(order.second());
+        final Timestamp date = calculateTimeOfOrder(order.second());
         //concateno id de pedido mas el nombre del mozo que lo pidio
         String orderName = order.first().get("order_number").toString() + " - " + order.first().get("user_name").toString();
         guiOrderPane = new GuiKitchenOrderPane(order.first(), orderName, desc, date.toString(), order.second());
@@ -224,16 +212,15 @@ public class ControllerGuiKitchenMain implements ActionListener {
                         //Si el controlador me dice que debo borrar el orderPane
                         if (controllerGuiOrderDetails.removeThisPane() != null && controllerGuiOrderDetails.removeThisPane()) {
                             boolean stop = false;
-                            Iterator<GuiKitchenOrderPane> itr = listOrdersPanels.iterator();
-                            while (!stop && itr.hasNext()) {
-                                GuiKitchenOrderPane guiOP = itr.next();
+                            int index = 0;
+                            while (!stop && index < guiKitchenMain.getOrdersPanel().getComponentCount()) {
+                                GuiKitchenOrderPane guiOP = (GuiKitchenOrderPane) guiKitchenMain.getOrdersPanel().getComponent(index);
                                 if (Objects.equals(guiOP.getOrderId(), controllerGuiOrderDetails.getOrderId())) {
                                     stop = true;
-                                    guiKitchenMain.getOrdersPanel().remove(guiOP);
-                                    guiKitchenMain.getOrdersPanel().revalidate();
-                                    guiKitchenMain.getOrdersPanel().repaint();
+                                    guiKitchenMain.removeElementOfOrdersGrid(index);
                                     listOrdersPanels.remove(guiOP);
                                 }
+                                index++;
 
                             }
                         }
@@ -282,6 +269,26 @@ public class ControllerGuiKitchenMain implements ActionListener {
         listOrdersPanels.add(guiOrderPane);
     }
 
+    private static String calculateDescription(List<Map> listOrderProducts){
+        String auxDesc = "";
+        for (Map m : listOrderProducts) {
+            //calculo la descripcion
+            auxDesc = auxDesc + m.get("name") + " x" + m.get("quantity") + "\n";
+        }
+        return auxDesc;
+    }
+    
+    private static Timestamp calculateTimeOfOrder(List<Map> listOrderProducts){
+        Timestamp date = Timestamp.valueOf("1990-01-01 01:01:01");//inicio la fecha con un valor minimo
+        for (Map m : listOrderProducts) {
+            //calculo la hora del pedido en base al ultimo producto añadido al mismo
+            if (date.before(Timestamp.valueOf(m.get("updated_at").toString()))) {
+                date = Timestamp.valueOf(m.get("updated_at").toString());
+            }
+        }
+        return date;
+    }
+    
     private static void removeListeners(GuiKitchenOrderPane orderPane) {
         MouseListener[] mouseListeners = orderPane.getMouseListeners();
         if (mouseListeners != null && mouseListeners.length != 0) {
@@ -315,19 +322,9 @@ public class ControllerGuiKitchenMain implements ActionListener {
                 orderPane.stopTimer();
                 //elimino los listener del orderPane
                 removeListeners(orderPane);
-                //inicio la fecha con un valor minimo
-                Timestamp date = Timestamp.valueOf("1990-01-01 01:01:01");
-                final String desc;
-                String auxDesc = "";
-                for (Map m : order.second()) {
-                    //calculo la descripcion
-                    auxDesc = auxDesc + m.get("name") + " x" + m.get("quantity") + "\n";
-                    //calculo la hora del pedido en base al ultimo producto añadido al mismo
-                    if (date.before(Timestamp.valueOf(m.get("updated_at").toString()))) {
-                        date = Timestamp.valueOf(m.get("updated_at").toString());
-                    }
-                }
-                desc = auxDesc;
+                //calculo la hora y descripcion del pedido
+                final String desc = calculateDescription(order.second());
+                final Timestamp date = calculateTimeOfOrder(order.second());
                 //concateno id de pedido mas el nombre del mozo que lo pidio
                 String orderName = order.first().get("order_number").toString() + " - " + order.first().get("user_name").toString();
                 final String dateAux = date.toString();
@@ -354,16 +351,15 @@ public class ControllerGuiKitchenMain implements ActionListener {
                                 //Si el controlador me dice que debo borrar el orderPane
                                 if (controllerGuiOrderDetails.removeThisPane() != null && controllerGuiOrderDetails.removeThisPane()) {
                                     boolean stop = false;
-                                    Iterator<GuiKitchenOrderPane> itr = listOrdersPanels.iterator();
-                                    while (!stop && itr.hasNext()) {
-                                        GuiKitchenOrderPane guiOP = itr.next();
+                                    int index = 0;
+                                    while (!stop && index < guiKitchenMain.getOrdersPanel().getComponentCount()) {
+                                        GuiKitchenOrderPane guiOP = (GuiKitchenOrderPane) guiKitchenMain.getOrdersPanel().getComponent(index);
                                         if (Objects.equals(guiOP.getOrderId(), controllerGuiOrderDetails.getOrderId())) {
                                             stop = true;
-                                            guiKitchenMain.getOrdersPanel().remove(guiOP);
-                                            guiKitchenMain.getOrdersPanel().revalidate();
-                                            guiKitchenMain.getOrdersPanel().repaint();
+                                            guiKitchenMain.removeElementOfOrdersGrid(index);
                                             listOrdersPanels.remove(guiOP);
                                         }
+                                        index++;
 
                                     }
                                 }

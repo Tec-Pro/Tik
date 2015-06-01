@@ -9,6 +9,7 @@ import gui.order.GuiKitchenOrderPane;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
@@ -26,7 +27,7 @@ import utils.Watch;
  * @author joako
  */
 public class GuiKitchenMain extends javax.swing.JFrame {
-
+    
     private int gridX;
     private int gridY;
     private static final int maxGridX = 5;
@@ -82,7 +83,10 @@ public class GuiKitchenMain extends javax.swing.JFrame {
         jPanel4.setOpaque(false);
 
         ordersPanel.setOpaque(false);
-        ordersPanel.setLayout(new java.awt.GridBagLayout());
+        java.awt.GridBagLayout ordersPanelLayout = new java.awt.GridBagLayout();
+        ordersPanelLayout.columnWidths = new int[] {0};
+        ordersPanelLayout.rowHeights = new int[] {0};
+        ordersPanel.setLayout(ordersPanelLayout);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -197,7 +201,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
      *
      * @param newOrder
      */
-    public void addElementToOrdersGrid(GuiKitchenOrderPane newOrder){
+    public void addElementToOrdersGrid(GuiKitchenOrderPane newOrder) {
         if (gridX == maxGridX) {
             gridY++;
             gridX = 0;
@@ -218,20 +222,12 @@ public class GuiKitchenMain extends javax.swing.JFrame {
      * @param index
      */
     public void removeElementOfOrdersGrid(int index) {
-        int aux = 0;
-        while (index>=maxGridX){
-            aux++;
-            index = index-maxGridX;
-        }
-        System.out.println("removido posicion: "+index+" "+aux);
-        //ordersPanel.remove(index);
-        getOrdersPanel().remove(ordersPanel.getComponentAt(index, aux));
+        ordersPanel.remove(index);
         ordersPanel.revalidate();
         ordersPanel.repaint();
     }
 
-    /**
-     *
+    /*
      * @param index
      * @param orderDescription
      */
@@ -309,7 +305,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
                 new GuiKitchenMain().setVisible(true);
             }
         });
-
+        
     }
 
     /**
@@ -403,7 +399,8 @@ public class GuiKitchenMain extends javax.swing.JFrame {
 
     /**
      *
-     * @return indice de la columna en la ultima fila de la grilla contenedora de paneles
+     * @return indice de la columna en la ultima fila de la grilla contenedora
+     * de paneles
      */
     public int getGridX() {
         return gridX;
@@ -424,5 +421,5 @@ public class GuiKitchenMain extends javax.swing.JFrame {
     public static int getMaxGridX() {
         return maxGridX;
     }
-  
+    
 }
