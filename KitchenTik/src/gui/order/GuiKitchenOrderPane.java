@@ -6,13 +6,12 @@
 package gui.order;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
-import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.Timer;
-import utils.Pair;
 
 /**
  *
@@ -24,7 +23,7 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
     boolean modified = false;
     private Timer timer;
     private boolean activeTimer;
-    private Map<String,Object> order;
+    private Map<String, Object> order;
 
     /**
      * Creates new form orderPane
@@ -38,13 +37,14 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
     /**
      *
      * @param order pedido
-     * @param orderName nombre del pedido
+     * @param orderNumber numero y creador del pedido
      * @param desc descripcion del pedido
      * @param date hora del pedido
-     * @param orderProducts lista de productos del pedido    */
-    public GuiKitchenOrderPane(Map order, String orderName, String desc, String date, List<Map> orderProducts) {
+     * @param orderProducts lista de productos del pedido
+     */
+    public GuiKitchenOrderPane(Map order, String orderNumber, String desc, String date, List<Map> orderProducts) {
         initComponents();
-        lblOrderNumber.setText(orderName);
+        lblOrderNumber.setText(orderNumber);
         lblTimeOrderArrival.setText(date);
         txtOrderDescription.setText(desc);
         this.orderProducts = orderProducts;
@@ -77,45 +77,56 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
                 break;
         }
     }
-    
+
     /**
      *
-     * @return 0 si el color es Blanco,
-     *         1 si el color es Verde,
-     *         2 si el color es Amarillo,
-     *         3 si el color es Rojo,
-     *         -1 si no es ninguno de los anteriores.
+     * @return 0 si el color es Blanco, 1 si el color es Verde, 2 si el color es
+     * Amarillo, 3 si el color es Rojo, -1 si no es ninguno de los anteriores.
      */
     public int getColor() {
         Color background = getBackground();
-        if(background.equals(Color.WHITE)){
+        if (background.equals(Color.WHITE)) {
             return 0;
-        }else{
-            if(background.equals(Color.GREEN)){
+        } else {
+            if (background.equals(Color.GREEN)) {
                 return 1;
-            }else{
-                if(background.equals(Color.YELLOW)){
+            } else {
+                if (background.equals(Color.YELLOW)) {
                     return 2;
-                }else{
-                    if(background.equals(Color.RED)){
+                } else {
+                    if (background.equals(Color.RED)) {
                         return 3;
-                    }else{
+                    } else {
                         return -1;
                     }
                 }
             }
-        }   
+        }
     }
-    
-    
+
+    //Parpadea el color del panel, en rojo, avisando que el pedido se retraso
+    public void activateFlashing() {
+        this.setTimer(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (getColor() == 3) {
+                    setColor(0);
+                } else {
+                    setColor(3);
+                }
+            }
+        }, 3600, 500);
+    }
+
     /**
      * Metodo que inicia un timer para ejecutar una acción cada cierto tiempo.
+     *
      * @param lis listener que invoca la acción a ejecutar
      * @param start tiempo de comienzo medido en milisegundos
      * @param delay tiempo entre eventos.
      */
-    public void setTimer(ActionListener lis, int start,int delay){
-        timer = new Timer(start,lis);
+    public void setTimer(ActionListener lis, int start, int delay) {
+        timer = new Timer(start, lis);
         timer.setDelay(delay);
         activeTimer = true;
         timer.start();
@@ -124,13 +135,13 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
     /**
      * Metodo que finaliza la accion ejecutada por el timer
      */
-    public void stopTimer(){
-        if (timer != null){
+    public void stopTimer() {
+        if (timer != null) {
             timer.stop();
             activeTimer = false;
         }
     }
-    
+
     /**
      * Devuelve el label que debe mostrar el número del pedido.
      *
@@ -280,12 +291,12 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
     public javax.swing.JButton getBtnPostpone() {
         return btnPostpone;
     }
-    
+
     /**
      *
      * @param lis
      */
-    public void setActionListener(ActionListener lis){
+    public void setActionListener(ActionListener lis) {
         this.btnPostpone.addActionListener(lis);
         this.btnOrderReady.addActionListener(lis);
     }
@@ -322,7 +333,7 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
     public void setOrder(Map<String, Object> order) {
         this.order = order;
     }
-    
+
     public Map<String, Object> getOrder() {
         return order;
     }
@@ -338,6 +349,5 @@ public class GuiKitchenOrderPane extends javax.swing.JPanel {
     public void setTxtOrderDescription(String txtOrderDescription) {
         this.txtOrderDescription.setText(txtOrderDescription);
     }
-    
-    
+
 }

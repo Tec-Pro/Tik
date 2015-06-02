@@ -8,6 +8,7 @@ package gui.main;
 import gui.order.GuiKitchenOrderPane;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -27,7 +28,7 @@ import utils.Watch;
  * @author joako
  */
 public class GuiKitchenMain extends javax.swing.JFrame {
-    
+
     private int gridX;
     private int gridY;
     private static final int maxGridX = 5;
@@ -213,10 +214,10 @@ public class GuiKitchenMain extends javax.swing.JFrame {
         constraints.insets = new Insets(10, 10, 10, 10);
         gridX++;
         ordersPanel.add(newOrder, constraints);
-        newOrder.setColor(0);
         ordersPanel.revalidate();
     }
 
+    
     /**
      *
      * @param index
@@ -225,6 +226,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
         ordersPanel.remove(index);
         ordersPanel.revalidate();
         ordersPanel.repaint();
+        
     }
 
     /*
@@ -233,7 +235,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
      */
     public void updateElementOfOrdersGrid(int index, Pair<Map<String, Object>, List<Map>> order) {
         GuiKitchenOrderPane orderPane = (GuiKitchenOrderPane) getOrdersPanel().getComponent(index);
-        
+
         final String desc;
         String aux = orderPane.getTxtOrderDescription().getText();
         for (Map m : order.second()) {
@@ -305,7 +307,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
                 new GuiKitchenMain().setVisible(true);
             }
         });
-        
+
     }
 
     /**
@@ -413,6 +415,20 @@ public class GuiKitchenMain extends javax.swing.JFrame {
     public int getGridY() {
         return gridY;
     }
+    
+    /**
+     *
+     */
+    public void setGridX(int x) {
+        this.gridX = x;
+    }
+
+    /**
+     *
+     */
+    public void setGridY(int y) {
+        this.gridY = y;
+    }
 
     /**
      *
@@ -421,5 +437,5 @@ public class GuiKitchenMain extends javax.swing.JFrame {
     public static int getMaxGridX() {
         return maxGridX;
     }
-    
+
 }

@@ -151,16 +151,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
                             soundPlayer.playSound();//Alerta sonora
                 if (!orderPane.isActiveTimer()) {
                     //Parpadea el color del panel, en rojo, avisando que el pedido se retraso
-                    orderPane.setTimer(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            if (orderPane.getColor() == 3) {
-                                orderPane.setColor(0);
-                            } else {
-                                orderPane.setColor(3);
-                            }
-                        }
-                    }, 3600, 500);
+                    orderPane.activateFlashing();
                 }
                 orderPane.getBtnPostpone().setEnabled(true);
                 orderPane.getBtnPostpone().addMouseListener(new java.awt.event.MouseAdapter() {
@@ -264,6 +255,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
                 guiKitchenMain.repaint();
             }
         });
+        guiOrderPane.setColor(0);//seteo el color del panel en blanco
         guiKitchenMain.addElementToOrdersGrid(guiOrderPane);
         orderList.add(Integer.parseInt(order.first().get("id").toString()));
         listOrdersPanels.add(guiOrderPane);
