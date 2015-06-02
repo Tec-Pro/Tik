@@ -127,12 +127,12 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
             row[0] = prod.get("id").toString();
             row[1] = prod.get("name").toString(); //NOMBRE
             if (prod.get("measure_unit").toString().equals("gr")) {
-                row[2] = ParserFloat.floatToString((float) prod.get("stock") * 1000); // STOCK 
+                row[2] = ParserFloat.floatToString((float) prod.get("stock") / 1000); // STOCK 
                 row[3] = ParserFloat.floatToString((float) prod.get("unit_price") * 1000); // PRECIO UNITARIO EN UNIDAD GRANDE
                 row[4] = "Kg";
             }
             if (prod.get("measure_unit").toString().equals("ml")) {
-                row[2] = ParserFloat.floatToString((float) prod.get("stock") * 1000); // STOCK 
+                row[2] = ParserFloat.floatToString((float) prod.get("stock") / 1000); // STOCK 
                 row[3] = ParserFloat.floatToString((float) prod.get("unit_price") * 1000); // PRECIO UNITARIO EN UNIDAD GRANDE
                 row[4] = "Litro";
             }
