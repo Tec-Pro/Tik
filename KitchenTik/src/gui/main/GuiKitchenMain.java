@@ -217,7 +217,6 @@ public class GuiKitchenMain extends javax.swing.JFrame {
         ordersPanel.revalidate();
     }
 
-    
     /**
      *
      * @param index
@@ -226,7 +225,23 @@ public class GuiKitchenMain extends javax.swing.JFrame {
         ordersPanel.remove(index);
         ordersPanel.revalidate();
         ordersPanel.repaint();
-        
+        gridX = 0;
+        gridY = 0;
+        for(Component cop : ordersPanel.getComponents()){
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridx = gridX;
+        constraints.gridy = gridY;
+        constraints.anchor = GridBagConstraints.NORTHWEST;
+        constraints.insets = new Insets(10, 10, 10, 10);
+        ordersPanel.add(cop, constraints);
+        ordersPanel.revalidate();
+        ordersPanel.repaint();
+        gridX++;
+        if (gridX == maxGridX) {
+            gridY++;
+            gridX = 0;
+        }
+        }
     }
 
     /*
@@ -415,7 +430,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
     public int getGridY() {
         return gridY;
     }
-    
+
     /**
      *
      */

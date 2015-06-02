@@ -148,7 +148,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
             if (orderPane.getColor() != 2 && (Integer.parseInt(diff.get("MINUTES").toString()) >= Integer.parseInt(generalConfig.getDelayTime())
                     || Integer.parseInt(diff.get("HOURS").toString()) > 0
                     || Integer.parseInt(diff.get("DAYS").toString()) > 0)) {
-                            soundPlayer.playSound();//Alerta sonora
+                soundPlayer.playSound();//Alerta sonora
                 if (!orderPane.isActiveTimer()) {
                     //Parpadea el color del panel, en rojo, avisando que el pedido se retraso
                     orderPane.activateFlashing();
@@ -202,21 +202,9 @@ public class ControllerGuiKitchenMain implements ActionListener {
                         guiOrderDetails.setModal(true);
                         //Si el controlador me dice que debo borrar el orderPane
                         if (controllerGuiOrderDetails.removeThisPane() != null && controllerGuiOrderDetails.removeThisPane()) {
-                            boolean stop = false;
-                            int index = 0;
-                            while (!stop && index < guiKitchenMain.getOrdersPanel().getComponentCount()) {
-                                GuiKitchenOrderPane guiOP = (GuiKitchenOrderPane) guiKitchenMain.getOrdersPanel().getComponent(index);
-                                if (Objects.equals(guiOP.getOrderId(), controllerGuiOrderDetails.getOrderId())) {
-                                    stop = true;
-                                    guiKitchenMain.removeElementOfOrdersGrid(index);
-                                    listOrdersPanels.remove(guiOP);
-                                }
-                                index++;
-
-                            }
+                            //elimino el panel (GuiKitchenOrderPane) de la gui principal
+                            removeGuiOrderPane(controllerGuiOrderDetails.getOrderId());
                         }
-                        guiKitchenMain.validate();
-                        guiKitchenMain.repaint();
                     } catch (RemoteException | NotBoundException ex) {
                         Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -238,21 +226,8 @@ public class ControllerGuiKitchenMain implements ActionListener {
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                boolean stop = false;
-                Iterator<GuiKitchenOrderPane> itr = listOrdersPanels.iterator();
-                while (!stop && itr.hasNext()) {
-                    GuiKitchenOrderPane guiOP = itr.next();
-                    if (Objects.equals(guiOP.getOrderId(), orderId)) {
-                        stop = true;
-                        guiKitchenMain.getOrdersPanel().remove(guiOP);
-                        guiKitchenMain.getOrdersPanel().revalidate();
-                        guiKitchenMain.getOrdersPanel().repaint();
-                        listOrdersPanels.remove(guiOP);
-                    }
-
-                }
-                guiKitchenMain.validate();
-                guiKitchenMain.repaint();
+                //elimino el panel (GuiKitchenOrderPane) de la gui principal
+                removeGuiOrderPane(orderId);
             }
         });
         guiOrderPane.setColor(0);//seteo el color del panel en blanco
@@ -261,7 +236,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
         listOrdersPanels.add(guiOrderPane);
     }
 
-    private static String calculateDescription(List<Map> listOrderProducts){
+    private static String calculateDescription(List<Map> listOrderProducts) {
         String auxDesc = "";
         for (Map m : listOrderProducts) {
             //calculo la descripcion
@@ -269,8 +244,8 @@ public class ControllerGuiKitchenMain implements ActionListener {
         }
         return auxDesc;
     }
-    
-    private static Timestamp calculateTimeOfOrder(List<Map> listOrderProducts){
+
+    private static Timestamp calculateTimeOfOrder(List<Map> listOrderProducts) {
         Timestamp date = Timestamp.valueOf("1990-01-01 01:01:01");//inicio la fecha con un valor minimo
         for (Map m : listOrderProducts) {
             //calculo la hora del pedido en base al ultimo producto añadido al mismo
@@ -280,7 +255,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
         }
         return date;
     }
-    
+
     private static void removeListeners(GuiKitchenOrderPane orderPane) {
         MouseListener[] mouseListeners = orderPane.getMouseListeners();
         if (mouseListeners != null && mouseListeners.length != 0) {
@@ -288,6 +263,23 @@ public class ControllerGuiKitchenMain implements ActionListener {
                 orderPane.removeMouseListener(mL);
             }
         }
+    }
+
+    private static void removeGuiOrderPane(int orderId) {
+        boolean stop = false;
+        int index = 0;
+        while (!stop && index < guiKitchenMain.getOrdersPanel().getComponentCount()) {
+            GuiKitchenOrderPane guiOP = (GuiKitchenOrderPane) guiKitchenMain.getOrdersPanel().getComponent(index);
+            if (Objects.equals(guiOP.getOrderId(), orderId)) {
+                stop = true;
+                guiKitchenMain.removeElementOfOrdersGrid(index);
+                listOrdersPanels.remove(guiOP);
+            }
+            index++;
+
+        }
+        guiKitchenMain.validate();
+        guiKitchenMain.repaint();
     }
 
     /**
@@ -342,21 +334,9 @@ public class ControllerGuiKitchenMain implements ActionListener {
                                 guiOrderDetails.setModal(true);
                                 //Si el controlador me dice que debo borrar el orderPane
                                 if (controllerGuiOrderDetails.removeThisPane() != null && controllerGuiOrderDetails.removeThisPane()) {
-                                    boolean stop = false;
-                                    int index = 0;
-                                    while (!stop && index < guiKitchenMain.getOrdersPanel().getComponentCount()) {
-                                        GuiKitchenOrderPane guiOP = (GuiKitchenOrderPane) guiKitchenMain.getOrdersPanel().getComponent(index);
-                                        if (Objects.equals(guiOP.getOrderId(), controllerGuiOrderDetails.getOrderId())) {
-                                            stop = true;
-                                            guiKitchenMain.removeElementOfOrdersGrid(index);
-                                            listOrdersPanels.remove(guiOP);
-                                        }
-                                        index++;
-
-                                    }
+                                    //elimino el panel (GuiKitchenOrderPane) de la gui principal
+                                    removeGuiOrderPane(controllerGuiOrderDetails.getOrderId());
                                 }
-                                guiKitchenMain.validate();
-                                guiKitchenMain.repaint();
                             } catch (RemoteException | NotBoundException ex) {
                                 Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -377,21 +357,8 @@ public class ControllerGuiKitchenMain implements ActionListener {
                         } catch (RemoteException ex) {
                             Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        boolean stop = false;
-                        Iterator<GuiKitchenOrderPane> itr = listOrdersPanels.iterator();
-                        while (!stop && itr.hasNext()) {
-                            GuiKitchenOrderPane guiOP = itr.next();
-                            if (Objects.equals(guiOP.getOrderId(), orderId)) {
-                                stop = true;
-                                guiKitchenMain.getOrdersPanel().remove(guiOP);
-                                guiKitchenMain.getOrdersPanel().revalidate();
-                                guiKitchenMain.getOrdersPanel().repaint();
-                                listOrdersPanels.remove(guiOP);
-                            }
-
-                        }
-                        guiKitchenMain.validate();
-                        guiKitchenMain.repaint();
+                        //elimino el panel (GuiKitchenOrderPane) de la gui principal
+                        removeGuiOrderPane(orderId);
                     }
                 });
                 orderPane.revalidate();
