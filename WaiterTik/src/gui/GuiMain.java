@@ -7,6 +7,7 @@ package gui;
 import controller.ControllerGuiMain;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
@@ -15,6 +16,7 @@ import java.awt.event.WindowEvent;
 import java.util.LinkedList;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import org.edisoncor.gui.panel.PanelImage;
 import utils.Watch;
 
 /**
@@ -112,8 +114,39 @@ public class GuiMain extends javax.swing.JFrame {
     public JCheckBox getChkAllOrders() {
         return chkAllOrders;
     }
+
+    public PanelImage getPanelActivedOrders() {
+        return panelActivedOrders;
+    }
     
-    
+        /**
+     *
+     * @param index
+     */
+    public void removeElementOfOrdersGrid(int index) {
+        panelActivedOrders.remove(index);
+        panelActivedOrders.revalidate();
+        panelActivedOrders.repaint();
+        gridx = 0;
+        gridy = 0;
+        for(Component cop : panelActivedOrders.getComponents()){
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.weightx = 230;
+        constraints.weighty = 230;
+        constraints.gridx = gridx;
+        constraints.gridy = gridy;
+        constraints.anchor = GridBagConstraints.NORTHWEST;
+        constraints.insets = new Insets(15, 15, 15, 15);
+        panelActivedOrders.add(cop, constraints);
+        panelActivedOrders.revalidate();
+        panelActivedOrders.repaint();
+        gridx++;
+        if (gridx == 4) {
+            gridy++;
+            gridx = 0;
+        }
+        }
+    }
         /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -199,6 +232,7 @@ public class GuiMain extends javax.swing.JFrame {
         chkAllOrders.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
         chkAllOrders.setForeground(java.awt.Color.white);
         chkAllOrders.setText("VER TODAS");
+        chkAllOrders.setToolTipText("Ver todas las ordenes");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -216,10 +250,8 @@ public class GuiMain extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(chkAllOrders)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(pnlWatch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, Short.MAX_VALUE))
+                    .addComponent(pnlWatch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, Short.MAX_VALUE)
+                    .addComponent(chkAllOrders, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 

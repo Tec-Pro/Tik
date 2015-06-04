@@ -134,4 +134,6 @@ public interface InterfaceOrder extends Remote {
      * @throws RemoteException
      */
     public Pair<List<Map>, List<Map>> getAllOrdersForKitchen() throws java.rmi.RemoteException;
+    
+    public  List<Map> getOrderProductsWithName(int orderId) throws RemoteException;
 }

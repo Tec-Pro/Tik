@@ -38,10 +38,13 @@ public class GuiMenuDetail extends javax.swing.JPanel {
             case 0:
                 setBackground(Color.white);
                 txtDetail.setBackground(Color.white);
+                setBelated(false);
                 break;
             case 1:
                 setBackground(new java.awt.Color(25, 169, 42));
                 txtDetail.setBackground(new java.awt.Color(25, 169, 42));
+                setBelated(false);
+
                 break;
             case 2:
                 setBackground(new java.awt.Color(253, 216, 47));
@@ -63,6 +66,7 @@ public class GuiMenuDetail extends javax.swing.JPanel {
         txtDetail.setText(detail);
         idOrder = (int) order.get("id");
         idWaiter = (int) order.get("user_id");
+        setBelated(false);
     }
     
     public void setBelated(boolean b){

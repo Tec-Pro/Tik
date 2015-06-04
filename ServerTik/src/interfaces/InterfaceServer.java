@@ -21,4 +21,6 @@ public interface InterfaceServer extends Remote {
     public void registerClientKitchen(InterfaceClientKitchen client) throws RemoteException;
 
     public void registerClientBar(InterfaceClientBar client) throws RemoteException;
+    
+    public void notifyWaitersOrderDelayed(int order) throws RemoteException;
 }

@@ -36,6 +36,11 @@ public class ClientWaiter extends UnicastRemoteObject implements interfaces.Inte
 
     @Override
     public void readyOrder(Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
-        ControllerGuiMain.UpdateOrder();
+        ControllerGuiMain.UpdateOrder(order);
+    }
+    
+    @Override
+    public void orderDelayed(int idOrder) throws RemoteException {
+        ControllerGuiMain.orderDelayed(idOrder);
     }
 }

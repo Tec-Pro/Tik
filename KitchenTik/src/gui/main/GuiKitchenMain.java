@@ -41,6 +41,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
         Watch watch = new Watch(0, 0, 0, 0);
         watch.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         watch.setFont(new java.awt.Font("Arial", 1, 25));
+        watch.setForeground(Color.white);
         setExtendedState(MAXIMIZED_BOTH);
         watchPanel.add(watch, BorderLayout.CENTER);
     }

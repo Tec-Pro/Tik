@@ -105,6 +105,7 @@ public interface InterfaceOrder extends Remote {
      * retorna las ordenes activas de un id, si es -1 retorna todas
      *
      * @param userId
+     * @param all
      * @return
      * @throws java.rmi.RemoteException
      */
@@ -133,4 +134,6 @@ public interface InterfaceOrder extends Remote {
      * @throws RemoteException
      */
     public Pair<List<Map>, List<Map>> getAllOrdersForKitchen() throws java.rmi.RemoteException;
+    
+    public  List<Map> getOrderProductsWithName(int orderId) throws RemoteException;
 }

@@ -30,4 +30,6 @@ public interface InterfaceClientWaiter extends Remote {
      * @throws RemoteException
      */
     public void readyOrder(Pair<Map<String, Object>, List<Map>> order) throws RemoteException;
+
+    public void orderDelayed(int idOrder) throws RemoteException;
 }

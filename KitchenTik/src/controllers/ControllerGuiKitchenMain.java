@@ -13,6 +13,7 @@ import gui.order.GuiKitchenOrderPane;
 import interfaces.InterfaceGeneralConfig;
 import interfaces.InterfaceOrder;
 import interfaces.InterfacePresence;
+import interfaces.InterfaceServer;
 import interfaces.InterfaceUser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -58,6 +59,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
     private static InterfaceOrder crudOrder;
     private static InterfaceUser crudUser;
     private final InterfacePresence crudPresence;
+    private static InterfaceServer server;
     //Conjunto(set) con los cocineros online
     private final Set<Map> online;
     //Atributos para el control de retrasos en pedidos
@@ -82,6 +84,8 @@ public class ControllerGuiKitchenMain implements ActionListener {
         crudPresence = (InterfacePresence) InterfaceName.registry.lookup(InterfaceName.CRUDPresence);
         crudUser = (InterfaceUser) InterfaceName.registry.lookup(InterfaceName.CRUDUser);
         generalConfig = (InterfaceGeneralConfig) InterfaceName.registry.lookup(InterfaceName.GeneralConfig);
+        server= (InterfaceServer) InterfaceName.registry.lookup(InterfaceName.server);
+
         online = new HashSet<>();
         for (Map m : crudPresence.getCooks()) {
             online.add(m);
@@ -161,6 +165,12 @@ public class ControllerGuiKitchenMain implements ActionListener {
                         soundPlayer.stopSound();
                         orderPane.getBtnPostpone().setEnabled(false);
                         orderPane.stopTimer();
+                            try {
+                                //aviso a los mozos que esta demorado
+                                server.notifyWaitersOrderDelayed(orderPane.getOrderId());
+                            } catch (RemoteException ex) {
+                                Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                     }
                 });
                 System.out.println("El pedido: " + orderPane.getLblOrderNumber().getText() + " esta retrasado.");

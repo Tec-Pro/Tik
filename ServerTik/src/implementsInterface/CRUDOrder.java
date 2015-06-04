@@ -77,7 +77,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
                     if (mapBar != null) {
                         Server.notifyBarNewOrder(mapBar);
                     }
-                    Pair<Map<String,Object>,List<Map>> pair = new Pair(getOrder(newOrder.getInteger("id")), getAllOrders());
+                    Pair<Map<String,Object>,List<Map>> pair = new Pair(getOrder(newOrder.getInteger("id")), getOrderProductsWithName(newOrder.getInteger("id")));
                     Server.notifyWaitersOrderReady(pair);
                 } catch (RemoteException ex) {
                     Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
@@ -126,7 +126,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
                     if (mapBar != null) {
                         Server.notifyBarUpdatedOrder(mapBar);
                     }
-                    Pair<Map<String,Object>,List<Map>> pair = new Pair(getOrder(orderId), getAllOrders());
+                    Pair<Map<String,Object>,List<Map>> pair = new Pair(getOrder(orderId), getOrderProductsWithName(orderId));
                     Server.notifyWaitersOrderReady(pair);
                 } catch (RemoteException ex) {
                     Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
@@ -136,7 +136,34 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         thread.start();
         return true;
     }
+    
+    @Override
+    public  List<Map> getOrderProductsWithName(int orderId) throws RemoteException{
+         openBase();
+        List<Map> ret = new LinkedList<>();
+        try {
+            sql = "SELECT fp.name,ofp.quantity,ofp.done,ofp.issued,ofp.commited,ofp.paid "
+                    +" FROM tik.orders_fproducts ofp INNER JOIN fproducts fp ON fp.id= ofp.fproduct_id WHERE ofp.order_id = '" + orderId + "';";
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
 
+            while (rs.next()) {
+                Map m = new HashMap();
+                m.put("name", rs.getObject("name"));
+                m.put("quantity", rs.getObject("quantity"));
+                m.put("done", rs.getObject("done"));
+                m.put("commited", rs.getObject("commited"));
+                m.put("issued", rs.getObject("issued"));
+                m.put("paid", rs.getObject("paid"));
+                ret.add(m);
+            }
+            rs.close();
+            stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
+    }
     /**
      *
      * @return Todos los pedidos
@@ -228,7 +255,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        List<Map> ret = getOrderProducts(idOrder);
+        List<Map> ret = getOrderProductsWithName(idOrder);
         Map<String, Object> ord = getOrder(idOrder);
         Server.notifyWaitersOrderReady(new Pair(ord, ret));
         return true;
@@ -246,7 +273,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        List<Map> ret = getOrderProducts(orderId);
+        List<Map> ret = getOrderProductsWithName(orderId);
         Map<String, Object> ord = getOrder(orderId);
         Server.notifyWaitersOrderReady(new Pair(ord, ret));
     }
@@ -327,7 +354,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             }
         }
 
-        List<Map> ret = getOrderProducts(idOrder);
+        List<Map> ret = getOrderProductsWithName(idOrder);
         Map<String, Object> ord = getOrder(idOrder);
         Server.notifyWaitersOrderReady(new Pair(ord, ret));
         return ret;
@@ -378,6 +405,8 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         }
 
     }
+    
+
 
     private Pair<Map<String, Object>, List<Map>> obtainOrdersKitchen(Integer orderId) throws RemoteException {
         final Map<String, Object> orderMap = getOrder(orderId);

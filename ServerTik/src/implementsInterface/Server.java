@@ -58,6 +58,30 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
         waiters.add(client);
     }
 
+    /**
+     * avisa a los mozos que un pedido está atrasado toma como parametro el id
+     * del pedido
+     *
+     * @param order
+     * @throws RemoteException
+     */
+    @Override
+    public void notifyWaitersOrderDelayed(int order) throws RemoteException {
+        Iterator<InterfaceClientWaiter> it = waiters.iterator();
+        int i = 0;
+        while (it.hasNext()) {
+            InterfaceClientWaiter client = it.next();
+            try {
+                client.orderDelayed(order);
+            } catch (java.rmi.ConnectException e) {
+                System.err.println("Se rompió porque se cerro el programa de mozos seguramente.o" + e);
+                waiters.remove(i);
+                //despues voy a eliminar este tipo porque la conexión se rechazó por desconectarses
+            }
+            i++;
+        }
+    }
+
     //le aviso a los mozos que el pedido con id está listo
     public static void notifyWaitersOrderReady(Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
         Iterator<InterfaceClientWaiter> it = waiters.iterator();
