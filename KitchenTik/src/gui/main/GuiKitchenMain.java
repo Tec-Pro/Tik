@@ -75,7 +75,6 @@ public class GuiKitchenMain extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SISTEMA COCINA TIK");
-        setMaximumSize(new java.awt.Dimension(1024, 768));
 
         jScrollPane1.setMaximumSize(new java.awt.Dimension(1024, 768));
 
@@ -188,9 +187,7 @@ public class GuiKitchenMain extends javax.swing.JFrame {
     private void menuItemGeneralConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemGeneralConfigActionPerformed
         try {
             (new GuiConfig(this, true)).setVisible(true);
-        } catch (RemoteException ex) {
-            Logger.getLogger(GuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NotBoundException ex) {
+        } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(GuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_menuItemGeneralConfigActionPerformed

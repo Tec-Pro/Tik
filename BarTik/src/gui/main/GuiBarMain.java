@@ -8,14 +8,20 @@ package gui.main;
 import gui.order.GuiBarOrderPane;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import utils.Pair;
 import utils.Watch;
 
 /**
@@ -24,27 +30,21 @@ import utils.Watch;
  */
 public class GuiBarMain extends javax.swing.JFrame {
 
-    private int barOrdersGridX;
-    private int barOrdersGridY;
-    private int kitchenOrdersGridX;
-    private int kitchenOrdersGridY;
-    private Watch watch;
+    private int gridX;
+    private int gridY;
+    private static final int maxGridX = 5;
 
     /**
-     * Creates new form GuiKitchenMain
+     * Creates new form GuiBarMain
      */
     public GuiBarMain() {
         initComponents();
-        watch = new Watch(0, 0, 0, 0);
+        Watch watch = new Watch(0, 0, 0, 0);
         watch.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         watch.setFont(new java.awt.Font("Arial", 1, 25));
         watch.setForeground(Color.white);
         setExtendedState(MAXIMIZED_BOTH);
         watchPanel.add(watch, BorderLayout.CENTER);
-        barOrdersGridX = 0;
-        barOrdersGridY  = 0;
-        kitchenOrdersGridX = 0;
-        kitchenOrdersGridY = 0;
     }
 
     /**
@@ -205,7 +205,9 @@ public class GuiBarMain extends javax.swing.JFrame {
     private void menuItemGeneralConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemGeneralConfigActionPerformed
         try {
             (new GuiConfig(this, true)).setVisible(true);
-        } catch (RemoteException | NotBoundException ex) {
+        } catch (RemoteException ex) {
+            Logger.getLogger(GuiBarMain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NotBoundException ex) {
             Logger.getLogger(GuiBarMain.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_menuItemGeneralConfigActionPerformed
@@ -214,58 +216,76 @@ public class GuiBarMain extends javax.swing.JFrame {
         (new GuiAbout(this, true)).setVisible(true);
     }//GEN-LAST:event_menuItemAboutActionPerformed
 
-    /**
-     * 
-     * @param newOrder panel a agregar
-     * @param whichGrid grilla a la cual va, 0 para bar, 1 para cocina
+     /**
+     *
+     * @param newOrder
      */
-    public void addElementToOrdersGrid(GuiBarOrderPane newOrder, int whichGrid) {
-        newOrder.setColor(0);
-        //Si la grid a la que va es la del bar, which grid debería ser 0.
-        if (whichGrid == 0){
-            if (barOrdersGridX == 5){
-                barOrdersGridY++;
-                barOrdersGridX  = 0;
-            }
-            GridBagConstraints constraints = new GridBagConstraints();
-            constraints.gridx = barOrdersGridX;
-            constraints.gridy = barOrdersGridY;
-            constraints.anchor = GridBagConstraints.NORTHWEST;
-            constraints.insets = new Insets(10, 10, 10, 10);
-            barOrdersGridX++;
-            ordersPanel.add(newOrder, constraints);
-            ordersPanel.revalidate();
-            ordersPanel.repaint();
-        } else if (whichGrid == 1){
-            if (kitchenOrdersGridX == 5){
-                kitchenOrdersGridY++;
-                kitchenOrdersGridX  = 0;
-            }
-            GridBagConstraints constraints = new GridBagConstraints();
-            constraints.gridx = kitchenOrdersGridX;
-            constraints.gridy = kitchenOrdersGridY;
-            constraints.anchor = GridBagConstraints.NORTHWEST;
-            constraints.insets = new Insets(10, 10, 10, 10);
-            kitchenOrdersGridX++;
-            kitchenOrdersPanel.add(newOrder, constraints);
-            kitchenOrdersPanel.revalidate();
-            kitchenOrdersPanel.repaint();
-        }  
+    public void addElementToOrdersGrid(GuiBarOrderPane newOrder) {
+        if (gridX == maxGridX) {
+            gridY++;
+            gridX = 0;
+        }
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridx = gridX;
+        constraints.gridy = gridY;
+        constraints.anchor = GridBagConstraints.NORTHWEST;
+        constraints.insets = new Insets(10, 10, 10, 10);
+        gridX++;
+        ordersPanel.add(newOrder, constraints);
+        ordersPanel.revalidate();
     }
 
-    public void removeElementOfOrdersGrid(int x, int y) {
-        getOrdersPanel().remove(ordersPanel.getComponentAt(x, y));
+    /**
+     *
+     * @param index
+     */
+    public void removeElementOfOrdersGrid(int index) {
+        ordersPanel.remove(index);
         ordersPanel.revalidate();
         ordersPanel.repaint();
+        gridX = 0;
+        gridY = 0;
+        for(Component cop : ordersPanel.getComponents()){
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridx = gridX;
+        constraints.gridy = gridY;
+        constraints.anchor = GridBagConstraints.NORTHWEST;
+        constraints.insets = new Insets(10, 10, 10, 10);
+        ordersPanel.add(cop, constraints);
+        ordersPanel.revalidate();
+        ordersPanel.repaint();
+        gridX++;
+        if (gridX == maxGridX) {
+            gridY++;
+            gridX = 0;
+        }
+        }
     }
 
-    public void updateElementOfOrdersGrid(int index, String orderDescription) {
-        GuiBarOrderPane order = (GuiBarOrderPane) getOrdersPanel().getComponent(index);
-        order.getTxtOrderDescription().setText(orderDescription);
-        order.revalidate();
+    /*
+     * @param index
+     * @param orderDescription
+     */
+    public void updateElementOfOrdersGrid(int index, Pair<Map<String, Object>, List<Map>> order) {
+        GuiBarOrderPane orderPane = (GuiBarOrderPane) getOrdersPanel().getComponent(index);
+
+        final String desc;
+        String aux = orderPane.getTxtOrderDescription().getText();
+        for (Map m : order.second()) {
+            aux = aux + m.get("name") + " x" + m.get("quantity") + "\n";
+        }
+        orderPane.getTxtOrderDescription().setText(aux);
+        orderPane.setOrder(order.first());
+        orderPane.setOrderProducts(order.second());
+        orderPane.revalidate();
         getOrdersPanel().revalidate();
     }
 
+    /**
+     *
+     * @param index
+     * @param color
+     */
     public void setOrderColor(int index, Color color) {
         GuiBarOrderPane order = (GuiBarOrderPane) getOrdersPanel().getComponent(index);
         order.setBackground(color);
@@ -273,21 +293,18 @@ public class GuiBarMain extends javax.swing.JFrame {
         getOrdersPanel().revalidate();
     }
 
+    /**
+     *
+     */
     public void cleanAllOrders() {
         ordersPanel.removeAll();
-        kitchenOrdersPanel.removeAll();
-        barOrdersGridX = 0;
-        barOrdersGridY = 0;   
-        kitchenOrdersGridX = 0;
-        kitchenOrdersGridY = 0;
+        gridX = 0;
+        gridY = 0;
         ordersPanel.revalidate();
         ordersPanel.repaint();
-        kitchenOrdersPanel.revalidate();
-        kitchenOrdersPanel.repaint();
         revalidate();
         repaint();
     }
-
     /**
      * @param args the command line arguments
      */
@@ -409,8 +426,44 @@ public class GuiBarMain extends javax.swing.JFrame {
         return watchPanel;
     }
 
-    public Watch getWatch(){
-        return watch;
+    /**
+     *
+     * @return indice de la columna en la ultima fila de la grilla contenedora
+     * de paneles
+     */
+    public int getGridX() {
+        return gridX;
     }
+
+    /**
+     *
+     * @return indice de la ultima fila de la grilla contenedora de paneles
+     */
+    public int getGridY() {
+        return gridY;
+    }
+
+    /**
+     *
+     */
+    public void setGridX(int x) {
+        this.gridX = x;
+    }
+
+    /**
+     *
+     */
+    public void setGridY(int y) {
+        this.gridY = y;
+    }
+
+    /**
+     *
+     * @return indice del maximo anchor de la grilla contenedora de paneles
+     */
+    public static int getMaxGridX() {
+        return maxGridX;
+    }
+
     
 }

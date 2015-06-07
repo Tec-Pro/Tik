@@ -6,12 +6,12 @@
 package gui.order;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JTextArea;
 import javax.swing.Timer;
-import utils.Pair;
 
 /**
  *
@@ -19,11 +19,11 @@ import utils.Pair;
  */
 public class GuiBarOrderPane extends javax.swing.JPanel {
 
-    private int position;
-    private Pair<Map<String, Object>, List<Map>> order;
+    private List<Map> orderProducts;
     boolean modified = false;
     private Timer timer;
     private boolean activeTimer;
+    private Map<String, Object> order;
 
     /**
      * Creates new form orderPane
@@ -36,16 +36,19 @@ public class GuiBarOrderPane extends javax.swing.JPanel {
 
     /**
      *
-     * @param orderName nombre del pedido
+     * @param order pedido
+     * @param orderNumber numero y creador del pedido
      * @param desc descripcion del pedido
      * @param date hora del pedido
-     * @param ordId id del pedido
+     * @param orderProducts lista de productos del pedido
      */
-    public GuiBarOrderPane(String orderName, String desc, String date, Pair<Map<String, Object>, List<Map>> order) {
+    public GuiBarOrderPane(Map order, String orderNumber, String desc, String date, List<Map> orderProducts) {
         initComponents();
-        lblOrderNumber.setText(orderName);
+        lblOrderNumber.setText(orderNumber);
         lblTimeOrderArrival.setText(date);
         txtOrderDescription.setText(desc);
+        this.btnOrderReady.setEnabled(true);
+        this.orderProducts = orderProducts;
         this.order = order;
         activeTimer = false;
     }
@@ -75,45 +78,56 @@ public class GuiBarOrderPane extends javax.swing.JPanel {
                 break;
         }
     }
-    
+
     /**
      *
-     * @return 0 si el color es Blanco,
-     *         1 si el color es Verde,
-     *         2 si el color es Amarillo,
-     *         3 si el color es Rojo,
-     *         -1 si no es ninguno de los anteriores.
+     * @return 0 si el color es Blanco, 1 si el color es Verde, 2 si el color es
+     * Amarillo, 3 si el color es Rojo, -1 si no es ninguno de los anteriores.
      */
     public int getColor() {
         Color background = getBackground();
-        if(background.equals(Color.WHITE)){
+        if (background.equals(Color.WHITE)) {
             return 0;
-        }else{
-            if(background.equals(Color.GREEN)){
+        } else {
+            if (background.equals(Color.GREEN)) {
                 return 1;
-            }else{
-                if(background.equals(Color.YELLOW)){
+            } else {
+                if (background.equals(Color.YELLOW)) {
                     return 2;
-                }else{
-                    if(background.equals(Color.RED)){
+                } else {
+                    if (background.equals(Color.RED)) {
                         return 3;
-                    }else{
+                    } else {
                         return -1;
                     }
                 }
             }
-        }   
+        }
     }
-    
-    
+
+    //Parpadea el color del panel, en rojo, avisando que el pedido se retraso
+    public void activateFlashing() {
+        this.setTimer(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (getColor() == 3) {
+                    setColor(0);
+                } else {
+                    setColor(3);
+                }
+            }
+        }, 3600, 500);
+    }
+
     /**
      * Metodo que inicia un timer para ejecutar una acción cada cierto tiempo.
+     *
      * @param lis listener que invoca la acción a ejecutar
      * @param start tiempo de comienzo medido en milisegundos
      * @param delay tiempo entre eventos.
      */
-    public void setTimer(ActionListener lis, int start,int delay){
-        timer = new Timer(start,lis);
+    public void setTimer(ActionListener lis, int start, int delay) {
+        timer = new Timer(start, lis);
         timer.setDelay(delay);
         activeTimer = true;
         timer.start();
@@ -122,13 +136,13 @@ public class GuiBarOrderPane extends javax.swing.JPanel {
     /**
      * Metodo que finaliza la accion ejecutada por el timer
      */
-    public void stopTimer(){
-        if (timer != null){
+    public void stopTimer() {
+        if (timer != null) {
             timer.stop();
             activeTimer = false;
         }
     }
-    
+
     /**
      * Devuelve el label que debe mostrar el número del pedido.
      *
@@ -252,13 +266,6 @@ public class GuiBarOrderPane extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     /**
-     * @return the position
-     */
-    public int getPosition() {
-        return position;
-    }
-
-    /**
      *
      * @return true si el timer esta activo
      */
@@ -270,14 +277,7 @@ public class GuiBarOrderPane extends javax.swing.JPanel {
      * @return the orderId
      */
     public Integer getOrderId() {
-        return (Integer) order.first().get("user_id");
-    }
-
-    /**
-     * @param position the position to set
-     */
-    public void setPosition(int position) {
-        this.position = position;
+        return Integer.parseInt(order.get("id").toString());
     }
 
     /**
@@ -293,12 +293,12 @@ public class GuiBarOrderPane extends javax.swing.JPanel {
     public javax.swing.JButton getBtnPostpone() {
         return btnPostpone;
     }
-    
+
     /**
      *
      * @param lis
      */
-    public void setActionListener(ActionListener lis){
+    public void setActionListener(ActionListener lis) {
         this.btnPostpone.addActionListener(lis);
         this.btnOrderReady.addActionListener(lis);
     }
@@ -317,4 +317,39 @@ public class GuiBarOrderPane extends javax.swing.JPanel {
         this.modified = modified;
         btnOrderReady.setEnabled(modified);
     }
+
+    /**
+     * @return lista de productos del pedidos
+     */
+    public List<Map> getOrderProducts() {
+        return orderProducts;
+    }
+
+    /**
+     * @param orderP lista de pedidos a setear
+     */
+    public void setOrderProducts(List<Map> orderP) {
+        this.orderProducts = orderP;
+    }
+
+    public void setOrder(Map<String, Object> order) {
+        this.order = order;
+    }
+
+    public Map<String, Object> getOrder() {
+        return order;
+    }
+
+    public void setLblOrderNumber(String lblOrderNumber) {
+        this.lblOrderNumber.setText(lblOrderNumber);
+    }
+
+    public void setLblTimeOrderArrival(String lblTimeOrderArrival) {
+        this.lblTimeOrderArrival.setText(lblTimeOrderArrival);
+    }
+
+    public void setTxtOrderDescription(String txtOrderDescription) {
+        this.txtOrderDescription.setText(txtOrderDescription);
+    }
+
 }

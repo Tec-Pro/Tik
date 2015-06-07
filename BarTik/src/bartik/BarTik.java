@@ -42,7 +42,7 @@ public class BarTik {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
         }
 
-        // Creo el cliente Kitchen
+        // Creo el cliente Bar
         ClientBar client = new ClientBar();
         //Creo un nuevo archivo de configuracion
         Config config = new Config(new javax.swing.JFrame(), true);
@@ -55,7 +55,7 @@ public class BarTik {
         while (!connected) {
             try {
                 InterfaceName.registry = LocateRegistry.getRegistry(Config.ip, Registry.REGISTRY_PORT);
-                // le aviso al server que me conecto y que soy Kitchen
+                // le aviso al server que me conecto y que soy Bar
                 ((InterfaceServer) InterfaceName.registry.lookup(InterfaceName.server)).registerClientBar(client);
                 connected = true;
             } catch (RemoteException e) {
@@ -73,4 +73,5 @@ public class BarTik {
         new ControllerGuiBarMain();
 
     }
+
 }

@@ -16,27 +16,25 @@ import utils.Pair;
 /**
  *
  * @author eze
- * 
- * Implementacion de InterfaceClientKitchen
- * (Metodos que podra invocar el Servidor)
- * 
+ *
+ * Implementacion de InterfaceClientBar (Metodos que podra invocar el
+ * Servidor)
+ *
  */
 public class ClientBar extends UnicastRemoteObject implements InterfaceClientBar {
 
-    public ClientBar() throws RemoteException{
+    public ClientBar() throws RemoteException {
         super();
     }
 
     @Override
     public void newOrder(Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
-        ControllerGuiBarMain.addBarOrder(order);
+        ControllerGuiBarMain.addOrder(order);
     }
 
     @Override
     public void updatedOrder(Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
-        ControllerGuiBarMain.updatedOrder(order);
+       ControllerGuiBarMain.updatedOrder(order);
     }
-    
-    
-    
+
 }
