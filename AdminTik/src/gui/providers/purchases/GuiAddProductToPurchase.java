@@ -120,14 +120,14 @@ public class GuiAddProductToPurchase extends javax.swing.JDialog {
             }
         });
 
-        jLabel1.setText("Cantidad ");
+        jLabel1.setText("Cantidad comprada");
 
         lblUnit.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblUnit.setText("jLabel2");
 
         txtCost.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
 
-        jLabel2.setText("Precio");
+        jLabel2.setText("Precio total");
 
         lblUnit1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblUnit1.setText("jLabel2");
@@ -142,7 +142,7 @@ public class GuiAddProductToPurchase extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 222, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cancelButton))

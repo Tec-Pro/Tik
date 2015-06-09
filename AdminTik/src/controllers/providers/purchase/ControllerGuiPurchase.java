@@ -146,13 +146,13 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
                     Map<String, Object> product = interfacePproduct.getPproduct(id);
                     if (product != null) {
                         String measureUnit = (String) product.get("measure_unit");
-                        Float unitPrice = (float) product.get("unit_price");
+                        Float totalPrice = (float) product.get("unit_price");
                         Float amount = new Float(1);
-                        GuiAddProductToPurchase guiAdd = new GuiAddProductToPurchase(ControllerMain.guiMain, true, measureUnit, unitPrice );
+                        GuiAddProductToPurchase guiAdd = new GuiAddProductToPurchase(ControllerMain.guiMain, true, measureUnit, totalPrice );
                         guiAdd.setLocationRelativeTo(guiPurchase);
                         guiAdd.setVisible(true);
                         if (guiAdd.getReturnStatus() == GuiAddProductToPurchase.RET_OK) {
-                            unitPrice = guiAdd.getReturnCost();
+                            totalPrice = guiAdd.getReturnCost();
                             amount = guiAdd.getReturnAmount();
                             Object[] o = new Object[6];
                             o[0] = (product.get("id"));
@@ -169,8 +169,8 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
                                     o[3] = "unitario";
                                     break;
                             }
-                            o[4] = ParserFloat.floatToString(unitPrice);
-                            o[5] = ParserFloat.floatToString(unitPrice * amount);
+                            o[4] = ParserFloat.floatToString(totalPrice/amount);
+                            o[5] = ParserFloat.floatToString(totalPrice);
                             tblDefaultPurchase.addRow(o);
                             guiPurchase.getTxtCost().setText(ParserFloat.floatToString(calculateCost()));
                             setCellEditor();
