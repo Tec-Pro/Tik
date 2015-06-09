@@ -241,4 +241,15 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
         List<Map> ret = FproductsFproducts.where("fproduct_id2 = ?", idFproduct).toMaps();
         return ret;
     }
+
+    @Override
+    public int belongsTo(int idFProduct) throws RemoteException {
+        //Devuelve 1 si el producto pertenece a la cocina, 0 si pertenece al bar.
+        Fproduct prod = Fproduct.findById(idFProduct);
+        if (prod.getString("belong").equals("Cocina")){
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }

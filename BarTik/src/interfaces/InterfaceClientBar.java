@@ -36,4 +36,11 @@ public interface InterfaceClientBar extends Remote {
      */
     public void updatedOrder(Pair<Map<String, Object>, List<Map>> order) throws RemoteException;
 
+    /**Metodo para avisar desde el Servidor al Bar que un pedido de la cocina está listo
+     * 
+     * @param order 
+     * @throws RemoteException 
+     */
+    public void kitchenOrderReady(Pair<Map<String, Object>, List<Map>> order) throws RemoteException;
+    
 }

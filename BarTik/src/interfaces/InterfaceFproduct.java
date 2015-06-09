@@ -149,4 +149,7 @@ public interface InterfaceFproduct extends Remote {
      * @throws java.rmi.RemoteException
      */
     public List<Map> getFproductFproduts(int idFproduct) throws java.rmi.RemoteException;
+
+
+    public int belongsTo(int idFProduct) throws java.rmi.RemoteException;
 }

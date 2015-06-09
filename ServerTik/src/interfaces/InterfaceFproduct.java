@@ -5,6 +5,7 @@
 package interfaces;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
 import utils.Pair;
@@ -145,8 +146,17 @@ public interface InterfaceFproduct extends Remote {
      * Retorna la relacion fproducto fproducto
      *
      * @param idFproduct
-     * @return List<Map>
+     * @return Lista con los maps de cada producto en la relación.
      * @throws java.rmi.RemoteException
      */
     public List<Map> getFproductFproduts(int idFproduct) throws java.rmi.RemoteException;
+
+    /**
+     * Función que indica si un producto pertenece a cocina o bar.
+     * @param idFProduct id del producto a consultar.
+     * @return 1 si es de cocina, 0 si es de bar.
+     * @throws RemoteException
+     */
+    public int belongsTo(int idFProduct) throws java.rmi.RemoteException;
+
 }

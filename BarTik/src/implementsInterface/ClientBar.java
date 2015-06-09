@@ -37,4 +37,11 @@ public class ClientBar extends UnicastRemoteObject implements InterfaceClientBar
        ControllerGuiBarMain.updatedOrder(order);
     }
 
+    @Override
+    public void kitchenOrderReady(Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
+        ControllerGuiBarMain.addKitchenOrder(order);
+    }
+    
+    
+
 }

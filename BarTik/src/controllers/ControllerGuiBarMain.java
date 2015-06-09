@@ -50,6 +50,8 @@ import utils.SoundPlayer;
  */
 public class ControllerGuiBarMain implements ActionListener {
 
+
+
     //Guis
     private GuiLogin guiLogin;
     private static GuiBarMain guiBarMain;
@@ -138,7 +140,11 @@ public class ControllerGuiBarMain implements ActionListener {
         }
         return result;
     }
-
+    /**
+     * 
+     * @throws ParseException
+     * @throws RemoteException 
+     */
     private static void searchDelayedOrders() throws ParseException, RemoteException {
         Iterator<GuiBarOrderPane> itr = listOrdersPanels.iterator();
         //Recorro todos los paneles de la gridbaglayout
@@ -152,7 +158,7 @@ public class ControllerGuiBarMain implements ActionListener {
             if (orderPane.getColor() != 2 && (Integer.parseInt(diff.get("MINUTES").toString()) >= Integer.parseInt(generalConfig.getDelayTime())
                     || Integer.parseInt(diff.get("HOURS").toString()) > 0
                     || Integer.parseInt(diff.get("DAYS").toString()) > 0)) {
-                soundPlayer.playSound();//Alerta sonora
+                //soundPlayer.playSound();//Alerta sonora descomentar para activar
                 if (!orderPane.isActiveTimer()) {
                     //Parpadea el color del panel, en rojo, avisando que el pedido se retraso
                     orderPane.activateFlashing();
@@ -245,7 +251,11 @@ public class ControllerGuiBarMain implements ActionListener {
         orderList.add(Integer.parseInt(order.first().get("id").toString()));
         listOrdersPanels.add(guiOrderPane);
     }
-
+    /**
+     * 
+     * @param listOrderProducts
+     * @return 
+     */
     private static String calculateDescription(List<Map> listOrderProducts) {
         String auxDesc = "";
         for (Map m : listOrderProducts) {
@@ -255,6 +265,22 @@ public class ControllerGuiBarMain implements ActionListener {
         return auxDesc;
     }
 
+    /**
+     * Función da la orden de agregar un nuevo elemento a la lista de pedidos listos en bar.
+     * @param order Orden lista donde first es la orden y second es la lista de productos.
+     * order.first es un Map que tiene {persons, user_id, user_name, order_number, description, closed, id}
+     * order.second es una lista de Maps donde cada uno tiene 
+     * {quantity, updated_at, paid, created_at, id, issued, order_id, fproduct_id, done, commited}
+     */
+    public static void addKitchenOrder(Pair<Map<String, Object>, List<Map>> order) {
+        guiBarMain.addElementToKitchenOrdersTable(order);
+    }
+    
+    /**
+     * 
+     * @param listOrderProducts
+     * @return 
+     */
     private static Timestamp calculateTimeOfOrder(List<Map> listOrderProducts) {
         Timestamp date = Timestamp.valueOf("1990-01-01 01:01:01");//inicio la fecha con un valor minimo
         for (Map m : listOrderProducts) {
@@ -266,6 +292,10 @@ public class ControllerGuiBarMain implements ActionListener {
         return date;
     }
 
+    /**
+     * 
+     * @param orderPane 
+     */
     private static void removeListeners(GuiBarOrderPane orderPane) {
         MouseListener[] mouseListeners = orderPane.getMouseListeners();
         if (mouseListeners != null && mouseListeners.length != 0) {
@@ -275,6 +305,10 @@ public class ControllerGuiBarMain implements ActionListener {
         }
     }
 
+    /**
+     * 
+     * @param orderId 
+     */
     private static void removeGuiOrderPane(int orderId) {
         boolean stop = false;
         int index = 0;
@@ -450,6 +484,10 @@ public class ControllerGuiBarMain implements ActionListener {
         if (ae.getSource() == guiBarMain.getMenuItemLoggedUsers()) {
             GuiOnlineUsers gulu = new GuiOnlineUsers(guiBarMain, true);
             gulu.setVisible(true);
+        }
+        
+        if (ae.getSource() == guiBarMain.getBtnRemoveKitchenOrders()) {
+            guiBarMain.removeElementOfKitchenOrdersTable();
         }
     }
 }

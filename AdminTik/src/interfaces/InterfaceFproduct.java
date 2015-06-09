@@ -145,8 +145,11 @@ public interface InterfaceFproduct extends Remote {
      * Retorna la relacion fproducto fproducto
      *
      * @param idFproduct
-     * @return List<Map>
+     * @return Lista de maps de los productos relacionados con el id dado.
      * @throws java.rmi.RemoteException
      */
     public List<Map> getFproductFproduts(int idFproduct) throws java.rmi.RemoteException;
+
+    
+    public int belongsTo(int idFProduct) throws java.rmi.RemoteException; 
 }

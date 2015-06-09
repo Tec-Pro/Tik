@@ -152,7 +152,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
             if (orderPane.getColor() != 2 && (Integer.parseInt(diff.get("MINUTES").toString()) >= Integer.parseInt(generalConfig.getDelayTime())
                     || Integer.parseInt(diff.get("HOURS").toString()) > 0
                     || Integer.parseInt(diff.get("DAYS").toString()) > 0)) {
-                soundPlayer.playSound();//Alerta sonora
+                //soundPlayer.playSound();//Alerta sonora, descomentar para activar
                 if (!orderPane.isActiveTimer()) {
                     //Parpadea el color del panel, en rojo, avisando que el pedido se retraso
                     orderPane.activateFlashing();
