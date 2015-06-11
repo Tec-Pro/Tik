@@ -104,7 +104,7 @@ public class ControllerGuiMain implements ActionListener {
      */
     public static void UpdateOrder(Pair<Map<String, Object>, List<Map>> or) throws RemoteException {
         final Pair<Map<String, Object>, List<Map>> order = or;
-        System.out.println(or.first().get("user_id") + " s " + idWaiter);
+        if(or.first().get("user_id")!=null){
         if (guiMain.isVisible() && (int) order.first().get("user_id") == idWaiter) {
             Thread thread = new Thread() {
                 @Override
@@ -174,7 +174,7 @@ public class ControllerGuiMain implements ActionListener {
                 ;
                 thread.start();
         }
-
+        }
     }
 
     /**

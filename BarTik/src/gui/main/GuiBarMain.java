@@ -272,22 +272,20 @@ public class GuiBarMain extends javax.swing.JFrame {
      * order.second es una lista de Maps donde cada uno tiene 
      * {quantity, updated_at, paid, created_at, id, issued, order_id, fproduct_id, done, commited}
      */
-    public void addElementToKitchenOrdersTable(Pair<Map<String, Object>, List<Map>> order) {
+    public void addElementToKitchenOrdersTable(int idOrder, String name) {
         DefaultTableModel tableModel = (DefaultTableModel) getKitchenOrdersJTable().getModel();
         boolean found = false;
         int i = 0;
-        String orderId = order.first().get("order_number").toString();
-        String orderUser = order.first().get("user_name").toString();
         //Ciclo la tabla para ver si ya está agregado el pedido a la misma.
         while (!found && i < getKitchenOrdersJTable().getRowCount()) {
-            found = tableModel.getValueAt(i, 0).equals(orderId) && tableModel.getValueAt(i, 1).equals(orderUser);
+            found = tableModel.getValueAt(i, 0).equals(idOrder) && tableModel.getValueAt(i, 1).equals(name);
             i++;
         }
         //Si no está agregado creo la nueva fila y la agrego.
         if (!found) {
             Object[] row = new Object[2];
-            row[0] = orderId;
-            row[1] = orderUser;
+            row[0] = idOrder;
+            row[1] = name;
             tableModel.addRow(row);
         }
     }

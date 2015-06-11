@@ -61,12 +61,12 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
     public Map<String, Object> sendOrder(int userId, String description, int persons, List<Map<String, Object>> fproducts) throws RemoteException {
         // campos que deberia tener el map: ("fproductId","quantity","done","commited","issued")
         Utils.abrirBase();
-        //Base.openTransaction();
+        Base.openTransaction();
         final Order newOrder = Order.createIt("user_id", userId, "order_number", getOrdersCount(userId) + 1, "description", description, "closed", false, "persons", persons);
         for (Map<String, Object> prod : fproducts) {
             OrdersFproducts.createIt("order_id", newOrder.getId(), "fproduct_id", (int) prod.get("fproductId"), "quantity", (float) prod.get("quantity"), "done", (boolean) prod.get("done"), "commited", (boolean) prod.get("commited"), "issued", (boolean) prod.get("issued"));
         }
-        //Base.commitTransaction();
+        Base.commitTransaction();
         Thread thread = new Thread() {
             public void run() {
                 try {
@@ -78,7 +78,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
                     if (mapBar != null) {
                         Server.notifyBarNewOrder(mapBar);
                     }
-                    Pair<Map<String,Object>,List<Map>> pair = new Pair(getOrder(newOrder.getInteger("id")), getOrderProductsWithName(newOrder.getInteger("id")));
+                    Pair<Map<String, Object>, List<Map>> pair = new Pair(getOrder(newOrder.getInteger("id")), getOrderProductsWithName(newOrder.getInteger("id")));
                     Server.notifyWaitersOrderReady(pair);
                 } catch (RemoteException ex) {
                     Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
@@ -107,7 +107,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             return false;
         }
         if ((boolean) order.get("closed")) {// reabro el pedido si esta cerrado
-            order.set("closed",0);
+            order.set("closed", 0);
         }
         order.set("description", description);
         order.set("persons", persons);
@@ -127,7 +127,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
                     if (mapBar != null) {
                         Server.notifyBarUpdatedOrder(mapBar);
                     }
-                    Pair<Map<String,Object>,List<Map>> pair = new Pair(getOrder(orderId), getOrderProductsWithName(orderId));
+                    Pair<Map<String, Object>, List<Map>> pair = new Pair(getOrder(orderId), getOrderProductsWithName(orderId));
                     Server.notifyWaitersOrderReady(pair);
                 } catch (RemoteException ex) {
                     Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
@@ -137,14 +137,14 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         thread.start();
         return true;
     }
-    
+
     @Override
-    public  List<Map> getOrderProductsWithName(int orderId) throws RemoteException{
-         openBase();
+    public List<Map> getOrderProductsWithName(int orderId) throws RemoteException {
+        openBase();
         List<Map> ret = new LinkedList<>();
         try {
             sql = "SELECT fp.name,ofp.quantity,ofp.done,ofp.issued,ofp.commited,ofp.paid "
-                    +" FROM tik.orders_fproducts ofp INNER JOIN fproducts fp ON fp.id= ofp.fproduct_id WHERE ofp.order_id = '" + orderId + "';";
+                    + " FROM tik.orders_fproducts ofp INNER JOIN fproducts fp ON fp.id= ofp.fproduct_id WHERE ofp.order_id = '" + orderId + "';";
             Statement stmt = conn.createStatement();
             java.sql.ResultSet rs = stmt.executeQuery(sql);
 
@@ -165,6 +165,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         }
         return ret;
     }
+
     /**
      *
      * @return Todos los pedidos
@@ -248,7 +249,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(sql);
             stmt.close();
-            sql="UPDATE orders_fproducts SET paid = 1 WHERE order_id = '"+idOrder+"';";
+            sql = "UPDATE orders_fproducts SET paid = 1 WHERE order_id = '" + idOrder + "';";
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
             stmt.close();
@@ -271,7 +272,8 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             stmt.executeUpdate(sql);
             stmt.close();
             //Notifico al bar que los productos han sido entregados.
-            Server.notifyBarKitchenOrderReady(new Pair(getOrder(orderId),getOrderProducts(orderId)));
+            Map ord = getOrder(orderId);
+            Server.notifyBarKitchenOrderCommited((int) ord.get("order_number"), (String) ord.get("user_name"));
         } catch (SQLException ex) {
             Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -283,18 +285,19 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
 
     /**
      * Función que obtiene un producto de una orden.
+     *
      * @param orderId id de la orden.
      * @param order_fproductId id del producto dentro de la orden.
      * @return Map representando el producto.
      */
-    public Map getProductFromOrder(int orderId, int order_fproductId){
+    public Map getProductFromOrder(int orderId, int order_fproductId) {
         openBase();
         HashMap ret = new HashMap();
         try {
-            sql = "SELECT fproduct_id FROM orders_fproducts WHERE order_id = '" + orderId + "' AND id ='"+order_fproductId+"';";
+            sql = "SELECT fproduct_id FROM orders_fproducts WHERE order_id = '" + orderId + "' AND id ='" + order_fproductId + "';";
             Statement stmt = conn.createStatement();
             java.sql.ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()){
+            while (rs.next()) {
                 ret.put("fproduct_id", rs.getObject("fproduct_id"));
             }
             rs.close();
@@ -304,7 +307,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         }
         return ret;
     }
-    
+
     @Override
     public List<Map> getOrderProducts(int orderId) throws RemoteException {
         openBase();
@@ -379,14 +382,20 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
                 Statement stmt = conn.createStatement();
                 stmt.executeUpdate(sql);
                 //Me fijo si el producto pertenece a la cocina, si pertenece al bar no debería avisar al bar de que está listo.
-                if (fproduct.belongsTo((int) getProductFromOrder(idOrder,id).get("fproduct_id")) == 1){
-                    Server.notifyBarKitchenOrderReady(new Pair(getOrder(idOrder),getOrderProducts(idOrder)));
+                if (fproduct.belongsTo((int) getProductFromOrder(idOrder, id).get("fproduct_id")) == 1) {
+                    System.out.println("notifyyy");
+                    Map ord = getOrder(idOrder);
+                                       
+                    System.out.println("notifyyy1");
+                    Server.notifyBarKitchenOrderReady((int) ord.get("order_number"), (String) ord.get("user_name"));
+                                        System.out.println("notficado");
+
                 }
                 stmt.close();
             } catch (SQLException ex) {
                 Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         }
 
         List<Map> ret = getOrderProductsWithName(idOrder);
@@ -433,15 +442,14 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
             }
-            if(conn==null || conn.isClosed())
+            if (conn == null || conn.isClosed()) {
                 conn = DriverManager.getConnection("jdbc:mysql://localhost/tik", "root", "root");
+            }
         } catch (SQLException ex) {
             Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
-    
-
 
     private Pair<Map<String, Object>, List<Map>> obtainOrdersKitchen(Integer orderId) throws RemoteException {
         final Map<String, Object> orderMap = getOrder(orderId);
@@ -484,7 +492,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         openBase();
         List<Map> result = new LinkedList<>();
         try {
-            sql = "SELECT orders_fproducts.id,order_id,fproduct_id,quantity,done,commited,issued,created_at,updated_at,name"
+            sql = "SELECT orders_fproducts.id,order_id,fproduct_id,quantity,done,commited,issued,created_at,updated_at,fproducts.name"
                     + " FROM orders_fproducts INNER JOIN fproducts WHERE orders_fproducts.fproduct_id = fproducts.id AND"
                     + " fproducts.belong = 'Bar' AND orders_fproducts.order_id = '" + orderId + "' AND orders_fproducts.done = 0;";
             Statement stmt = conn.createStatement();

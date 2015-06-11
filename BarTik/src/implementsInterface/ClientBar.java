@@ -38,13 +38,13 @@ public class ClientBar extends UnicastRemoteObject implements InterfaceClientBar
     }
 
     @Override
-    public void kitchenOrderReady(Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
-        ControllerGuiBarMain.addKitchenOrder(order);
+    public void kitchenOrderReady(int idOrder, String name) throws RemoteException {
+        ControllerGuiBarMain.addKitchenOrder( idOrder,  name);
     }
 
     @Override
-    public void kitchenOrderCommited(Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
-        ControllerGuiBarMain.kitchenProductCommited(order);
+    public void kitchenOrderCommited(int idOrder, String name) throws RemoteException {
+        ControllerGuiBarMain.kitchenProductCommited( idOrder, name);
     }
     
     

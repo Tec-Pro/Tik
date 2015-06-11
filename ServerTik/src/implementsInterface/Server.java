@@ -107,14 +107,14 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
      * {quantity, updated_at, paid, created_at, id, issued, order_id, fproduct_id, done, commited}
      * @throws RemoteException 
      */
-    public static void notifyBarKitchenOrderReady(Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
+    public static void notifyBarKitchenOrderReady(int idOrder,String nameWaiter) throws RemoteException {
         //Esta parte le avisa al bar que un pedido de la cocina está listo
         Iterator<InterfaceClientBar> itBar = bartenders.iterator();
         int j = 0;
         while (itBar.hasNext()) {
             InterfaceClientBar bar = itBar.next();
             try {
-                bar.kitchenOrderReady(order);
+                bar.kitchenOrderReady(idOrder, nameWaiter);
             } catch (java.rmi.ConnectException e){
                 System.out.println(e.toString());
                 bartenders.remove(j);
@@ -122,7 +122,24 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
         }
     }
     
-        /**
+    
+       public static void notifyBarKitchenOrderCommited(int idOrder,String nameWaiter) throws RemoteException {
+        //Esta parte le avisa al bar que un pedido de la cocina está listo
+        Iterator<InterfaceClientBar> itBar = bartenders.iterator();
+        int j = 0;
+        while (itBar.hasNext()) {
+            InterfaceClientBar bar = itBar.next();
+            try {
+                bar.kitchenOrderCommited(idOrder, nameWaiter);
+            } catch (java.rmi.ConnectException e){
+                System.out.println(e.toString());
+                bartenders.remove(j);
+            }
+        }
+    }
+    
+    
+    /**
      * Función que notifica al bar que una orden de la cocina ya está lista.
      * @param order Orden lista donde first es la orden y second es la lista de productos.
      * order.first es un Map que tiene {persons, user_id, user_name, order_number, description, closed, id}
@@ -130,14 +147,14 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
      * {quantity, updated_at, paid, created_at, id, issued, order_id, fproduct_id, done, commited}
      * @throws RemoteException 
      */
-    public static void notifyBarKitchenProductsCommited(Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
+    public static void notifyBarKitchenProductsCommited(int idOrder,String nameWaiter) throws RemoteException {
         //Esta parte le avisa al bar que un pedido de la cocina está listo
         Iterator<InterfaceClientBar> itBar = bartenders.iterator();
         int j = 0;
         while (itBar.hasNext()) {
             InterfaceClientBar bar = itBar.next();
             try {
-                bar.kitchenOrderCommited(order);
+                bar.kitchenOrderCommited( idOrder, nameWaiter);
             } catch (java.rmi.ConnectException e){
                 bartenders.remove(j);
             }

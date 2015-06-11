@@ -44,7 +44,7 @@ public interface InterfaceClientBar extends Remote {
      * {quantity, updated_at, paid, created_at, id, issued, order_id, fproduct_id, done, commited}
      * @throws RemoteException 
      */
-    public void kitchenOrderReady(Pair<Map<String, Object>, List<Map>> order) throws RemoteException;
+    public void kitchenOrderReady(int idOrder, String name) throws RemoteException;
 
     /**
      * Metodo para avisar desde el Servidor al Bar que se entregaron productos de un pedido
@@ -54,5 +54,5 @@ public interface InterfaceClientBar extends Remote {
      * {quantity, updated_at, paid, created_at, id, issued, order_id, fproduct_id, done, commited}
      * @throws RemoteException 
      */
-    public void kitchenOrderCommited(Pair<Map<String, Object>, List<Map>> order) throws RemoteException;
+    public void kitchenOrderCommited(int idOrder, String name) throws RemoteException;
 }

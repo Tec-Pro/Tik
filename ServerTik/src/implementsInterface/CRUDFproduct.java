@@ -245,6 +245,7 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
     @Override
     public int belongsTo(int idFProduct) throws RemoteException {
         //Devuelve 1 si el producto pertenece a la cocina, 0 si pertenece al bar.
+        Utils.abrirBase();
         Fproduct prod = Fproduct.findById(idFProduct);
         if (prod.getString("belong").equals("Cocina")){
             return 1;

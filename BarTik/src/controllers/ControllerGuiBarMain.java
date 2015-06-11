@@ -280,37 +280,24 @@ public class ControllerGuiBarMain implements ActionListener {
      * donde cada uno tiene {quantity, updated_at, paid, created_at, id, issued,
      * order_id, fproduct_id, done, commited}
      */
-    public static void addKitchenOrder(Pair<Map<String, Object>, List<Map>> order) {
-        guiBarMain.addElementToKitchenOrdersTable(order);
+    public static void addKitchenOrder(int idOrder, String name) {
+        guiBarMain.addElementToKitchenOrdersTable(idOrder, name);
     }
 
-    public static void kitchenProductCommited(Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
+    public static void kitchenProductCommited(int idOrder, String name) throws RemoteException {
         DefaultTableModel tableModel = (DefaultTableModel) guiBarMain.getKitchenOrdersJTable().getModel();
-        //Booleano que me indica si todos los items fueron entregados.
-        boolean allItemsCommited = true;
-        int j = 0;
-        //Ciclo en los items del pedido para ver si están todos entregados.
-        while (allItemsCommited && j < order.second().size()) {
-            //Si encuentra un item que no ha sido entregado, sale del ciclo.   
-            allItemsCommited = (order.second().get(j).get("commited").toString().equals("true"));
-            j++;
-        }
-        //Si todos los items están entregados, busca el pedido y lo elimina el pedido de la lista.
-        if (allItemsCommited) {
             boolean found = false;
             int i = 0;
-            String orderId = order.first().get("order_number").toString();
-            String orderUser = order.first().get("user_name").toString();
             //Ciclo la tabla para ver si ya está agregado el pedido a la misma.
             while (!found && i < guiBarMain.getKitchenOrdersJTable().getRowCount()) {
-                found = tableModel.getValueAt(i, 0).equals(orderId) && tableModel.getValueAt(i, 1).equals(orderUser);
+                found = tableModel.getValueAt(i, 0).equals(idOrder) && tableModel.getValueAt(i, 1).equals(name);
                 if (found){
                     tableModel.removeRow(i);
                     break;
                     }
                 i++;
             }
-        }
+        
     }
 
     /**
