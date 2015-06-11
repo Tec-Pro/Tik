@@ -509,9 +509,5 @@ public class ControllerGuiBarMain implements ActionListener {
             GuiOnlineUsers gulu = new GuiOnlineUsers(guiBarMain, true);
             gulu.setVisible(true);
         }
-
-        if (ae.getSource() == guiBarMain.getBtnRemoveKitchenOrders()) {
-            guiBarMain.removeElementOfKitchenOrdersTable();
-        }
     }
 }
