@@ -88,9 +88,11 @@ public class GuiBarMain extends javax.swing.JFrame {
         jPanel4.setOpaque(false);
 
         jSplitPane1.setBorder(null);
-        jSplitPane1.setDividerSize(1);
+        jSplitPane1.setDividerLocation(400);
+        jSplitPane1.setDividerSize(3);
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         jSplitPane1.setResizeWeight(0.75);
+        jSplitPane1.setMaximumSize(new java.awt.Dimension(400, 500));
 
         jScrollPane2.setBorder(null);
         jScrollPane2.setViewportBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -271,13 +273,13 @@ public class GuiBarMain extends javax.swing.JFrame {
      * {quantity, updated_at, paid, created_at, id, issued, order_id, fproduct_id, done, commited}
      */
     public void addElementToKitchenOrdersTable(Pair<Map<String, Object>, List<Map>> order) {
-        DefaultTableModel tableModel = (DefaultTableModel) kitchenOrdersJTable.getModel();
+        DefaultTableModel tableModel = (DefaultTableModel) getKitchenOrdersJTable().getModel();
         boolean found = false;
         int i = 0;
         String orderId = order.first().get("order_number").toString();
         String orderUser = order.first().get("user_name").toString();
         //Ciclo la tabla para ver si ya está agregado el pedido a la misma.
-        while (!found && i < kitchenOrdersJTable.getRowCount()) {
+        while (!found && i < getKitchenOrdersJTable().getRowCount()) {
             found = tableModel.getValueAt(i, 0).equals(orderId) && tableModel.getValueAt(i, 1).equals(orderUser);
             i++;
         }
@@ -288,28 +290,14 @@ public class GuiBarMain extends javax.swing.JFrame {
             row[1] = orderUser;
             tableModel.addRow(row);
         }
-        //Booleano que me indica si todos los items fueron entregados.
-        boolean allItemsCommited = true;
-        int j = 0;
-        //Ciclo en los items del pedido para ver si están todos entregados.
-        while (allItemsCommited && j < order.second().size()){
-            //Si encuentra un item que no ha sido entregado, sale del ciclo.
-            allItemsCommited = (order.second().get(j).get("commited").toString().equals("true"));
-            j++;
-        }
-        //Si todos los items están entregados, elimina el pedido de la lista.
-        //Como i indica la posición siguiente a la que fue encontrado, elimino i-1.
-        if (allItemsCommited){
-            tableModel.removeRow(i-1);
-        }
     }
     
     /** 
      * Función que permite eliminar manualmente los pedidos seleccionados de la lista.
      */
     public void removeElementOfKitchenOrdersTable() {
-        DefaultTableModel tableModel = (DefaultTableModel) kitchenOrdersJTable.getModel();
-        int[] a = kitchenOrdersJTable.getSelectedRows();
+        DefaultTableModel tableModel = (DefaultTableModel) getKitchenOrdersJTable().getModel();
+        int[] a = getKitchenOrdersJTable().getSelectedRows();
         Arrays.sort(a);
         for (int i = a.length - 1; i >= 0; i--) {
             tableModel.removeRow(a[i]);
@@ -559,6 +547,13 @@ public class GuiBarMain extends javax.swing.JFrame {
      */
     public javax.swing.JButton getBtnRemoveKitchenOrders() {
         return btnRemoveKitchenOrders;
+    }
+
+    /**
+     * @return the kitchenOrdersJTable
+     */
+    public javax.swing.JTable getKitchenOrdersJTable() {
+        return kitchenOrdersJTable;
     }
 
 }

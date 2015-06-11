@@ -12,7 +12,6 @@ import interfaces.InterfaceClientKitchen;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -117,10 +116,34 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
             try {
                 bar.kitchenOrderReady(order);
             } catch (java.rmi.ConnectException e){
+                System.out.println(e.toString());
                 bartenders.remove(j);
             }
         }
     }
+    
+        /**
+     * Función que notifica al bar que una orden de la cocina ya está lista.
+     * @param order Orden lista donde first es la orden y second es la lista de productos.
+     * order.first es un Map que tiene {persons, user_id, user_name, order_number, description, closed, id}
+     * order.second es una lista de Maps donde cada uno tiene 
+     * {quantity, updated_at, paid, created_at, id, issued, order_id, fproduct_id, done, commited}
+     * @throws RemoteException 
+     */
+    public static void notifyBarKitchenProductsCommited(Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
+        //Esta parte le avisa al bar que un pedido de la cocina está listo
+        Iterator<InterfaceClientBar> itBar = bartenders.iterator();
+        int j = 0;
+        while (itBar.hasNext()) {
+            InterfaceClientBar bar = itBar.next();
+            try {
+                bar.kitchenOrderCommited(order);
+            } catch (java.rmi.ConnectException e){
+                bartenders.remove(j);
+            }
+        }
+    }
+    
     //avisa a la cocina que hay un nuevo pedido
     public static void notifyKitchenNewOrder(Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
         Iterator<InterfaceClientKitchen> it = chefs.iterator();

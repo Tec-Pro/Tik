@@ -46,5 +46,13 @@ public interface InterfaceClientBar extends Remote {
      */
     public void kitchenOrderReady(Pair<Map<String, Object>, List<Map>> order) throws RemoteException;
 
-    
+    /**
+     * Metodo para avisar desde el Servidor al Bar que se entregaron productos de un pedido
+     * @param order Orden lista donde first es la orden y second es la lista de productos.
+     * order.first es un Map que tiene {persons, user_id, user_name, order_number, description, closed, id}
+     * order.second es una lista de Maps donde cada uno tiene 
+     * {quantity, updated_at, paid, created_at, id, issued, order_id, fproduct_id, done, commited}
+     * @throws RemoteException 
+     */
+    public void kitchenOrderCommited(Pair<Map<String, Object>, List<Map>> order) throws RemoteException;
 }

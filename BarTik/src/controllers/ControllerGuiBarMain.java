@@ -10,6 +10,7 @@ import gui.login.GuiOnlineUsers;
 import gui.main.GuiBarMain;
 import gui.order.GuiBarOrderDetails;
 import gui.order.GuiBarOrderPane;
+import interfaces.InterfaceFproduct;
 import interfaces.InterfaceGeneralConfig;
 import interfaces.InterfaceOrder;
 import interfaces.InterfacePresence;
@@ -40,6 +41,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import javax.swing.table.DefaultTableModel;
 import utils.InterfaceName;
 import utils.Pair;
 import utils.SoundPlayer;
@@ -49,8 +51,6 @@ import utils.SoundPlayer;
  * @author eze
  */
 public class ControllerGuiBarMain implements ActionListener {
-
-
 
     //Guis
     private GuiLogin guiLogin;
@@ -72,6 +72,7 @@ public class ControllerGuiBarMain implements ActionListener {
     private static LinkedList<GuiBarOrderPane> listOrdersPanels;
 
     private static LinkedList<Integer> orderList;
+    private static InterfaceFproduct crudFproduct;
 
     /**
      *
@@ -83,10 +84,11 @@ public class ControllerGuiBarMain implements ActionListener {
         orderList = new LinkedList<>();
         soundPlayer = new SoundPlayer();
         crudOrder = (InterfaceOrder) InterfaceName.registry.lookup(InterfaceName.CRUDOrder);
+        crudFproduct = (InterfaceFproduct) InterfaceName.registry.lookup(InterfaceName.CRUDFproduct);
         crudPresence = (InterfacePresence) InterfaceName.registry.lookup(InterfaceName.CRUDPresence);
         crudUser = (InterfaceUser) InterfaceName.registry.lookup(InterfaceName.CRUDUser);
         generalConfig = (InterfaceGeneralConfig) InterfaceName.registry.lookup(InterfaceName.GeneralConfig);
-        server= (InterfaceServer) InterfaceName.registry.lookup(InterfaceName.server);
+        server = (InterfaceServer) InterfaceName.registry.lookup(InterfaceName.server);
 
         online = new HashSet<>();
         for (Map m : crudPresence.getCooks()) {
@@ -140,10 +142,11 @@ public class ControllerGuiBarMain implements ActionListener {
         }
         return result;
     }
+
     /**
-     * 
+     *
      * @throws ParseException
-     * @throws RemoteException 
+     * @throws RemoteException
      */
     private static void searchDelayedOrders() throws ParseException, RemoteException {
         Iterator<GuiBarOrderPane> itr = listOrdersPanels.iterator();
@@ -171,12 +174,12 @@ public class ControllerGuiBarMain implements ActionListener {
                         soundPlayer.stopSound();
                         orderPane.getBtnPostpone().setEnabled(false);
                         orderPane.stopTimer();
-                            try {
-                                //aviso a los mozos que esta demorado
-                                server.notifyWaitersOrderDelayed(orderPane.getOrderId());
-                            } catch (RemoteException ex) {
-                                Logger.getLogger(ControllerGuiBarMain.class.getName()).log(Level.SEVERE, null, ex);
-                            }
+                        try {
+                            //aviso a los mozos que esta demorado
+                            server.notifyWaitersOrderDelayed(orderPane.getOrderId());
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(ControllerGuiBarMain.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                 });
                 System.out.println("El pedido: " + orderPane.getLblOrderNumber().getText() + " esta retrasado.");
@@ -240,6 +243,7 @@ public class ControllerGuiBarMain implements ActionListener {
                 try {
                     crudOrder.updateOrdersReadyProducts(orderId, listOrderProductsId);
                 } catch (RemoteException ex) {
+                    System.out.println(ex.detail + "Controller Gui Bar Main Exception");
                     Logger.getLogger(ControllerGuiBarMain.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 //elimino el panel (GuiBarOrderPane) de la gui principal
@@ -251,10 +255,11 @@ public class ControllerGuiBarMain implements ActionListener {
         orderList.add(Integer.parseInt(order.first().get("id").toString()));
         listOrdersPanels.add(guiOrderPane);
     }
+
     /**
-     * 
+     *
      * @param listOrderProducts
-     * @return 
+     * @return
      */
     private static String calculateDescription(List<Map> listOrderProducts) {
         String auxDesc = "";
@@ -266,20 +271,52 @@ public class ControllerGuiBarMain implements ActionListener {
     }
 
     /**
-     * Función da la orden de agregar un nuevo elemento a la lista de pedidos listos en bar.
-     * @param order Orden lista donde first es la orden y second es la lista de productos.
-     * order.first es un Map que tiene {persons, user_id, user_name, order_number, description, closed, id}
-     * order.second es una lista de Maps donde cada uno tiene 
-     * {quantity, updated_at, paid, created_at, id, issued, order_id, fproduct_id, done, commited}
+     * Función da la orden de agregar un nuevo elemento a la lista de pedidos
+     * listos en bar.
+     *
+     * @param order Orden lista donde first es la orden y second es la lista de
+     * productos. order.first es un Map que tiene {persons, user_id, user_name,
+     * order_number, description, closed, id} order.second es una lista de Maps
+     * donde cada uno tiene {quantity, updated_at, paid, created_at, id, issued,
+     * order_id, fproduct_id, done, commited}
      */
     public static void addKitchenOrder(Pair<Map<String, Object>, List<Map>> order) {
         guiBarMain.addElementToKitchenOrdersTable(order);
     }
-    
+
+    public static void kitchenProductCommited(Pair<Map<String, Object>, List<Map>> order) throws RemoteException {
+        DefaultTableModel tableModel = (DefaultTableModel) guiBarMain.getKitchenOrdersJTable().getModel();
+        //Booleano que me indica si todos los items fueron entregados.
+        boolean allItemsCommited = true;
+        int j = 0;
+        //Ciclo en los items del pedido para ver si están todos entregados.
+        while (allItemsCommited && j < order.second().size()) {
+            //Si encuentra un item que no ha sido entregado, sale del ciclo.   
+            allItemsCommited = (order.second().get(j).get("commited").toString().equals("true"));
+            j++;
+        }
+        //Si todos los items están entregados, busca el pedido y lo elimina el pedido de la lista.
+        if (allItemsCommited) {
+            boolean found = false;
+            int i = 0;
+            String orderId = order.first().get("order_number").toString();
+            String orderUser = order.first().get("user_name").toString();
+            //Ciclo la tabla para ver si ya está agregado el pedido a la misma.
+            while (!found && i < guiBarMain.getKitchenOrdersJTable().getRowCount()) {
+                found = tableModel.getValueAt(i, 0).equals(orderId) && tableModel.getValueAt(i, 1).equals(orderUser);
+                if (found){
+                    tableModel.removeRow(i);
+                    break;
+                    }
+                i++;
+            }
+        }
+    }
+
     /**
-     * 
+     *
      * @param listOrderProducts
-     * @return 
+     * @return
      */
     private static Timestamp calculateTimeOfOrder(List<Map> listOrderProducts) {
         Timestamp date = Timestamp.valueOf("1990-01-01 01:01:01");//inicio la fecha con un valor minimo
@@ -293,8 +330,8 @@ public class ControllerGuiBarMain implements ActionListener {
     }
 
     /**
-     * 
-     * @param orderPane 
+     *
+     * @param orderPane
      */
     private static void removeListeners(GuiBarOrderPane orderPane) {
         MouseListener[] mouseListeners = orderPane.getMouseListeners();
@@ -306,8 +343,8 @@ public class ControllerGuiBarMain implements ActionListener {
     }
 
     /**
-     * 
-     * @param orderId 
+     *
+     * @param orderId
      */
     private static void removeGuiOrderPane(int orderId) {
         boolean stop = false;
@@ -485,7 +522,7 @@ public class ControllerGuiBarMain implements ActionListener {
             GuiOnlineUsers gulu = new GuiOnlineUsers(guiBarMain, true);
             gulu.setVisible(true);
         }
-        
+
         if (ae.getSource() == guiBarMain.getBtnRemoveKitchenOrders()) {
             guiBarMain.removeElementOfKitchenOrdersTable();
         }
