@@ -182,9 +182,9 @@ public class ControllerGuiBarMain implements ActionListener {
                         }
                     }
                 });
-                System.out.println("El pedido: " + orderPane.getLblOrderNumber().getText() + " esta retrasado.");
-                System.out.println("Tiempo de retraso: " + diff.toString());
-                System.out.println("");
+                
+                
+                
             }
 
         }
@@ -243,7 +243,7 @@ public class ControllerGuiBarMain implements ActionListener {
                 try {
                     crudOrder.updateOrdersReadyProducts(orderId, listOrderProductsId);
                 } catch (RemoteException ex) {
-                    System.out.println(ex.detail + "Controller Gui Bar Main Exception");
+                    
                     Logger.getLogger(ControllerGuiBarMain.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 //elimino el panel (GuiBarOrderPane) de la gui principal

@@ -108,7 +108,7 @@ public class ControllerGuiCRUDUser implements ActionListener {
             int returnVal = fc.showOpenDialog(guiUser); // user chooses the image
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile(); //I get the selected File
-                System.out.println(file.toString());
+                
                 
                 BufferedImage image = ImageIO.read(file); // I take the file and convert it to a BufferedImage
                 guiUser.setPicture(image);

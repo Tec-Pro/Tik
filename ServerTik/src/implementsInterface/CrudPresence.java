@@ -34,8 +34,8 @@ public class CrudPresence extends UnicastRemoteObject implements InterfacePresen
         Date now = new Date(System.currentTimeMillis());
         SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat hour = new SimpleDateFormat("HH:mm:ss");
-        System.out.println(date.format(now));
-        System.out.println(hour.format(now));
+        
+        
         Presence p = Presence.createIt("day", date.format(now), "entry_time", hour.format(now), "user_id", userId);
         User.findById(userId).set("order_count", 0);
         Base.commitTransaction();

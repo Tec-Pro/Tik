@@ -14,7 +14,7 @@ public class DesktopPaneImage extends JDesktopPane {
 
     //busco la imagen, y seteo al desktop pane la imagen pintando
     
-    private Image IMG = new ImageIcon(getClass().getResource("/Images/fondo gris.png")).getImage();
+    private Image IMG = new ImageIcon(getClass().getResource("/Images/fondo gris con logo.png")).getImage();
 
     public void paintChildren(Graphics g) {
         g.drawImage(IMG, 0, 0, getWidth(), getHeight(), this);

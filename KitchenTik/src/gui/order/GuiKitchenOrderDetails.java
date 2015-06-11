@@ -34,7 +34,7 @@ public class GuiKitchenOrderDetails extends javax.swing.JDialog {
                 if (modified) { // If there were modifications to the table
                     i = JOptionPane.showConfirmDialog(null, "Seguro que quiere salir?");
                 }
-                System.out.println(i);
+                
                 if (i == 0) {
                     closeWindow();
                 }else{

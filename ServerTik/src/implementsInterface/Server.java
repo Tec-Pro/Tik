@@ -116,7 +116,7 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
             try {
                 bar.kitchenOrderReady(idOrder, nameWaiter);
             } catch (java.rmi.ConnectException e){
-                System.out.println(e.toString());
+                
                 bartenders.remove(j);
             }
         }
@@ -132,7 +132,7 @@ public class Server extends UnicastRemoteObject implements interfaces.InterfaceS
             try {
                 bar.kitchenOrderCommited(idOrder, nameWaiter);
             } catch (java.rmi.ConnectException e){
-                System.out.println(e.toString());
+                
                 bartenders.remove(j);
             }
         }

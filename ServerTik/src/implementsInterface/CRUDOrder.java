@@ -383,12 +383,12 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
                 stmt.executeUpdate(sql);
                 //Me fijo si el producto pertenece a la cocina, si pertenece al bar no debería avisar al bar de que está listo.
                 if (fproduct.belongsTo((int) getProductFromOrder(idOrder, id).get("fproduct_id")) == 1) {
-                    System.out.println("notifyyy");
+                    
                     Map ord = getOrder(idOrder);
                                        
-                    System.out.println("notifyyy1");
+                    
                     Server.notifyBarKitchenOrderReady((int) ord.get("order_number"), (String) ord.get("user_name"));
-                                        System.out.println("notficado");
+                                        
 
                 }
                 stmt.close();

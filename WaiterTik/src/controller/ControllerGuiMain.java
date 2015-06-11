@@ -385,7 +385,7 @@ public class ControllerGuiMain implements ActionListener {
      */
     public void waiterInit(int id) throws RemoteException {
         idWaiter = id;
-        System.out.println("idW" + idWaiter);
+        
         loadOrders(id, guiMain.getChkAllOrders().isSelected());
         guiMain.setVisible(true);
         guiMain.setExtendedState(JFrame.MAXIMIZED_BOTH);
