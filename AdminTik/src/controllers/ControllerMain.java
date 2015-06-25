@@ -5,8 +5,10 @@
  */
 package controllers;
 
+import controllers.cashbox.ControllerGUICashbox;
 import controllers.providers.ControllerGuiCRUDProviders;
 import controllers.providers.purchase.ControllerGuiPurchase;
+//import controllers.withdrawals.ControllerGUICRUDWithdrawal;
 import gui.GuiAdminLogin;
 import gui.GuiCRUDAdmin;
 import gui.GuiCRUDEProduct;
@@ -16,10 +18,12 @@ import gui.GuiCRUDProductCategory;
 import gui.GuiCRUDUser;
 import gui.GuiMenu;
 import gui.GuiLoadPurchase;
+import gui.cashbox.GUICashbox;
 import gui.main.GuiConfig;
 import gui.main.GuiMain;
 import gui.providers.GuiCRUDProviders;
 import gui.providers.purchases.GuiPurchase;
+//import gui.withdrawal.GUICRUDWithdrawal;
 import interfaces.InterfaceGeneralConfig;
 import interfaces.providers.InterfaceProvider;
 import interfaces.providers.InterfaceProviderCategory;
@@ -28,10 +32,8 @@ import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Map;
@@ -39,7 +41,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import utils.Config;
 import utils.GeneralConfig;
 import utils.InterfaceName;
 
@@ -65,6 +66,8 @@ public class ControllerMain implements ActionListener {
     private static GuiCRUDProviders guiCRUDProviders;
     private static GuiCRUDUser guiCRUDUser; //gui usuarios
     private static GuiLoadPurchase guiLoadPurchase;
+//    private static GUICRUDWithdrawal guiCRUDWithdrawal;
+    private static GUICashbox guiCashbox;
     private static GuiMenu guiMenu;
     private static GuiPurchase guiPurchase;
 
@@ -78,6 +81,8 @@ public class ControllerMain implements ActionListener {
     private ControllerGuiCRUDUser controllerCRUDUser;
     private ControllerGuiMenu controllerGuiMenu;
     private ControllerGuiPurchase controllerGuiPurchase;
+    private ControllerGUICashbox controllerGuiCashbox;
+//    private ControllerGUICRUDWithdrawal controllerGuiCRUDWithdrawal;
 
     
     public ControllerMain(GuiAdminLogin guiAdminLogin) throws NotBoundException, MalformedURLException, RemoteException {
@@ -105,6 +110,8 @@ public class ControllerMain implements ActionListener {
         guiLoadPurchase = new GuiLoadPurchase();
         guiMenu = new GuiMenu();
         guiPurchase = new GuiPurchase();
+        guiCashbox = new GUICashbox();
+//        guiCRUDWithdrawal = new GUICRUDWithdrawal();
 
         //agrego las gui al desktop
         guiMain.getDesktop().add(guiCRUDAdmin);
@@ -117,6 +124,8 @@ public class ControllerMain implements ActionListener {
         guiMain.getDesktop().add(guiLoadPurchase);
         guiMain.getDesktop().add(guiMenu);
         guiMain.getDesktop().add(guiPurchase);
+//        guiMain.getDesktop().add(guiCRUDWithdrawal);
+        guiMain.getDesktop().add(guiCashbox);
 
         InterfaceProvider provider = (InterfaceProvider) InterfaceName.registry.lookup(InterfaceName.CRUDProvider);
         InterfaceProviderCategory providerCategory = (InterfaceProviderCategory) InterfaceName.registry.lookup(InterfaceName.CRUDProviderCategory);
@@ -133,6 +142,8 @@ public class ControllerMain implements ActionListener {
         controllerCRUDPProduct = new ControllerGuiCRUDPproduct(guiCRUDPProduct, guiLoadPurchase);
         controllerGuiMenu = new ControllerGuiMenu(guiMenu, guiMain);
         controllerGuiPurchase = new ControllerGuiPurchase(guiPurchase);
+//        controllerGuiCRUDWithdrawal = new ControllerGUICRUDWithdrawal(guiCRUDWithdrawal);
+        controllerGuiCashbox = new ControllerGUICashbox(guiCashbox);
         //restauro el puntero asi ya se que termino de cargar todo
         guiMain.setCursor(Cursor.DEFAULT_CURSOR);
 
@@ -154,6 +165,8 @@ public class ControllerMain implements ActionListener {
         guiCRUDUser.dispose();
         guiLoadPurchase.dispose();
         guiPurchase.dispose();
+//        guiCRUDWithdrawal.dispose();
+        guiCashbox.dispose();
     }
 
     public static boolean isAdmin() {
@@ -282,6 +295,14 @@ public class ControllerMain implements ActionListener {
                     JOptionPane.showMessageDialog(guiMain, "Error al guardar configuracion: " + ex.getMessage());
                 }
             }
+        } if (ae.getActionCommand().equals("CAJA")){
+            try {
+                guiCashbox.setMaximum(true);
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            guiCashbox.setVisible(true);
+            guiCashbox.toFront();
         }
     }
 
