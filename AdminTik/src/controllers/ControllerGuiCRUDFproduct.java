@@ -112,6 +112,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
                 }
             }
         });
+        guiCRUDFProduct.loadCategorySearch();
         guiCRUDFProduct.setActionListener(this);
     }
 
@@ -133,12 +134,18 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
      * @throws RemoteException
      */
     public void search() throws RemoteException {
-        if (editingInformation) {
-            pproductList = crudPproduct.getPproducts(guiCRUDFProduct.getTxtSearch().getText());
-            eproductList = crudEproduct.getEproducts(guiCRUDFProduct.getTxtSearch().getText());
-            fproductList = crudFproduct.getFproducts(guiCRUDFProduct.getTxtSearch().getText());
-        } else {
-            fproductList = crudFproduct.getFproducts(guiCRUDFProduct.getTxtSearch().getText());
+        if (guiCRUDFProduct.getChboxSearchByCategory().isSelected() && guiCRUDFProduct.getCategorySearch().getSelectedIndex() > -1) {
+            String nameCat = guiCRUDFProduct.getCategorySearch().getSelectedItem().toString();
+            String catId = category.getCategoryByName(nameCat).get("id").toString(); 
+            fproductList = crudFproduct.getFproductsByCategory(guiCRUDFProduct.getTxtSearch().getText(),Integer.valueOf(catId));
+       } else {
+            if (editingInformation) {
+                pproductList = crudPproduct.getPproducts(guiCRUDFProduct.getTxtSearch().getText());
+                eproductList = crudEproduct.getEproducts(guiCRUDFProduct.getTxtSearch().getText());
+                fproductList = crudFproduct.getFproducts(guiCRUDFProduct.getTxtSearch().getText());
+            } else {
+                fproductList = crudFproduct.getFproducts(guiCRUDFProduct.getTxtSearch().getText());
+            }
         }
         refreshList();
     }
@@ -149,51 +156,73 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
      */
     public void refreshList() throws RemoteException {
         tableProductsDefault.setRowCount(0);
-        if (editingInformation) {
-            Iterator<Map> it = pproductList.iterator();
-            while (it.hasNext()) {
-                Map<String, Object> prod = it.next();
-                Object row[] = new String[4];
-                row[0] = prod.get("id").toString();
-                row[1] = prod.get("name").toString(); //NOMBRE
-                row[2] = "-"; //CATEGORIA
-                row[3] = "Primario"; // TIPO
-                tableProductsDefault.addRow(row);
-            }
-            it = eproductList.iterator();
-            while (it.hasNext()) {
-                Map<String, Object> prod = it.next();
-                Object row[] = new String[4];
-                row[0] = prod.get("id").toString();
-                row[1] = prod.get("name").toString(); //NOMBRE
-                row[2] = "-"; //CATEGORIA
-                row[3] = "Elaborado"; // TIPO
-                tableProductsDefault.addRow(row);
-            }
-            it = fproductList.iterator();
-            while (it.hasNext()) {
-                Map<String, Object> prod = it.next();
-                if (!(prod.get("id").toString().equals(guiCRUDFProduct.getTxtId().getText()))) {
-                    Object row[] = new String[4];
-                    row[0] = prod.get("id").toString();
-                    row[1] = prod.get("name").toString(); //NOMBRE
-                    Map<String, Object> subC = category.getSubcategory(Integer.parseInt(prod.get("subcategory_id").toString()));
-                    row[2] = subC.get("name").toString(); //CATEGORIA
-                    row[3] = "Final"; // TIPO
-                    tableProductsDefault.addRow(row);
-                }
-            }
-        } else {
+        if (guiCRUDFProduct.getChboxSearchByCategory().isSelected() && guiCRUDFProduct.getCategorySearch().getSelectedIndex() > -1) {
             Iterator<Map> it = fproductList.iterator();
             while (it.hasNext()) {
                 Map<String, Object> prod = it.next();
-                Object row[] = new String[4];
+                Object row[] = new String[5];
                 row[0] = prod.get("id").toString();
                 row[1] = prod.get("name").toString(); //NOMBRE
                 Map<String, Object> subC = category.getSubcategory(Integer.parseInt(prod.get("subcategory_id").toString()));
-                row[2] = subC.get("name").toString(); //CATEGORIA
-                row[3] = "Final"; // TIPO
+                Map<String, Object> cat = category.getCategoryOfSubcategory(Integer.parseInt(prod.get("subcategory_id").toString()));
+                row[2] = cat.get("name").toString(); //CATEGORIA
+                row[3] = subC.get("name").toString(); //SUBCAT
+                row[4] = "Final"; // TIPO
                 tableProductsDefault.addRow(row);
+            }
+        } else {
+            if (editingInformation) {
+                Iterator<Map> it = pproductList.iterator();
+                while (it.hasNext()) {
+                    Map<String, Object> prod = it.next();
+                    Object row[] = new String[5];
+                    row[0] = prod.get("id").toString();
+                    row[1] = prod.get("name").toString(); //NOMBRE
+                    row[2] = "-"; //CATEGORIA
+                    row[3] = "-"; //SUBCAT
+                    row[4] = "Primario"; // TIPO
+                    tableProductsDefault.addRow(row);
+                }
+                it = eproductList.iterator();
+                while (it.hasNext()) {
+                    Map<String, Object> prod = it.next();
+                    Object row[] = new String[5];
+                    row[0] = prod.get("id").toString();
+                    row[1] = prod.get("name").toString(); //NOMBRE
+                    row[2] = "-"; //CATEGORIA
+                    row[3] = "-"; //SUBCAT
+                    row[4] = "Elaborado"; // TIPO
+                    tableProductsDefault.addRow(row);
+                }
+                it = fproductList.iterator();
+                while (it.hasNext()) {
+                    Map<String, Object> prod = it.next();
+                    if (!(prod.get("id").toString().equals(guiCRUDFProduct.getTxtId().getText()))) {
+                        Object row[] = new String[5];
+                        row[0] = prod.get("id").toString();
+                        row[1] = prod.get("name").toString(); //NOMBRE
+                        Map<String, Object> subC = category.getSubcategory(Integer.parseInt(prod.get("subcategory_id").toString()));
+                        Map<String, Object> cat = category.getCategoryOfSubcategory(Integer.parseInt(prod.get("subcategory_id").toString()));
+                        row[2] = cat.get("name").toString(); //CATEGORIA
+                        row[3] = subC.get("name").toString(); //SUBCAT
+                        row[4] = "Final"; // TIPO
+                        tableProductsDefault.addRow(row);
+                    }
+                }
+            } else {
+                Iterator<Map> it = fproductList.iterator();
+                while (it.hasNext()) {
+                    Map<String, Object> prod = it.next();
+                    Object row[] = new String[5];
+                    row[0] = prod.get("id").toString();
+                    row[1] = prod.get("name").toString(); //NOMBRE
+                    Map<String, Object> subC = category.getSubcategory(Integer.parseInt(prod.get("subcategory_id").toString()));
+                    Map<String, Object> cat = category.getCategoryOfSubcategory(Integer.parseInt(prod.get("subcategory_id").toString()));
+                    row[2] = cat.get("name").toString(); //CATEGORIA
+                    row[3] = subC.get("name").toString(); //SUBCAT
+                    row[4] = "Final"; // TIPO
+                    tableProductsDefault.addRow(row);
+                }
             }
         }
     }
@@ -227,7 +256,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
                     row[1] = tableProducts.getValueAt(tableProducts.getSelectedRow(), 1); //NOMBRE                    
                     String idxs = tableProducts.getValueAt(tableProducts.getSelectedRow(), 0).toString();
                     int idx = Integer.valueOf(idxs);
-                    if (((String) tableProducts.getValueAt(tableProducts.getSelectedRow(), 3)).equals("Primario")) {
+                    if (((String) tableProducts.getValueAt(tableProducts.getSelectedRow(), 4)).equals("Primario")) {
                         String measureU = crudPproduct.getPproduct(idx).get("measure_unit").toString();
                         String quantity = JOptionPane.showInputDialog(guiCRUDFProduct, "Cantidad en " + measureU);
                         if (quantity != null) {
@@ -246,7 +275,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
                             if (!quantity.isEmpty()) {
                                 row[2] = quantity; // Cantidad  
                                 row[3] = "unitario"; //unidad de medida
-                                if (((String) tableProducts.getValueAt(tableProducts.getSelectedRow(), 3)).equals("Elaborado")) {
+                                if (((String) tableProducts.getValueAt(tableProducts.getSelectedRow(), 4)).equals("Elaborado")) {
                                     row[4] = "Elaborado";// Tipo  
                                 } else {
                                     row[4] = "Final";// Tipo  
@@ -304,6 +333,20 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
             }
         }
         return false;
+    }
+
+    /**
+     * Setea en txtRealGain la ganancia real
+     *
+     */
+    public void calculateRealGain() {
+        if (!guiCRUDFProduct.getTxtSellPrice().getText().isEmpty() && !guiCRUDFProduct.getTxtProductionPrice().getText().isEmpty()) {
+            float sell = ParserFloat.stringToFloat(guiCRUDFProduct.getTxtSellPrice().getText());
+            float production = ParserFloat.stringToFloat(guiCRUDFProduct.getTxtProductionPrice().getText());
+            float dif = sell - production;
+            float x = (dif * 100) / production;
+            guiCRUDFProduct.getTxtRealGain().setText(ParserFloat.floatToString(x) + "%");
+        }
     }
 
     /**
@@ -423,6 +466,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
         }
         guiCRUDFProduct.getTxtProductionPrice().setText(ParserFloat.floatToString(price));
         guiCRUDFProduct.getTxtSuggestedPrice().setText(ParserFloat.floatToString(price + price * GeneralConfig.percent / 100));
+        calculateRealGain();
     }
 
     @Override
@@ -591,6 +635,7 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
                     try {
                         category.create(quantity);
                         guiCRUDFProduct.loadCategory();
+                        guiCRUDFProduct.loadCategorySearch();
                     } catch (RemoteException ex) {
                         Logger.getLogger(ControllerGuiCRUDFproduct.class.getName()).log(Level.SEVERE, null, ex);
                     }

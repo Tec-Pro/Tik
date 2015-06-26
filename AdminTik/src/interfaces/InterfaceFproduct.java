@@ -152,4 +152,14 @@ public interface InterfaceFproduct extends Remote {
 
     
     public int belongsTo(int idFProduct) throws java.rmi.RemoteException; 
+    
+    /**
+     * Retorna todos los productos fianles pertenecientes a una cat
+     * @param name o id
+     * @param idCategory
+     * @return List<Map>
+     * @throws java.rmi.RemoteException
+     */
+    public List<Map> getFproductsByCategory(String name, int idCategory) throws java.rmi.RemoteException; 
+
 }

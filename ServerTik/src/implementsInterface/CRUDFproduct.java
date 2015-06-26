@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import models.Category;
 import models.Eproduct;
 import models.EproductsPproducts;
 import models.Fproduct;
@@ -17,6 +18,7 @@ import models.FproductsEproducts;
 import models.FproductsFproducts;
 import models.FproductsPproducts;
 import models.Pproduct;
+import models.Subcategory;
 import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.Model;
 import utils.Pair;
@@ -252,5 +254,22 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
         } else {
             return 0;
         }
+    }
+
+    @Override
+    public List<Map> getFproductsByCategory(String name, int idCategory) throws RemoteException {
+        Utils.abrirBase();
+        List<Map> ret = Fproduct.where("removed = ? and (id like ? or name like ?)", 0, "%" + name + "%", "%" + name + "%").toMaps();
+        List<Map> ret2 = Fproduct.where("removed = ? and (id like ? or name like ?)", 0, "%" + name + "%", "%" + name + "%").toMaps();
+        ret2.removeAll(ret);
+        for (Map m: ret){
+            Subcategory subcategory = Subcategory.findById(m.get("subcategory_id"));
+            if (subcategory != null) {
+                if (subcategory.parent(Category.class).getId().equals(idCategory)){
+                    ret2.add(m);
+                }
+            }
+        }       
+        return ret2;
     }
 }
