@@ -44,6 +44,7 @@ public class GuiMain extends javax.swing.JFrame {
         this.btnMenu.addActionListener(lis);
         this.btnPurchase.addActionListener(lis);
         this.btnConfig.addActionListener(lis);
+        this.btnDailyCashbox.addActionListener(lis);
     }
 
     public JMenuItem getBtnConfig() {
@@ -143,6 +144,8 @@ public class GuiMain extends javax.swing.JFrame {
         btnPurchase = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         btnEmployes = new javax.swing.JMenuItem();
+        jMenu7 = new javax.swing.JMenu();
+        btnDailyCashbox = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         btnConfig = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
@@ -220,6 +223,14 @@ public class GuiMain extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu5);
 
+        jMenu7.setText("Caja");
+
+        btnDailyCashbox.setText("Caja diaria");
+        btnDailyCashbox.setActionCommand("CAJA");
+        jMenu7.add(btnDailyCashbox);
+
+        jMenuBar1.add(jMenu7);
+
         jMenu6.setText("Configuracion");
 
         btnConfig.setText("Configuracion general");
@@ -264,6 +275,7 @@ public class GuiMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem btnAbout;
     private javax.swing.JMenuItem btnAdmins;
     private javax.swing.JMenuItem btnConfig;
+    private javax.swing.JMenuItem btnDailyCashbox;
     private javax.swing.JMenuItem btnDisconnect;
     private javax.swing.JMenuItem btnEProduct;
     private javax.swing.JMenuItem btnEmployes;
@@ -281,6 +293,15 @@ public class GuiMain extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
+    private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuBar jMenuBar1;
     // End of variables declaration//GEN-END:variables
+
+
+    /**
+     * @return the btnNewWithdrawal
+     */
+    public javax.swing.JMenuItem getBtnDailyCashbox() {
+        return btnDailyCashbox;
+    }
 }
