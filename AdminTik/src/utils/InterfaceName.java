@@ -27,6 +27,8 @@ public class InterfaceName {
     public static final String CRUDPresence = "CRUDPresence";
     public static final String CRUDOrder = "CRUDOrder";
     public static final String server = "Server";
+    public static final String CRUDWithdrawal = "CRUDWithdrawal";
+    public static final String CRUDDeposits = "CRUDDeposits";
     public static Registry registry;
     public static final String GeneralConfig = "GeneralConfig";
 
