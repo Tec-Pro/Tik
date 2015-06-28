@@ -17,6 +17,7 @@ import models.Fproduct;
 import models.FproductsEproducts;
 import models.FproductsFproducts;
 import models.FproductsPproducts;
+import models.OrdersFproducts;
 import models.Pproduct;
 import models.Subcategory;
 import org.javalite.activejdbc.Base;
@@ -249,7 +250,7 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
         //Devuelve 1 si el producto pertenece a la cocina, 0 si pertenece al bar.
         Utils.abrirBase();
         Fproduct prod = Fproduct.findById(idFProduct);
-        if (prod.getString("belong").equals("Cocina")){
+        if (prod.getString("belong").equals("Cocina")) {
             return 1;
         } else {
             return 0;
@@ -262,14 +263,43 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
         List<Map> ret = Fproduct.where("removed = ? and (id like ? or name like ?)", 0, "%" + name + "%", "%" + name + "%").toMaps();
         List<Map> ret2 = Fproduct.where("removed = ? and (id like ? or name like ?)", 0, "%" + name + "%", "%" + name + "%").toMaps();
         ret2.removeAll(ret);
-        for (Map m: ret){
+        for (Map m : ret) {
             Subcategory subcategory = Subcategory.findById(m.get("subcategory_id"));
             if (subcategory != null) {
-                if (subcategory.parent(Category.class).getId().equals(idCategory)){
+                if (subcategory.parent(Category.class).getId().equals(idCategory)) {
                     ret2.add(m);
                 }
             }
-        }       
+        }
         return ret2;
+    }
+
+    @Override
+    public List<Map> getLastUsedProducts() throws RemoteException {
+        Utils.abrirBase();
+        List<Map> lastFProductsList = new LinkedList();
+        List<Map> lastFproduct = OrdersFproducts.findAll().orderBy("id desc").limit(5).toMaps();
+        //List<Map> lastFproduct = OrdersFproducts.findBySQL("select orders_fproducts.*, max(id) from orders_fproducts").toMaps();
+        if (!lastFproduct.isEmpty()) {
+            //Obtengo el ultimo registro y lo trato
+            for(Map ofp : lastFproduct){
+               Map fp = Fproduct.first("id = ?", ofp.get("fproduct_id")).toMap();
+               lastFProductsList.add(fp); 
+                System.out.println("FP "+ fp.get("id"));
+            }
+           /* Map<String, Object> last = lastFproduct.get(0);
+            int lastId = (int) last.get("id");
+            int lastIdFP = (int) last.get("fproduct_id");
+            Map fp = Fproduct.first("id = ?", lastIdFP).toMap();
+            lastFProductsList.add(fp);
+            //obtengo los demas
+            for (int i = 1; i < 5; i++) {
+                Map ofp = OrdersFproducts.first("id = ?", lastId - i).toMap();
+                lastIdFP = (int) ofp.get("fproduct_id");
+                fp = Fproduct.first("id = ?", lastIdFP).toMap();
+                lastFProductsList.add(fp);
+            }*/
+        }
+        return lastFProductsList;
     }
 }

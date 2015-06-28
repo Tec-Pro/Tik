@@ -25,6 +25,7 @@ import gui.providers.GuiCRUDProviders;
 import gui.providers.purchases.GuiPurchase;
 //import gui.withdrawal.GUICRUDWithdrawal;
 import interfaces.InterfaceGeneralConfig;
+import interfaces.InterfacePresence;
 import interfaces.providers.InterfaceProvider;
 import interfaces.providers.InterfaceProviderCategory;
 import interfaces.providers.InterfaceProvidersSearch;
@@ -52,10 +53,8 @@ public class ControllerMain implements ActionListener {
 
     public static GuiMain guiMain; //interfaz principal con el desktop, publico para los Dialog.
     private static Map<String, Object> userLogged; //usuario logeado
-    
     //interface configuracion de propiedades en el servidor
     private static InterfaceGeneralConfig generalConfig;
-    
     //guis
     private static GuiAdminLogin guiAdminLogin; //para poder cerrar sesión
     private static GuiCRUDAdmin guiCRUDAdmin; //gui del crud de admin
@@ -70,7 +69,6 @@ public class ControllerMain implements ActionListener {
     private static GUICashbox guiCashbox;
     private static GuiMenu guiMenu;
     private static GuiPurchase guiPurchase;
-
     //controladores
     private static ControllerGuiCRUDAdmin controllerCRUDAdmin; //controlador de la gui para admin
     private ControllerGuiCRUDEproduct controllerCRUDEProduct; //controlador productos elaborados
@@ -83,8 +81,8 @@ public class ControllerMain implements ActionListener {
     private ControllerGuiPurchase controllerGuiPurchase;
     private ControllerGUICashbox controllerGuiCashbox;
 //    private ControllerGUICRUDWithdrawal controllerGuiCRUDWithdrawal;
+    private InterfacePresence crudPresence;
 
-    
     public ControllerMain(GuiAdminLogin guiAdminLogin) throws NotBoundException, MalformedURLException, RemoteException {
         this.guiAdminLogin = guiAdminLogin; //hago esto, así si cierra sesión pongo en visible la ventana
         guiMain = new GuiMain();
@@ -131,7 +129,7 @@ public class ControllerMain implements ActionListener {
         InterfaceProviderCategory providerCategory = (InterfaceProviderCategory) InterfaceName.registry.lookup(InterfaceName.CRUDProviderCategory);
         InterfaceProvidersSearch providersSearch = (InterfaceProvidersSearch) InterfaceName.registry.lookup(InterfaceName.providersSearch);
         generalConfig = (InterfaceGeneralConfig) InterfaceName.registry.lookup(InterfaceName.GeneralConfig);
-        
+
         //creo los controladores 
         controllerCRUDAdmin = new ControllerGuiCRUDAdmin(userLogged, guiCRUDAdmin);
         controllerCRUDEProduct = new ControllerGuiCRUDEproduct(guiCRUDEProduct);
@@ -146,6 +144,8 @@ public class ControllerMain implements ActionListener {
         controllerGuiCashbox = new ControllerGUICashbox(guiCashbox);
         //restauro el puntero asi ya se que termino de cargar todo
         guiMain.setCursor(Cursor.DEFAULT_CURSOR);
+
+        crudPresence = (InterfacePresence) InterfaceName.registry.lookup(InterfaceName.CRUDPresence);
 
     }
 
@@ -241,7 +241,7 @@ public class ControllerMain implements ActionListener {
                 guiCRUDProviders.setMaximum(true);
             } catch (RemoteException | PropertyVetoException ex) {
                 Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
-                
+
             }
             guiCRUDProviders.setVisible(true);
             guiCRUDProviders.toFront();
@@ -295,7 +295,8 @@ public class ControllerMain implements ActionListener {
                     JOptionPane.showMessageDialog(guiMain, "Error al guardar configuracion: " + ex.getMessage());
                 }
             }
-        } if (ae.getActionCommand().equals("CAJA")){
+        }
+        if (ae.getActionCommand().equals("CAJA")) {
             try {
                 guiCashbox.setMaximum(true);
             } catch (PropertyVetoException ex) {
@@ -304,6 +305,16 @@ public class ControllerMain implements ActionListener {
             guiCashbox.setVisible(true);
             guiCashbox.toFront();
         }
+        if (ae.getSource() == guiMain.getBtnCloseCashbox()) {
+            try {
+                if (crudPresence.isSomeoneLogin()) {
+                    JOptionPane.showMessageDialog(guiMain, "Aun hay empleados logeados, por favor deslogee todos los empleados antes de cerrar la caja");
+                } else {
+                    //BLOQUEAR BOTONES CAJA.
+                }
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
-
 }

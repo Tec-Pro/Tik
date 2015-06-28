@@ -133,18 +133,31 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                 }
             }
         });
+
+        guiOrder.getTableMostUsedProducts().addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (evt.getClickCount() == 2) {
+                    int r = guiOrder.getTableMostUsedProducts().getSelectedRow();
+                    guiAmount.getLblProd().setText(guiOrder.getTableMostUsedProducts().getValueAt(r, 0).toString());
+                    guiAmount.setLocationRelativeTo(null);
+                    guiAmount.setVisible(true);
+                }
+            }
+        });
+
         guiOrder.getTxtSearch().addKeyListener(new KeyAdapter() {
 
             @Override
             public void keyReleased(KeyEvent evt) {
                 try {
-                    if(evt.getKeyCode() == KeyEvent.VK_ENTER){ 
+                    if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
                         search();
                     }
-                    if(guiOrder.getTxtSearch().getText().length() == 0){
+                    if (guiOrder.getTxtSearch().getText().length() == 0) {
                         CreateTree();
                     }
-                        
+
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -168,16 +181,14 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
         loadProducts();
     }
 
-    
-     private void removeRowProviderCategoriesTable() {
+    private void removeRowProviderCategoriesTable() {
         int selectedRow = guiOrder.getTableProducts().getSelectedRow();
         DefaultTableModel categoryModel = ((DefaultTableModel) guiOrder.getTableProductsDefault());
         //Me fijo el id de la categoría seleccionada.
         boolean isDone = (boolean) guiOrder.getTableProducts().getValueAt(selectedRow, 6);
-        if(isDone){
+        if (isDone) {
             JOptionPane.showMessageDialog(guiOrder, "Producto ya enviado, no se puede modificar", "Error", JOptionPane.INFORMATION_MESSAGE);
-        }
-        else{
+        } else {
             categoryModel.removeRow(selectedRow);
         }
     }
@@ -193,6 +204,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
 //        //se añade al MAP
 //        controllerGuiMain.getButtonsOrder().put(user, OrderBtn);
 //    }
+
     private void search() throws RemoteException {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Menu");
         DefaultTreeModel model = new DefaultTreeModel(root);
@@ -355,6 +367,16 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
         DefaultTreeModel modelo = new DefaultTreeModel(root);
         guiOrder.getTreeMenu().setModel(modelo);
         guiOrder.getTreeMenu().setCellRenderer(this);
+
+        //*****Cargo los ultimos 5 productos usados a la tabla**********
+        guiOrder.getTableMostUsedProductsDefault().setRowCount(0);
+        List<Map> lastFproducts = crudFproduct.getLastUsedProducts();
+        for (Map fp : lastFproducts) {
+            Object[] row = new Object[1];
+            row[0] = fp.get("name");
+            guiOrder.getTableMostUsedProductsDefault().addRow(row);
+        }
+
     }
 
     /* carga los productos de la order actual */
@@ -376,8 +398,9 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
             row[2] = prod.get("name");
             float price = (float) prod.get("sell_price");
             row[3] = ParserFloat.floatToString(price * quantity);
-            if(!(boolean) Orderprod.get("paid"))
+            if (!(boolean) Orderprod.get("paid")) {
                 totalPrice += price * quantity;
+            }
             row[4] = (boolean) Orderprod.get("done");
             row[5] = (boolean) Orderprod.get("commited");
             row[6] = (boolean) Orderprod.get("issued");
@@ -385,9 +408,10 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
             guiOrder.getTableProductsDefault().addRow(row);
         }
         guiOrder.getjTextDescription().setText(currentOrder.get("description").toString());
-        Integer persons = (Integer)currentOrder.get("persons");
-        if(persons == null)
+        Integer persons = (Integer) currentOrder.get("persons");
+        if (persons == null) {
             persons = 0;
+        }
         guiOrder.getjSpinnerPersons().setValue(persons);
         guiOrder.getLblTotalPrice().setText(ParserFloat.floatToString(totalPrice));
     }
@@ -427,7 +451,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
 
         //*******GuiOrder**************//
         if (e.getSource().equals(guiOrder.getBtnSend())) {
-           
+
             if (currentOrderId == null) { //si el pedido es nuevo, carga todos los productos y los envia
                 DefaultTableModel productsTable = guiOrder.getTableProductsDefault();
                 List<Map<String, Object>> products = new LinkedList<>();
@@ -442,7 +466,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                     products.add(prodMap);
                 }
                 try {
-                    int persons = (Integer)guiOrder.getjSpinnerPersons().getValue();
+                    int persons = (Integer) guiOrder.getjSpinnerPersons().getValue();
                     currentOrder = crudOrder.sendOrder(currentWaiterId, guiOrder.getjTextDescription().getText(), persons, products);
                     guiOrder.getLblOrderNum().setText(currentOrder.get("order_number").toString());
                     long idLong = (long) currentOrder.get("id");
@@ -450,7 +474,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                     productsTable.setRowCount(0);
                     loadProducts();
                     JOptionPane.showMessageDialog(guiOrder, "Nuevo pedido Enviado!", "Pedido Enviado", JOptionPane.INFORMATION_MESSAGE);
-                   // guiOrder.getBtnSend().setEnabled(false);
+                    // guiOrder.getBtnSend().setEnabled(false);
 //                    addMyComponent(currentOrder.get("order_number").toString());
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
@@ -472,14 +496,14 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                 }
                 try {
                     if ((boolean) currentOrder.get("closed")) {
-                        int res=JOptionPane.showConfirmDialog(guiOrder, "           El pedido esta cerrado \n Desea agregar más productos?", "Atencion", JOptionPane.OK_CANCEL_OPTION);
-                        if(res==JOptionPane.CANCEL_OPTION){
+                        int res = JOptionPane.showConfirmDialog(guiOrder, "           El pedido esta cerrado \n Desea agregar más productos?", "Atencion", JOptionPane.OK_CANCEL_OPTION);
+                        if (res == JOptionPane.CANCEL_OPTION) {
                             productsTable.setRowCount(0);
                             loadProducts();
                             return;
                         }
                     }
-                    int persons = (Integer)guiOrder.getjSpinnerPersons().getValue();
+                    int persons = (Integer) guiOrder.getjSpinnerPersons().getValue();
                     crudOrder.updateOrder(currentOrderId, guiOrder.getjTextDescription().getText(), persons, products);
                     productsTable.setRowCount(0);
                     loadProducts();
@@ -490,25 +514,25 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                 }
             }
             int r = JOptionPane.showConfirmDialog(null, "Quiere hacer algo mas?");
-            if(r==0){
+            if (r == 0) {
                 guiOrder.setVisible(false);
                 return;
-            }
-            else{
-                if(r==1){
+            } else {
+                if (r == 1) {
                     guiOrder.setVisible(false);
                     guiOrder.getParent().setVisible(false);
                     controllerGuiMain.setLoginGridVisible(true);
-                }
-                else
+                } else {
                     return;
+                }
             }
         }
 
         if (e.getSource().equals(guiOrder.getBtnClose())) { //cierra el pedido
             int r = JOptionPane.showConfirmDialog(null, "Desea cerrar el pedido");
-            if(r!=0)
+            if (r != 0) {
                 return;
+            }
             if (currentOrderId == null) {
                 return;
             }
@@ -544,13 +568,13 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
         //*******GuiAmount**************//
         if (e.getSource().equals(guiAmount.getBtnAccept())) {
             try {
-                List<Map> fproducts = crudFproduct.getFproducts(currentSelectedNodeName);
+                List<Map> fproducts = crudFproduct.getFproducts(guiAmount.getLblProd().getText());
                 if (fproducts.size() == 1) {
                     Map<String, Object> fp = fproducts.get(0);
                     Object[] row = new Object[8];
                     row[0] = fp.get("id");
                     row[1] = ParserFloat.stringToFloat(guiAmount.getTxtAmount().getText());
-                    row[2] = currentSelectedNodeName;
+                    row[2] = guiAmount.getLblProd().getText();
                     float price = (float) fp.get("sell_price");
                     float amount = ParserFloat.stringToFloat(guiAmount.getTxtAmount().getText());
                     row[3] = ParserFloat.floatToString(price * amount);
@@ -565,7 +589,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                 guiAmount.getTxtAmount().setText("1");
                 guiAmount.setVisible(false);
                // guiOrder.getBtnSend().setEnabled(true);
-                
+
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
             }
