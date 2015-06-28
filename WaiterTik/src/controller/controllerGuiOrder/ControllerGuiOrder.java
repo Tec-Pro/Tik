@@ -355,6 +355,16 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
         DefaultTreeModel modelo = new DefaultTreeModel(root);
         guiOrder.getTreeMenu().setModel(modelo);
         guiOrder.getTreeMenu().setCellRenderer(this);
+        
+        //*****Cargo los ultimos 5 productos usados a la tabla**********
+        guiOrder.getTableMostUsedProductsDefault().setRowCount(0);
+        List<Map> lastFproducts = crudFproduct.getLastUsedProducts();
+        for(Map fp : lastFproducts){
+            Object[] row = new Object[1];
+            row[0] = fp.get("name");
+            guiOrder.getTableMostUsedProductsDefault().addRow(row);
+        }
+        
     }
 
     /* carga los productos de la order actual */

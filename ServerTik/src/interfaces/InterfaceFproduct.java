@@ -168,4 +168,5 @@ public interface InterfaceFproduct extends Remote {
      */
     public List<Map> getFproductsByCategory(String name, int idCategory) throws java.rmi.RemoteException; 
 
+    public List<Map> getLastUsedProducts() throws java.rmi.RemoteException;
 }
