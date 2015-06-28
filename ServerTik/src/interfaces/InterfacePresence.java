@@ -93,6 +93,11 @@ public interface InterfacePresence extends Remote {
      */
     public void logoutAllCooks() throws java.rmi.RemoteException;
     
-    
+     /**
+     * devuelve true si hay alguien logeado
+     *
+     * @throws java.rmi.RemoteException
+     */
+    public boolean isSomeoneLogin() throws java.rmi.RemoteException;
     
 }

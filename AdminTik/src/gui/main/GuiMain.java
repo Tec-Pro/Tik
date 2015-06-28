@@ -45,6 +45,7 @@ public class GuiMain extends javax.swing.JFrame {
         this.btnPurchase.addActionListener(lis);
         this.btnConfig.addActionListener(lis);
         this.btnDailyCashbox.addActionListener(lis);
+        this.btnCloseCashbox.addActionListener(lis);
     }
 
     public JMenuItem getBtnConfig() {
@@ -109,6 +110,10 @@ public class GuiMain extends javax.swing.JFrame {
         return desktop;
     }
 
+    public JMenuItem getBtnCloseCashbox() {
+        return btnCloseCashbox;
+    }
+
 
 
 
@@ -146,6 +151,7 @@ public class GuiMain extends javax.swing.JFrame {
         btnEmployes = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
         btnDailyCashbox = new javax.swing.JMenuItem();
+        btnCloseCashbox = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         btnConfig = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
@@ -229,6 +235,9 @@ public class GuiMain extends javax.swing.JFrame {
         btnDailyCashbox.setActionCommand("CAJA");
         jMenu7.add(btnDailyCashbox);
 
+        btnCloseCashbox.setText("Cerrar");
+        jMenu7.add(btnCloseCashbox);
+
         jMenuBar1.add(jMenu7);
 
         jMenu6.setText("Configuracion");
@@ -274,6 +283,7 @@ public class GuiMain extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnAbout;
     private javax.swing.JMenuItem btnAdmins;
+    private javax.swing.JMenuItem btnCloseCashbox;
     private javax.swing.JMenuItem btnConfig;
     private javax.swing.JMenuItem btnDailyCashbox;
     private javax.swing.JMenuItem btnDisconnect;
