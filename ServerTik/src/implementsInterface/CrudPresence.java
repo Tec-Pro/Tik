@@ -34,8 +34,8 @@ public class CrudPresence extends UnicastRemoteObject implements InterfacePresen
         Date now = new Date(System.currentTimeMillis());
         SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat hour = new SimpleDateFormat("HH:mm:ss");
-        
-        
+
+
         Presence p = Presence.createIt("day", date.format(now), "entry_time", hour.format(now), "user_id", userId);
         User.findById(userId).set("order_count", 0);
         Base.commitTransaction();
@@ -48,7 +48,7 @@ public class CrudPresence extends UnicastRemoteObject implements InterfacePresen
         Base.openTransaction();
         Date now = new Date(System.currentTimeMillis());
         SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
-        List<Presence> listP = Presence.where("user_id = ? and day = '00:00:00'", userId).orderBy("id desc");
+        List<Presence> listP = Presence.where("user_id = ? and departure_time = '00:00:00'", userId).orderBy("id desc");
         if (listP != null) {
             SimpleDateFormat hour = new SimpleDateFormat("HH:mm:ss");
             Presence p = listP.get(0);
@@ -90,7 +90,7 @@ public class CrudPresence extends UnicastRemoteObject implements InterfacePresen
 
     @Override
     public void logoutAllWaiters() throws RemoteException {
-         Utils.abrirBase();
+        Utils.abrirBase();
         Base.openTransaction();
         Date now = new Date(System.currentTimeMillis());
         SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
@@ -149,5 +149,20 @@ public class CrudPresence extends UnicastRemoteObject implements InterfacePresen
             }
         }
         Base.commitTransaction();
+    }
+
+    @Override
+    public boolean isSomeoneLogin() throws RemoteException {
+        Utils.abrirBase();
+        List<Presence> listP = Presence.where("departure_time = '00:00:00'");
+        if (listP == null) {
+            return false;
+        } else {
+            if (!listP.isEmpty()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 }
