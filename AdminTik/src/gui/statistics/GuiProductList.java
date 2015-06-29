@@ -5,6 +5,9 @@
  */
 package gui.statistics;
 
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author eze
@@ -18,6 +21,18 @@ public class GuiProductList extends javax.swing.JInternalFrame {
         initComponents();
     }
 
+    public JTable getTableProductList() {
+        return tableProductList;
+    }
+    
+    public DefaultTableModel getModelTableProductList() {
+        return (DefaultTableModel) tableProductList.getModel();
+    }
+
+    public void cleanGuiProductList(){
+        getModelTableProductList().setRowCount(0);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -45,14 +60,14 @@ public class GuiProductList extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Producto", "Costo Elab.", "Precio Sugerido", "Precio Venta", "% Ganancia", "$ Ganancia"
+                "Producto", "Categoría", "SubCategoría", "Costo Elab.", "Precio Sugerido", "Precio Venta", "% Ganancia", "$ Ganancia"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -68,21 +83,13 @@ public class GuiProductList extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(tableProductList);
         tableProductList.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         if (tableProductList.getColumnModel().getColumnCount() > 0) {
-            tableProductList.getColumnModel().getColumn(1).setMinWidth(120);
             tableProductList.getColumnModel().getColumn(1).setPreferredWidth(120);
-            tableProductList.getColumnModel().getColumn(1).setMaxWidth(120);
-            tableProductList.getColumnModel().getColumn(2).setMinWidth(120);
             tableProductList.getColumnModel().getColumn(2).setPreferredWidth(120);
-            tableProductList.getColumnModel().getColumn(2).setMaxWidth(120);
-            tableProductList.getColumnModel().getColumn(3).setMinWidth(120);
             tableProductList.getColumnModel().getColumn(3).setPreferredWidth(120);
-            tableProductList.getColumnModel().getColumn(3).setMaxWidth(120);
-            tableProductList.getColumnModel().getColumn(4).setMinWidth(120);
             tableProductList.getColumnModel().getColumn(4).setPreferredWidth(120);
-            tableProductList.getColumnModel().getColumn(4).setMaxWidth(120);
-            tableProductList.getColumnModel().getColumn(5).setMinWidth(120);
             tableProductList.getColumnModel().getColumn(5).setPreferredWidth(120);
-            tableProductList.getColumnModel().getColumn(5).setMaxWidth(120);
+            tableProductList.getColumnModel().getColumn(6).setPreferredWidth(120);
+            tableProductList.getColumnModel().getColumn(7).setPreferredWidth(120);
         }
 
         javax.swing.GroupLayout panelImage1Layout = new javax.swing.GroupLayout(panelImage1);

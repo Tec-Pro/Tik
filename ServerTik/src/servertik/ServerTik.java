@@ -18,6 +18,7 @@ import implementsInterface.CrudUser;
 import implementsInterface.GeneralConfig;
 import implementsInterface.Server;
 import implementsInterface.providers.purchase.CRUDPurchase;
+import implementsInterface.statistics.CRUDStatistics;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -73,6 +74,7 @@ public class ServerTik {
         CRUDFproduct CRUDFproduct = new CRUDFproduct();
         CRUDCategory CRUDCategory = new CRUDCategory();
         CRUDPurchase CRUDPurchase = new CRUDPurchase();
+        CRUDStatistics CRUDStatistics = new CRUDStatistics();
         CRUDOrder CRUDOrder = new CRUDOrder();
         CrudUser CRUDUser = new CrudUser();
         CrudProvider CRUDProvider = new CrudProvider();
@@ -91,6 +93,7 @@ public class ServerTik {
         Naming.rebind(InterfaceName.CRUDFproduct, CRUDFproduct);
         Naming.rebind(InterfaceName.CRUDCategory, CRUDCategory);
         Naming.rebind(InterfaceName.CRUDPurchase, CRUDPurchase);
+        Naming.rebind(InterfaceName.CRUDStatistics, CRUDStatistics);
         Naming.rebind(InterfaceName.CRUDUser, CRUDUser);
         Naming.rebind(InterfaceName.CRUDProvider, CRUDProvider);
         Naming.rebind(InterfaceName.CRUDProviderCategory, CRUDProviderCategory);
