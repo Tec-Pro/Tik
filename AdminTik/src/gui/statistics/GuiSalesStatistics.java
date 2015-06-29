@@ -27,19 +27,23 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tableSalesStatisticsWaiter = new javax.swing.JTable();
-        dateSince = new com.toedter.calendar.JDateChooser();
-        dateUntil = new com.toedter.calendar.JDateChooser();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        comboDaily = new javax.swing.JCheckBox();
-        comboMonthly = new javax.swing.JCheckBox();
-        comboAnnual = new javax.swing.JCheckBox();
+        panelImage1 = new org.edisoncor.gui.panel.PanelImage();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableTotalSalesStatistics = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableSalesStatisticsWaiter = new javax.swing.JTable();
+        jLabel3 = new javax.swing.JLabel();
+        checkDaily = new javax.swing.JCheckBox();
+        jLabel4 = new javax.swing.JLabel();
+        checkMonthly = new javax.swing.JCheckBox();
+        jLabel5 = new javax.swing.JLabel();
+        checkAnnual = new javax.swing.JCheckBox();
+        jLabel2 = new javax.swing.JLabel();
+        dateSince = new com.toedter.calendar.JDateChooser();
+        jLabel1 = new javax.swing.JLabel();
+        dateUntil = new com.toedter.calendar.JDateChooser();
         btnPrintReport = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -48,68 +52,7 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
         setTitle("Estadisticas de Ventas");
         setPreferredSize(new java.awt.Dimension(1300, 700));
 
-        tableSalesStatisticsWaiter.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Mozo", "Ventas", "Mesas", "Personas", "Productos", "Prom. Mesa", "Prom. Persona", "Prom. Producto"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tableSalesStatisticsWaiter.setColumnSelectionAllowed(true);
-        tableSalesStatisticsWaiter.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        tableSalesStatisticsWaiter.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(tableSalesStatisticsWaiter);
-        tableSalesStatisticsWaiter.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        if (tableSalesStatisticsWaiter.getColumnModel().getColumnCount() > 0) {
-            tableSalesStatisticsWaiter.getColumnModel().getColumn(1).setMinWidth(100);
-            tableSalesStatisticsWaiter.getColumnModel().getColumn(1).setPreferredWidth(100);
-            tableSalesStatisticsWaiter.getColumnModel().getColumn(2).setMinWidth(100);
-            tableSalesStatisticsWaiter.getColumnModel().getColumn(2).setPreferredWidth(100);
-            tableSalesStatisticsWaiter.getColumnModel().getColumn(3).setMinWidth(100);
-            tableSalesStatisticsWaiter.getColumnModel().getColumn(3).setPreferredWidth(100);
-            tableSalesStatisticsWaiter.getColumnModel().getColumn(4).setMinWidth(100);
-            tableSalesStatisticsWaiter.getColumnModel().getColumn(4).setPreferredWidth(100);
-            tableSalesStatisticsWaiter.getColumnModel().getColumn(5).setMinWidth(100);
-            tableSalesStatisticsWaiter.getColumnModel().getColumn(5).setPreferredWidth(100);
-            tableSalesStatisticsWaiter.getColumnModel().getColumn(6).setMinWidth(100);
-            tableSalesStatisticsWaiter.getColumnModel().getColumn(6).setPreferredWidth(100);
-            tableSalesStatisticsWaiter.getColumnModel().getColumn(7).setMinWidth(100);
-            tableSalesStatisticsWaiter.getColumnModel().getColumn(7).setPreferredWidth(100);
-        }
-
-        jLabel1.setText("Hasta:");
-
-        jLabel2.setText("Desde:");
-
-        comboDaily.setText("Diario");
-        comboDaily.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-
-        comboMonthly.setText("Mensual");
-        comboMonthly.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        comboMonthly.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboMonthlyActionPerformed(evt);
-            }
-        });
-
-        comboAnnual.setText("Anual");
-        comboAnnual.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        panelImage1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/fondo gris.png"))); // NOI18N
 
         jScrollPane2.setEnabled(false);
 
@@ -152,86 +95,186 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
             tableTotalSalesStatistics.getColumnModel().getColumn(8).setResizable(false);
         }
 
-        jTextField1.setText("TOTAL:");
+        tableSalesStatisticsWaiter.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Mozo", "Turno", "Ventas", "Mesas", "Personas", "Productos", "Prom. Mesa", "Prom. Persona", "Prom. Producto"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tableSalesStatisticsWaiter.setColumnSelectionAllowed(true);
+        tableSalesStatisticsWaiter.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tableSalesStatisticsWaiter.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(tableSalesStatisticsWaiter);
+        tableSalesStatisticsWaiter.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        if (tableSalesStatisticsWaiter.getColumnModel().getColumnCount() > 0) {
+            tableSalesStatisticsWaiter.getColumnModel().getColumn(1).setMinWidth(100);
+            tableSalesStatisticsWaiter.getColumnModel().getColumn(1).setPreferredWidth(100);
+            tableSalesStatisticsWaiter.getColumnModel().getColumn(2).setMinWidth(100);
+            tableSalesStatisticsWaiter.getColumnModel().getColumn(2).setPreferredWidth(100);
+            tableSalesStatisticsWaiter.getColumnModel().getColumn(3).setMinWidth(100);
+            tableSalesStatisticsWaiter.getColumnModel().getColumn(3).setPreferredWidth(100);
+            tableSalesStatisticsWaiter.getColumnModel().getColumn(4).setMinWidth(100);
+            tableSalesStatisticsWaiter.getColumnModel().getColumn(4).setPreferredWidth(100);
+            tableSalesStatisticsWaiter.getColumnModel().getColumn(5).setMinWidth(100);
+            tableSalesStatisticsWaiter.getColumnModel().getColumn(5).setPreferredWidth(100);
+            tableSalesStatisticsWaiter.getColumnModel().getColumn(6).setMinWidth(100);
+            tableSalesStatisticsWaiter.getColumnModel().getColumn(6).setPreferredWidth(100);
+            tableSalesStatisticsWaiter.getColumnModel().getColumn(7).setMinWidth(100);
+            tableSalesStatisticsWaiter.getColumnModel().getColumn(7).setPreferredWidth(100);
+            tableSalesStatisticsWaiter.getColumnModel().getColumn(8).setMinWidth(100);
+            tableSalesStatisticsWaiter.getColumnModel().getColumn(8).setPreferredWidth(100);
+        }
+
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Diario");
+
+        checkDaily.setBackground(new java.awt.Color(0, 0, 0));
+        checkDaily.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Mensual");
+
+        checkMonthly.setBackground(new java.awt.Color(0, 0, 0));
+        checkMonthly.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        checkMonthly.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkMonthlyActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Anual");
+
+        checkAnnual.setBackground(new java.awt.Color(0, 0, 0));
+        checkAnnual.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Desde:");
+
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Hasta:");
 
         btnPrintReport.setText("IMPRIMIR REPORTE");
+
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("TOTAL:");
+
+        javax.swing.GroupLayout panelImage1Layout = new javax.swing.GroupLayout(panelImage1);
+        panelImage1.setLayout(panelImage1Layout);
+        panelImage1Layout.setHorizontalGroup(
+            panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelImage1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelImage1Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2))
+                    .addGroup(panelImage1Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(checkDaily)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(checkMonthly)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(checkAnnual)
+                        .addGap(38, 38, 38)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(dateSince, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(dateUntil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 355, Short.MAX_VALUE)
+                        .addComponent(btnPrintReport, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        panelImage1Layout.setVerticalGroup(
+            panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelImage1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelImage1Layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(btnPrintReport))
+                    .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(dateUntil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2)
+                        .addComponent(jLabel3)
+                        .addComponent(checkDaily)
+                        .addComponent(jLabel4)
+                        .addComponent(checkMonthly)
+                        .addComponent(jLabel5)
+                        .addComponent(checkAnnual)
+                        .addComponent(dateSince, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1)))
+                .addGap(10, 10, 10)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addContainerGap(234, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addComponent(comboDaily)
-                        .addGap(18, 18, 18)
-                        .addComponent(comboMonthly)
-                        .addGap(18, 18, 18)
-                        .addComponent(comboAnnual)
-                        .addGap(49, 49, 49)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dateSince, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(44, 44, 44)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dateUntil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 314, Short.MAX_VALUE)
-                        .addComponent(btnPrintReport, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2)))
-                .addContainerGap())
+            .addComponent(panelImage1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(comboDaily)
-                        .addComponent(comboMonthly)
-                        .addComponent(comboAnnual)
-                        .addComponent(jLabel2)
-                        .addComponent(jLabel1))
-                    .addComponent(dateUntil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnPrintReport)
-                    .addComponent(dateSince, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(266, Short.MAX_VALUE))
+            .addComponent(panelImage1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void comboMonthlyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboMonthlyActionPerformed
+    private void checkMonthlyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkMonthlyActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_comboMonthlyActionPerformed
+    }//GEN-LAST:event_checkMonthlyActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnPrintReport;
-    private javax.swing.JCheckBox comboAnnual;
-    private javax.swing.JCheckBox comboDaily;
-    private javax.swing.JCheckBox comboMonthly;
+    private javax.swing.JCheckBox checkAnnual;
+    private javax.swing.JCheckBox checkDaily;
+    private javax.swing.JCheckBox checkMonthly;
     private com.toedter.calendar.JDateChooser dateSince;
     private com.toedter.calendar.JDateChooser dateUntil;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
+    private org.edisoncor.gui.panel.PanelImage panelImage1;
     private javax.swing.JTable tableSalesStatisticsWaiter;
     private javax.swing.JTable tableTotalSalesStatistics;
     // End of variables declaration//GEN-END:variables

@@ -27,16 +27,20 @@ public class GuiProductStatistics extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        comboDaily = new javax.swing.JCheckBox();
-        comboMonthly = new javax.swing.JCheckBox();
-        comboAnnual = new javax.swing.JCheckBox();
-        jLabel2 = new javax.swing.JLabel();
-        dateSince = new com.toedter.calendar.JDateChooser();
-        jLabel1 = new javax.swing.JLabel();
-        dateUntil = new com.toedter.calendar.JDateChooser();
-        btnPrintReport = new javax.swing.JButton();
+        panelImage1 = new org.edisoncor.gui.panel.PanelImage();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        dateUntil = new com.toedter.calendar.JDateChooser();
+        checkMonthly = new javax.swing.JCheckBox();
+        checkAnnual = new javax.swing.JCheckBox();
+        jLabel2 = new javax.swing.JLabel();
+        dateSince = new com.toedter.calendar.JDateChooser();
+        checkDaily = new javax.swing.JCheckBox();
+        btnPrintReport = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -45,25 +49,7 @@ public class GuiProductStatistics extends javax.swing.JInternalFrame {
         setTitle("Estadisticas de Productos");
         setPreferredSize(new java.awt.Dimension(1300, 700));
 
-        comboDaily.setText("Diario");
-        comboDaily.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-
-        comboMonthly.setText("Mensual");
-        comboMonthly.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        comboMonthly.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboMonthlyActionPerformed(evt);
-            }
-        });
-
-        comboAnnual.setText("Anual");
-        comboAnnual.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-
-        jLabel2.setText("Desde:");
-
-        jLabel1.setText("Hasta:");
-
-        btnPrintReport.setText("IMPRIMIR REPORTE");
+        panelImage1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/fondo gris.png"))); // NOI18N
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -107,21 +93,58 @@ public class GuiProductStatistics extends javax.swing.JInternalFrame {
             jTable1.getColumnModel().getColumn(7).setMaxWidth(100);
         }
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Hasta:");
+
+        checkMonthly.setBackground(new java.awt.Color(0, 0, 0));
+        checkMonthly.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        checkMonthly.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkMonthlyActionPerformed(evt);
+            }
+        });
+
+        checkAnnual.setBackground(new java.awt.Color(0, 0, 0));
+        checkAnnual.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Desde:");
+
+        checkDaily.setBackground(new java.awt.Color(0, 0, 0));
+        checkDaily.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+
+        btnPrintReport.setText("IMPRIMIR REPORTE");
+
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Diario");
+
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Mensual");
+
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Anual");
+
+        javax.swing.GroupLayout panelImage1Layout = new javax.swing.GroupLayout(panelImage1);
+        panelImage1.setLayout(panelImage1Layout);
+        panelImage1Layout.setHorizontalGroup(
+            panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelImage1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(comboDaily)
-                        .addGap(18, 18, 18)
-                        .addComponent(comboMonthly)
-                        .addGap(18, 18, 18)
-                        .addComponent(comboAnnual)
-                        .addGap(49, 49, 49)
+                .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1265, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelImage1Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(checkDaily)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(checkMonthly)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(checkAnnual)
+                        .addGap(38, 38, 38)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(dateSince, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -129,47 +152,69 @@ public class GuiProductStatistics extends javax.swing.JInternalFrame {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(dateUntil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 356, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnPrintReport, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
+        panelImage1Layout.setVerticalGroup(
+            panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelImage1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelImage1Layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(btnPrintReport)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(panelImage1Layout.createSequentialGroup()
+                        .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(dateUntil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(checkDaily)
+                            .addComponent(jLabel4)
+                            .addComponent(checkMonthly)
+                            .addComponent(jLabel5)
+                            .addComponent(checkAnnual)
+                            .addComponent(dateSince, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addGap(12, 12, 12)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 606, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panelImage1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(comboDaily)
-                        .addComponent(comboMonthly)
-                        .addComponent(comboAnnual)
-                        .addComponent(jLabel2)
-                        .addComponent(jLabel1))
-                    .addComponent(dateSince, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dateUntil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnPrintReport))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(panelImage1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void comboMonthlyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboMonthlyActionPerformed
+    private void checkMonthlyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkMonthlyActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_comboMonthlyActionPerformed
+    }//GEN-LAST:event_checkMonthlyActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnPrintReport;
-    private javax.swing.JCheckBox comboAnnual;
-    private javax.swing.JCheckBox comboDaily;
-    private javax.swing.JCheckBox comboMonthly;
+    private javax.swing.JCheckBox checkAnnual;
+    private javax.swing.JCheckBox checkDaily;
+    private javax.swing.JCheckBox checkMonthly;
     private com.toedter.calendar.JDateChooser dateSince;
     private com.toedter.calendar.JDateChooser dateUntil;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private org.edisoncor.gui.panel.PanelImage panelImage1;
     // End of variables declaration//GEN-END:variables
 }
