@@ -5,7 +5,6 @@
  */
 package gui.cashbox;
 
-import gui.withdrawal.GUICRUDWithdrawal;
 import java.awt.event.ActionListener;
 import javax.swing.table.DefaultTableModel;
 

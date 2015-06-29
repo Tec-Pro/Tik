@@ -41,6 +41,10 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
         jTextField1 = new javax.swing.JTextField();
         btnPrintReport = new javax.swing.JButton();
 
+        setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        setIconifiable(true);
+        setMaximizable(true);
         setTitle("Estadisticas de Ventas");
         setPreferredSize(new java.awt.Dimension(1300, 700));
 

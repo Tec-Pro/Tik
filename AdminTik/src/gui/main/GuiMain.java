@@ -46,6 +46,9 @@ public class GuiMain extends javax.swing.JFrame {
         this.btnConfig.addActionListener(lis);
         this.btnDailyCashbox.addActionListener(lis);
         this.btnCloseCashbox.addActionListener(lis);
+        this.btnSalesStatistics.addActionListener(lis);
+        this.btnProductStatistics.addActionListener(lis);
+        this.btnProductList.addActionListener(lis);
     }
 
     public JMenuItem getBtnConfig() {
@@ -114,14 +117,18 @@ public class GuiMain extends javax.swing.JFrame {
         return btnCloseCashbox;
     }
 
+    public JMenuItem getBtnProductList() {
+        return btnProductList;
+    }
 
+    public JMenuItem getBtnProductStatistics() {
+        return btnProductStatistics;
+    }
 
+    public JMenuItem getBtnSalesStatistics() {
+        return btnSalesStatistics;
+    }
 
-    
-
-    
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -152,6 +159,10 @@ public class GuiMain extends javax.swing.JFrame {
         jMenu7 = new javax.swing.JMenu();
         btnDailyCashbox = new javax.swing.JMenuItem();
         btnCloseCashbox = new javax.swing.JMenuItem();
+        jMenu8 = new javax.swing.JMenu();
+        btnSalesStatistics = new javax.swing.JMenuItem();
+        btnProductStatistics = new javax.swing.JMenuItem();
+        btnProductList = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         btnConfig = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
@@ -240,6 +251,25 @@ public class GuiMain extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu7);
 
+        jMenu8.setText("Estadísticas");
+
+        btnSalesStatistics.setText("Estadisticas de Ventas");
+        btnSalesStatistics.setActionCommand("CAJA");
+        jMenu8.add(btnSalesStatistics);
+
+        btnProductStatistics.setText("Estadisticas de Productos");
+        jMenu8.add(btnProductStatistics);
+
+        btnProductList.setText("Listado de Productos");
+        btnProductList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProductListActionPerformed(evt);
+            }
+        });
+        jMenu8.add(btnProductList);
+
+        jMenuBar1.add(jMenu8);
+
         jMenu6.setText("Configuracion");
 
         btnConfig.setText("Configuracion general");
@@ -279,6 +309,10 @@ public class GuiMain extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnMenuActionPerformed
 
+    private void btnProductListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductListActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnProductListActionPerformed
+
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnAbout;
@@ -294,8 +328,11 @@ public class GuiMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem btnMenu;
     private javax.swing.JMenuItem btnPProduct;
     private javax.swing.JMenuItem btnProductCategory;
+    private javax.swing.JMenuItem btnProductList;
+    private javax.swing.JMenuItem btnProductStatistics;
     private javax.swing.JMenuItem btnProviders;
     private javax.swing.JMenuItem btnPurchase;
+    private javax.swing.JMenuItem btnSalesStatistics;
     private javax.swing.JMenu jMenu;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -304,6 +341,7 @@ public class GuiMain extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
+    private javax.swing.JMenu jMenu8;
     private javax.swing.JMenuBar jMenuBar1;
     // End of variables declaration//GEN-END:variables
 

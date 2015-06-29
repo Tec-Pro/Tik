@@ -8,6 +8,9 @@ package controllers;
 import controllers.cashbox.ControllerGUICashbox;
 import controllers.providers.ControllerGuiCRUDProviders;
 import controllers.providers.purchase.ControllerGuiPurchase;
+import controllers.statistics.ControllerGuiProductList;
+import controllers.statistics.ControllerGuiProductStatistics;
+import controllers.statistics.ControllerGuiSalesStatistics;
 //import controllers.withdrawals.ControllerGUICRUDWithdrawal;
 import gui.GuiAdminLogin;
 import gui.GuiCRUDAdmin;
@@ -23,6 +26,9 @@ import gui.main.GuiConfig;
 import gui.main.GuiMain;
 import gui.providers.GuiCRUDProviders;
 import gui.providers.purchases.GuiPurchase;
+import gui.statistics.GuiProductList;
+import gui.statistics.GuiProductStatistics;
+import gui.statistics.GuiSalesStatistics;
 //import gui.withdrawal.GUICRUDWithdrawal;
 import interfaces.InterfaceGeneralConfig;
 import interfaces.InterfacePresence;
@@ -69,6 +75,9 @@ public class ControllerMain implements ActionListener {
     private static GUICashbox guiCashbox;
     private static GuiMenu guiMenu;
     private static GuiPurchase guiPurchase;
+    private static GuiSalesStatistics guiSalesStatistics;
+    private static GuiProductList guiProductList;
+    private static GuiProductStatistics guiProductStatistics;
     //controladores
     private static ControllerGuiCRUDAdmin controllerCRUDAdmin; //controlador de la gui para admin
     private ControllerGuiCRUDEproduct controllerCRUDEProduct; //controlador productos elaborados
@@ -80,6 +89,9 @@ public class ControllerMain implements ActionListener {
     private ControllerGuiMenu controllerGuiMenu;
     private ControllerGuiPurchase controllerGuiPurchase;
     private ControllerGUICashbox controllerGuiCashbox;
+    private ControllerGuiProductList controllerGuiProductList;
+    private ControllerGuiProductStatistics controllerGuiProductStatistics;
+    private ControllerGuiSalesStatistics controllerGuiSalesStatistics;
 //    private ControllerGUICRUDWithdrawal controllerGuiCRUDWithdrawal;
     private InterfacePresence crudPresence;
 
@@ -109,6 +121,9 @@ public class ControllerMain implements ActionListener {
         guiMenu = new GuiMenu();
         guiPurchase = new GuiPurchase();
         guiCashbox = new GUICashbox();
+        guiSalesStatistics = new GuiSalesStatistics();
+        guiProductList = new GuiProductList();
+        guiProductStatistics = new GuiProductStatistics();
 //        guiCRUDWithdrawal = new GUICRUDWithdrawal();
 
         //agrego las gui al desktop
@@ -124,6 +139,9 @@ public class ControllerMain implements ActionListener {
         guiMain.getDesktop().add(guiPurchase);
 //        guiMain.getDesktop().add(guiCRUDWithdrawal);
         guiMain.getDesktop().add(guiCashbox);
+        guiMain.getDesktop().add(guiProductList);
+        guiMain.getDesktop().add(guiProductStatistics);
+        guiMain.getDesktop().add(guiSalesStatistics);
 
         InterfaceProvider provider = (InterfaceProvider) InterfaceName.registry.lookup(InterfaceName.CRUDProvider);
         InterfaceProviderCategory providerCategory = (InterfaceProviderCategory) InterfaceName.registry.lookup(InterfaceName.CRUDProviderCategory);
@@ -142,6 +160,9 @@ public class ControllerMain implements ActionListener {
         controllerGuiPurchase = new ControllerGuiPurchase(guiPurchase);
 //        controllerGuiCRUDWithdrawal = new ControllerGUICRUDWithdrawal(guiCRUDWithdrawal);
         controllerGuiCashbox = new ControllerGUICashbox(guiCashbox);
+        controllerGuiSalesStatistics = new ControllerGuiSalesStatistics(guiSalesStatistics);
+        controllerGuiProductList = new ControllerGuiProductList(guiProductList);
+        controllerGuiProductStatistics = new ControllerGuiProductStatistics(controllerGuiProductStatistics);
         //restauro el puntero asi ya se que termino de cargar todo
         guiMain.setCursor(Cursor.DEFAULT_CURSOR);
 
@@ -165,6 +186,9 @@ public class ControllerMain implements ActionListener {
         guiCRUDUser.dispose();
         guiLoadPurchase.dispose();
         guiPurchase.dispose();
+        guiSalesStatistics.dispose();
+        guiProductList.dispose();
+        guiProductStatistics.dispose();
 //        guiCRUDWithdrawal.dispose();
         guiCashbox.dispose();
     }
@@ -296,7 +320,7 @@ public class ControllerMain implements ActionListener {
                 }
             }
         }
-        if (ae.getActionCommand().equals("CAJA")) {
+        if (ae.getSource() == guiMain.getBtnDailyCashbox()) {
             try {
                 guiCashbox.setMaximum(true);
             } catch (PropertyVetoException ex) {
@@ -315,6 +339,34 @@ public class ControllerMain implements ActionListener {
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+        if (ae.getSource() == guiMain.getBtnProductList()) {
+            try {
+                guiProductList.setMaximum(true);
+                guiProductList.setVisible(true);
+                guiProductList.toFront();
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (ae.getSource() == guiMain.getBtnProductStatistics()) {
+           try {
+                guiProductStatistics.setMaximum(true);
+                guiProductStatistics.setVisible(true);
+                guiProductStatistics.toFront();
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+        }
+        if (ae.getSource() == guiMain.getBtnSalesStatistics()) {
+            try {
+                guiSalesStatistics.setMaximum(true);
+                guiSalesStatistics.setVisible(true);
+                guiSalesStatistics.toFront();
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                
         }
     }
 }

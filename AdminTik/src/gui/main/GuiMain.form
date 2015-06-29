@@ -131,6 +131,32 @@
             </MenuItem>
           </SubComponents>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="jMenu8">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Estad&#xed;sticas"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="btnSalesStatistics">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Estadisticas de Ventas"/>
+                <Property name="actionCommand" type="java.lang.String" value="CAJA"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="btnProductStatistics">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Estadisticas de Productos"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="btnProductList">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Listado de Productos"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnProductListActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu6">
           <Properties>
             <Property name="text" type="java.lang.String" value="Configuracion"/>

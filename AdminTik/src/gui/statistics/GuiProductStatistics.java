@@ -38,6 +38,10 @@ public class GuiProductStatistics extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
+        setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        setIconifiable(true);
+        setMaximizable(true);
         setTitle("Estadisticas de Productos");
         setPreferredSize(new java.awt.Dimension(1300, 700));
 

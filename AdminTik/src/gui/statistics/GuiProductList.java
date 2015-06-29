@@ -30,6 +30,10 @@ public class GuiProductList extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableProductList = new javax.swing.JTable();
 
+        setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        setIconifiable(true);
+        setMaximizable(true);
         setTitle("Listado de Productos");
         setPreferredSize(new java.awt.Dimension(1300, 700));
 
