@@ -86,9 +86,7 @@ public class GuiMain extends javax.swing.JFrame {
 
     public JMenuItem getBtnMenu() {
         return btnMenu;
-    }
-    
-    
+    }    
 
     public JMenuItem getBtnAbout() {
         return btnAbout;
@@ -154,11 +152,11 @@ public class GuiMain extends javax.swing.JFrame {
         jMenu4 = new javax.swing.JMenu();
         btnProviders = new javax.swing.JMenuItem();
         btnPurchase = new javax.swing.JMenuItem();
-        jMenu5 = new javax.swing.JMenu();
+        btnLogout = new javax.swing.JMenu();
         btnEmployes = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
         btnDailyCashbox = new javax.swing.JMenuItem();
-        btnCloseCashbox = new javax.swing.JMenuItem();
         jMenu8 = new javax.swing.JMenu();
         btnSalesStatistics = new javax.swing.JMenuItem();
         btnProductStatistics = new javax.swing.JMenuItem();
@@ -167,6 +165,10 @@ public class GuiMain extends javax.swing.JFrame {
         btnConfig = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         btnAbout = new javax.swing.JMenuItem();
+        btnCloseCashbox = new javax.swing.JMenu();
+        btnOpenTM = new javax.swing.JMenuItem();
+        bntOpenTA = new javax.swing.JMenuItem();
+        btnCloseCashBox = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Tik administrador");
@@ -233,21 +235,21 @@ public class GuiMain extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu4);
 
-        jMenu5.setText("Empleados");
+        btnLogout.setText("Empleados");
 
         btnEmployes.setText("Gestión de empleados");
-        jMenu5.add(btnEmployes);
+        btnLogout.add(btnEmployes);
 
-        jMenuBar1.add(jMenu5);
+        jMenuItem3.setText("Cerrar sesion");
+        btnLogout.add(jMenuItem3);
+
+        jMenuBar1.add(btnLogout);
 
         jMenu7.setText("Caja");
 
         btnDailyCashbox.setText("Caja diaria");
         btnDailyCashbox.setActionCommand("CAJA");
         jMenu7.add(btnDailyCashbox);
-
-        btnCloseCashbox.setText("Cerrar");
-        jMenu7.add(btnCloseCashbox);
 
         jMenuBar1.add(jMenu7);
 
@@ -290,6 +292,24 @@ public class GuiMain extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
+        btnCloseCashbox.setText("Turno");
+
+        btnOpenTM.setText("Abrir Turno Mañana");
+        btnOpenTM.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOpenTMActionPerformed(evt);
+            }
+        });
+        btnCloseCashbox.add(btnOpenTM);
+
+        bntOpenTA.setText("Abrir Turno Tarde");
+        btnCloseCashbox.add(bntOpenTA);
+
+        btnCloseCashBox.setText("Cerrar");
+        btnCloseCashbox.add(btnCloseCashBox);
+
+        jMenuBar1.add(btnCloseCashbox);
+
         setJMenuBar(jMenuBar1);
 
         pack();
@@ -313,11 +333,17 @@ public class GuiMain extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnProductListActionPerformed
 
+    private void btnOpenTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenTMActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnOpenTMActionPerformed
+
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem bntOpenTA;
     private javax.swing.JMenuItem btnAbout;
     private javax.swing.JMenuItem btnAdmins;
-    private javax.swing.JMenuItem btnCloseCashbox;
+    private javax.swing.JMenuItem btnCloseCashBox;
+    private javax.swing.JMenu btnCloseCashbox;
     private javax.swing.JMenuItem btnConfig;
     private javax.swing.JMenuItem btnDailyCashbox;
     private javax.swing.JMenuItem btnDisconnect;
@@ -325,7 +351,9 @@ public class GuiMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem btnEmployes;
     private javax.swing.JMenuItem btnExit;
     private javax.swing.JMenuItem btnFProduct;
+    private javax.swing.JMenu btnLogout;
     private javax.swing.JMenuItem btnMenu;
+    private javax.swing.JMenuItem btnOpenTM;
     private javax.swing.JMenuItem btnPProduct;
     private javax.swing.JMenuItem btnProductCategory;
     private javax.swing.JMenuItem btnProductList;
@@ -338,11 +366,11 @@ public class GuiMain extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
     private javax.swing.JMenu jMenu8;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem3;
     // End of variables declaration//GEN-END:variables
 
 

@@ -101,7 +101,7 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu5">
+        <Menu class="javax.swing.JMenu" name="btnLogout">
           <Properties>
             <Property name="text" type="java.lang.String" value="Empleados"/>
           </Properties>
@@ -109,6 +109,11 @@
             <MenuItem class="javax.swing.JMenuItem" name="btnEmployes">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Gesti&#xf3;n de empleados"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem3">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Cerrar sesion"/>
               </Properties>
             </MenuItem>
           </SubComponents>
@@ -122,11 +127,6 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Caja diaria"/>
                 <Property name="actionCommand" type="java.lang.String" value="CAJA"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="btnCloseCashbox">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Cerrar"/>
               </Properties>
             </MenuItem>
           </SubComponents>
@@ -184,6 +184,31 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAboutActionPerformed"/>
               </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="btnCloseCashbox">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Turno"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="btnOpenTM">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Abrir Turno Ma&#xf1;ana"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOpenTMActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="bntOpenTA">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Abrir Turno Tarde"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="btnCloseCashBox">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Cerrar"/>
+              </Properties>
             </MenuItem>
           </SubComponents>
         </Menu>

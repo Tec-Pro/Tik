@@ -10,6 +10,7 @@ import implementsInterface.CRUDEproduct;
 import implementsInterface.CRUDFproduct;
 import implementsInterface.CRUDOrder;
 import implementsInterface.CRUDPproduct;
+import implementsInterface.CRUDTurn;
 import implementsInterface.CrudAdmin;
 import implementsInterface.CrudPresence;
 import implementsInterface.CrudProvider;
@@ -74,6 +75,7 @@ public class ServerTik {
         CRUDFproduct CRUDFproduct = new CRUDFproduct();
         CRUDCategory CRUDCategory = new CRUDCategory();
         CRUDPurchase CRUDPurchase = new CRUDPurchase();
+        CRUDTurn CRUDTurn = new CRUDTurn();
         CRUDStatistics CRUDStatistics = new CRUDStatistics();
         CRUDOrder CRUDOrder = new CRUDOrder();
         CrudUser CRUDUser = new CrudUser();
@@ -102,6 +104,7 @@ public class ServerTik {
         Naming.rebind(InterfaceName.CRUDOrder, CRUDOrder);
         Naming.rebind(InterfaceName.server, server);
         Naming.rebind(InterfaceName.GeneralConfig, generalConfig);
+        Naming.rebind(InterfaceName.CRUDTurn, CRUDTurn);
 
     }
 

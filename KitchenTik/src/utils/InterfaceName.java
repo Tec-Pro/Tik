@@ -21,6 +21,7 @@ public class InterfaceName {
     public static final String CRUDCategory = "CRUDCategory";
     public static final String CRUDPurchase = "CRUDPurchase";
     public static final String CRUDUser = "CRUDUser";
+    public static final String CRUDTurn = "CRUDTurn";
     public static final String CRUDProvider = "CRUDProvider";
     public static final String CRUDProviderCategory = "CRUDProviderCategory";
     public static final String providersSearch = "providersSearch";
