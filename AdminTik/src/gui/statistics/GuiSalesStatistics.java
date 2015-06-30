@@ -5,6 +5,12 @@
  */
 package gui.statistics;
 
+import com.toedter.calendar.JDateChooser;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author eze
@@ -18,6 +24,51 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
         initComponents();
     }
 
+    public JButton getBtnPrintReport() {
+        return btnPrintReport;
+    }
+
+    public JCheckBox getCheckAnnual() {
+        return checkAnnual;
+    }
+
+    public JCheckBox getCheckDaily() {
+        return checkDaily;
+    }
+
+    public JCheckBox getCheckMonthly() {
+        return checkMonthly;
+    }
+
+    public JDateChooser getDateSince() {
+        return dateSince;
+    }
+
+    public JDateChooser getDateUntil() {
+        return dateUntil;
+    }
+
+    public JTable getTableSalesStatisticsWaiter() {
+        return tableSalesStatisticsWaiter;
+    }
+
+    public JTable getTableTotalSalesStatistics() {
+        return tableTotalSalesStatistics;
+    }
+    
+    public DefaultTableModel getModelTableSalesStatisticsWaiter() {
+        return (DefaultTableModel) tableSalesStatisticsWaiter.getModel();
+    }
+
+    public DefaultTableModel getModelTableTotalSalesStatistics() {
+        return (DefaultTableModel) tableTotalSalesStatistics.getModel();
+    }
+    
+    //limpia la gui completa y setea valores por defecto
+    public void cleanGuiSalesStatistics(){
+        
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -58,7 +109,7 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
 
         tableTotalSalesStatistics.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "Ventas", "Mesas", "Personas", "Productos", "Prom. Mesa", "Prom. Persona", "Prom. Producto", "Descuentos", "Excepciones"
@@ -80,34 +131,25 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
             }
         });
         tableTotalSalesStatistics.setAutoscrolls(false);
+        tableTotalSalesStatistics.setColumnSelectionAllowed(true);
         tableTotalSalesStatistics.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tableTotalSalesStatistics.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(tableTotalSalesStatistics);
         tableTotalSalesStatistics.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        if (tableTotalSalesStatistics.getColumnModel().getColumnCount() > 0) {
-            tableTotalSalesStatistics.getColumnModel().getColumn(0).setResizable(false);
-            tableTotalSalesStatistics.getColumnModel().getColumn(1).setResizable(false);
-            tableTotalSalesStatistics.getColumnModel().getColumn(2).setResizable(false);
-            tableTotalSalesStatistics.getColumnModel().getColumn(3).setResizable(false);
-            tableTotalSalesStatistics.getColumnModel().getColumn(4).setResizable(false);
-            tableTotalSalesStatistics.getColumnModel().getColumn(5).setResizable(false);
-            tableTotalSalesStatistics.getColumnModel().getColumn(6).setResizable(false);
-            tableTotalSalesStatistics.getColumnModel().getColumn(7).setResizable(false);
-            tableTotalSalesStatistics.getColumnModel().getColumn(8).setResizable(false);
-        }
 
         tableSalesStatisticsWaiter.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Mozo", "Turno", "Ventas", "Mesas", "Personas", "Productos", "Prom. Mesa", "Prom. Persona", "Prom. Producto"
+                "Mozo", "Fecha", "Turno", "Ventas", "Mesas", "Personas", "Productos", "Prom. Mesa", "Prom. Persona", "Prom. Producto", "Descuentos", "Excepciones"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -140,6 +182,12 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
             tableSalesStatisticsWaiter.getColumnModel().getColumn(7).setPreferredWidth(100);
             tableSalesStatisticsWaiter.getColumnModel().getColumn(8).setMinWidth(100);
             tableSalesStatisticsWaiter.getColumnModel().getColumn(8).setPreferredWidth(100);
+            tableSalesStatisticsWaiter.getColumnModel().getColumn(9).setMinWidth(100);
+            tableSalesStatisticsWaiter.getColumnModel().getColumn(9).setPreferredWidth(100);
+            tableSalesStatisticsWaiter.getColumnModel().getColumn(10).setMinWidth(100);
+            tableSalesStatisticsWaiter.getColumnModel().getColumn(10).setPreferredWidth(100);
+            tableSalesStatisticsWaiter.getColumnModel().getColumn(11).setMinWidth(100);
+            tableSalesStatisticsWaiter.getColumnModel().getColumn(11).setPreferredWidth(100);
         }
 
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -235,9 +283,9 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
-                .addContainerGap(234, Short.MAX_VALUE))
+                    .addComponent(jLabel6)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(226, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

@@ -32,7 +32,9 @@ public class ControllerGuiProductList {
         guiProductList = guiPL;
         loadProductTable();
     }
-    
+    /*
+    * Carga en la tabla tableProductList todos los productos finales con sus estadisticos
+    */
     private static void loadProductTable() throws RemoteException{
         List<Map<String, Object>> productList = interfaceStatistics.getProductList();
         DefaultTableModel modelTableProductList = guiProductList.getModelTableProductList();
