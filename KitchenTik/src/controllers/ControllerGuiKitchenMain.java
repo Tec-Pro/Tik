@@ -14,6 +14,7 @@ import interfaces.InterfaceGeneralConfig;
 import interfaces.InterfaceOrder;
 import interfaces.InterfacePresence;
 import interfaces.InterfaceServer;
+import interfaces.InterfaceTurn;
 import interfaces.InterfaceUser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -68,7 +69,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
     private static SoundPlayer soundPlayer;
     //lista de ordersPanels con todos los paneles de la gui
     private static LinkedList<GuiKitchenOrderPane> listOrdersPanels;
-
+    private InterfaceTurn crudTurn;
     private static LinkedList<Integer> orderList;
 
     /**
@@ -84,8 +85,8 @@ public class ControllerGuiKitchenMain implements ActionListener {
         crudPresence = (InterfacePresence) InterfaceName.registry.lookup(InterfaceName.CRUDPresence);
         crudUser = (InterfaceUser) InterfaceName.registry.lookup(InterfaceName.CRUDUser);
         generalConfig = (InterfaceGeneralConfig) InterfaceName.registry.lookup(InterfaceName.GeneralConfig);
-        server= (InterfaceServer) InterfaceName.registry.lookup(InterfaceName.server);
-
+        server = (InterfaceServer) InterfaceName.registry.lookup(InterfaceName.server);
+        crudTurn = (InterfaceTurn) InterfaceName.registry.lookup(InterfaceName.CRUDTurn);
         online = new HashSet<>();
         for (Map m : crudPresence.getCooks()) {
             online.add(m);
@@ -111,8 +112,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
                     Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        }
-        );
+        });
         timer.start();
     }
 
@@ -165,12 +165,12 @@ public class ControllerGuiKitchenMain implements ActionListener {
                         soundPlayer.stopSound();
                         orderPane.getBtnPostpone().setEnabled(false);
                         orderPane.stopTimer();
-                            try {
-                                //aviso a los mozos que esta demorado
-                                server.notifyWaitersOrderDelayed(orderPane.getOrderId());
-                            } catch (RemoteException ex) {
-                                Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
-                            }
+                        try {
+                            //aviso a los mozos que esta demorado
+                            server.notifyWaitersOrderDelayed(orderPane.getOrderId());
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                 });
                 System.out.println("El pedido: " + orderPane.getLblOrderNumber().getText() + " esta retrasado.");
@@ -220,7 +220,6 @@ public class ControllerGuiKitchenMain implements ActionListener {
                     }
                 }
             }
-
         });
         //Si hago click en el boton de "Pedido Listo" de un panel
         guiOrderPane.getBtnOrderReady().addMouseListener(new java.awt.event.MouseAdapter() {
@@ -431,16 +430,20 @@ public class ControllerGuiKitchenMain implements ActionListener {
 
         if (ae.getSource() == guiKitchenMain.getMenuItemNewLogin()) {
             try {
-                guiLogin = new GuiLogin(guiKitchenMain, true);
-                Set<Map> offline = new HashSet<>();
-                offline.addAll(crudUser.getCooks());
-                offline.removeAll(online);
-                if (offline.isEmpty()) {
-                    JOptionPane.showMessageDialog(guiKitchenMain, "Ocurrió un error, ya estan todos los usuarios logueados", "Error!", JOptionPane.ERROR_MESSAGE);
+                if (crudTurn.isTurnOpen()) {
+                    guiLogin = new GuiLogin(guiKitchenMain, true);
+                    Set<Map> offline = new HashSet<>();
+                    offline.addAll(crudUser.getCooks());
+                    offline.removeAll(online);
+                    if (offline.isEmpty()) {
+                        JOptionPane.showMessageDialog(guiKitchenMain, "Ocurrió un error, ya estan todos los usuarios logueados", "Error!", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        guiLogin.loadCBoxUsers(offline);
+                        guiLogin.setActionListener(this);
+                        guiLogin.setVisible(true);
+                    }
                 } else {
-                    guiLogin.loadCBoxUsers(offline);
-                    guiLogin.setActionListener(this);
-                    guiLogin.setVisible(true);
+                    JOptionPane.showMessageDialog(guiKitchenMain, "Ocurrió un error, no hay ningun turno abierto", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiKitchenMain.class.getName()).log(Level.SEVERE, null, ex);

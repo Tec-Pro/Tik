@@ -9,6 +9,7 @@ import gui.login.ComponentUserLoginBtn;
 import gui.login.GuiLogin;
 import gui.login.GuiLoginGrid;
 import interfaces.InterfacePresence;
+import interfaces.InterfaceTurn;
 import interfaces.InterfaceUser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,12 +40,14 @@ public class ControllerGuiLoginGrid implements ActionListener {
     private Map buttons; //Nos sirve para almacenar a los objetos creados
     private ControllerGuiMain controllerGuiMain;
     private boolean newLog;
+    private InterfaceTurn crudTurn;
 
     public ControllerGuiLoginGrid(GuiLoginGrid guiLoginGrid, ControllerGuiMain controllerGuiMain) throws NotBoundException, MalformedURLException, RemoteException {
         this.guiLoginGrid = guiLoginGrid;
         this.controllerGuiMain = controllerGuiMain;
         buttons = new HashMap();
         crudUser = (InterfaceUser) InterfaceName.registry.lookup(InterfaceName.CRUDUser);
+        crudTurn = (InterfaceTurn) InterfaceName.registry.lookup(InterfaceName.CRUDTurn);
         crudPresence = (InterfacePresence) InterfaceName.registry.lookup(InterfaceName.CRUDPresence);
         online = new HashSet<Map>();
         guiLogin = new GuiLogin(guiLoginGrid, true);
@@ -104,20 +107,28 @@ public class ControllerGuiLoginGrid implements ActionListener {
             }
         }
         if (e.getSource() == guiLoginGrid.getBtnLogin()) {
-            Set<Map> offline = new HashSet<Map>();
             try {
-                offline.addAll(crudUser.getWaiters());
+                if (crudTurn.isTurnOpen()) {
+                    Set<Map> offline = new HashSet<Map>();
+                    try {
+                        offline.addAll(crudUser.getWaiters());
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(ControllerGuiLoginGrid.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    offline.removeAll(online);
+                    if (offline.isEmpty()) {
+                        JOptionPane.showMessageDialog(guiLoginGrid, "Ocurrió un error, ya estan todos los usuarios logueados", "Error!", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        newLog = true;
+                        guiLogin.loadCBoxUsers(offline);
+                        guiLogin.setLocationRelativeTo(null);
+                        guiLogin.setVisible(true);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(guiLoginGrid, "Ocurrió un error, no hay ningun turno abierto", "Error!", JOptionPane.ERROR_MESSAGE);
+                }
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiLoginGrid.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            offline.removeAll(online);
-            if (offline.isEmpty()) {
-                JOptionPane.showMessageDialog(guiLoginGrid, "Ocurrió un error, ya estan todos los usuarios logueados", "Error!", JOptionPane.ERROR_MESSAGE);
-            } else {
-                newLog = true;
-                guiLogin.loadCBoxUsers(offline);
-                guiLogin.setLocationRelativeTo(null);
-                guiLogin.setVisible(true);
             }
         }
         if (e.getSource() == guiLogin.getBtnAccept()) {

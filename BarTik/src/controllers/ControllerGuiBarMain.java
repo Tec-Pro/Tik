@@ -15,6 +15,7 @@ import interfaces.InterfaceGeneralConfig;
 import interfaces.InterfaceOrder;
 import interfaces.InterfacePresence;
 import interfaces.InterfaceServer;
+import interfaces.InterfaceTurn;
 import interfaces.InterfaceUser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -70,9 +71,9 @@ public class ControllerGuiBarMain implements ActionListener {
     private static SoundPlayer soundPlayer;
     //lista de ordersPanels con todos los paneles de la gui
     private static LinkedList<GuiBarOrderPane> listOrdersPanels;
-
     private static LinkedList<Integer> orderList;
     private static InterfaceFproduct crudFproduct;
+    private InterfaceTurn crudTurn;
 
     /**
      *
@@ -89,7 +90,7 @@ public class ControllerGuiBarMain implements ActionListener {
         crudUser = (InterfaceUser) InterfaceName.registry.lookup(InterfaceName.CRUDUser);
         generalConfig = (InterfaceGeneralConfig) InterfaceName.registry.lookup(InterfaceName.GeneralConfig);
         server = (InterfaceServer) InterfaceName.registry.lookup(InterfaceName.server);
-
+        crudTurn = (InterfaceTurn) InterfaceName.registry.lookup(InterfaceName.CRUDTurn);
         online = new HashSet<>();
         for (Map m : crudPresence.getCooks()) {
             online.add(m);
@@ -115,8 +116,7 @@ public class ControllerGuiBarMain implements ActionListener {
                     Logger.getLogger(ControllerGuiBarMain.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        }
-        );
+        });
         timer.start();
     }
 
@@ -182,9 +182,9 @@ public class ControllerGuiBarMain implements ActionListener {
                         }
                     }
                 });
-                
-                
-                
+
+
+
             }
 
         }
@@ -229,7 +229,6 @@ public class ControllerGuiBarMain implements ActionListener {
                     }
                 }
             }
-
         });
         //Si hago click en el boton de "Pedido Listo" de un panel
         guiOrderPane.getBtnOrderReady().addMouseListener(new java.awt.event.MouseAdapter() {
@@ -243,7 +242,7 @@ public class ControllerGuiBarMain implements ActionListener {
                 try {
                     crudOrder.updateOrdersReadyProducts(orderId, listOrderProductsId);
                 } catch (RemoteException ex) {
-                    
+
                     Logger.getLogger(ControllerGuiBarMain.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 //elimino el panel (GuiBarOrderPane) de la gui principal
@@ -286,18 +285,18 @@ public class ControllerGuiBarMain implements ActionListener {
 
     public static void kitchenProductCommited(int idOrder, String name) throws RemoteException {
         DefaultTableModel tableModel = (DefaultTableModel) guiBarMain.getKitchenOrdersJTable().getModel();
-            boolean found = false;
-            int i = 0;
-            //Ciclo la tabla para ver si ya está agregado el pedido a la misma.
-            while (!found && i < guiBarMain.getKitchenOrdersJTable().getRowCount()) {
-                found = tableModel.getValueAt(i, 0).equals(idOrder) && tableModel.getValueAt(i, 1).equals(name);
-                if (found){
-                    tableModel.removeRow(i);
-                    break;
-                    }
-                i++;
+        boolean found = false;
+        int i = 0;
+        //Ciclo la tabla para ver si ya está agregado el pedido a la misma.
+        while (!found && i < guiBarMain.getKitchenOrdersJTable().getRowCount()) {
+            found = tableModel.getValueAt(i, 0).equals(idOrder) && tableModel.getValueAt(i, 1).equals(name);
+            if (found) {
+                tableModel.removeRow(i);
+                break;
             }
-        
+            i++;
+        }
+
     }
 
     /**
@@ -489,16 +488,20 @@ public class ControllerGuiBarMain implements ActionListener {
 
         if (ae.getSource() == guiBarMain.getMenuItemNewLogin()) {
             try {
-                guiLogin = new GuiLogin(guiBarMain, true);
-                Set<Map> offline = new HashSet<>();
-                offline.addAll(crudUser.getCooks());
-                offline.removeAll(online);
-                if (offline.isEmpty()) {
-                    JOptionPane.showMessageDialog(guiBarMain, "Ocurrió un error, ya estan todos los usuarios logueados", "Error!", JOptionPane.ERROR_MESSAGE);
+                if (crudTurn.isTurnOpen()) {
+                    guiLogin = new GuiLogin(guiBarMain, true);
+                    Set<Map> offline = new HashSet<>();
+                    offline.addAll(crudUser.getCooks());
+                    offline.removeAll(online);
+                    if (offline.isEmpty()) {
+                        JOptionPane.showMessageDialog(guiBarMain, "Ocurrió un error, ya estan todos los usuarios logueados", "Error!", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        guiLogin.loadCBoxUsers(offline);
+                        guiLogin.setActionListener(this);
+                        guiLogin.setVisible(true);
+                    }
                 } else {
-                    guiLogin.loadCBoxUsers(offline);
-                    guiLogin.setActionListener(this);
-                    guiLogin.setVisible(true);
+                    JOptionPane.showMessageDialog(guiBarMain, "Ocurrió un error, no hay ningun turno abierto", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiBarMain.class.getName()).log(Level.SEVERE, null, ex);
