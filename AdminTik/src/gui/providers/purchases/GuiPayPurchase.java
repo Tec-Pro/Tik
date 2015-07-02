@@ -46,7 +46,8 @@ public class GuiPayPurchase extends javax.swing.JDialog {
         lblAmount.setText(ParserFloat.floatToString(amount));
         txtPayAdmin.setText(ParserFloat.floatToString(amount));
         txtPayBox.setText(ParserFloat.floatToString(new Float("0")));
-                boxAdmins.addItem("Seleccione administrador");
+        boxAdmins.removeAllItems();
+        boxAdmins.addItem("Seleccione administrador");
         for (Map s : admins) {
             boxAdmins.addItem(s.get("name"));
         }
@@ -85,27 +86,31 @@ public class GuiPayPurchase extends javax.swing.JDialog {
 
     /**
      * retorno el nombre del admin que paga
-     * @return 
+     *
+     * @return
      */
-    public String getNameAdmin(){
-        return (String)boxAdmins.getSelectedItem();
+    public String getNameAdmin() {
+        return (String) boxAdmins.getSelectedItem();
     }
-    
+
     /**
      * retorno lo que paga la caja
-     * @return 
+     *
+     * @return
      */
-    public float getPayBox(){
+    public float getPayBox() {
         return ParserFloat.stringToFloat(txtPayBox.getText());
     }
-    
+
     /**
      * retorno el saldo que paga el admin de su bolsillo
-     * @return 
+     *
+     * @return
      */
-    public float getPayAdmin(){
+    public float getPayAdmin() {
         return ParserFloat.stringToFloat(txtPayAdmin.getText());
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -255,10 +260,15 @@ public class GuiPayPurchase extends javax.swing.JDialog {
     }//GEN-LAST:event_txtPayBoxFocusLost
 
     private void btnPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayActionPerformed
-        if(boxAdmins.getSelectedIndex()>0)
-            doClose(RET_OK);
-        else
-            JOptionPane.showConfirmDialog(this, "Seleccione un administrador","aviso", JOptionPane.INFORMATION_MESSAGE);
+        if (boxAdmins.getSelectedIndex() > 0 ) {
+            if(getPayAdmin()>-999 ||getPayBox()>-999)
+                doClose(RET_OK);
+            else{
+            JOptionPane.showConfirmDialog(this, "Ingrese un valor valido", "aviso", JOptionPane.OK_OPTION);
+            }
+        } else {
+            JOptionPane.showConfirmDialog(this, "Seleccione un administrador", "aviso", JOptionPane.OK_OPTION);
+        }
     }//GEN-LAST:event_btnPayActionPerformed
 
 
