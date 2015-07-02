@@ -20,9 +20,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import models.Fproduct;
 import models.Order;
 import models.OrdersFproducts;
 import org.javalite.activejdbc.Base;
+import org.javalite.activejdbc.LazyList;
 import utils.Pair;
 import utils.Utils;
 
@@ -589,6 +591,38 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         }
         final Pair<List<Map>, List<Map>> pair = new Pair(getAllOrders(), listOrdersFproducts);
         return pair;
+    }
+
+    @Override
+    public float totalEarn() throws RemoteException {
+        Utils.abrirBase();
+        LazyList<Order> lo = Order.findAll();
+        float total = 0;
+        for (Order o : lo){
+             LazyList<OrdersFproducts> lof = OrdersFproducts.where("order_id = ?", o.getId());
+             for (OrdersFproducts of : lof){
+                 float quantity = of.getFloat("quantity");
+                 float price = Fproduct.findById(of.getString("fproduct_id")).getFloat("sell_price");
+                 total += quantity*price;
+             }
+        }
+        return total;
+    }
+
+    @Override
+    public float EarnByUser(int userId) throws RemoteException {
+       Utils.abrirBase();
+        LazyList<Order> lo = Order.where("user_id = ?",userId);
+        float total = 0;
+        for (Order o : lo){
+             LazyList<OrdersFproducts> lof = OrdersFproducts.where("order_id = ?", o.getId());
+             for (OrdersFproducts of : lof){
+                 float quantity = of.getFloat("quantity");
+                 float price = Fproduct.findById(of.getString("fproduct_id")).getFloat("sell_price");
+                 total += quantity*price;
+             }
+        }
+        return total;
     }
 
 }

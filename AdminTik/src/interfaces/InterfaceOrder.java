@@ -136,4 +136,14 @@ public interface InterfaceOrder extends Remote {
     public Pair<List<Map>, List<Map>> getAllOrdersForKitchen() throws java.rmi.RemoteException;
     
     public  List<Map> getOrderProductsWithName(int orderId) throws RemoteException;
+    
+     /**
+     * Devuelve la recaudacion total
+     */
+    public float totalEarn() throws RemoteException;
+    
+     /**
+     * Devuelve la recaudacion total de un mozo
+     */
+    public float EarnByUser(int userId) throws RemoteException;
 }
