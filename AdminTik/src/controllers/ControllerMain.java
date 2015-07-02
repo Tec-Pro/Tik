@@ -32,6 +32,7 @@ import gui.statistics.GuiSalesStatistics;
 //import gui.withdrawal.GUICRUDWithdrawal;
 import interfaces.InterfaceGeneralConfig;
 import interfaces.InterfacePresence;
+import interfaces.InterfaceTurn;
 import interfaces.providers.InterfaceProvider;
 import interfaces.providers.InterfaceProviderCategory;
 import interfaces.providers.InterfaceProvidersSearch;
@@ -94,6 +95,7 @@ public class ControllerMain implements ActionListener {
     private ControllerGuiSalesStatistics controllerGuiSalesStatistics;
 //    private ControllerGUICRUDWithdrawal controllerGuiCRUDWithdrawal;
     private InterfacePresence crudPresence;
+    private InterfaceTurn crudTurn;
 
     public ControllerMain(GuiAdminLogin guiAdminLogin) throws NotBoundException, MalformedURLException, RemoteException {
         this.guiAdminLogin = guiAdminLogin; //hago esto, así si cierra sesión pongo en visible la ventana
@@ -167,6 +169,7 @@ public class ControllerMain implements ActionListener {
         guiMain.setCursor(Cursor.DEFAULT_CURSOR);
 
         crudPresence = (InterfacePresence) InterfaceName.registry.lookup(InterfaceName.CRUDPresence);
+        crudTurn = (InterfaceTurn) InterfaceName.registry.lookup(InterfaceName.CRUDTurn);
 
     }
 
@@ -334,7 +337,48 @@ public class ControllerMain implements ActionListener {
                 if (crudPresence.isSomeoneLogin()) {
                     JOptionPane.showMessageDialog(guiMain, "Aun hay empleados logeados, por favor deslogee todos los empleados antes de cerrar la caja");
                 } else {
+                    if (crudTurn.changeTurn("N")) {
+                        JOptionPane.showMessageDialog(guiMain, "El tunro se cerro exitosamente");
+
+                    }
                     //BLOQUEAR BOTONES CAJA.
+                }
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        if (ae.getSource() == guiMain.getBtnOpenTM()) {
+            try {
+                System.out.print("CLICK TURNO MAÑANA WACHIN");
+                if (crudTurn.isTurnOpen()) {
+                    if (crudTurn.getTurn().endsWith("M")) {
+                        JOptionPane.showMessageDialog(guiMain, "El turno mañana ya esta abierto");
+                    } else {
+                        JOptionPane.showMessageDialog(guiMain, "Debe cerrar el turno anterior, antes de abrir uno nuevo");
+                    }
+                } else {
+                    if (crudTurn.changeTurn("M")) {
+                        JOptionPane.showMessageDialog(guiMain, "Turno mañana abierto");
+                    }
+                }
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        if (ae.getSource() == guiMain.getBntOpenTA()) {
+            try {
+                if (crudTurn.isTurnOpen()) {
+                    if (crudTurn.getTurn().endsWith("T")) {
+                        JOptionPane.showMessageDialog(guiMain, "El turno tarde ya esta abierto");
+                    } else {
+                        JOptionPane.showMessageDialog(guiMain, "Debe cerrar el turno anterior, antes de abrir uno nuevo");
+                    }
+                } else {
+                    if (crudTurn.changeTurn("T")) {
+                        JOptionPane.showMessageDialog(guiMain, "Turno tarde abierto");
+                    }
                 }
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
@@ -350,13 +394,13 @@ public class ControllerMain implements ActionListener {
             }
         }
         if (ae.getSource() == guiMain.getBtnProductStatistics()) {
-           try {
+            try {
                 guiProductStatistics.setMaximum(true);
                 guiProductStatistics.setVisible(true);
                 guiProductStatistics.toFront();
             } catch (PropertyVetoException ex) {
                 Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
-            } 
+            }
         }
         if (ae.getSource() == guiMain.getBtnSalesStatistics()) {
             try {
@@ -366,7 +410,7 @@ public class ControllerMain implements ActionListener {
             } catch (PropertyVetoException ex) {
                 Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
             }
-                
+
         }
     }
 }

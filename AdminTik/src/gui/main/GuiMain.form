@@ -101,7 +101,7 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="btnLogout">
+        <Menu class="javax.swing.JMenu" name="empleado">
           <Properties>
             <Property name="text" type="java.lang.String" value="Empleados"/>
           </Properties>
@@ -111,7 +111,7 @@
                 <Property name="text" type="java.lang.String" value="Gesti&#xf3;n de empleados"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem3">
+            <MenuItem class="javax.swing.JMenuItem" name="btnLogout">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Cerrar sesion"/>
               </Properties>
@@ -187,7 +187,7 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="btnCloseCashbox">
+        <Menu class="javax.swing.JMenu" name="turn">
           <Properties>
             <Property name="text" type="java.lang.String" value="Turno"/>
           </Properties>
