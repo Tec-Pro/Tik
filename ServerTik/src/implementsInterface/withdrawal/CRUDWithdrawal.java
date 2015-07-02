@@ -26,7 +26,7 @@ public class CRUDWithdrawal extends UnicastRemoteObject implements interfaces.wi
     public Map<String, Object> create(int admin_id, String detail, Float amount) throws RemoteException{
         Utils.abrirBase();
         Base.openTransaction();
-        Withdrawal withdrawal = Withdrawal.createIt("admin_id",admin_id,"detail",detail,"amount",amount);
+        Withdrawal withdrawal = Withdrawal.createIt("admin_id",admin_id,"detail",detail,"amount",amount,"created_at", new java.sql.Date(System.currentTimeMillis()));
         Base.commitTransaction();
         return withdrawal.toMap();
     }
@@ -36,7 +36,7 @@ public class CRUDWithdrawal extends UnicastRemoteObject implements interfaces.wi
         Utils.abrirBase();
         Base.openTransaction();
         Withdrawal w = Withdrawal.findById(id);
-        w.set("detail", detail, "amount",amount).saveIt();
+        w.set("detail", detail, "amount",amount,"updated_at", new java.sql.Date(System.currentTimeMillis())).saveIt();
         Base.commitTransaction();
         return w.toMap();
     }
@@ -72,7 +72,7 @@ public class CRUDWithdrawal extends UnicastRemoteObject implements interfaces.wi
     @Override
     public List<Map> getWithdrawalsForDate(String date) throws RemoteException {
         Utils.abrirBase();
-        return Withdrawal.where("created_at > ?", date).toMaps();
+        return Withdrawal.where("created_at >= ?", date).toMaps();
     }
     
 }

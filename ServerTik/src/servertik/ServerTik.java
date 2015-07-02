@@ -18,9 +18,11 @@ import implementsInterface.CrudProviderCategory;
 import implementsInterface.CrudUser;
 import implementsInterface.GeneralConfig;
 import implementsInterface.Server;
+import implementsInterface.deposits.CRUDDeposit;
 import implementsInterface.providers.payments.CRUDPayments;
 import implementsInterface.providers.purchase.CRUDPurchase;
 import implementsInterface.statistics.CRUDStatistics;
+import implementsInterface.withdrawal.CRUDWithdrawal;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -86,6 +88,8 @@ public class ServerTik {
         CrudPresence CRUDPresence = new CrudPresence();
         GeneralConfig generalConfig = new GeneralConfig();
         CRUDPayments CRUDPayments = new CRUDPayments();
+        CRUDWithdrawal CRUDWithdrawal = new CRUDWithdrawal();
+        CRUDDeposit CRUDDeposit = new CRUDDeposit();
 
         //Cargo las configuraciones generales
         generalConfig.loadProperties();
@@ -108,6 +112,8 @@ public class ServerTik {
         Naming.rebind(InterfaceName.GeneralConfig, generalConfig);
         //Naming.rebind(InterfaceName.CRUDTurn, CRUDTurn);
         Naming.rebind(InterfaceName.CRUDpayments, CRUDPayments);
+        Naming.rebind(InterfaceName.CRUDWithdrawal, CRUDWithdrawal);
+        Naming.rebind(InterfaceName.CRUDDeposit, CRUDDeposit);
     }
 
 }

@@ -6,13 +6,11 @@
 package models.deposit;
 
 import org.javalite.activejdbc.Model;
-import org.javalite.activejdbc.annotations.Table;
 
 /**
  *
  * @author joako
  */
-@Table("waiterdeposits")
-public class WaiterDeposit extends Model {
+public class Deposit extends Model{
     
 }
