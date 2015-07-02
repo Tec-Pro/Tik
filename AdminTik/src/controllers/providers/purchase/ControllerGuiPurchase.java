@@ -12,6 +12,8 @@ import gui.providers.purchases.GuiPayPurchase;
 import gui.providers.purchases.GuiPurchase;
 import interfaces.InterfaceAdmin;
 import interfaces.InterfacePproduct;
+import interfaces.cashbox.expenses.InterfaceExpenses;
+import interfaces.deposits.InterfaceDeposit;
 import interfaces.providers.InterfaceProvider;
 import interfaces.providers.InterfaceProvidersSearch;
 import interfaces.providers.payments.InterfacePayments;
@@ -56,6 +58,8 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
     private final InterfaceAdmin interfaceAdmin;
     private final InterfaceProvider interfaceProvider;
     private final InterfacePayments interfacePayments;
+    private final InterfaceExpenses interfaceExpenses;
+    private final InterfaceDeposit deposit;
 
     private final DefaultTableModel tblDefaultProvider;
     private final DefaultTableModel tblDefaultProduct;
@@ -82,7 +86,9 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
         this.interfaceAdmin = (InterfaceAdmin) InterfaceName.registry.lookup(InterfaceName.CRUDAdmin);
         this.interfaceProvider = (InterfaceProvider) InterfaceName.registry.lookup(InterfaceName.CRUDProvider);
         this.interfacePayments = (InterfacePayments) InterfaceName.registry.lookup(InterfaceName.CRUDpayments);
-
+        this.interfaceExpenses = (InterfaceExpenses) InterfaceName.registry.lookup(InterfaceName.CRUDExpenses);
+        this.deposit = (InterfaceDeposit) InterfaceName.registry.lookup(InterfaceName.CRUDDeposit);
+        
         this.guiPurchase = guiPurchase;
         this.tblDefaultProduct = this.guiPurchase.getTblDefaultProduct();
         this.tblDefaultProvider = this.guiPurchase.getTblDefaultProvider();
@@ -272,7 +278,7 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
         float totalPaid = 0;
         String messageAux = "";
         String datePaid = null;
-        String nameAdmin="";
+        String nameAdmin = "";
         Integer providerId = Integer.valueOf(guiPurchase.getLblIdProvider().getText());
         datePaid = Dates.dateToMySQLDate(Calendar.getInstance().getTime(), false);
         String datePurchase = Dates.dateToMySQLDate(guiPurchase.getDatePurchase().getDate(), false);
@@ -300,12 +306,29 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
                     messageAux = " y con el resto se saldó las " + interfaceProvider.payPurchases(providerId, totalPaid - paid);
                 }
                 nameAdmin = guiPayPurchase.getNameAdmin();
+                if (guiPayPurchase.getPayAdmin() > 0) {
+                    
+                    /**
+                     * ACA DEBO CREAR UNA ENTREGA DEL MOZO
+                     * SIEMPRE Y CUANDO LO QUE ENTREGA MOZO ES MAYOR A 0
+                     */
+                    int idAdmin=-1;
+                    Iterator<Map> it= admins.iterator();
+                    while(it.hasNext()&& idAdmin==-1){
+                        Map a= it.next();
+                        if(((String)a.get("name"))==nameAdmin)
+                            idAdmin=(Integer)a.get("id");
+                    }
+                    deposit.createAdminDeposit(idAdmin, guiPayPurchase.getPayAdmin());
+                    controllers.cashbox.ControllerGUICashbox.reloadAdminDeposits();
+                }
             }
         }
         int idPurchase = interfacePurchase.create(cost, paid, datePurchase, providerId, datePaid, products);
         if (guiPurchase.getBoxPay().isSelected()) {
-            interfacePayments.createPayment(providerId, "Se pagó " + ParserFloat.floatToString(paid) + " de la factura con id " + idPurchase + messageAux, totalPaid, idPurchase, datePurchase,nameAdmin);
-        }  else{
+            interfacePayments.createPayment(providerId, "Se pagó " + ParserFloat.floatToString(paid) + " de la factura con id " + idPurchase + messageAux, totalPaid, idPurchase, datePurchase, nameAdmin);
+            interfaceExpenses.createExpense(2, "Se le pagó la compra con id " + idPurchase, totalPaid, idPurchase, providerId, "MAÑANA");
+        } else {
             interfaceProvider.payPurchases(providerId, 0);
         }
         return idPurchase;//retorna el id

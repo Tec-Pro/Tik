@@ -95,17 +95,17 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="existantInCashboxPanel" max="32767" attributes="0"/>
-                                  <Component id="dailyCashboxPanel" max="32767" attributes="0"/>
+                                  <Component id="existantInCashboxPanel" pref="331" max="32767" attributes="0"/>
+                                  <Component id="dailyCashboxPanel" pref="331" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="adminDepositsPanel" alignment="0" pref="257" max="32767" attributes="0"/>
-                                  <Component id="withdrawalsPanel" alignment="0" pref="257" max="32767" attributes="0"/>
-                                  <Component id="waiterDepositsPanel" pref="257" max="32767" attributes="0"/>
+                                  <Component id="adminDepositsPanel" alignment="0" pref="260" max="32767" attributes="0"/>
+                                  <Component id="withdrawalsPanel" alignment="0" pref="260" max="32767" attributes="0"/>
+                                  <Component id="waiterDepositsPanel" pref="260" max="32767" attributes="0"/>
                               </Group>
                           </Group>
-                          <Component id="expensesDetailPanel" pref="563" max="32767" attributes="0"/>
+                          <Component id="expensesDetailPanel" pref="597" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -358,10 +358,7 @@
                                               <Component id="ECCashboxExpensesField" alignment="0" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
-                                      <Group type="102" attributes="0">
-                                          <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
-                                          <Component id="ECNextTurnField" max="32767" attributes="0"/>
-                                      </Group>
+                                      <Component id="ECNextTurnField" max="32767" attributes="0"/>
                                       <Group type="102" alignment="0" attributes="0">
                                           <EmptySpace min="-2" max="-2" attributes="0"/>
                                           <Component id="ECInitialBalance" max="32767" attributes="0"/>
@@ -370,7 +367,6 @@
                                   <EmptySpace max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" attributes="0">
-                                  <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
                                   <Component id="ECBalanceField" max="32767" attributes="0"/>
                                   <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                               </Group>
@@ -580,6 +576,11 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="0" pref="98" max="32767" attributes="0"/>
+                          <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace pref="101" max="32767" attributes="0"/>
+                      </Group>
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -589,13 +590,9 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="expensesTotalField" max="32767" attributes="0"/>
                               </Group>
+                              <Component id="btnNewExpense" alignment="0" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="0" pref="98" max="32767" attributes="0"/>
-                          <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="101" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -604,14 +601,16 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" max="-2" attributes="0"/>
-                          <Component id="jScrollPane5" pref="490" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jScrollPane5" min="-2" pref="468" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="expensesTotalField" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="btnNewExpense" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -688,6 +687,11 @@
                 <Component class="javax.swing.JTextField" name="expensesTotalField">
                   <Properties>
                     <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnNewExpense">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="NUEVO GASTO"/>
                   </Properties>
                 </Component>
               </SubComponents>

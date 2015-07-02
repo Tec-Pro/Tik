@@ -4,9 +4,9 @@ INSERT INTO `admins` (`id`,`name`,`pass`,`is_admin`) VALUES (2,'José','ãÌã<$
 INSERT INTO `admins` (`id`,`name`,`pass`,`is_admin`) VALUES (3,'Mariano','ãÌã<$Øˆü§ŒwÌø',0);
 
 -- Inserto proveedores
-INSERT INTO `providers` (`id`,`name`,`cuit`,`address`,`description`,`phones`) VALUES (1,'Verduleria Milenio','12-12341234-21','San Martín 1234','Verduras y frutas','123-4567');
-INSERT INTO `providers` (`id`,`name`,`cuit`,`address`,`description`,`phones`) VALUES (2,'Sanz','12-12345-213456','Urquiza 1123','Bebidas','12345-123456');
-INSERT INTO `providers` (`id`,`name`,`cuit`,`address`,`description`,`phones`) VALUES (3,'Molino','12345','asd','12345','21345');
+INSERT INTO `providers` (`id`,`name`,`cuit`,`address`,`description`,`phones`,`current_account`) VALUES (1,'Verduleria Milenio','12-12341234-21','San Martín 1234','Verduras y frutas','123-4567',0);
+INSERT INTO `providers` (`id`,`name`,`cuit`,`address`,`description`,`phones`,`current_account`) VALUES (2,'Sanz','12-12345-213456','Urquiza 1123','Bebidas','12345-123456',0);
+INSERT INTO `providers` (`id`,`name`,`cuit`,`address`,`description`,`phones`,`current_account`) VALUES (3,'Molino','12345','asd','12345','21345',0);
 
 -- Inserto categorías de proveedores
 INSERT INTO `providercategories` (`id`,`name`) VALUES (1,'Verduras');
@@ -77,16 +77,6 @@ INSERT INTO `pproducts_purchases` (`id`,`pproduct_id`,`purchase_id`,`amount`,`fi
 INSERT INTO `pproducts_purchases` (`id`,`pproduct_id`,`purchase_id`,`amount`,`final_price`) VALUES (3,'2','3','1.0','12.0');
 INSERT INTO `pproducts_purchases` (`id`,`pproduct_id`,`purchase_id`,`amount`,`final_price`) VALUES (4,'2','4','1.0','10.0');
 
--- Inserto pedidos
-INSERT INTO `orders` (`id`,`order_number`,`user_id`,`description`,`closed`,`persons`) VALUES (1,1,1,'3 personas',0,3);
-INSERT INTO `orders` (`id`,`order_number`,`user_id`,`description`,`closed`,`persons`) VALUES (2,1,3,'',0,0);
-INSERT INTO `orders` (`id`,`order_number`,`user_id`,`description`,`closed`,`persons`) VALUES (3,2,1,'',0,0);
-
--- Inserto relación entre pedidos y productos
-INSERT INTO `orders_fproducts` (`id`,`order_id`,`fproduct_id`,`quantity`,`done`,`commited`,`issued`,`created_at`,`updated_at`,`paid`) VALUES (1,1,2,1,0,0,1,'2015-06-07 02:15:49','2015-06-07 02:15:49',0);
-INSERT INTO `orders_fproducts` (`id`,`order_id`,`fproduct_id`,`quantity`,`done`,`commited`,`issued`,`created_at`,`updated_at`,`paid`) VALUES (2,2,4,1,0,0,1,'2015-06-07 02:16:07','2015-06-07 02:16:07',0);
-INSERT INTO `orders_fproducts` (`id`,`order_id`,`fproduct_id`,`quantity`,`done`,`commited`,`issued`,`created_at`,`updated_at`,`paid`) VALUES (3,2,2,1,1,0,1,'2015-06-07 02:16:07','2015-06-07 02:16:07',0);
-INSERT INTO `orders_fproducts` (`id`,`order_id`,`fproduct_id`,`quantity`,`done`,`commited`,`issued`,`created_at`,`updated_at`,`paid`) VALUES (4,3,4,1,0,0,1,'2015-06-07 02:16:18','2015-06-07 02:16:18',0);
 
 -- Inserto empleados
 INSERT INTO `users` (`id`,`name`,`surname`,`pass`,`date_hired`,`date_discharged`,`turn`,`date_of_birth`,`place_of_birth`,`id_type`,`id_number`,`address`,`home_phone`,`emergency_phone`,`mobile_phone`,`marital_status`,`blood_type`,`position`,`order_count`) VALUES (1,'Federico','Mollea','ãÌã<$Øˆü§ŒwÌø','2015-06-26',NULL,'Manana','2015-06-18','Rio Cuarto','DNI','12345678','asdfg','123456','12345','123456','Soltero','O+','Mozo',0);
