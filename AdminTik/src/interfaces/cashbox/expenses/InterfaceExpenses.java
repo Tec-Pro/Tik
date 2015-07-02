@@ -23,7 +23,7 @@ public interface InterfaceExpenses extends Remote {
      * @param amount
      * @param purchase_id -1 si es un pago a proveedor u otros gastos
      * @param provider_id -1 si es otro gastos, para no asignar proveedor
-     * @param turn solo puede ser MAÑANA, TARDE
+     * @param turn solo puede ser M o T
      * @return
      * @throws java.rmi.RemoteException 
      */
@@ -32,7 +32,7 @@ public interface InterfaceExpenses extends Remote {
     
     /**
      * obtiene todos los gastos que existen de un turno dado
-     * @param turn,solo puede ser MAÑANA o TARDE
+     * @param turn,solo puede ser M o T
      * @return
      * @throws java.rmi.RemoteException 
      */

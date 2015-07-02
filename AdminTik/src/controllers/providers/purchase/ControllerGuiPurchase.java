@@ -12,6 +12,7 @@ import gui.providers.purchases.GuiPayPurchase;
 import gui.providers.purchases.GuiPurchase;
 import interfaces.InterfaceAdmin;
 import interfaces.InterfacePproduct;
+import interfaces.InterfaceTurn;
 import interfaces.cashbox.expenses.InterfaceExpenses;
 import interfaces.deposits.InterfaceDeposit;
 import interfaces.providers.InterfaceProvider;
@@ -60,6 +61,8 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
     private final InterfacePayments interfacePayments;
     private final InterfaceExpenses interfaceExpenses;
     private final InterfaceDeposit deposit;
+    private final InterfaceTurn interfaceTurn;
+
 
     private final DefaultTableModel tblDefaultProvider;
     private final DefaultTableModel tblDefaultProduct;
@@ -88,7 +91,8 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
         this.interfacePayments = (InterfacePayments) InterfaceName.registry.lookup(InterfaceName.CRUDpayments);
         this.interfaceExpenses = (InterfaceExpenses) InterfaceName.registry.lookup(InterfaceName.CRUDExpenses);
         this.deposit = (InterfaceDeposit) InterfaceName.registry.lookup(InterfaceName.CRUDDeposit);
-        
+        this.interfaceTurn= (InterfaceTurn) InterfaceName.registry.lookup(InterfaceName.CRUDTurn);
+       
         this.guiPurchase = guiPurchase;
         this.tblDefaultProduct = this.guiPurchase.getTblDefaultProduct();
         this.tblDefaultProvider = this.guiPurchase.getTblDefaultProvider();
@@ -327,7 +331,7 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
         int idPurchase = interfacePurchase.create(cost, paid, datePurchase, providerId, datePaid, products);
         if (guiPurchase.getBoxPay().isSelected()) {
             interfacePayments.createPayment(providerId, "Se pagó " + ParserFloat.floatToString(paid) + " de la factura con id " + idPurchase + messageAux, totalPaid, idPurchase, datePurchase, nameAdmin);
-            interfaceExpenses.createExpense(2, "Se le pagó la compra con id " + idPurchase, totalPaid, idPurchase, providerId, "MAÑANA");
+            interfaceExpenses.createExpense(2, "Se le pagó la compra con id " + idPurchase, totalPaid, idPurchase, providerId, interfaceTurn.getTurn());
         } else {
             interfaceProvider.payPurchases(providerId, 0);
         }

@@ -14,6 +14,7 @@ import gui.deposit.GUINewDeposit;
 import gui.providers.purchases.GuiPayPurchase;
 import gui.withdrawal.GUINewWithdrawal;
 import interfaces.InterfaceAdmin;
+import interfaces.InterfaceTurn;
 import interfaces.InterfaceUser;
 import interfaces.cashbox.expenses.InterfaceExpenses;
 import interfaces.deposits.InterfaceDeposit;
@@ -50,6 +51,7 @@ public class ControllerGUICashbox implements ActionListener {
     private final InterfacePayments interfacePayments;
     private final InterfaceExpenses interfaceExpenses;
     private final InterfaceAdmin interfaceAdmin;
+    private final InterfaceTurn interfaceTurn;
 
     public ControllerGUICashbox(GUICashbox guiCashbox) throws RemoteException, NotBoundException {
         gui = guiCashbox;
@@ -61,6 +63,7 @@ public class ControllerGUICashbox implements ActionListener {
         this.interfacePayments = (InterfacePayments) InterfaceName.registry.lookup(InterfaceName.CRUDpayments);
         this.interfaceExpenses = (InterfaceExpenses) InterfaceName.registry.lookup(InterfaceName.CRUDExpenses);
         this.interfaceAdmin = (InterfaceAdmin) InterfaceName.registry.lookup(InterfaceName.CRUDAdmin);
+        this.interfaceTurn= (InterfaceTurn) InterfaceName.registry.lookup(InterfaceName.CRUDTurn);
         gui.setActionListener(this);
         gui.getECInitialBalanceCheckBox().addItemListener(new ItemListener() {
 
@@ -142,7 +145,7 @@ public class ControllerGUICashbox implements ActionListener {
                         } else {
                             auxType = 1;
                         }
-                        interfaceExpenses.createExpense(auxType, detail, payAdmin + payBox, -1, idProvider, "MAÑANA");
+                        interfaceExpenses.createExpense(auxType, detail, payAdmin + payBox, -1, idProvider,interfaceTurn.getTurn() );
                         if (idProvider >= 0) {
                             interfaceProvider.payPurchases(idProvider, payAdmin + payBox);
                         }
