@@ -114,6 +114,7 @@ public class ServerTik {
         Naming.rebind(InterfaceName.CRUDpayments, CRUDPayments);
         Naming.rebind(InterfaceName.CRUDWithdrawal, CRUDWithdrawal);
         Naming.rebind(InterfaceName.CRUDDeposit, CRUDDeposit);
+        Naming.rebind(InterfaceName.CRUDTurn, CRUDTurn);
     }
 
 }

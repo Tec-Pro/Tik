@@ -131,10 +131,6 @@ public class GuiMain extends javax.swing.JFrame {
         return desktop;
     }
 
-    public JMenuItem getBtnCloseCashbox() {
-        return turn;
-    }
-
     public JMenuItem getBtnProductList() {
         return btnProductList;
     }

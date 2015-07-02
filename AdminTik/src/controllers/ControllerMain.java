@@ -6,6 +6,7 @@
 package controllers;
 
 import controllers.cashbox.ControllerGUICashbox;
+import controllers.logout.ControllerGuiLogout;
 import controllers.providers.ControllerGuiCRUDProviders;
 import controllers.providers.purchase.ControllerGuiPurchase;
 import controllers.statistics.ControllerGuiProductList;
@@ -22,6 +23,7 @@ import gui.GuiCRUDUser;
 import gui.GuiMenu;
 import gui.GuiLoadPurchase;
 import gui.cashbox.GUICashbox;
+import gui.logout.GuiLogout;
 import gui.main.GuiConfig;
 import gui.main.GuiMain;
 import gui.providers.GuiCRUDProviders;
@@ -79,6 +81,7 @@ public class ControllerMain implements ActionListener {
     private static GuiSalesStatistics guiSalesStatistics;
     private static GuiProductList guiProductList;
     private static GuiProductStatistics guiProductStatistics;
+    private static GuiLogout guiLogout;
     //controladores
     private static ControllerGuiCRUDAdmin controllerCRUDAdmin; //controlador de la gui para admin
     private ControllerGuiCRUDEproduct controllerCRUDEProduct; //controlador productos elaborados
@@ -93,6 +96,7 @@ public class ControllerMain implements ActionListener {
     private ControllerGuiProductList controllerGuiProductList;
     private ControllerGuiProductStatistics controllerGuiProductStatistics;
     private ControllerGuiSalesStatistics controllerGuiSalesStatistics;
+    private ControllerGuiLogout controllerGuiLogout;
 //    private ControllerGUICRUDWithdrawal controllerGuiCRUDWithdrawal;
     private InterfacePresence crudPresence;
     private InterfaceTurn crudTurn;
@@ -126,6 +130,7 @@ public class ControllerMain implements ActionListener {
         guiSalesStatistics = new GuiSalesStatistics();
         guiProductList = new GuiProductList();
         guiProductStatistics = new GuiProductStatistics();
+        guiLogout = new GuiLogout();
 //        guiCRUDWithdrawal = new GUICRUDWithdrawal();
 
         //agrego las gui al desktop
@@ -144,6 +149,7 @@ public class ControllerMain implements ActionListener {
         guiMain.getDesktop().add(guiProductList);
         guiMain.getDesktop().add(guiProductStatistics);
         guiMain.getDesktop().add(guiSalesStatistics);
+        guiMain.getDesktop().add(guiLogout);
 
         InterfaceProvider provider = (InterfaceProvider) InterfaceName.registry.lookup(InterfaceName.CRUDProvider);
         InterfaceProviderCategory providerCategory = (InterfaceProviderCategory) InterfaceName.registry.lookup(InterfaceName.CRUDProviderCategory);
@@ -165,6 +171,7 @@ public class ControllerMain implements ActionListener {
         controllerGuiSalesStatistics = new ControllerGuiSalesStatistics(guiSalesStatistics);
         controllerGuiProductList = new ControllerGuiProductList(guiProductList);
         controllerGuiProductStatistics = new ControllerGuiProductStatistics(controllerGuiProductStatistics);
+        controllerGuiLogout = new ControllerGuiLogout(guiLogout);
         //restauro el puntero asi ya se que termino de cargar todo
         guiMain.setCursor(Cursor.DEFAULT_CURSOR);
 
@@ -323,6 +330,10 @@ public class ControllerMain implements ActionListener {
                 }
             }
         }
+        if (ae.getSource() == guiMain.getBtnLogout()) {
+            guiLogout.setVisible(true);
+            guiCashbox.toFront();
+        }
         if (ae.getSource() == guiMain.getBtnDailyCashbox()) {
             try {
                 guiCashbox.setMaximum(true);
@@ -332,16 +343,22 @@ public class ControllerMain implements ActionListener {
             guiCashbox.setVisible(true);
             guiCashbox.toFront();
         }
-        if (ae.getSource() == guiMain.getBtnCloseCashbox()) {
+        if (ae.getSource() == guiMain.getBtnCloseCashBox()) {
             try {
-                if (crudPresence.isSomeoneLogin()) {
-                    JOptionPane.showMessageDialog(guiMain, "Aun hay empleados logeados, por favor deslogee todos los empleados antes de cerrar la caja");
+                if (!crudTurn.isTurnOpen()) {
+                     JOptionPane.showMessageDialog(guiMain, "No hay ningun turno abierto");
                 } else {
-                    if (crudTurn.changeTurn("N")) {
-                        JOptionPane.showMessageDialog(guiMain, "El tunro se cerro exitosamente");
+                    if (crudPresence.isSomeoneLogin()) {
+                        JOptionPane.showMessageDialog(guiMain, "Aun hay empleados logeados, por favor deslogee todos los empleados antes de cerrar la caja");
+                    } else {
+                        //BLOQUEAR BOTONES CAJA, eliminar todo, estadisticas.
+
+                        if (crudTurn.changeTurn("N")) {
+                            JOptionPane.showMessageDialog(guiMain, "El tunro se cerro exitosamente");
+
+                        }
 
                     }
-                    //BLOQUEAR BOTONES CAJA.
                 }
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
@@ -350,7 +367,6 @@ public class ControllerMain implements ActionListener {
 
         if (ae.getSource() == guiMain.getBtnOpenTM()) {
             try {
-                System.out.print("CLICK TURNO MAÑANA WACHIN");
                 if (crudTurn.isTurnOpen()) {
                     if (crudTurn.getTurn().endsWith("M")) {
                         JOptionPane.showMessageDialog(guiMain, "El turno mañana ya esta abierto");
