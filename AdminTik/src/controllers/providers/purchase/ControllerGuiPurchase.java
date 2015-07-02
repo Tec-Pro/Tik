@@ -8,10 +8,13 @@ package controllers.providers.purchase;
 import controllers.ControllerMain;
 import controllers.providers.ControllerGuiCRUDProviders;
 import gui.providers.purchases.GuiAddProductToPurchase;
+import gui.providers.purchases.GuiPayPurchase;
 import gui.providers.purchases.GuiPurchase;
+import interfaces.InterfaceAdmin;
 import interfaces.InterfacePproduct;
 import interfaces.providers.InterfaceProvider;
 import interfaces.providers.InterfaceProvidersSearch;
+import interfaces.providers.payments.InterfacePayments;
 import interfaces.providers.purchases.InterfacePurchase;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -50,6 +53,9 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
     private final GuiPurchase guiPurchase;
     private final InterfacePproduct interfacePproduct;
     private final InterfaceProvidersSearch interfaceProvidersSearch;
+    private final InterfaceAdmin interfaceAdmin;
+    private final InterfaceProvider interfaceProvider;
+    private final InterfacePayments interfacePayments;
 
     private final DefaultTableModel tblDefaultProvider;
     private final DefaultTableModel tblDefaultProduct;
@@ -73,6 +79,10 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
         this.interfacePurchase = (InterfacePurchase) InterfaceName.registry.lookup(InterfaceName.CRUDPurchase);
         this.interfacePproduct = (InterfacePproduct) InterfaceName.registry.lookup(InterfaceName.CRUDPproduct);
         this.interfaceProvidersSearch = (InterfaceProvidersSearch) InterfaceName.registry.lookup(InterfaceName.providersSearch);
+        this.interfaceAdmin = (InterfaceAdmin) InterfaceName.registry.lookup(InterfaceName.CRUDAdmin);
+        this.interfaceProvider = (InterfaceProvider) InterfaceName.registry.lookup(InterfaceName.CRUDProvider);
+        this.interfacePayments = (InterfacePayments) InterfaceName.registry.lookup(InterfaceName.CRUDpayments);
+
         this.guiPurchase = guiPurchase;
         this.tblDefaultProduct = this.guiPurchase.getTblDefaultProduct();
         this.tblDefaultProvider = this.guiPurchase.getTblDefaultProvider();
@@ -148,7 +158,7 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
                         String measureUnit = (String) product.get("measure_unit");
                         Float totalPrice = (float) product.get("unit_price");
                         Float amount = new Float(1);
-                        GuiAddProductToPurchase guiAdd = new GuiAddProductToPurchase(ControllerMain.guiMain, true, measureUnit, totalPrice );
+                        GuiAddProductToPurchase guiAdd = new GuiAddProductToPurchase(ControllerMain.guiMain, true, measureUnit, totalPrice);
                         guiAdd.setLocationRelativeTo(guiPurchase);
                         guiAdd.setVisible(true);
                         if (guiAdd.getReturnStatus() == GuiAddProductToPurchase.RET_OK) {
@@ -169,7 +179,7 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
                                     o[3] = "unitario";
                                     break;
                             }
-                            o[4] = ParserFloat.floatToString(totalPrice/amount);
+                            o[4] = ParserFloat.floatToString(totalPrice / amount);
                             o[5] = ParserFloat.floatToString(totalPrice);
                             tblDefaultPurchase.addRow(o);
                             guiPurchase.getTxtCost().setText(ParserFloat.floatToString(calculateCost()));
@@ -256,20 +266,16 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
         }
     }
 
-
-
-
     private Integer makePurchase() throws RemoteException {
         float cost = ParserFloat.stringToFloat(guiPurchase.getTxtCost().getText());
         float paid = 0;
+        float totalPaid = 0;
+        String messageAux = "";
         String datePaid = null;
-        if (guiPurchase.getBoxPay().isSelected()) {//paga el total de la factura
-            paid = cost;
-            datePaid = Dates.dateToMySQLDate(Calendar.getInstance().getTime(), false);
-            //Aca deberia ir el pago
-        }
-        String datePurchase = Dates.dateToMySQLDate(guiPurchase.getDatePurchase().getDate(), false);
+        String nameAdmin="";
         Integer providerId = Integer.valueOf(guiPurchase.getLblIdProvider().getText());
+        datePaid = Dates.dateToMySQLDate(Calendar.getInstance().getTime(), false);
+        String datePurchase = Dates.dateToMySQLDate(guiPurchase.getDatePurchase().getDate(), false);
         LinkedList<Pair<Integer, Pair<Float, Float>>> products = new LinkedList<>();
         for (int i = 0; i < tblPurchase.getRowCount(); i++) {
             float amount = ParserFloat.stringToFloat((String) tblPurchase.getValueAt(i, 2));
@@ -279,7 +285,30 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
             Pair<Integer, Pair<Float, Float>> pair = new Pair<>(idProduct, amountPrice);
             products.add(pair);
         }
-        return interfacePurchase.create(cost, paid, datePurchase, providerId,datePaid , products);//retorna el id
+        if (guiPurchase.getBoxPay().isSelected()) {//paga el total de la factura
+            List<Map> admins = interfaceAdmin.getAdmins();
+            GuiPayPurchase guiPayPurchase = new GuiPayPurchase(ControllerMain.guiMain, true, cost, admins);
+            guiPayPurchase.setLocationRelativeTo(guiPurchase);
+            guiPayPurchase.setVisible(true);
+            if (guiPayPurchase.getReturnStatus() == GuiPayPurchase.RET_OK) {
+                totalPaid = guiPayPurchase.getPayAdmin() + guiPayPurchase.getPayBox();
+                if (totalPaid <= cost) {
+                    paid = totalPaid;
+                } else {
+                    paid = cost;
+
+                    messageAux = " y con el resto se saldó las " + interfaceProvider.payPurchases(providerId, totalPaid - paid);
+                }
+                nameAdmin = guiPayPurchase.getNameAdmin();
+            }
+        }
+        int idPurchase = interfacePurchase.create(cost, paid, datePurchase, providerId, datePaid, products);
+        if (guiPurchase.getBoxPay().isSelected()) {
+            interfacePayments.createPayment(providerId, "Se pagó " + ParserFloat.floatToString(paid) + " de la factura con id " + idPurchase + messageAux, totalPaid, idPurchase, datePurchase,nameAdmin);
+        }  else{
+            interfaceProvider.payPurchases(providerId, 0);
+        }
+        return idPurchase;//retorna el id
 
     }
 
@@ -288,7 +317,8 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
      * @param ae
      */
     @Override
-    public void actionPerformed(ActionEvent ae) {
+    public void actionPerformed(ActionEvent ae
+    ) {
         if (ae.getSource().equals(guiPurchase.getBtnNew())) {
             guiPurchase.clickNew();
             try {
@@ -297,11 +327,11 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
                 Logger.getLogger(ControllerGuiPurchase.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         if (ae.getSource().equals(guiPurchase.getBtnCancel())) {
             guiPurchase.clickCancel();
         }
-        
+
         if (ae.getSource().equals(guiPurchase.getBtnPurchase())) {
             if (!guiPurchase.getLblIdProvider().getText().equals("")) {
                 try {
@@ -315,10 +345,10 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiPurchase.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }else {
-            JOptionPane.showMessageDialog(guiPurchase, "Proveedor vacio, seleccione uno", "¡Error!", JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(guiPurchase, "Proveedor vacio, seleccione uno", "¡Error!", JOptionPane.ERROR_MESSAGE);
+            }
         }
-        } 
 
     }
 
@@ -327,7 +357,8 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
      * @param ce
      */
     @Override
-    public void editingStopped(ChangeEvent ce) {
+    public void editingStopped(ChangeEvent ce
+    ) {
         guiPurchase.getTxtCost().setText(ParserFloat.floatToString(calculateCost()));
     }
 
@@ -336,7 +367,8 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
      * @param ce
      */
     @Override
-    public void editingCanceled(ChangeEvent ce) {
+    public void editingCanceled(ChangeEvent ce
+    ) {
     }
 
 }

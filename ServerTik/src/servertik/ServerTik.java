@@ -18,6 +18,7 @@ import implementsInterface.CrudProviderCategory;
 import implementsInterface.CrudUser;
 import implementsInterface.GeneralConfig;
 import implementsInterface.Server;
+import implementsInterface.providers.payments.CRUDPayments;
 import implementsInterface.providers.purchase.CRUDPurchase;
 import implementsInterface.statistics.CRUDStatistics;
 import java.io.FileNotFoundException;
@@ -84,7 +85,8 @@ public class ServerTik {
         ProvidersSearch providerSearch = new ProvidersSearch();
         CrudPresence CRUDPresence = new CrudPresence();
         GeneralConfig generalConfig = new GeneralConfig();
-        
+        CRUDPayments CRUDPayments = new CRUDPayments();
+
         //Cargo las configuraciones generales
         generalConfig.loadProperties();
 
@@ -104,8 +106,8 @@ public class ServerTik {
         Naming.rebind(InterfaceName.CRUDOrder, CRUDOrder);
         Naming.rebind(InterfaceName.server, server);
         Naming.rebind(InterfaceName.GeneralConfig, generalConfig);
-        Naming.rebind(InterfaceName.CRUDTurn, CRUDTurn);
-
+        //Naming.rebind(InterfaceName.CRUDTurn, CRUDTurn);
+        Naming.rebind(InterfaceName.CRUDpayments, CRUDPayments);
     }
 
 }

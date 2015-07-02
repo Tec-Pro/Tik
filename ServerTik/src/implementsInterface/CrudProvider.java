@@ -5,6 +5,7 @@
  */
 package implementsInterface;
 
+import implementsInterface.providers.purchase.CRUDPurchase;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Collections;
@@ -12,9 +13,14 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import javassist.compiler.Parser;
 import models.Provider;
 import models.Providercategory;
+import models.providers.purchase.Purchase;
 import org.javalite.activejdbc.Base;
+import org.javalite.activejdbc.LazyList;
+import org.javalite.activejdbc.Model;
+import static utils.InterfaceName.CRUDPurchase;
 import utils.Utils;
 
 /**
@@ -202,4 +208,75 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.prov
         return getProvider(provider_id);
     }
 
+    @Override
+    public boolean updateCurrentAccount(int provider_id, float amount) throws RemoteException {
+        Utils.abrirBase();
+        Base.openTransaction();
+        Provider p = Provider.findById(provider_id);
+        p.set("current_account", p.getFloat("current_account") + amount);
+        boolean ret = p.saveIt();
+        Base.commitTransaction();
+        return ret;
+    }
+
+    @Override
+    public float getCurrentAccount(int provider_id) throws RemoteException {
+        Utils.abrirBase();
+        Provider p = Provider.findById(provider_id);
+        return p.getFloat("current_account");
+    }
+
+    @Override
+    public String payPurchases(int provider_id, float amount) throws RemoteException {
+        Utils.abrirBase();
+        Base.openTransaction();
+        String msgResult="compras: ";
+        float currentAccount = Provider.findById(provider_id).getFloat("current_account");
+        float rest=0;
+        if(currentAccount>0)
+            rest = currentAccount;
+        LazyList<Purchase> purchases = Purchase.where("provider_id = ? AND (paid < cost)", provider_id).orderBy("date");
+        rest = rest + amount; //resto que queda para seguir pagando
+        Iterator<Purchase> it = purchases.iterator();
+        if (rest != 0) {
+            while (it.hasNext() && rest != 0) {
+                Purchase p = it.next();
+                float cost = p.getFloat("cost"); //lo que le salió la compra
+                float paid = p.getFloat("paid"); //lo que ya pago
+                float toPay = cost - paid; //lo que le falta pagar
+                if (rest >= toPay) { //si de la la plata que puso ahora le alcanza para pagar
+                    p.set("paid", cost); //pago
+                    rest = rest - toPay; // y resto lo que pagué
+                    msgResult=msgResult+" "+p.getString("id")+", ";
+                } else {
+                    if(rest>0)
+                        msgResult=msgResult+" "+p.getString("id")+", ";
+                    p.set("paid", paid + rest);
+                    rest = 0;
+
+                }
+                p.saveIt();
+            }
+        }
+        if (rest != 0) {
+            msgResult=msgResult+" y quedó $"+rest+" a favor en cuenta corriente";
+            Provider.findById(provider_id).setFloat("current_account", rest).saveIt();
+        }
+        else{
+            float debt=-calculateDebt(provider_id);
+            msgResult=msgResult+" y se tiene  $"+debt+" en contra en cuenta corriente ";
+            Provider.findById(provider_id).setFloat("current_account", debt).saveIt();
+        }
+        Base.commitTransaction();
+        return msgResult;
+    }
+
+    private float calculateDebt(int provider_id){
+        float debt=0;
+        LazyList<Purchase> purchases = Purchase.where("provider_id = ? AND (paid < cost)", provider_id);
+        for(Purchase p: purchases){
+            debt= debt+(p.getFloat("cost")-p.getFloat("paid"));
+        }
+        return debt;
+    }
 }

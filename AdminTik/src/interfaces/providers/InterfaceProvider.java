@@ -74,4 +74,31 @@ public interface InterfaceProvider extends Remote {
     public List<Map> getCategoriesFromProvider(int id) throws java.rmi.RemoteException;
 
     public Map<String, Object> saveCategoriesOfProvider(int provider_id, LinkedList categoriesToAdd, LinkedList categoriesToRemove) throws java.rmi.RemoteException;
+    
+    /**
+     * actualizo la cuenta corriente del proveedor 
+     * @param provider_id
+     * @param amount
+     * @return
+     * @throws java.rmi.RemoteException 
+     */
+    public boolean updateCurrentAccount(int provider_id, float amount) throws java.rmi.RemoteException;
+    
+    /**
+     * obtengo la cuenta corriente del proveedor
+     * @param provider_id
+     * @return
+     * @throws java.rmi.RemoteException 
+     */
+    public float getCurrentAccount(int provider_id) throws java.rmi.RemoteException;
+    
+        /**
+     * Paga facturas de un proveedor, desde la más vieja a la más nueva, si sobra plata se agrega a la cuenta
+     * corriente, devuelve un string con un mensaje de las facturas que se pagaron 
+     * @param provider_id
+     * @param amount
+     * @return
+     * @throws java.rmi.RemoteException 
+     */
+    public String payPurchases(int provider_id ,float amount)throws java.rmi.RemoteException;
 }

@@ -33,5 +33,6 @@ public class InterfaceName {
     public static Registry registry;
     public static final String GeneralConfig = "GeneralConfig";
     public static final String CRUDStatistics = "CRUDStatistics";
+    public static final String CRUDpayments = "CRUDPayments";
 
 }
