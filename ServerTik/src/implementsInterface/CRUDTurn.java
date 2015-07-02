@@ -6,6 +6,7 @@ package implementsInterface;
 
 import interfaces.InterfaceTurn;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import models.Inning;
 import org.javalite.activejdbc.Base;
 import utils.Utils;
@@ -14,15 +15,12 @@ import utils.Utils;
  *
  * @author jacinto
  */
-public class CRUDTurn implements InterfaceTurn {
+public class CRUDTurn extends UnicastRemoteObject implements interfaces.InterfaceTurn {
 
     public CRUDTurn() throws RemoteException {
         super();
     }
 
-    
-    
-    
     @Override
     public boolean isTurnOpen() throws RemoteException {
         Utils.abrirBase();

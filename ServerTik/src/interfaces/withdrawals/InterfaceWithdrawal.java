@@ -67,7 +67,7 @@ public interface InterfaceWithdrawal extends Remote {
      */
     public List<Map> getWithdrawalsOfAdmin(int admin_id) throws java.rmi.RemoteException;
 
-    
+
     public List<Map> getWithdrawalsForDate(String init) throws java.rmi.RemoteException;
     
 }

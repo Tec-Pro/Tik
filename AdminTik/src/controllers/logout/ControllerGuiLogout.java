@@ -80,6 +80,7 @@ public class ControllerGuiLogout implements ActionListener {
         online = new HashSet<>();
         online.addAll(crudPresence.getWaiters());
         online.addAll(crudPresence.getCooks());
+        guiLogout.loadOnlineEmployers(online);
     }
 
     @Override

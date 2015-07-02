@@ -6,6 +6,7 @@
 package controllers;
 
 import controllers.cashbox.ControllerGUICashbox;
+import controllers.logout.ControllerGuiLogout;
 import controllers.providers.ControllerGuiCRUDProviders;
 import controllers.providers.purchase.ControllerGuiPurchase;
 import controllers.statistics.ControllerGuiProductList;
@@ -22,6 +23,7 @@ import gui.GuiCRUDUser;
 import gui.GuiMenu;
 import gui.GuiLoadPurchase;
 import gui.cashbox.GUICashbox;
+import gui.logout.GuiLogout;
 import gui.main.GuiConfig;
 import gui.main.GuiMain;
 import gui.providers.GuiCRUDProviders;
@@ -32,6 +34,7 @@ import gui.statistics.GuiSalesStatistics;
 //import gui.withdrawal.GUICRUDWithdrawal;
 import interfaces.InterfaceGeneralConfig;
 import interfaces.InterfacePresence;
+import interfaces.InterfaceTurn;
 import interfaces.providers.InterfaceProvider;
 import interfaces.providers.InterfaceProviderCategory;
 import interfaces.providers.InterfaceProvidersSearch;
@@ -78,6 +81,7 @@ public class ControllerMain implements ActionListener {
     private static GuiSalesStatistics guiSalesStatistics;
     private static GuiProductList guiProductList;
     private static GuiProductStatistics guiProductStatistics;
+    private static GuiLogout guiLogout;
     //controladores
     private static ControllerGuiCRUDAdmin controllerCRUDAdmin; //controlador de la gui para admin
     private ControllerGuiCRUDEproduct controllerCRUDEProduct; //controlador productos elaborados
@@ -92,8 +96,10 @@ public class ControllerMain implements ActionListener {
     private ControllerGuiProductList controllerGuiProductList;
     private ControllerGuiProductStatistics controllerGuiProductStatistics;
     private ControllerGuiSalesStatistics controllerGuiSalesStatistics;
+    private ControllerGuiLogout controllerGuiLogout;
 //    private ControllerGUICRUDWithdrawal controllerGuiCRUDWithdrawal;
     private InterfacePresence crudPresence;
+    private InterfaceTurn crudTurn;
 
     public ControllerMain(GuiAdminLogin guiAdminLogin) throws NotBoundException, MalformedURLException, RemoteException {
         this.guiAdminLogin = guiAdminLogin; //hago esto, así si cierra sesión pongo en visible la ventana
@@ -124,6 +130,7 @@ public class ControllerMain implements ActionListener {
         guiSalesStatistics = new GuiSalesStatistics();
         guiProductList = new GuiProductList();
         guiProductStatistics = new GuiProductStatistics();
+        guiLogout = new GuiLogout();
 //        guiCRUDWithdrawal = new GUICRUDWithdrawal();
 
         //agrego las gui al desktop
@@ -142,6 +149,7 @@ public class ControllerMain implements ActionListener {
         guiMain.getDesktop().add(guiProductList);
         guiMain.getDesktop().add(guiProductStatistics);
         guiMain.getDesktop().add(guiSalesStatistics);
+        guiMain.getDesktop().add(guiLogout);
 
         InterfaceProvider provider = (InterfaceProvider) InterfaceName.registry.lookup(InterfaceName.CRUDProvider);
         InterfaceProviderCategory providerCategory = (InterfaceProviderCategory) InterfaceName.registry.lookup(InterfaceName.CRUDProviderCategory);
@@ -163,10 +171,12 @@ public class ControllerMain implements ActionListener {
         controllerGuiSalesStatistics = new ControllerGuiSalesStatistics(guiSalesStatistics);
         controllerGuiProductList = new ControllerGuiProductList(guiProductList);
         controllerGuiProductStatistics = new ControllerGuiProductStatistics(guiProductStatistics);
+        controllerGuiLogout = new ControllerGuiLogout(guiLogout);
         //restauro el puntero asi ya se que termino de cargar todo
         guiMain.setCursor(Cursor.DEFAULT_CURSOR);
 
         crudPresence = (InterfacePresence) InterfaceName.registry.lookup(InterfaceName.CRUDPresence);
+        crudTurn = (InterfaceTurn) InterfaceName.registry.lookup(InterfaceName.CRUDTurn);
 
     }
 
@@ -320,6 +330,10 @@ public class ControllerMain implements ActionListener {
                 }
             }
         }
+        if (ae.getSource() == guiMain.getBtnLogout()) {
+            guiLogout.setVisible(true);
+            guiCashbox.toFront();
+        }
         if (ae.getSource() == guiMain.getBtnDailyCashbox()) {
             try {
                 guiCashbox.setMaximum(true);
@@ -329,12 +343,58 @@ public class ControllerMain implements ActionListener {
             guiCashbox.setVisible(true);
             guiCashbox.toFront();
         }
-        if (ae.getSource() == guiMain.getBtnCloseCashbox()) {
+        if (ae.getSource() == guiMain.getBtnCloseCashBox()) {
             try {
-                if (crudPresence.isSomeoneLogin()) {
-                    JOptionPane.showMessageDialog(guiMain, "Aun hay empleados logeados, por favor deslogee todos los empleados antes de cerrar la caja");
+                if (!crudTurn.isTurnOpen()) {
+                     JOptionPane.showMessageDialog(guiMain, "No hay ningun turno abierto");
                 } else {
-                    //BLOQUEAR BOTONES CAJA.
+                    if (crudPresence.isSomeoneLogin()) {
+                        JOptionPane.showMessageDialog(guiMain, "Aun hay empleados logeados, por favor deslogee todos los empleados antes de cerrar la caja");
+                    } else {
+                        //BLOQUEAR BOTONES CAJA, eliminar todo, estadisticas.
+
+                        if (crudTurn.changeTurn("N")) {
+                            JOptionPane.showMessageDialog(guiMain, "El tunro se cerro exitosamente");
+
+                        }
+
+                    }
+                }
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        if (ae.getSource() == guiMain.getBtnOpenTM()) {
+            try {
+                if (crudTurn.isTurnOpen()) {
+                    if (crudTurn.getTurn().endsWith("M")) {
+                        JOptionPane.showMessageDialog(guiMain, "El turno mañana ya esta abierto");
+                    } else {
+                        JOptionPane.showMessageDialog(guiMain, "Debe cerrar el turno anterior, antes de abrir uno nuevo");
+                    }
+                } else {
+                    if (crudTurn.changeTurn("M")) {
+                        JOptionPane.showMessageDialog(guiMain, "Turno mañana abierto");
+                    }
+                }
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        if (ae.getSource() == guiMain.getBntOpenTA()) {
+            try {
+                if (crudTurn.isTurnOpen()) {
+                    if (crudTurn.getTurn().endsWith("T")) {
+                        JOptionPane.showMessageDialog(guiMain, "El turno tarde ya esta abierto");
+                    } else {
+                        JOptionPane.showMessageDialog(guiMain, "Debe cerrar el turno anterior, antes de abrir uno nuevo");
+                    }
+                } else {
+                    if (crudTurn.changeTurn("T")) {
+                        JOptionPane.showMessageDialog(guiMain, "Turno tarde abierto");
+                    }
                 }
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
@@ -350,13 +410,13 @@ public class ControllerMain implements ActionListener {
             }
         }
         if (ae.getSource() == guiMain.getBtnProductStatistics()) {
-           try {
+            try {
                 guiProductStatistics.setMaximum(true);
                 guiProductStatistics.setVisible(true);
                 guiProductStatistics.toFront();
             } catch (PropertyVetoException ex) {
                 Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
-            } 
+            }
         }
         if (ae.getSource() == guiMain.getBtnSalesStatistics()) {
             try {
@@ -366,7 +426,7 @@ public class ControllerMain implements ActionListener {
             } catch (PropertyVetoException ex) {
                 Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
             }
-                
+
         }
     }
 }

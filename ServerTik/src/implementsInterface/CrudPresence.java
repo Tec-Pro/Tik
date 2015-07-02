@@ -94,7 +94,7 @@ public class CrudPresence extends UnicastRemoteObject implements InterfacePresen
         Base.openTransaction();
         Date now = new Date(System.currentTimeMillis());
         SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
-        List<Presence> listP = Presence.where("day = '00:00:00'");
+        List<Presence> listP = Presence.where("departure_time = '00:00:00'");
         for (Presence p : listP) {
             if (User.findById(p.get("user_id")).getString("position").equals("Mozo")) {
                 SimpleDateFormat hour = new SimpleDateFormat("HH:mm:ss");
@@ -125,7 +125,7 @@ public class CrudPresence extends UnicastRemoteObject implements InterfacePresen
         Base.openTransaction();
         Date now = new Date(System.currentTimeMillis());
         SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
-        List<Presence> listP = Presence.where("day = '00:00:00'");
+        List<Presence> listP = Presence.where("departure_time = '00:00:00'");
         for (Presence p : listP) {
             SimpleDateFormat hour = new SimpleDateFormat("HH:mm:ss");
             p.set("departure_time", hour.format(now));
@@ -140,7 +140,7 @@ public class CrudPresence extends UnicastRemoteObject implements InterfacePresen
         Base.openTransaction();
         Date now = new Date(System.currentTimeMillis());
         SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
-        List<Presence> listP = Presence.where("day = '00:00:00'");
+        List<Presence> listP = Presence.where("departure_time = '00:00:00'");
         for (Presence p : listP) {
             if (User.findById(p.get("user_id")).getString("position").equals("Cocinero")) {
                 SimpleDateFormat hour = new SimpleDateFormat("HH:mm:ss");
