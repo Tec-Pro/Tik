@@ -6,6 +6,7 @@
 package interfaces.statistics;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +48,7 @@ public interface InterfaceStatistics extends Remote {
      * @return 
      * @throws java.rmi.RemoteException
      */
-    public Map<String, Object> storeSalesStatistics(String waiterName, int userId, float saleAmount, int tables, int customers, int products, float avgTables, float avgCustomers, float avgProducts, float discounts, float exceptions, String turn, Timestamp day) throws java.rmi.RemoteException;
+    public Map<String, Object> saveSalesStatistics(String waiterName, int userId, Double saleAmount, int tables, int customers, int products, Double avgTables, Double avgCustomers, Double avgProducts, Double discounts, Double exceptions, String turn, Timestamp day) throws java.rmi.RemoteException;
     
     /**
      * Retorna una lista de estadisticas de ventas de todos los mozos, en todos los turnos
@@ -63,5 +64,29 @@ public interface InterfaceStatistics extends Remote {
      * @throws java.rmi.RemoteException
      */
     public List<Map> getSalesStatisticsFromAWaiter(int userId) throws java.rmi.RemoteException;
+    
+    /**
+     * Retorna una lista de estadisticas de ventas de todos los productos, en todos los turnos
+     * @return
+     * @throws java.rmi.RemoteException
+     */
+    public List<Map> getAllProductStatistics() throws java.rmi.RemoteException;
+    
+    /**
+     * Calcula automaticamente y Crea las estadisticas de ventas de productos del turno actual, en la base de datos
+     * Retorna una Lista de productos con sus cantidades vendidas, turno y fecha
+     * @return 
+     * @throws RemoteException
+     */
+    public List<Map> saveStatisticsCurrentProductShift() throws java.rmi.RemoteException;
+    
+    /**
+     * Realiza una busqueda de estadisticas de productos entre dos fechas dadas
+     * @param since fecha desde la cual se inicia la busqueda
+     * @param until fecha hasta la cual se realiza la busqueda
+     * @return
+     * @throws RemoteException
+     */
+    public List<Map> findProductStatisticsBetweenDates(Timestamp since, Timestamp until) throws java.rmi.RemoteException;
     
 }

@@ -5,6 +5,13 @@
  */
 package gui.statistics;
 
+import com.toedter.calendar.JDateChooser;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author eze
@@ -18,6 +25,57 @@ public class GuiProductStatistics extends javax.swing.JInternalFrame {
         initComponents();
     }
 
+    public JButton getBtnPrintReport() {
+        return btnPrintReport;
+    }
+
+    public JCheckBox getCheckAnnual() {
+        return checkAnnual;
+    }
+
+    public JCheckBox getCheckDaily() {
+        return checkDaily;
+    }
+
+    public JCheckBox getCheckMonthly() {
+        return checkMonthly;
+    }
+
+    public JDateChooser getDateSince() {
+        return dateSince;
+    }
+
+    public JDateChooser getDateUntil() {
+        return dateUntil;
+    }
+
+    public JTable getTableProductStatistics() {
+        return tableProductStatistics;
+    }
+    
+    public DefaultTableModel getModelTableProductStatistics() {
+        return (DefaultTableModel) tableProductStatistics.getModel();
+    }
+
+    //limpia la gui completa y setea valores por defecto
+    public void cleanComponents(){
+        getModelTableProductStatistics().setRowCount(0);
+        checkAnnual.setSelected(false);
+        checkMonthly.setSelected(false);
+        checkDaily.setSelected(false);
+    }
+    
+    /**
+     *
+     * @param lis
+     */
+    public void setActionListener(ActionListener lis) {
+        this.checkAnnual.addActionListener(lis);
+        this.checkDaily.addActionListener(lis);
+        this.checkMonthly.addActionListener(lis);
+        this.btnPrintReport.addActionListener(lis);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -29,7 +87,7 @@ public class GuiProductStatistics extends javax.swing.JInternalFrame {
 
         panelImage1 = new org.edisoncor.gui.panel.PanelImage();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableProductStatistics = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         dateUntil = new com.toedter.calendar.JDateChooser();
         checkMonthly = new javax.swing.JCheckBox();
@@ -51,19 +109,19 @@ public class GuiProductStatistics extends javax.swing.JInternalFrame {
 
         panelImage1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/fondo gris.png"))); // NOI18N
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableProductStatistics.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Producto", "Cant.", "Producto", "Cant.", "Producto", "Cant.", "Producto", "Cant."
+                "Producto", "Cant.", "Turno", "Fecha"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -74,23 +132,17 @@ public class GuiProductStatistics extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setColumnSelectionAllowed(true);
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(jTable1);
-        jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(1).setMinWidth(100);
-            jTable1.getColumnModel().getColumn(1).setPreferredWidth(100);
-            jTable1.getColumnModel().getColumn(1).setMaxWidth(100);
-            jTable1.getColumnModel().getColumn(3).setMinWidth(100);
-            jTable1.getColumnModel().getColumn(3).setPreferredWidth(100);
-            jTable1.getColumnModel().getColumn(3).setMaxWidth(100);
-            jTable1.getColumnModel().getColumn(5).setMinWidth(100);
-            jTable1.getColumnModel().getColumn(5).setPreferredWidth(100);
-            jTable1.getColumnModel().getColumn(5).setMaxWidth(100);
-            jTable1.getColumnModel().getColumn(7).setMinWidth(100);
-            jTable1.getColumnModel().getColumn(7).setPreferredWidth(100);
-            jTable1.getColumnModel().getColumn(7).setMaxWidth(100);
+        tableProductStatistics.setColumnSelectionAllowed(true);
+        tableProductStatistics.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(tableProductStatistics);
+        tableProductStatistics.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        if (tableProductStatistics.getColumnModel().getColumnCount() > 0) {
+            tableProductStatistics.getColumnModel().getColumn(1).setMinWidth(120);
+            tableProductStatistics.getColumnModel().getColumn(1).setPreferredWidth(120);
+            tableProductStatistics.getColumnModel().getColumn(2).setMinWidth(120);
+            tableProductStatistics.getColumnModel().getColumn(2).setPreferredWidth(120);
+            tableProductStatistics.getColumnModel().getColumn(3).setMinWidth(120);
+            tableProductStatistics.getColumnModel().getColumn(3).setPreferredWidth(120);
         }
 
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -214,7 +266,7 @@ public class GuiProductStatistics extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private org.edisoncor.gui.panel.PanelImage panelImage1;
+    private javax.swing.JTable tableProductStatistics;
     // End of variables declaration//GEN-END:variables
 }

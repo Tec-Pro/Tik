@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import models.Productstatistic;
 import models.Salesstatistic;
 import org.javalite.activejdbc.Base;
 import utils.Utils;
@@ -88,7 +89,8 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
                 m.put("sell_price", rs.getObject("sell_price"));
                 m.put("subcategory", rs.getObject("subcategory"));
                 m.put("category", rs.getObject("category"));
-                float calculateProductionPrice = crudFProduct.calculateProductionPrice(Integer.parseInt(rs.getObject("fp_id").toString()));
+                float productionPrice = crudFProduct.calculateProductionPrice(Integer.parseInt(rs.getObject("fp_id").toString()));
+                Double calculateProductionPrice = Double.parseDouble(Float.toString(productionPrice));
                 m.put("elaboration_price", calculateProductionPrice);
                 ret.add(m);
             }
@@ -120,9 +122,9 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
      * @throws RemoteException
      */
     @Override
-    public Map<String, Object> storeSalesStatistics(String waiterName, int userId, float saleAmount, int tables,
-            int customers, int products, float avgTables, float avgCustomers, float avgProducts, float discounts,
-            float exceptions, String turn, Timestamp day) throws RemoteException {
+    public Map<String, Object> saveSalesStatistics(String waiterName, int userId, Double saleAmount, int tables,
+            int customers, int products, Double avgTables, Double avgCustomers, Double avgProducts, Double discounts,
+            Double exceptions, String turn, Timestamp day) throws RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
         Salesstatistic ret = Salesstatistic.createIt("waiter_name", waiterName, "user_id", userId, "sale_amount",
@@ -158,6 +160,73 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
     @Override
     public List<Map> getSalesStatisticsFromAWaiter(int userId) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    /**
+     * Retorna una lista de estadisticas de ventas de todos los productos, en todos los turnos
+     * @return
+     * @throws java.rmi.RemoteException
+     */
+    @Override
+    public List<Map> getAllProductStatistics() throws RemoteException {
+        Utils.abrirBase();
+        List<Map> ret = Productstatistic.findAll().toMaps();
+        return ret;
+    }
+
+    /**
+     * Calcula automaticamente y Crea las estadisticas de ventas de productos del turno actual, en la base de datos
+     * @return 
+     * @throws RemoteException
+     */
+    @Override
+    public List<Map> saveStatisticsCurrentProductShift() throws RemoteException {
+        openBase();
+        List<Map> ret = new LinkedList<>();
+        try {
+            String sql = "SELECT SUM(ofp.quantity) AS quantity, ofp.fproduct_id AS id, fp.name AS name, ofp.created_at AS day  FROM orders_fproducts ofp INNER JOIN fproducts fp ON fp.id= ofp.fproduct_id GROUP BY fproduct_id";
+            try (Statement stmt = conn.createStatement(); 
+                java.sql.ResultSet rs = stmt.executeQuery(sql)) {
+                while (rs.next()) {
+                    Map m = new HashMap();
+                    m.put("id",rs.getObject("id"));
+                    m.put("name", rs.getObject("name"));
+                    m.put("quantity", rs.getObject("quantity"));
+                    m.put("turn", "turn");
+                    m.put("day", rs.getObject("day"));
+                    ret.add(m);
+                }
+            }
+            Statement stmtInsert = conn.createStatement();
+                    stmtInsert.executeUpdate("INSERT INTO productstatistics (quantity, fproduct_id, name, day) "+sql);
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDStatistics.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
+    }
+
+    @Override
+    public List<Map> findProductStatisticsBetweenDates(Timestamp since, Timestamp until) throws RemoteException {
+        openBase();
+        List<Map> ret = new LinkedList<>();
+        try {
+            String sql = "SELECT FROM productstatistics WHERE "+ since.toString()+" >= day AND day <= "+until;
+            try (Statement stmt = conn.createStatement(); 
+                java.sql.ResultSet rs = stmt.executeQuery(sql)) {
+                while (rs.next()) {
+                    Map m = new HashMap();
+                    m.put("id",rs.getObject("id"));
+                    m.put("name", rs.getObject("name"));
+                    m.put("quantity", rs.getObject("quantity"));
+                    m.put("turn", rs.getObject("turn"));
+                    m.put("day", rs.getObject("day"));
+                    ret.add(m);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDStatistics.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
     }
 
 }

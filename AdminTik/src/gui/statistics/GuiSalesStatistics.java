@@ -6,6 +6,7 @@
 package gui.statistics;
 
 import com.toedter.calendar.JDateChooser;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JTable;
@@ -65,9 +66,25 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
     }
     
     //limpia la gui completa y setea valores por defecto
-    public void cleanGuiSalesStatistics(){
-        
+    public void cleanComponents(){
+        getModelTableSalesStatisticsWaiter().setRowCount(0);
+        getModelTableTotalSalesStatistics().setRowCount(0);
+        checkAnnual.setSelected(false);
+        checkMonthly.setSelected(false);
+        checkDaily.setSelected(false);
     }
+    
+    /**
+     *
+     * @param lis
+     */
+    public void setActionListener(ActionListener lis) {
+        this.checkAnnual.addActionListener(lis);
+        this.checkDaily.addActionListener(lis);
+        this.checkMonthly.addActionListener(lis);
+        this.btnPrintReport.addActionListener(lis);
+    }
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
