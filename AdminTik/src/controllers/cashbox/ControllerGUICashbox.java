@@ -72,6 +72,13 @@ public class ControllerGUICashbox implements ActionListener {
                 gui.getECInitialBalanceField().setEditable(false);
             }
         });
+        gui.getDCInitialBalanceCheckbox().addItemListener((ItemEvent e) -> {
+            if (e.getStateChange() == ItemEvent.SELECTED){
+                gui.getDCInitialBalanceField().setEditable(true);
+            } else {
+                gui.getDCInitialBalanceField().setEditable(false);
+            }
+        });
         loadWithdrawals();
         loadWaiterDeposits();
         loadAdminDeposits();
