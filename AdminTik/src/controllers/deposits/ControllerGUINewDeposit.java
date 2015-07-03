@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import utils.InterfaceName;
+import utils.ParserFloat;
 
 /**
  *
@@ -46,7 +47,7 @@ public class ControllerGUINewDeposit implements ActionListener {
             case "OK MOZO":
                 int waiter_id = Integer.parseInt(guiNewDeposit.getDepositComboBox().getSelectedItem().toString().split(" - ")[0]);
                 try {
-                    deposit.createWaiterDeposit(waiter_id, Float.parseFloat(guiNewDeposit.getAmountTxtField().getText()));
+                    deposit.createWaiterDeposit(waiter_id, ParserFloat.stringToFloat(guiNewDeposit.getAmountTxtField().getText()));
                     controllers.cashbox.ControllerGUICashbox.reloadWaiterDeposits();
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGUINewDeposit.class.getName()).log(Level.SEVERE, null, ex);
@@ -55,7 +56,7 @@ public class ControllerGUINewDeposit implements ActionListener {
             case "OK ADMIN":
                 int admin_id = Integer.parseInt(guiNewDeposit.getDepositComboBox().getSelectedItem().toString().split(" - ")[0]);
                 try {
-                    deposit.createAdminDeposit(admin_id, Float.parseFloat(guiNewDeposit.getAmountTxtField().getText()));
+                    deposit.createAdminDeposit(admin_id, ParserFloat.stringToFloat(guiNewDeposit.getAmountTxtField().getText()));
                     controllers.cashbox.ControllerGUICashbox.reloadAdminDeposits();
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGUINewDeposit.class.getName()).log(Level.SEVERE, null, ex);

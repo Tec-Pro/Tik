@@ -218,7 +218,7 @@ public class ControllerGUICashbox implements ActionListener {
             gui.getWaiterDepositsTableModel().addRow(o);
             total = total + (Float) d.get("amount");
         }
-        gui.getWaiterDepositsTotalField().setText(String.format("%.2f", total));
+        gui.getWaiterDepositsTotalField().setText(String.format("%.2f",total));
         gui.getECWaiterDepositsField().setText(String.format("%.2f", total));
     }
 

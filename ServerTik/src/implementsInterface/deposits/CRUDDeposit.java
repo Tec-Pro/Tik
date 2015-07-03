@@ -127,4 +127,46 @@ public class CRUDDeposit extends UnicastRemoteObject implements interfaces.depos
         return Deposit.findById(deposit_id).toMap();
     }
 
+    @Override
+    public Double getWaiterDepositsTotal() throws RemoteException {
+        Utils.abrirBase();
+        String date = new java.sql.Date(System.currentTimeMillis()).toString();
+        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.deposits WHERE created_at >= ? AND admin_id = 0", date);
+        return (double) results.get(0).get("total");
+    }
+
+    @Override
+    public Double getWaiterDepositsTotal(int id) throws RemoteException{
+        Utils.abrirBase();
+        String date = new java.sql.Date(System.currentTimeMillis()).toString();
+        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.deposits WHERE created_at >= ? AND waiter_id = ?", date,id);
+        return (double) results.get(0).get("total");
+    }
+
+    @Override
+    public Double getAdminDepositsTotal() throws RemoteException {
+        Utils.abrirBase();
+        String date = new java.sql.Date(System.currentTimeMillis()).toString();
+        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.deposits WHERE created_at >= ? AND waiter_id = 0", date);
+        return (double) results.get(0).get("total");    }
+
+    @Override
+    public Double getAdminDepositsTotal(int id) throws RemoteException {
+        Utils.abrirBase();
+        String date = new java.sql.Date(System.currentTimeMillis()).toString();
+        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.deposits WHERE created_at >= ? AND admin_id = ?", date,id);
+        return (double) results.get(0).get("total");
+    }
+
+    @Override
+    public boolean eraseAdminDeposits() throws RemoteException {
+        Utils.abrirBase();
+        return Deposit.delete("waiter_id = ?", 0)>0;
+    }
+
+    @Override
+    public boolean eraseWaiterDeposits() throws RemoteException {
+        Utils.abrirBase();
+        return Deposit.delete("admin_id = ?", 0)>0;
+    }
 }

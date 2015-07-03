@@ -40,4 +40,16 @@ public interface InterfaceDeposit extends Remote {
     public List<Map> getAdminsDepositsForDate(String date) throws java.rmi.RemoteException;
     
     public Map getDeposit(int deposit_id) throws java.rmi.RemoteException;
+    
+    public Double getWaiterDepositsTotal() throws java.rmi.RemoteException;
+    
+    public Double getWaiterDepositsTotal(int id) throws java.rmi.RemoteException;
+
+    public Double getAdminDepositsTotal() throws java.rmi.RemoteException;
+    
+    public Double getAdminDepositsTotal(int id) throws java.rmi.RemoteException;
+    
+    public boolean eraseAdminDeposits() throws java.rmi.RemoteException;
+    
+    public boolean eraseWaiterDeposits() throws java.rmi.RemoteException;
 }

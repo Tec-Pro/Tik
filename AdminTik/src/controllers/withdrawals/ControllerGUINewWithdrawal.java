@@ -46,7 +46,7 @@ public class ControllerGUINewWithdrawal implements ActionListener{
         if (e.getActionCommand().equals("OK")){
             try {
                 int admin_id = Integer.parseInt(guiNewWithdrawal.getAdminComboBox().getSelectedItem().toString().split(" - ")[0]);
-                withdrawal.create(admin_id, guiNewWithdrawal.getDescriptionTxtArea().getText(), Float.parseFloat(guiNewWithdrawal.getAmountTxtField().getText()));
+                withdrawal.create(admin_id, guiNewWithdrawal.getDescriptionTxtArea().getText(), ParserFloat.stringToFloat(guiNewWithdrawal.getAmountTxtField().getText()));
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGUINewWithdrawal.class.getName()).log(Level.SEVERE, null, ex);
             }

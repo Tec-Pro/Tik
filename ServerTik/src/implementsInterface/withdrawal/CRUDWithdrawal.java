@@ -76,5 +76,27 @@ public class CRUDWithdrawal extends UnicastRemoteObject implements interfaces.wi
         Utils.abrirBase();
         return Withdrawal.where("created_at >= ?", date).toMaps();
     }
+
+    @Override
+    public Double getWithdrawalsTotal() throws RemoteException {
+        Utils.abrirBase();
+        String date = new java.sql.Date(System.currentTimeMillis()).toString();
+        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.withdrawals WHERE created_at >= ? AND waiter_id = 0", date);
+        return (double) results.get(0).get("total");    
+    }
+
+    @Override
+    public Double getAdminWithdrawalsTotal(int id) throws RemoteException {
+        Utils.abrirBase();
+        String date = new java.sql.Date(System.currentTimeMillis()).toString();
+        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.withdrawals WHERE created_at >= ? AND admin_id = ?", date,id);
+        return (double) results.get(0).get("total");    
+    }
+
+    @Override
+    public boolean eraseWithdrawals() throws RemoteException {
+        Utils.abrirBase();
+        return Withdrawal.deleteAll()>0;    
+    }
     
 }
