@@ -5,10 +5,9 @@
  */
 package implementsInterface.deposits;
 
+import implementsInterface.CRUDTurn;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.time.Instant;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import models.deposit.Deposit;
@@ -29,8 +28,8 @@ public class CRUDDeposit extends UnicastRemoteObject implements interfaces.depos
     public Map<String, Object> createWaiterDeposit(int waiter_id, Float amount) throws RemoteException{
         Utils.abrirBase();
         Base.openTransaction();
-        System.out.println(Date.from(Instant.now()).toString());
-        Deposit deposit = Deposit.createIt("waiter_id",waiter_id,"amount",amount,"created_at", new java.sql.Date(System.currentTimeMillis()));
+        CRUDTurn turn = new CRUDTurn();
+        Deposit deposit = Deposit.createIt("waiter_id",waiter_id,"amount",amount/*,"turn",turn.getTurn()*/);
         Base.commitTransaction();
         return deposit.toMap();
     }
@@ -40,7 +39,7 @@ public class CRUDDeposit extends UnicastRemoteObject implements interfaces.depos
         Utils.abrirBase();
         Base.openTransaction();
         Deposit d = Deposit.findById(deposit_id);
-        d.set("amount", amount,"updated_at", new java.sql.Date(System.currentTimeMillis())).saveIt();
+        d.set("amount", amount).saveIt();
         Base.commitTransaction();
         return d.toMap();
     }
@@ -72,7 +71,8 @@ public class CRUDDeposit extends UnicastRemoteObject implements interfaces.depos
     public Map<String, Object> createAdminDeposit(int admin_id, Float amount) throws RemoteException{
         Utils.abrirBase();
         Base.openTransaction();
-        Deposit deposit = Deposit.createIt("admin_id", admin_id, "amount", amount);
+        CRUDTurn turn = new CRUDTurn();
+        Deposit deposit = Deposit.createIt("admin_id", admin_id, "amount", amount/*,"turn",turn.getTurn()*/);
         Base.commitTransaction();
         return deposit.toMap();
     }

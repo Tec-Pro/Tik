@@ -65,15 +65,11 @@ public class ControllerGUICashbox implements ActionListener {
         this.interfaceAdmin = (InterfaceAdmin) InterfaceName.registry.lookup(InterfaceName.CRUDAdmin);
         this.interfaceTurn= (InterfaceTurn) InterfaceName.registry.lookup(InterfaceName.CRUDTurn);
         gui.setActionListener(this);
-        gui.getECInitialBalanceCheckBox().addItemListener(new ItemListener() {
-
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    gui.getECInitialBalance().setEditable(true);
-                } else {
-                    gui.getECInitialBalance().setEditable(false);
-                }
+        gui.getECInitialBalanceCheckbox().addItemListener((ItemEvent e) -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                gui.getECInitialBalanceField().setEditable(true);
+            } else {
+                gui.getECInitialBalanceField().setEditable(false);
             }
         });
         loadWithdrawals();
@@ -216,7 +212,7 @@ public class ControllerGUICashbox implements ActionListener {
             total = total + (Float) d.get("amount");
         }
         gui.getWaiterDepositsTotalField().setText(String.format("%.2f", total));
-        gui.getECWaiterDeposits().setText(String.format("%.2f", total));
+        gui.getECWaiterDepositsField().setText(String.format("%.2f", total));
     }
 
     public static void reloadAdminDeposits() throws RemoteException {
@@ -237,7 +233,7 @@ public class ControllerGUICashbox implements ActionListener {
             total = total + (Float) d.get("amount");
         }
         gui.getAdminDepositsTotalField().setText(String.format("%.2f", total));
-        gui.getECAdminDeposits().setText(String.format("%.2f", total));
+        gui.getECAdminDepositsField().setText(String.format("%.2f", total));
     }
 
 }

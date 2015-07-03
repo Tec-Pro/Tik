@@ -5,6 +5,7 @@
  */
 package implementsInterface.withdrawal;
 
+import implementsInterface.CRUDTurn;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
@@ -26,7 +27,8 @@ public class CRUDWithdrawal extends UnicastRemoteObject implements interfaces.wi
     public Map<String, Object> create(int admin_id, String detail, Float amount) throws RemoteException{
         Utils.abrirBase();
         Base.openTransaction();
-        Withdrawal withdrawal = Withdrawal.createIt("admin_id",admin_id,"detail",detail,"amount",amount,"created_at", new java.sql.Date(System.currentTimeMillis()));
+        CRUDTurn turn = new CRUDTurn();
+        Withdrawal withdrawal = Withdrawal.createIt("admin_id",admin_id,"detail",detail,"amount",amount/*,"turn",turn.getTurn()*/);
         Base.commitTransaction();
         return withdrawal.toMap();
     }
@@ -36,7 +38,7 @@ public class CRUDWithdrawal extends UnicastRemoteObject implements interfaces.wi
         Utils.abrirBase();
         Base.openTransaction();
         Withdrawal w = Withdrawal.findById(id);
-        w.set("detail", detail, "amount",amount,"updated_at", new java.sql.Date(System.currentTimeMillis())).saveIt();
+        w.set("detail", detail, "amount",amount).saveIt();
         Base.commitTransaction();
         return w.toMap();
     }
