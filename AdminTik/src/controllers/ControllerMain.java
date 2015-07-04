@@ -6,6 +6,7 @@
 package controllers;
 
 import controllers.cashbox.ControllerGUICashbox;
+import controllers.cashbox.ControllerGuiOpenTurn;
 import controllers.logout.ControllerGuiLogout;
 import controllers.providers.ControllerGuiCRUDProviders;
 import controllers.providers.purchase.ControllerGuiPurchase;
@@ -23,6 +24,7 @@ import gui.GuiCRUDUser;
 import gui.GuiMenu;
 import gui.GuiLoadPurchase;
 import gui.cashbox.GUICashbox;
+import gui.cashbox.GuiOpenTurn;
 import gui.logout.GuiLogout;
 import gui.main.GuiConfig;
 import gui.main.GuiMain;
@@ -82,6 +84,7 @@ public class ControllerMain implements ActionListener {
     private static GuiProductList guiProductList;
     private static GuiProductStatistics guiProductStatistics;
     private static GuiLogout guiLogout;
+    private static GuiOpenTurn guiOpenTurn;
     //controladores
     private static ControllerGuiCRUDAdmin controllerCRUDAdmin; //controlador de la gui para admin
     private ControllerGuiCRUDEproduct controllerCRUDEProduct; //controlador productos elaborados
@@ -97,6 +100,7 @@ public class ControllerMain implements ActionListener {
     private ControllerGuiProductStatistics controllerGuiProductStatistics;
     private ControllerGuiSalesStatistics controllerGuiSalesStatistics;
     private ControllerGuiLogout controllerGuiLogout;
+    private ControllerGuiOpenTurn controllerGuiOpenTurn;
 //    private ControllerGUICRUDWithdrawal controllerGuiCRUDWithdrawal;
     private InterfacePresence crudPresence;
     private InterfaceTurn crudTurn;
@@ -131,6 +135,7 @@ public class ControllerMain implements ActionListener {
         guiProductList = new GuiProductList();
         guiProductStatistics = new GuiProductStatistics();
         guiLogout = new GuiLogout();
+        guiOpenTurn = new GuiOpenTurn();
 //        guiCRUDWithdrawal = new GUICRUDWithdrawal();
 
         //agrego las gui al desktop
@@ -150,6 +155,7 @@ public class ControllerMain implements ActionListener {
         guiMain.getDesktop().add(guiProductStatistics);
         guiMain.getDesktop().add(guiSalesStatistics);
         guiMain.getDesktop().add(guiLogout);
+        guiMain.getDesktop().add(guiOpenTurn);
 
         InterfaceProvider provider = (InterfaceProvider) InterfaceName.registry.lookup(InterfaceName.CRUDProvider);
         InterfaceProviderCategory providerCategory = (InterfaceProviderCategory) InterfaceName.registry.lookup(InterfaceName.CRUDProviderCategory);
@@ -172,6 +178,7 @@ public class ControllerMain implements ActionListener {
         controllerGuiProductList = new ControllerGuiProductList(guiProductList);
         controllerGuiProductStatistics = new ControllerGuiProductStatistics(guiProductStatistics);
         controllerGuiLogout = new ControllerGuiLogout(guiLogout);
+        controllerGuiOpenTurn = new ControllerGuiOpenTurn(guiOpenTurn,guiCashbox);
         //restauro el puntero asi ya se que termino de cargar todo
         guiMain.setCursor(Cursor.DEFAULT_CURSOR);
 
@@ -335,12 +342,7 @@ public class ControllerMain implements ActionListener {
             guiCashbox.toFront();
         }
         if (ae.getSource() == guiMain.getBtnDailyCashbox()) {
-            try {
-                guiCashbox.setMaximum(true);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            guiCashbox.setVisible(true);
+            guiOpenTurn.setVisible(true);
             guiCashbox.toFront();
         }
         if (ae.getSource() == guiMain.getBtnCloseCashBox()) {
@@ -355,7 +357,7 @@ public class ControllerMain implements ActionListener {
 
                         if (crudTurn.changeTurn("N")) {
                             JOptionPane.showMessageDialog(guiMain, "El tunro se cerro exitosamente");
-
+                            controllerGuiOpenTurn.turn();
                         }
 
                     }
@@ -376,6 +378,7 @@ public class ControllerMain implements ActionListener {
                 } else {
                     if (crudTurn.changeTurn("M")) {
                         JOptionPane.showMessageDialog(guiMain, "Turno mañana abierto");
+                        controllerGuiOpenTurn.turn();
                     }
                 }
             } catch (RemoteException ex) {
@@ -394,6 +397,7 @@ public class ControllerMain implements ActionListener {
                 } else {
                     if (crudTurn.changeTurn("T")) {
                         JOptionPane.showMessageDialog(guiMain, "Turno tarde abierto");
+                        controllerGuiOpenTurn.turn();
                     }
                 }
             } catch (RemoteException ex) {
