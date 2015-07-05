@@ -286,6 +286,7 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
     @Override
     public List<Map> getLastUsedProducts() throws RemoteException {
         openBase();
+        Utils.abrirBase();
         List<Map> result = new LinkedList<>();
         try {
             sql = "SELECT DISTINCT fproduct_id FROM orders_fproducts ORDER BY id desc LIMIT 5";
