@@ -614,9 +614,9 @@
                                   <Component id="ECInitialBalanceCheckbox" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                               <Component id="jLabel19" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="jLabel20" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="jLabel21" min="-2" max="-2" attributes="0"/>
