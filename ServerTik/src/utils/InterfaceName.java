@@ -35,5 +35,6 @@ public class InterfaceName {
     public static final String CRUDStatistics = "CRUDStatistics";
     public static final String CRUDpayments = "CRUDPayments";
     public static final String CRUDExpenses = "CRUDExpenses";
+    public static final String CRUDCashbox = "CRUDCashbox";
 
 }
