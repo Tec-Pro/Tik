@@ -70,6 +70,11 @@ public class ControllerGUINewDeposit implements ActionListener {
             guiNewDeposit.getAmountTxtField().setText("");
             guiNewDeposit.getDepositComboBox().setSelectedIndex(0);
         }
+        try {
+            controllers.cashbox.ControllerGUICashbox.ECReloadBalance();
+        } catch (RemoteException ex) {
+            Logger.getLogger(ControllerGUINewDeposit.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void loadComboBoxWaiters() throws RemoteException {

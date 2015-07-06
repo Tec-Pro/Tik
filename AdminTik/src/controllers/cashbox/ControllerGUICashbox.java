@@ -16,6 +16,7 @@ import gui.withdrawal.GUINewWithdrawal;
 import interfaces.InterfaceAdmin;
 import interfaces.InterfaceTurn;
 import interfaces.InterfaceUser;
+import interfaces.cashbox.InterfaceCashbox;
 import interfaces.cashbox.expenses.InterfaceExpenses;
 import interfaces.deposits.InterfaceDeposit;
 import interfaces.providers.InterfaceProvider;
@@ -35,6 +36,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import utils.Dates;
 import utils.InterfaceName;
+import utils.ParserFloat;
 
 /**
  *
@@ -47,11 +49,14 @@ public class ControllerGUICashbox implements ActionListener {
     private static InterfaceDeposit deposit;
     private static InterfaceAdmin admin;
     private static InterfaceUser user;
+    private static InterfaceCashbox cashbox;
     private final InterfaceProvider interfaceProvider;
     private final InterfacePayments interfacePayments;
     private final InterfaceExpenses interfaceExpenses;
     private final InterfaceAdmin interfaceAdmin;
     private final InterfaceTurn interfaceTurn;
+    private static InterfaceTurn turn;
+    private static InterfaceExpenses expenses;
 
     public ControllerGUICashbox(GUICashbox guiCashbox) throws RemoteException, NotBoundException {
         gui = guiCashbox;
@@ -59,6 +64,9 @@ public class ControllerGUICashbox implements ActionListener {
         deposit = (InterfaceDeposit) InterfaceName.registry.lookup(InterfaceName.CRUDDeposit);
         admin = (InterfaceAdmin) InterfaceName.registry.lookup(InterfaceName.CRUDAdmin);
         user = (InterfaceUser) InterfaceName.registry.lookup(InterfaceName.CRUDUser);
+        cashbox = (InterfaceCashbox) InterfaceName.registry.lookup(InterfaceName.CRUDCashbox);
+        turn = (InterfaceTurn) InterfaceName.registry.lookup(InterfaceName.CRUDTurn);
+        expenses = (InterfaceExpenses) InterfaceName.registry.lookup(InterfaceName.CRUDExpenses);
         this.interfaceProvider = (InterfaceProvider) InterfaceName.registry.lookup(InterfaceName.CRUDProvider);
         this.interfacePayments = (InterfacePayments) InterfaceName.registry.lookup(InterfaceName.CRUDpayments);
         this.interfaceExpenses = (InterfaceExpenses) InterfaceName.registry.lookup(InterfaceName.CRUDExpenses);
@@ -82,6 +90,7 @@ public class ControllerGUICashbox implements ActionListener {
         loadWithdrawals();
         loadWaiterDeposits();
         loadAdminDeposits();
+        loadExistantCashbox();
     }
 
     @Override
@@ -93,9 +102,11 @@ public class ControllerGUICashbox implements ActionListener {
                     ControllerGUINewWithdrawal controller = new ControllerGUINewWithdrawal(guiNewWithdrawal);
                     guiNewWithdrawal.setVisible(true);
                     guiNewWithdrawal.toFront();
+                    ECLoadWithdrawals();
                 } catch (RemoteException | NotBoundException ex) {
                     Logger.getLogger(ControllerGUICashbox.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                
                 break;
             case "ENTREGA MOZO": {
                 GUINewDeposit guiNewDeposit = new GUINewDeposit(ControllerMain.guiMain, true);
@@ -105,6 +116,7 @@ public class ControllerGUICashbox implements ActionListener {
                     controller.loadComboBoxWaiters();
                     guiNewDeposit.setVisible(true);
                     guiNewDeposit.toFront();
+                    ECLoadWaiterDeposits();
                 } catch (RemoteException | NotBoundException ex) {
                     Logger.getLogger(ControllerGUICashbox.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -118,6 +130,7 @@ public class ControllerGUICashbox implements ActionListener {
                     controller.loadComboBoxAdmins();
                     guiNewDeposit.setVisible(true);
                     guiNewDeposit.toFront();
+                    ECLoadAdminDeposits();
                 } catch (RemoteException | NotBoundException ex) {
                     Logger.getLogger(ControllerGUICashbox.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -174,9 +187,15 @@ public class ControllerGUICashbox implements ActionListener {
                 } catch (NotBoundException ex) {
                     Logger.getLogger(ControllerGUICashbox.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                ECLoadExpenses();
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGUICashbox.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+        try {
+            ECLoadBalance();
+        } catch (RemoteException ex) {
+            Logger.getLogger(ControllerGUICashbox.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -186,7 +205,7 @@ public class ControllerGUICashbox implements ActionListener {
 
     private static void loadWithdrawals() throws RemoteException {
         String date = new java.sql.Date(System.currentTimeMillis()).toString();
-        List<Map> withdrawalList = withdrawal.getWithdrawalsForDate(date);
+        List<Map> withdrawalList = withdrawal.getWithdrawalsOnDate(date);
         gui.getWithdrawalsTableModel().setRowCount(0);
         Object[] o = new Object[3];
         Float total = 0.0f;
@@ -207,7 +226,7 @@ public class ControllerGUICashbox implements ActionListener {
 
     private static void loadWaiterDeposits() throws RemoteException {
         String date = new java.sql.Date(System.currentTimeMillis()).toString();
-        List<Map> depositsList = deposit.getWaitersDepositsForDate(date);
+        List<Map> depositsList = deposit.getWaitersDeposits(date, turn.getTurn());
         gui.getWaiterDepositsTableModel().setRowCount(0);
         Object[] o = new Object[3];
         Float total = 0.0f;
@@ -228,7 +247,7 @@ public class ControllerGUICashbox implements ActionListener {
 
     private static void loadAdminDeposits() throws RemoteException {
         String date = new java.sql.Date(System.currentTimeMillis()).toString();
-        List<Map> depositsList = deposit.getAdminsDepositsForDate(date);
+        List<Map> depositsList = deposit.getAdminsDeposits(date, turn.getTurn());
         gui.getAdminDepositsTableModel().setRowCount(0);
         Object[] o = new Object[3];
         Float total = 0.0f;
@@ -242,5 +261,82 @@ public class ControllerGUICashbox implements ActionListener {
         gui.getAdminDepositsTotalField().setText(String.format("%.2f", total));
         gui.getECAdminDepositsField().setText(String.format("%.2f", total));
     }
-
+    private static Float ECLoadInitialBalance() throws RemoteException{
+        Float initialBalance = cashbox.getPastBalance();
+        gui.getECInitialBalanceField().setText(ParserFloat.floatToString(initialBalance));
+        return initialBalance;
+    }
+    
+    private static Float ECLoadAdminDeposits() throws RemoteException{
+        String date = new java.sql.Date(System.currentTimeMillis()).toString();
+        Float adminDeposits = deposit.getAdminsDepositsTotal(date, turn.getTurn()).floatValue();
+        gui.getECAdminDepositsField().setText(ParserFloat.floatToString(adminDeposits));
+        return adminDeposits;
+    }
+    
+    private static Float ECLoadWaiterDeposits() throws RemoteException{
+        String date = new java.sql.Date(System.currentTimeMillis()).toString();
+        Float waiterDeposits = deposit.getWaitersDepositsTotal(date, turn.getTurn()).floatValue();
+        gui.getECWaiterDepositsField().setText(ParserFloat.floatToString(waiterDeposits));
+        return waiterDeposits;
+    }
+    
+    private static Float ECLoadWithdrawals() throws RemoteException{
+        try{
+        String date = new java.sql.Date(System.currentTimeMillis()).toString();
+        Float withdrawals = withdrawal.getWithdrawalsTotal(date, turn.getTurn()).floatValue();
+        gui.getECWithdrawalsField().setText(ParserFloat.floatToString(withdrawals));
+        return withdrawals;
+        }catch (Exception ex){
+            System.out.println(ex.toString());
+        }
+        return 0.0f;
+    }
+    
+    private static Float ECLoadExpenses() throws RemoteException{
+        Float exp = 0.0f;
+        for (Map e:expenses.getExpenses(turn.getTurn())){
+            exp += (float) e.get("amount");
+        }
+        gui.getECCashboxExpensesField().setText(ParserFloat.floatToString(exp));
+        return exp;
+    }
+    
+    public static void ECReloadBalance() throws RemoteException{
+        ECLoadBalance();
+    }
+    
+    private static Float ECLoadBalance() throws RemoteException{
+        Float initialBalance = ParserFloat.stringToFloat(gui.getECInitialBalanceField().getText());
+        Float adminDeposits = ParserFloat.stringToFloat(gui.getECAdminDepositsField().getText());
+        Float waiterDeposits = ParserFloat.stringToFloat(gui.getECWaiterDepositsField().getText());
+        Float withdrawals = ParserFloat.stringToFloat(gui.getECWithdrawalsField().getText());
+        Float exp  = ParserFloat.stringToFloat(gui.getECCashboxExpensesField().getText());
+        Float balance = initialBalance + adminDeposits + waiterDeposits -withdrawals - exp;
+        gui.getECBalanceField().setText(ParserFloat.floatToString(balance));
+        return balance;
+    }
+    private static void loadExistantCashbox() throws RemoteException {
+        String date = new java.sql.Date(System.currentTimeMillis()).toString();
+        
+        Float initialBalance = ECLoadInitialBalance();
+        
+        Float adminDeposits = ECLoadAdminDeposits();
+        
+        Float waiterDeposits = ECLoadWaiterDeposits();
+        
+        Float withdrawals = ECLoadWithdrawals();
+        
+        Float exp = ECLoadExpenses();
+        
+        Float balance = initialBalance+adminDeposits+waiterDeposits-withdrawals-exp;
+        gui.getECBalanceField().setText(ParserFloat.floatToString(balance));
+        
+        
+    }
+    
+    public static void  reloadExistantCashbox() throws RemoteException{
+        loadExistantCashbox();
+    }
+    
 }

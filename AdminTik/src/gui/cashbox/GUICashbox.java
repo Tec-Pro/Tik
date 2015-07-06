@@ -298,24 +298,31 @@ public class GUICashbox extends javax.swing.JInternalFrame {
 
         ECInitialBalanceField.setEditable(false);
         ECInitialBalanceField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        ECInitialBalanceField.setText("0,00");
 
         ECCashboxIncomeField.setEditable(false);
         ECCashboxIncomeField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        ECCashboxIncomeField.setText("0,00");
 
         ECWaiterDepositsField.setEditable(false);
         ECWaiterDepositsField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        ECWaiterDepositsField.setText("0,00");
 
         ECAdminDepositsField.setEditable(false);
         ECAdminDepositsField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        ECAdminDepositsField.setText("0,00");
 
         ECWithdrawalsField.setEditable(false);
         ECWithdrawalsField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        ECWithdrawalsField.setText("0,00");
 
         ECCashboxExpensesField.setEditable(false);
         ECCashboxExpensesField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        ECCashboxExpensesField.setText("0,00");
 
         ECNextTurnField.setEditable(false);
         ECNextTurnField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        ECNextTurnField.setText("0,00");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -326,10 +333,10 @@ public class GUICashbox extends javax.swing.JInternalFrame {
             .addComponent(ECAdminDepositsField, javax.swing.GroupLayout.Alignment.TRAILING)
             .addComponent(ECWithdrawalsField)
             .addComponent(ECInitialBalanceField)
-            .addComponent(ECCashboxExpensesField)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(ECNextTurnField, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(ECCashboxExpensesField, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -390,7 +397,7 @@ public class GUICashbox extends javax.swing.JInternalFrame {
                     .addComponent(jLabel22)
                     .addComponent(jLabel23)
                     .addComponent(jLabel24))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -421,6 +428,7 @@ public class GUICashbox extends javax.swing.JInternalFrame {
 
         ECBalanceField.setEditable(false);
         ECBalanceField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        ECBalanceField.setText("0,00");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -1031,7 +1039,7 @@ public class GUICashbox extends javax.swing.JInternalFrame {
      * @return the ECCashboxExpensesField
      */
     public javax.swing.JTextField getECCashboxExpensesField() {
-        return ECNextTurnField;
+        return ECCashboxExpensesField;
     }
 
     /**

@@ -61,6 +61,7 @@ public class ControllerGUINewWithdrawal implements ActionListener{
         }
         try {
             ControllerGUICashbox.reloadWithdrawals();
+            ControllerGUICashbox.ECReloadBalance();
         } catch (RemoteException ex) {
             Logger.getLogger(ControllerGUINewWithdrawal.class.getName()).log(Level.SEVERE, null, ex);
         }

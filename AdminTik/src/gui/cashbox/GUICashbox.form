@@ -490,11 +490,11 @@
                           <Component id="ECAdminDepositsField" alignment="1" max="32767" attributes="0"/>
                           <Component id="ECWithdrawalsField" max="32767" attributes="0"/>
                           <Component id="ECInitialBalanceField" alignment="0" max="32767" attributes="0"/>
-                          <Component id="ECCashboxExpensesField" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="ECNextTurnField" min="-2" pref="245" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
+                          <Component id="ECCashboxExpensesField" alignment="1" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
@@ -524,6 +524,7 @@
                         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
                           <Format format="#0.00" subtype="-1" type="0"/>
                         </Property>
+                        <Property name="text" type="java.lang.String" value="0,00"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JFormattedTextField" name="ECCashboxIncomeField">
@@ -532,6 +533,7 @@
                         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
                           <Format format="#0.00" subtype="-1" type="0"/>
                         </Property>
+                        <Property name="text" type="java.lang.String" value="0,00"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JFormattedTextField" name="ECWaiterDepositsField">
@@ -540,6 +542,7 @@
                         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
                           <Format format="#0.00" subtype="-1" type="0"/>
                         </Property>
+                        <Property name="text" type="java.lang.String" value="0,00"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JFormattedTextField" name="ECAdminDepositsField">
@@ -548,6 +551,7 @@
                         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
                           <Format format="#0.00" subtype="-1" type="0"/>
                         </Property>
+                        <Property name="text" type="java.lang.String" value="0,00"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JFormattedTextField" name="ECWithdrawalsField">
@@ -556,6 +560,7 @@
                         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
                           <Format format="#0.00" subtype="-1" type="0"/>
                         </Property>
+                        <Property name="text" type="java.lang.String" value="0,00"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JFormattedTextField" name="ECCashboxExpensesField">
@@ -564,6 +569,7 @@
                         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
                           <Format format="#0.00" subtype="-1" type="0"/>
                         </Property>
+                        <Property name="text" type="java.lang.String" value="0,00"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JFormattedTextField" name="ECNextTurnField">
@@ -572,6 +578,7 @@
                         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
                           <Format format="#0.00" subtype="-1" type="0"/>
                         </Property>
+                        <Property name="text" type="java.lang.String" value="0,00"/>
                       </Properties>
                     </Component>
                   </SubComponents>
@@ -602,7 +609,7 @@
                                   <Component id="jLabel23" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel24" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace pref="27" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -737,6 +744,7 @@
                         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
                           <Format format="#0.00" subtype="-1" type="0"/>
                         </Property>
+                        <Property name="text" type="java.lang.String" value="0,00"/>
                       </Properties>
                     </Component>
                   </SubComponents>
