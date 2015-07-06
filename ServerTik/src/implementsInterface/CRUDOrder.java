@@ -255,6 +255,10 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
             stmt.close();
+            sql = "UPDATE orders SET paid_exceptions= exceptions+paid_exceptions,  exceptions = 0 WHERE id = '" + idOrder + "';";
+            stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+            stmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -623,6 +627,63 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
              }
         }
         return total;
+    }
+
+    @Override
+    public boolean addException(int orderId, float amount) throws RemoteException {
+       Utils.abrirBase();
+       Order ord= Order.findById(orderId);
+       Base.openTransaction();
+       ord.set("exceptions",ord.getFloat("exceptions")+amount);
+       boolean ret= ord.saveIt();
+       return ret;
+    }
+
+    @Override
+    public float getException(int orderId) throws RemoteException {
+        try {
+            openBase();
+            sql = "SELECT exceptions FROM orders WHERE id = '" + orderId + "';";
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            rs.next();
+            float ret=rs.getFloat("exceptions");
+            rs.close();
+            stmt.close();
+            return ret;
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
+    @Override
+    public float getExceptions(int userId) throws RemoteException {
+        Utils.abrirBase();
+        LazyList<Order> lo = Order.where("user_id = ?",userId);
+        float total = 0;
+        for (Order o : lo){
+            total=total+o.getFloat("paid_exceptions")+o.getFloat("exceptions");
+        }
+        return total;
+    }
+
+    @Override
+    public float getPaidException(int orderId) throws RemoteException {
+        try {
+            openBase();
+            sql = "SELECT paid_exceptions FROM orders WHERE id = '" + orderId + "';";
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            rs.next();
+            float ret=rs.getFloat("paid_exceptions");
+            rs.close();
+            stmt.close();
+            return ret;
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
     }
 
 }

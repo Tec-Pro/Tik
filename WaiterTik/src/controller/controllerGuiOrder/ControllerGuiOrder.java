@@ -11,6 +11,7 @@ import gui.GuiMain;
 import gui.login.GuiLoginGrid;
 import gui.order.ComponentOrderBtn;
 import gui.order.GuiAmount;
+import gui.order.GuiException;
 import gui.order.GuiOrder;
 import interfaces.InterfaceCategory;
 import interfaces.InterfaceFproduct;
@@ -407,6 +408,36 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
             row[7] = (boolean) Orderprod.get("paid");
             guiOrder.getTableProductsDefault().addRow(row);
         }
+        /**
+         * AGREGO EXCEPCIONES
+         */
+        float paidEx = crudOrder.getPaidException(currentOrderId);
+        float ex = crudOrder.getException(currentOrderId);
+        if (ex > 0) {
+            Object[] row = new Object[8];
+            row[0] = "";
+            row[1] = 1;
+            row[2] = "exepciones no pagas";
+            totalPrice=totalPrice+ex;
+            row[3] = ex;
+            row[4] = true;
+            row[5] = true;
+            row[6] = true;
+            row[7] = false;
+            guiOrder.getTableProductsDefault().addRow(row);
+        }
+        if (paidEx > 0) {
+            Object[] row = new Object[8];
+            row[0] = "";
+            row[1] = 1;
+            row[2] = "exepciones pagas";
+            row[3] = paidEx;
+            row[4] = true;
+            row[5] = true;
+            row[6] = true;
+            row[7] = true;
+            guiOrder.getTableProductsDefault().addRow(row);
+        }
         guiOrder.getjTextDescription().setText(currentOrder.get("description").toString());
         Integer persons = (Integer) currentOrder.get("persons");
         if (persons == null) {
@@ -521,7 +552,13 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                 if (r == 1) {
                     guiOrder.setVisible(false);
                     guiOrder.getParent().setVisible(false);
+                    try {
+                        controllerGuiMain.loadOrders(controllerGuiMain.idWaiter, false);
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     controllerGuiMain.setLoginGridVisible(true);
+                    
                 } else {
                     return;
                 }
@@ -564,6 +601,36 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                 Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        if (e.getSource().equals(guiOrder.getBtnException())) {
+            if (currentOrderId == null) {
+                JOptionPane.showMessageDialog(guiOrder, "El pedido no ha sido creado todavia!", "Atencion", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            GuiException ex = new GuiException(guiMain, true);
+            ex.setLocationRelativeTo(guiOrder);
+            ex.setVisible(true);
+            if (ex.getReturnStatus() == GuiException.RET_OK) {
+                float f = ex.getAmount();
+                try {
+                    crudOrder.addException(currentOrderId, f);
+                    Object[] row = new Object[8];
+                    row[0] = "";
+                    row[1] = 1;
+                    row[2] = "";
+                    row[3] = f;
+                    row[4] = true;
+                    row[5] = true;
+                    row[6] = true;
+                    row[7] = false;
+                    guiOrder.getTableProductsDefault().addRow(row);
+                    float totalPrice= ParserFloat.stringToFloat(guiOrder.getLblTotalPrice().getText());
+                    guiOrder.getLblTotalPrice().setText(ParserFloat.floatToString(totalPrice+f));
+
+                } catch (RemoteException ex1) {
+                    Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex1);
+                }
+            }
+        }
 
         //*******GuiAmount**************//
         if (e.getSource().equals(guiAmount.getBtnAccept())) {
@@ -588,7 +655,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                 }
                 guiAmount.getTxtAmount().setText("1");
                 guiAmount.setVisible(false);
-               // guiOrder.getBtnSend().setEnabled(true);
+                // guiOrder.getBtnSend().setEnabled(true);
 
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
