@@ -90,12 +90,14 @@ public class ControllerGUICashbox implements ActionListener {
         loadWithdrawals();
         loadWaiterDeposits();
         loadAdminDeposits();
+        loadExpenses();
         loadExistantCashbox();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
+            //Si quiere cargar un nuevo retiro:
             case "NUEVO RETIRO":
                 GUINewWithdrawal guiNewWithdrawal = new GUINewWithdrawal(ControllerMain.guiMain, true);
                 try {
@@ -108,29 +110,31 @@ public class ControllerGUICashbox implements ActionListener {
                 }
                 
                 break;
+            //Si quiere cargar una entrega de mozo.
             case "ENTREGA MOZO": {
                 GUINewDeposit guiNewDeposit = new GUINewDeposit(ControllerMain.guiMain, true);
+                //Cambio el action command para que el otro controlador sepa que hacer.
                 guiNewDeposit.getBtnOk().setActionCommand("OK MOZO");
                 try {
                     ControllerGUINewDeposit controller = new ControllerGUINewDeposit(guiNewDeposit);
                     controller.loadComboBoxWaiters();
                     guiNewDeposit.setVisible(true);
                     guiNewDeposit.toFront();
-                    ECLoadWaiterDeposits();
                 } catch (RemoteException | NotBoundException ex) {
                     Logger.getLogger(ControllerGUICashbox.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 break;
             }
+            //Si es una entrega de admin.
             case "ENTREGA ADMIN": {
                 GUINewDeposit guiNewDeposit = new GUINewDeposit(ControllerMain.guiMain, true);
+                //Cambio el action command así el nuevo controlador sabe que hacer.
                 guiNewDeposit.getBtnOk().setActionCommand("OK ADMIN");
                 try {
                     ControllerGUINewDeposit controller = new ControllerGUINewDeposit(guiNewDeposit);
                     controller.loadComboBoxAdmins();
                     guiNewDeposit.setVisible(true);
                     guiNewDeposit.toFront();
-                    ECLoadAdminDeposits();
                 } catch (RemoteException | NotBoundException ex) {
                     Logger.getLogger(ControllerGUICashbox.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -187,6 +191,7 @@ public class ControllerGUICashbox implements ActionListener {
                 } catch (NotBoundException ex) {
                     Logger.getLogger(ControllerGUICashbox.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                loadExpenses();
                 ECLoadExpenses();
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGUICashbox.class.getName()).log(Level.SEVERE, null, ex);
@@ -199,10 +204,16 @@ public class ControllerGUICashbox implements ActionListener {
         }
     }
 
+    /**
+     * Método que actualiza los retiros en la tabla y en los campos correspondientes
+     * de caja existente.
+     * @throws RemoteException error de conexión.
+     */
     public static void reloadWithdrawals() throws RemoteException {
         loadWithdrawals();
     }
 
+    //Método que carga la tabla con los retiros y modifica los campos de caja existente.
     private static void loadWithdrawals() throws RemoteException {
         String date = new java.sql.Date(System.currentTimeMillis()).toString();
         List<Map> withdrawalList = withdrawal.getWithdrawalsOnDate(date);
@@ -220,10 +231,18 @@ public class ControllerGUICashbox implements ActionListener {
         gui.getECWithdrawalsField().setText(String.format("%.2f", total));
     }
 
+    /**
+     * Método que actualiza la lista de entregas de mozo y los campos correspondientes
+     * de la caja existente
+     * @throws RemoteException error de conexión
+     */
     public static void reloadWaiterDeposits() throws RemoteException {
         loadWaiterDeposits();
     }
 
+    /*
+    Método que se encarga de cargar la lista de entregas de mozo.
+    */
     private static void loadWaiterDeposits() throws RemoteException {
         String date = new java.sql.Date(System.currentTimeMillis()).toString();
         List<Map> depositsList = deposit.getWaitersDeposits(date, turn.getTurn());
@@ -241,10 +260,18 @@ public class ControllerGUICashbox implements ActionListener {
         gui.getECWaiterDepositsField().setText(String.format("%.2f", total));
     }
 
+    /**
+     * Método que actualiza la lista de depósitos de administradores y los
+     * campos correspondientes de caja existente.
+     * @throws RemoteException
+     */
     public static void reloadAdminDeposits() throws RemoteException {
         loadAdminDeposits();
     }
-
+    /*
+    Método que se encarga de cargar la lista de depósitos de administradores
+    y actualiza los campos de la caja existente.
+    */
     private static void loadAdminDeposits() throws RemoteException {
         String date = new java.sql.Date(System.currentTimeMillis()).toString();
         List<Map> depositsList = deposit.getAdminsDeposits(date, turn.getTurn());
@@ -261,12 +288,47 @@ public class ControllerGUICashbox implements ActionListener {
         gui.getAdminDepositsTotalField().setText(String.format("%.2f", total));
         gui.getECAdminDepositsField().setText(String.format("%.2f", total));
     }
+    
+    /**
+     * Método que actualiza la lista de gastos y los campos de la caja existente.
+     * @throws RemoteException error de conexión.
+     */
+    public static void reloadExpenses() throws RemoteException{
+        loadExpenses();
+    }
+    
+    /*
+    Método que carga los gastos pagados con dinero de la caja.
+    */
+    private static void loadExpenses() throws RemoteException{
+        List<Map> exp = expenses.getExpenses(turn.getTurn());
+        gui.getExpensesTableModel().setRowCount(0);
+        Object[] o = new Object[4];
+        Float total = 0.0f;
+        for (Map e : exp) {
+            o[0] = e.get("id");
+            o[1] = e.get("type");
+            o[2] = e.get("detail");
+            o[3] = String.format("%.2f",e.get("amount"));
+            total = total + (Float) e.get("amount");
+            gui.getExpensesTableModel().addRow(o);
+        }
+        gui.getExpensesTotalField().setText(ParserFloat.floatToString(total));
+        gui.getECCashboxExpensesField().setText(ParserFloat.floatToString(total));
+    }
+    
+    /*
+    Método que carga el saldo inicial de la caja.
+    */
     private static Float ECLoadInitialBalance() throws RemoteException{
         Float initialBalance = cashbox.getPastBalance();
         gui.getECInitialBalanceField().setText(ParserFloat.floatToString(initialBalance));
         return initialBalance;
     }
     
+    /*
+    Método que carga los depósitos de admin en la caja existente.
+    */
     private static Float ECLoadAdminDeposits() throws RemoteException{
         String date = new java.sql.Date(System.currentTimeMillis()).toString();
         Float adminDeposits = deposit.getAdminsDepositsTotal(date, turn.getTurn()).floatValue();
@@ -274,38 +336,44 @@ public class ControllerGUICashbox implements ActionListener {
         return adminDeposits;
     }
     
+    /*
+    Método que carga las entregas de mozo en la caja existente.
+    */
     private static Float ECLoadWaiterDeposits() throws RemoteException{
         String date = new java.sql.Date(System.currentTimeMillis()).toString();
         Float waiterDeposits = deposit.getWaitersDepositsTotal(date, turn.getTurn()).floatValue();
         gui.getECWaiterDepositsField().setText(ParserFloat.floatToString(waiterDeposits));
         return waiterDeposits;
     }
-    
+    /*
+    Método que carga los retiros en la caja existente.
+    */
     private static Float ECLoadWithdrawals() throws RemoteException{
-        try{
         String date = new java.sql.Date(System.currentTimeMillis()).toString();
         Float withdrawals = withdrawal.getWithdrawalsTotal(date, turn.getTurn()).floatValue();
         gui.getECWithdrawalsField().setText(ParserFloat.floatToString(withdrawals));
         return withdrawals;
-        }catch (Exception ex){
-            System.out.println(ex.toString());
-        }
-        return 0.0f;
     }
     
+    /*
+    Método que carga los gastos en la caja existente.
+    */
     private static Float ECLoadExpenses() throws RemoteException{
-        Float exp = 0.0f;
-        for (Map e:expenses.getExpenses(turn.getTurn())){
-            exp += (float) e.get("amount");
-        }
+        Float exp = expenses.getSumExpenses(turn.getTurn());
         gui.getECCashboxExpensesField().setText(ParserFloat.floatToString(exp));
         return exp;
     }
     
+    /**
+     * Método que actualiza el saldo de la caja existente.
+     * @throws RemoteException error de conexión.
+     */
     public static void ECReloadBalance() throws RemoteException{
         ECLoadBalance();
     }
-    
+    /*
+    Método que carga el balance en la caja existente.
+    */
     private static Float ECLoadBalance() throws RemoteException{
         Float initialBalance = ParserFloat.stringToFloat(gui.getECInitialBalanceField().getText());
         Float adminDeposits = ParserFloat.stringToFloat(gui.getECAdminDepositsField().getText());
@@ -316,6 +384,10 @@ public class ControllerGUICashbox implements ActionListener {
         gui.getECBalanceField().setText(ParserFloat.floatToString(balance));
         return balance;
     }
+    
+    /*
+    Método que carga todos los valores de la caja existente.
+    */
     private static void loadExistantCashbox() throws RemoteException {
         String date = new java.sql.Date(System.currentTimeMillis()).toString();
         
@@ -332,9 +404,12 @@ public class ControllerGUICashbox implements ActionListener {
         Float balance = initialBalance+adminDeposits+waiterDeposits-withdrawals-exp;
         gui.getECBalanceField().setText(ParserFloat.floatToString(balance));
         
-        
     }
     
+    /**
+     * Método que actualiza todos los valores de la caja existente.
+     * @throws RemoteException
+     */
     public static void  reloadExistantCashbox() throws RemoteException{
         loadExistantCashbox();
     }

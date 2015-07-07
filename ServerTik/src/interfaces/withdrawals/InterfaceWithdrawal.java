@@ -6,6 +6,7 @@
 package interfaces.withdrawals;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
 
@@ -65,42 +66,139 @@ public interface InterfaceWithdrawal extends Remote {
     public List<Map> getWithdrawals() throws java.rmi.RemoteException;
 
     /**
-     * Devuelve una lista con todos los retiros de un admin-
+     * Devuelve una lista con todos los retiros de un admin.
      *     
-* @param admin_id id del admin.
+     * @param admin_id id del admin.
      * @return lista con todos los retiros.
      * @throws java.rmi.RemoteException
      */
-
     public List<Map> getWithdrawalsOfAdmin(int admin_id) throws java.rmi.RemoteException;
 
+    /**
+     * Devuelve una lista de los retiros de un admin en un turno.
+     * @param admin_id id del admin
+     * @param turn turno
+     * @return lista de retiros
+     * @throws RemoteException error de conexión.
+     */
     public List<Map> getWithdrawalsOfAdminOnTurn(int admin_id, String turn) throws java.rmi.RemoteException;
     
+    /**
+     * Devuelve los retiros de un admin en una fecha.
+     * @param admin_id id del admin
+     * @param date fecha
+     * @return lista de retiros
+     * @throws RemoteException error de conexión.
+     */
     public List<Map> getWithdrawalsOfAdminOnDate(int admin_id, String date) throws java.rmi.RemoteException;
 
+    /**
+     * Devuelve los retiros de un admin en una fecha y un turno.
+     * @param admin_id id del admin
+     * @param turn turno
+     * @param date fecha
+     * @return lista de retiros
+     * @throws RemoteException error de conexión.
+     */
     public List<Map> getWithdrawalsOfAdmin(int admin_id, String turn, String date) throws java.rmi.RemoteException;
     
+    /**
+     * Devuelve los retiros en un turno.
+     * @param turn turno
+     * @return lista de retiros
+     * @throws RemoteException error de conexión.
+     */
     public List<Map> getWithdrawalsOnTurn(String turn) throws java.rmi.RemoteException;
     
+    /**
+     * Devuelve los retiros hechos en una fecha.
+     * @param date fecha 
+     * @return lista de retiros
+     * @throws RemoteException error de conexión.
+     */
     public List<Map> getWithdrawalsOnDate(String date) throws java.rmi.RemoteException;
     
+    /**
+     * Devuelve los retiros hechos en una fecha y en un turno.
+     * @param date fecha
+     * @param turn turno
+     * @return lista de retiros
+     * @throws RemoteException error de conexión.
+     */
     public List<Map> getWithdrawals(String date, String turn) throws java.rmi.RemoteException;
     
+    /**
+     * Devuelve el total de los retiros.
+     * @return total de retiros
+     * @throws RemoteException error de conexión.
+     */
     public Double getWithdrawalsTotal() throws java.rmi.RemoteException;
 
+    /**
+     * Devuelve el total de los retiros en una fecha.
+     * @param date fecha
+     * @return total de retiros
+     * @throws RemoteException error de conexión.
+     */
     public Double getWithdrawalsTotalOnDate(String date) throws java.rmi.RemoteException;
     
+    /**
+     * Devuelve el total de los retiros en un turno.
+     * @param turn turno
+     * @return total de retiros
+     * @throws RemoteException error de conexión.
+     */
     public Double getWithdrawalsTotalOnTurn(String turn) throws java.rmi.RemoteException;
     
+    /**
+     * Devuelve el total de los retiros en un turno y una fecha.
+     * @param date fecha
+     * @param turn turno
+     * @return total de retiros
+     * @throws RemoteException error de conexión.
+     */
     public Double getWithdrawalsTotal(String date, String turn) throws java.rmi.RemoteException;
     
+    /**
+     * Devuelve el total de los retiros de un admin.
+     * @param id id del admin
+     * @return total de retiros
+     * @throws RemoteException error de conexión.
+     */
     public Double getAdminWithdrawalsTotal(int id) throws java.rmi.RemoteException;
 
+    /**
+     * Devuelve el total de los retiros de un admin en una fecha.
+     * @param admin_id id del admin
+     * @param date fecha
+     * @return total de retiros
+     * @throws RemoteException error de conexión.
+     */
     public Double getAdminWithdrawalsTotalOnDate(int admin_id, String date) throws java.rmi.RemoteException;
     
+    /**
+     * Devuelve el total de los retiros de un admin en un turno.
+     * @param admin_id id del admin
+     * @param turn turno
+     * @return total de retiros
+     * @throws RemoteException error de conexión.
+     */
     public Double getAdminWithdrawalsTotalOnTurn(int admin_id, String turn) throws java.rmi.RemoteException;
     
+    /**
+     * Devuelve el total de los retiros de un admin en una fecha y un turno.
+     * @param admin_id id del admin
+     * @param date fecha
+     * @param turn turno
+     * @return total de retiros
+     * @throws RemoteException error de conexión.
+     */
     public Double getAdminWithdrawalsTotal(int admin_id, String date, String turn) throws java.rmi.RemoteException;
    
+    /**
+     * Borra todos los retiros de la base de datos.
+     * @return true si se borra al menos un registro
+     * @throws RemoteException error de conexión.
+     */
     public boolean eraseWithdrawals() throws java.rmi.RemoteException;
 }
