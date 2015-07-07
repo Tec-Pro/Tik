@@ -1135,4 +1135,11 @@ public class GUICashbox extends javax.swing.JInternalFrame {
         return DCInitialBalanceCheckbox;
     }
     
+    /**
+     *
+     * @return the expenses detail default table model
+     */
+    public DefaultTableModel getExpensesTableModel(){
+        return (DefaultTableModel) expensesDetailTable.getModel();
+    }
 }
