@@ -6,11 +6,14 @@
 package controllers;
 
 import gui.GuiCRUDUser;
+import interfaces.InterfacePresence;
 import interfaces.InterfaceUser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Map;
 import java.util.Iterator;
 import java.util.Date;
@@ -40,6 +43,9 @@ import utils.ImageExtensions;
 import utils.ImageFilter;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.sql.Time;
+import java.util.Calendar;
+import java.util.List;
 import utils.InterfaceName;
 import utils.SerializableBufferedImage;
 
@@ -50,17 +56,22 @@ import utils.SerializableBufferedImage;
 public class ControllerGuiCRUDUser implements ActionListener {
 
     private final GuiCRUDUser guiUser;
+    private final InterfacePresence crudPresence;
     private final InterfaceUser crudUser;
     private final DefaultTableModel dtmUsers;
+    private final DefaultTableModel presencesTbl;
+
     private boolean modifyMode = false;
     private boolean createMode = false;
 
     public ControllerGuiCRUDUser(GuiCRUDUser gui) throws NotBoundException, MalformedURLException, RemoteException {
         crudUser = (InterfaceUser) InterfaceName.registry.lookup(InterfaceName.CRUDUser);
+        crudPresence = (InterfacePresence) InterfaceName.registry.lookup(InterfaceName.CRUDPresence);
+
         guiUser = gui;
         guiUser.getTableUsers().getSelectionModel().addListSelectionListener(new ListSelectionListener() { // Listener for moving through the tableUsers and refreshing the gui
             @Override
-            public void valueChanged(ListSelectionEvent e) { 
+            public void valueChanged(ListSelectionEvent e) {
                 if (guiUser.getTableUsers().getSelectedRow() != -1) {
                     try {
                         tableUserMouseClicked(null);
@@ -81,7 +92,7 @@ public class ControllerGuiCRUDUser implements ActionListener {
         });
         guiUser.getTableUsers().addMouseListener(new java.awt.event.MouseAdapter() { // Listener for double click and modify on tableUsers
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt){
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 if (evt.getClickCount() == 2) {
                     guiUser.getTableUsers().setEnabled(false);
                     modifyMode = true;
@@ -95,9 +106,32 @@ public class ControllerGuiCRUDUser implements ActionListener {
             }
         });
         dtmUsers = guiUser.getDtmUsers();
+        presencesTbl= guiUser.getPresencesTbl();
         updateDtmUsers();
         guiUser.setActionListener(this);
         guiUser.initialMode(true);
+        guiUser.getDateFrom().addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                int r = guiUser.getTableUsers().getSelectedRow();
+                try {
+                    loadPresences((int) guiUser.getDtmUsers().getValueAt(r, 0), utils.Dates.dateToMySQLDate(guiUser.getDateFrom().getDate(), false), utils.Dates.dateToMySQLDate(guiUser.getDateTo().getDate(), false));
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        guiUser.getDateTo().addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                int r = guiUser.getTableUsers().getSelectedRow();
+                try {
+                    loadPresences((int) guiUser.getDtmUsers().getValueAt(r, 0), utils.Dates.dateToMySQLDate(guiUser.getDateFrom().getDate(), false), utils.Dates.dateToMySQLDate(guiUser.getDateTo().getDate(), false));
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
     }
 
     private void addPhoto() throws IOException, Exception {
@@ -108,8 +142,7 @@ public class ControllerGuiCRUDUser implements ActionListener {
             int returnVal = fc.showOpenDialog(guiUser); // user chooses the image
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile(); //I get the selected File
-                
-                
+
                 BufferedImage image = ImageIO.read(file); // I take the file and convert it to a BufferedImage
                 guiUser.setPicture(image);
             }
@@ -125,16 +158,22 @@ public class ControllerGuiCRUDUser implements ActionListener {
             }
             int r = guiUser.getTableUsers().getSelectedRow();
             loadSelectedUser((int) guiUser.getDtmUsers().getValueAt(r, 0));
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.DAY_OF_MONTH, 1);
+            guiUser.getDateFrom().setCalendar(cal);
+            cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+            guiUser.getDateTo().setCalendar(cal);
         }
     }
 
     public void loadSelectedUser(int id) throws RemoteException, Exception {
         Map<String, Object> user;
         user = crudUser.getUser(id);
-        SerializableBufferedImage imgSerializable= crudUser.getPhoto(id);
-        BufferedImage img=null;
-        if(imgSerializable!=null)
-            img= imgSerializable.getBImage();
+        SerializableBufferedImage imgSerializable = crudUser.getPhoto(id);
+        BufferedImage img = null;
+        if (imgSerializable != null) {
+            img = imgSerializable.getBImage();
+        }
         String p = (String) user.get("pass");
         if (user != null) {
             guiUser.updateFields(
@@ -155,10 +194,33 @@ public class ControllerGuiCRUDUser implements ActionListener {
                     (String) user.get("marital_status"),
                     (String) user.get("blood_type"),
                     (String) user.get("position")
-                    );
+            );
             guiUser.setPicture(img);
+
         } else {
             JOptionPane.showMessageDialog(guiUser, "Ups! Error! Intente de nuevo!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void loadPresences(int id, String from, String to) throws RemoteException {
+        List<Map> presences = crudPresence.getPresences(id, from, to);
+        Iterator<Map> it = presences.iterator();
+        presencesTbl.setRowCount(0);
+        while (it.hasNext()) {
+            Map<String, Object> presence = it.next();
+            Object rowDtm[] = new Object[5];
+            rowDtm[0] = presence.get("id");
+            rowDtm[1] = utils.Dates.dateToMySQLDate((Date) presence.get("day"), true);
+            rowDtm[2] = presence.get("entry_time");
+            if (!presence.get("departure_time").toString().equals("00:00:00")) {
+                rowDtm[3] = presence.get("departure_day");
+                rowDtm[4] = presence.get("departure_time");
+            } else {
+                rowDtm[3] = "";
+                rowDtm[4] = "";
+            }
+            presencesTbl.addRow(rowDtm);
+            
         }
     }
 
@@ -189,15 +251,16 @@ public class ControllerGuiCRUDUser implements ActionListener {
             guiUser.createMode(createMode);
             guiUser.enableDischarged(false);
         }
-        
+
         if (e.getSource().equals(guiUser.getBtnSave()) && createMode) { // If the button pressed is Save and is in createMode
             if (!dataIsValid()) {
                 JOptionPane.showMessageDialog(guiUser, "Nombre, Apellido, Contrasena y Posicion no pueden eestar vacios!", "Error!", JOptionPane.ERROR_MESSAGE);
             } else {
                 try {
-                    SerializableBufferedImage bufser =null;
-                    if(guiUser.getImage()!=null)
-                       bufser= new SerializableBufferedImage(guiUser.getImage());
+                    SerializableBufferedImage bufser = null;
+                    if (guiUser.getImage() != null) {
+                        bufser = new SerializableBufferedImage(guiUser.getImage());
+                    }
                     Map<String, Object> user;
                     user = crudUser.create(guiUser.getTxtName().getText(),
                             guiUser.getTxtSurname().getText(),
@@ -227,13 +290,13 @@ public class ControllerGuiCRUDUser implements ActionListener {
                     }
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, ex);
-                } 
+                }
                 createMode = false;
                 guiUser.initialMode(true);
                 guiUser.enableDischarged(false);
             }
         }
-        
+
         if (e.getSource().equals(guiUser.getBtnSave()) && modifyMode) { // If the button pressed is Save and is in modifyMode
             if (!dataIsValid()) {
                 JOptionPane.showMessageDialog(guiUser, "Nombre, Apellido, Contrasena y Posicion no pueden estar vacios!", "Error!", JOptionPane.ERROR_MESSAGE);
@@ -241,10 +304,11 @@ public class ControllerGuiCRUDUser implements ActionListener {
                 try {
                     int row = guiUser.getTableUsers().getSelectedRow();
                     int id = (int) dtmUsers.getValueAt(row, 0);
-                    SerializableBufferedImage bufser =null;
-                    if(guiUser.getImage()!=null)
-                       bufser= new SerializableBufferedImage(guiUser.getImage());
-                    
+                    SerializableBufferedImage bufser = null;
+                    if (guiUser.getImage() != null) {
+                        bufser = new SerializableBufferedImage(guiUser.getImage());
+                    }
+
                     Map<String, Object> user;
                     user = crudUser.modify(
                             id,
@@ -264,9 +328,8 @@ public class ControllerGuiCRUDUser implements ActionListener {
                             guiUser.getTxtMobilePhone().getText(),
                             (String) guiUser.getBoxMaritalStatus().getSelectedItem(),
                             (String) guiUser.getBoxBloodType().getSelectedItem(),
-                            (String)guiUser.getBoxPosition().getSelectedItem(),
+                            (String) guiUser.getBoxPosition().getSelectedItem(),
                             bufser
-
                     );
                     if (user != null) {
                         JOptionPane.showMessageDialog(guiUser, "Usuario modificado con exito!", "Usuario creado!", JOptionPane.INFORMATION_MESSAGE);
@@ -288,13 +351,13 @@ public class ControllerGuiCRUDUser implements ActionListener {
             guiUser.getTableUsers().setEnabled(false);
             modifyMode = true;
             guiUser.modifyMode(modifyMode);
-            if(guiUser.getDateDischargedDate().getDate() == null){
-                guiUser.enableDischarged(false);             
-            }else{
+            if (guiUser.getDateDischargedDate().getDate() == null) {
+                guiUser.enableDischarged(false);
+            } else {
                 guiUser.enableDischarged(true);
             }
         }
-        
+
         if (e.getSource().equals(guiUser.getBtnDelete()) && !modifyMode && !createMode) { //If the button pressed is Delete and I'm not in modifyMode or createMode
             try {
                 int option = JOptionPane.showConfirmDialog(null, "Estas seguro que desea borrar el empleado: ", "Warning", JOptionPane.YES_NO_OPTION);
@@ -327,23 +390,23 @@ public class ControllerGuiCRUDUser implements ActionListener {
             guiUser.getCheckBoxDischarged().setSelected(false);
             guiUser.getTableUsers().setEnabled(true);
         }
-        
-        if (e.getSource().equals(guiUser.getCheckBoxDischarged())){
-            if(guiUser.getCheckBoxDischarged().isSelected()){
+
+        if (e.getSource().equals(guiUser.getCheckBoxDischarged())) {
+            if (guiUser.getCheckBoxDischarged().isSelected()) {
                 guiUser.enableDischarged(true);
-            }else{
+            } else {
                 guiUser.enableDischarged(false);
             }
         }
-        
-        if(e.getSource().equals(guiUser.getBtnAddPhoto())){
+
+        if (e.getSource().equals(guiUser.getBtnAddPhoto())) {
             try {
                 addPhoto();
             } catch (Exception ex) {
                 Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        if(e.getSource().equals(guiUser.getBtnDeletePhoto())){
+        if (e.getSource().equals(guiUser.getBtnDeletePhoto())) {
             guiUser.setPictureDefault();
         }
     }

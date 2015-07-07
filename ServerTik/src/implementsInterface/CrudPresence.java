@@ -53,6 +53,7 @@ public class CrudPresence extends UnicastRemoteObject implements InterfacePresen
             SimpleDateFormat hour = new SimpleDateFormat("HH:mm:ss");
             Presence p = listP.get(0);
             p.set("departure_time", hour.format(now));
+            p.set("departure_day",date.format(now));
             p.saveIt();
             Base.commitTransaction();
             return p.toMap();
@@ -129,6 +130,7 @@ public class CrudPresence extends UnicastRemoteObject implements InterfacePresen
         for (Presence p : listP) {
             SimpleDateFormat hour = new SimpleDateFormat("HH:mm:ss");
             p.set("departure_time", hour.format(now));
+            p.set("departure_day",date.format(now));
             p.saveIt();
         }
         Base.commitTransaction();
@@ -145,6 +147,7 @@ public class CrudPresence extends UnicastRemoteObject implements InterfacePresen
             if (User.findById(p.get("user_id")).getString("position").equals("Cocinero")) {
                 SimpleDateFormat hour = new SimpleDateFormat("HH:mm:ss");
                 p.set("departure_time", hour.format(now));
+                p.set("departure_day",date.format(now));
                 p.saveIt();
             }
         }

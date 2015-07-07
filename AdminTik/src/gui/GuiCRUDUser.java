@@ -5,6 +5,7 @@
  */
 package gui;
 
+import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import java.util.Date;
@@ -16,6 +17,7 @@ import javax.imageio.ImageIO;
 //import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.File;
+import java.util.Calendar;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import org.edisoncor.gui.panel.PanelImage;
@@ -27,8 +29,10 @@ import org.edisoncor.gui.panel.PanelImage;
 public class GuiCRUDUser extends javax.swing.JInternalFrame {
 
     private final DefaultTableModel dtmUsers;
-    private String namePicture="sin_imagen_disponible.jpg";
+    private String namePicture = "sin_imagen_disponible.jpg";
     private BufferedImage image;
+    private final DefaultTableModel presencesTbl;
+
     /**
      * Creates new form GuiCRUDUser
      */
@@ -36,9 +40,20 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         initComponents();
         cleanFields();
         dtmUsers = (DefaultTableModel) tableUsers.getModel();
+        presencesTbl = (DefaultTableModel) tableEmployeeSchedule.getModel();
         setVisible(false);
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        this.getDateFrom().setCalendar(cal);
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+        this.getDateTo().setCalendar(cal);
     }
 
+    public DefaultTableModel getPresencesTbl() {
+        return presencesTbl;
+    }
+
+    
     /**
      * clean all the text fields
      *
@@ -104,8 +119,8 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
 
     }
 
-    public void setPictureDefault(){
-        image=null;
+    public void setPictureDefault() {
+        image = null;
         pnlImageUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/sin_imagen_disponible.jpg")));
         pnlImageUser.repaint();
 
@@ -114,17 +129,17 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
     public BufferedImage getImage() {
         return image;
     }
-    
-       public void setPicture(BufferedImage image){
-           if(image!=null){
-        this.image= image;
-        this.namePicture= "hay_imagen";
-        pnlImageUser.setIcon(new javax.swing.ImageIcon(image));
-        pnlImageUser.repaint();
-           }
-           else
-               setPictureDefault();
-    } 
+
+    public void setPicture(BufferedImage image) {
+        if (image != null) {
+            this.image = image;
+            this.namePicture = "hay_imagen";
+            pnlImageUser.setIcon(new javax.swing.ImageIcon(image));
+            pnlImageUser.repaint();
+        } else {
+            setPictureDefault();
+        }
+    }
 
     public void modifyMode(boolean b) {
         if (b) {
@@ -223,6 +238,14 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         return btnDeletePhoto;
     }
 
+    public JDateChooser getDateFrom() {
+        return dateFrom;
+    }
+
+    public JDateChooser getDateTo() {
+        return dateTo;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -273,9 +296,9 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         panelEmployeeSchedule = new javax.swing.JPanel();
         scrollEmployeeSchedule = new javax.swing.JScrollPane();
         tableEmployeeSchedule = new javax.swing.JTable();
-        dateEntryJob = new com.toedter.calendar.JDateChooser();
+        dateFrom = new com.toedter.calendar.JDateChooser();
         jLabel1 = new javax.swing.JLabel();
-        dateExitJob = new com.toedter.calendar.JDateChooser();
+        dateTo = new com.toedter.calendar.JDateChooser();
         jLabel2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         btnCreate = new javax.swing.JButton();
@@ -496,12 +519,12 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
                             .addComponent(txtMobilePhone, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(15, 15, 15)
                         .addComponent(checkBoxDischarged)))
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelFieldsLayout.setVerticalGroup(
             panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelFieldsLayout.createSequentialGroup()
-                .addContainerGap(12, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSurname)
                     .addComponent(lblName)
@@ -605,11 +628,11 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
             tableEmployeeSchedule.getColumnModel().getColumn(0).setPreferredWidth(30);
         }
 
-        dateEntryJob.setDateFormatString("dd-MM-yyyy");
+        dateFrom.setDateFormatString("dd-MM-yyyy");
 
         jLabel1.setText("Desde");
 
-        dateExitJob.setDateFormatString("dd-MM-yyyy");
+        dateTo.setDateFormatString("dd-MM-yyyy");
 
         jLabel2.setText("Hasta");
 
@@ -626,20 +649,20 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
                         .addGap(26, 26, 26)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dateEntryJob, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(dateFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(40, 40, 40)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dateExitJob, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(dateTo, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         panelEmployeeScheduleLayout.setVerticalGroup(
             panelEmployeeScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEmployeeScheduleLayout.createSequentialGroup()
                 .addGroup(panelEmployeeScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(dateEntryJob, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dateFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
-                    .addComponent(dateExitJob, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dateTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addGap(10, 10, 10)
                 .addComponent(scrollEmployeeSchedule, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
@@ -739,7 +762,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
                         .addGap(10, 10, 10))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -814,9 +837,9 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
     private javax.swing.JCheckBox checkBoxDischarged;
     private com.toedter.calendar.JDateChooser dateBirthDate;
     private com.toedter.calendar.JDateChooser dateDischargedDate;
-    private com.toedter.calendar.JDateChooser dateEntryJob;
-    private com.toedter.calendar.JDateChooser dateExitJob;
+    private com.toedter.calendar.JDateChooser dateFrom;
     private com.toedter.calendar.JDateChooser dateHiredDate;
+    private com.toedter.calendar.JDateChooser dateTo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
@@ -1030,8 +1053,6 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
     public javax.swing.JPanel getPanelPhoto() {
         return jPanel2;
     }
-
-
 
     /**
      * @return the checkBoxDischarged
