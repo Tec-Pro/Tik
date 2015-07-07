@@ -4,11 +4,18 @@
  */
 package implementsInterface.box.expenses;
 
+import implementsInterface.statistics.CRUDStatistics;
 import interfaces.cashbox.expenses.InterfaceExpenses;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import models.cashbox.expenses.Expense;
 import org.javalite.activejdbc.Base;
 import utils.Utils;
@@ -18,6 +25,8 @@ import utils.Utils;
  * @author jacinto
  */
 public class CRUDExpenses extends UnicastRemoteObject implements InterfaceExpenses {
+
+    private Connection conn;
 
     public CRUDExpenses() throws RemoteException {
         super();
@@ -68,4 +77,38 @@ public class CRUDExpenses extends UnicastRemoteObject implements InterfaceExpens
         return expenses;
     }
 
+    @Override
+    public float getSumExpenses(String turn) throws RemoteException {
+        openBase();
+        String sql = "SELECT SUM(amount) as amount FROM expenses WHERE turn = '" + turn + "';";
+        float ret = 0;
+        try {
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                ret = rs.getFloat("amount");
+                rs.close();
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDExpenses.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
+    }
+
+    private void openBase() {
+        try {
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(CRUDStatistics.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (conn == null || conn.isClosed()) {
+                conn = DriverManager.getConnection("jdbc:mysql://localhost/tik", "root", "root");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDStatistics.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
 }

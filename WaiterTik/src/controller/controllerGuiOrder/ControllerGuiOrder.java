@@ -553,7 +553,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                     guiOrder.setVisible(false);
                     guiOrder.getParent().setVisible(false);
                     try {
-                        controllerGuiMain.loadOrders(controllerGuiMain.idWaiter, false);
+                        controllerGuiMain.loadOrders(controllerGuiMain.idWaiter, controllerGuiMain.seeAll());
                     } catch (RemoteException ex) {
                         Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
                     }

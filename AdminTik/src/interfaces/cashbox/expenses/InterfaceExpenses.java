@@ -38,4 +38,11 @@ public interface InterfaceExpenses extends Remote {
      */
     public  List<Map> getExpenses(String turn) throws java.rmi.RemoteException;
 
+    /**
+     * retorna la suma total de los gastos de UN TURNO
+     * @param turn solo puede ser M o T
+     * @return
+     * @throws java.rmi.RemoteException 
+     */
+    public  float getSumExpenses(String turn) throws java.rmi.RemoteException;
 }
