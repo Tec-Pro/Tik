@@ -50,10 +50,10 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.prov
      * @throws RemoteException
      */
     @Override
-    public Map<String, Object> create(String name, String cuit, String address, String description, String phones) throws java.rmi.RemoteException {
+    public Map<String, Object> create(String name, String cuit, String address, String description, String phones, Float balance) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
-        Provider ret = Provider.createIt("name", name, "cuit", cuit, "address", address, "description", description, "phones", phones);
+        Provider ret = Provider.createIt("name", name, "cuit", cuit, "address", address, "description", description, "phones", phones, "current_account", balance);
         Base.commitTransaction();
         return ret.toMap();
     }
@@ -72,12 +72,12 @@ public class CrudProvider extends UnicastRemoteObject implements interfaces.prov
      * @throws RemoteException
      */
     @Override
-    public Map<String, Object> modify(int id, String name, String cuit, String address, String description, String phones) throws java.rmi.RemoteException {
+    public Map<String, Object> modify(int id, String name, String cuit, String address, String description, String phones, Float balance) throws java.rmi.RemoteException {
         Utils.abrirBase();
         Provider provider = Provider.findById(id);
         Map<String, Object> res = Collections.EMPTY_MAP;
         if (provider != null) {
-            res = provider.set("name", name, "cuit", cuit, "address", address, "description", description, "phones", phones).toMap();
+            res = provider.set("name", name, "cuit", cuit, "address", address, "description", description, "phones", phones,"current_account", balance).toMap();
             Base.openTransaction();
             provider.saveIt();
             Base.commitTransaction();

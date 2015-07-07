@@ -18,105 +18,93 @@ import java.util.Map;
 public interface InterfaceProvider extends Remote {
 
     /**
-     * Crea un proveedor en la base de datos.
+     * Interfaz de la función que crea un proveedor en la base de datos.
      *
-     * @param name nombre del proveedor.
-     * @param cuit cuit del proveedor.
-     * @param address dirección del proveedor.
-     * @param description descripción del proveedor.
-     * @param phones teléfonos del proveedor.
-     * @return map representing the created provider.
+     * @param name
+     * @param cuit
+     * @param address
+     * @param description
+     * @param phones
+     * @param balance
+     * @return
      * @throws RemoteException
      */
-    public Map<String, Object> create(String name, String cuit, String address, String description, String phones) throws java.rmi.RemoteException;
+    public Map<String, Object> create(String name, String cuit, String address, String description, String phones, Float balance) throws java.rmi.RemoteException;
 
     /**
-     * Función que modifica un proveedor existente de la DB.
      *
-     * @param id id del proveedor a modificar.
-     * @param name nuevo nombre del proveedor.
-     * @param cuit nuevo cuit del proveedor.
-     * @param address nueva dirección del proveedor.
-     * @param description nueva descripción del proveedor.
-     * @param phones nuevos teléfonos del proveedor.
-     * @return a map representing the modified provider if exists, empty map
-     * otherwise.
+     * @param id
+     * @param name
+     * @param cuit
+     * @param address
+     * @param description
+     * @param phones
+     * @param balance
+     * @return
      * @throws RemoteException
      */
-    public Map<String, Object> modify(int id, String name, String cuit, String address, String description, String phones) throws java.rmi.RemoteException;
+    public Map<String, Object> modify(int id, String name, String cuit, String address, String description, String phones, Float balance) throws java.rmi.RemoteException;
 
     /**
-     * Función que elimina un proveedor si existe en la DB.
      *
-     * @param id id del proveedor a eliminar.
-     * @return true if the provider was deleted from the database.
+     * @param id
+     * @return
      * @throws RemoteException
      */
     public boolean delete(int id) throws java.rmi.RemoteException;
 
     /**
-     * Función que devuelve el proveedor correspondiente con el id pasado.
      *
-     * @param id id del proveedor pedido.
-     * @return map representing the requested provider.
+     * @param id
+     * @return
      * @throws RemoteException
      */
     public Map<String, Object> getProvider(int id) throws java.rmi.RemoteException;
 
     /**
-     * Función que lista todos los proveedores existentes en la DB.
      *
-     * @return a list of maps representing the providers.
-     * @throws RemoteException
+     * @return @throws RemoteException
      */
     public List<Map> getProviders() throws java.rmi.RemoteException;
 
     /**
-     * Función que devuelve las categorías de un proveedor específico.
      *
-     * @param id id del proveedor del que se quieren obtener las categorías.
-     * @return una lista de Maps que representan las categorías de un proveedor.
+     * @param id
+     * @return
      * @throws RemoteException
      */
     public List<Map> getCategoriesFromProvider(int id) throws java.rmi.RemoteException;
 
-    /**
-     * Función que guarda las nuevas categorías de un proveedor.
-     *
-     * @param provider_id id del proveedor al que se le guardan las categorías.
-     * @param categoriesToAdd categorías para agregar al proveedor especificado.
-     * @param categoriesToRemove categorías para remover del proveedor
-     * especificado.
-     * @return un map representando al proveedor especificado.
-     * @throws RemoteException
-     */
     public Map<String, Object> saveCategoriesOfProvider(int provider_id, LinkedList categoriesToAdd, LinkedList categoriesToRemove) throws java.rmi.RemoteException;
-    
+
     /**
-     * actualizo la cuenta corriente del proveedor SUMANDOLE el valor pasado, tener en cuenta
-     * que si el valor es negativo se restaría
+     * actualizo la cuenta corriente del proveedor
+     *
      * @param provider_id
      * @param amount
      * @return
-     * @throws java.rmi.RemoteException 
+     * @throws java.rmi.RemoteException
      */
     public boolean updateCurrentAccount(int provider_id, float amount) throws java.rmi.RemoteException;
-    
+
     /**
      * obtengo la cuenta corriente del proveedor
+     *
      * @param provider_id
      * @return
-     * @throws java.rmi.RemoteException 
+     * @throws java.rmi.RemoteException
      */
     public float getCurrentAccount(int provider_id) throws java.rmi.RemoteException;
-    
+
     /**
-     * Paga facturas de un proveedor, desde la más vieja a la más nueva, si sobra plata se agrega a la cuenta
-     * corriente, devuelve un string con un mensaje de las facturas que se pagaron 
+     * Paga facturas de un proveedor, desde la más vieja a la más nueva, si
+     * sobra plata se agrega a la cuenta corriente, devuelve un string con un
+     * mensaje de las facturas que se pagaron
+     *
      * @param provider_id
      * @param amount
      * @return
-     * @throws java.rmi.RemoteException 
+     * @throws java.rmi.RemoteException
      */
-    public String payPurchases(int provider_id ,float amount)throws java.rmi.RemoteException;
+    public String payPurchases(int provider_id, float amount) throws java.rmi.RemoteException;
 }

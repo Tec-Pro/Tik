@@ -73,20 +73,6 @@ public class ControllerGUICashbox implements ActionListener {
         this.interfaceAdmin = (InterfaceAdmin) InterfaceName.registry.lookup(InterfaceName.CRUDAdmin);
         this.interfaceTurn= (InterfaceTurn) InterfaceName.registry.lookup(InterfaceName.CRUDTurn);
         gui.setActionListener(this);
-        gui.getECInitialBalanceCheckbox().addItemListener((ItemEvent e) -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                gui.getECInitialBalanceField().setEditable(true);
-            } else {
-                gui.getECInitialBalanceField().setEditable(false);
-            }
-        });
-        gui.getDCInitialBalanceCheckbox().addItemListener((ItemEvent e) -> {
-            if (e.getStateChange() == ItemEvent.SELECTED){
-                gui.getDCInitialBalanceField().setEditable(true);
-            } else {
-                gui.getDCInitialBalanceField().setEditable(false);
-            }
-        });
         loadWithdrawals();
         loadWaiterDeposits();
         loadAdminDeposits();

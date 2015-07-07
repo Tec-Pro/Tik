@@ -246,7 +246,7 @@ public class ControllerGuiCRUDProviders implements ActionListener {
         DefaultTableModel providerModel = ((DefaultTableModel) this.guiCRUDProviders.getTableProviders().getModel());
         providerModel.setRowCount(0);//limpio la tabla antes de cargarla nuevamente
 
-        Object[] o = new Object[7];
+        Object[] o = new Object[8];
         for (Map p : providers) {
             o[0] = (p.get("id"));
             o[1] = (p.get("name"));
@@ -263,6 +263,7 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                 categories += categoryMap.get("name") + " ";
             }
             o[6] = (categories);
+            o[7] = p.get("current_account");
             providerModel.addRow(o);
         }
 
@@ -281,7 +282,7 @@ public class ControllerGuiCRUDProviders implements ActionListener {
             DefaultTableModel providerModel = ((DefaultTableModel) this.guiCRUDProviders.getTableProviders().getModel());
             providerModel.setRowCount(0);//limpio la tabla antes de cargarla nuevamente
             Map<String, Object> providerMap;
-            Object[] o = new Object[7];
+            Object[] o = new Object[8];
             Iterator<Map> providerMapItr = providersList.iterator();
             while (providerMapItr.hasNext()) {
                 providerMap = providerMapItr.next();
@@ -300,6 +301,7 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                     categories += categoryMap.get("name") + " ";
                 }
                 o[6] = (categories);
+                o[7] = providerMap.get("current_account");
                 providerModel.addRow(o);
             }
         }

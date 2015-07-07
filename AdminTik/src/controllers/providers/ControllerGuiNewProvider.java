@@ -23,8 +23,10 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.html.HTMLEditorKit;
 import utils.Config;
 import utils.InterfaceName;
+import utils.ParserFloat;
 
 /**
  *
@@ -192,11 +194,12 @@ public class ControllerGuiNewProvider implements ActionListener {
         String cuit = this.guiNewProvider.getTxtProviderCuit().getText();
         String phone = this.guiNewProvider.getTxtProviderPhone().getText();
         String description = this.guiNewProvider.getTxtProviderDescription().getText();
+        Float balance = ParserFloat.stringToFloat(this.guiNewProvider.getTxtBalance().getText());
         DefaultTableModel categoryModel = ((DefaultTableModel) guiNewProvider.getTableCategoriesProviders().getModel());
         //requisito minimo para crear el proveedor, que tenga nombre
         if (!"".equals(name)) {
             //doy de alta el proveedor en la base de datos
-            Map<String, Object> providerMap = this.provider.create(name, cuit, address, description, phone);
+            Map<String, Object> providerMap = this.provider.create(name, cuit, address, description, phone, balance);
             //agrego las categorias a las cuales pertenece dicho proveedor
             int providerId = (Integer.parseInt(providerMap.get("id").toString()));
             providerMap = saveProviderCategories(providerId);
@@ -223,6 +226,7 @@ public class ControllerGuiNewProvider implements ActionListener {
         this.guiNewProvider.getTxtProviderDescription().setText((String) p.get("description"));
         this.guiNewProvider.getTxtProviderName().setText((String) p.get("name"));
         this.guiNewProvider.getTxtProviderPhone().setText((String) p.get("phones"));
+        this.guiNewProvider.getTxtBalance().setText(ParserFloat.floatToString((Float) p.get("current_account")));
         //Seteo que va a ser una modificación, ya que es el único caso en que se carga la GUI con datos.
         setModify(true);
         loadCategoriesOfProvider(id);
@@ -306,7 +310,7 @@ public class ControllerGuiNewProvider implements ActionListener {
                 try {
                     //Almaceno el resultado de la modificación, si el proveedor es distinto de null.
                     boolean result = provider.modify(getCurrentProviderId(), this.guiNewProvider.getTxtProviderName().getText(), this.guiNewProvider.getTxtProviderCuit().getText(), this.guiNewProvider.getTxtProviderAddress().getText(),
-                            this.guiNewProvider.getTxtProviderDescription().getText(), this.guiNewProvider.getTxtProviderPhone().getText()) != null;
+                            this.guiNewProvider.getTxtProviderDescription().getText(), this.guiNewProvider.getTxtProviderPhone().getText(), ParserFloat.stringToFloat(this.guiNewProvider.getTxtBalance().getText())) != null;
                     if (result) {
                         //Si el proveedor no es null, guardo sus categorías.
                         saveProviderCategories(getCurrentProviderId());
