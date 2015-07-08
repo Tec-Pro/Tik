@@ -10,6 +10,8 @@ import interfaces.providers.InterfaceProvider;
 import interfaces.providers.InterfaceProviderCategory;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -84,6 +86,18 @@ public class ControllerGuiNewProvider implements ActionListener {
                         //Elimino la categoría de la tabla.
                         removeRowProviderCategoriesTable();
                     }
+                }
+            }
+        });
+
+        this.guiNewProvider.getBalanceCheckbox().addItemListener(new ItemListener() {
+
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED){
+                    guiNewProvider.getTxtBalance().setEditable(true);
+                } else {
+                    guiNewProvider.getTxtBalance().setEditable(false);
                 }
             }
         });
@@ -194,7 +208,12 @@ public class ControllerGuiNewProvider implements ActionListener {
         String cuit = this.guiNewProvider.getTxtProviderCuit().getText();
         String phone = this.guiNewProvider.getTxtProviderPhone().getText();
         String description = this.guiNewProvider.getTxtProviderDescription().getText();
-        Float balance = ParserFloat.stringToFloat(this.guiNewProvider.getTxtBalance().getText());
+        Float balance;
+        if (this.guiNewProvider.getTxtBalance().isEditable()){
+            balance = ParserFloat.stringToFloat(this.guiNewProvider.getTxtBalance().getText());
+        } else {
+            balance = 0.0f;
+        }
         DefaultTableModel categoryModel = ((DefaultTableModel) guiNewProvider.getTableCategoriesProviders().getModel());
         //requisito minimo para crear el proveedor, que tenga nombre
         if (!"".equals(name)) {
@@ -309,8 +328,14 @@ public class ControllerGuiNewProvider implements ActionListener {
                 //Si se hace doble click sobre el proveedor en la GUI, se habilita para modificar.
                 try {
                     //Almaceno el resultado de la modificación, si el proveedor es distinto de null.
+                    Float balance;
+                    if (this.guiNewProvider.getTxtBalance().isEditable()){
+                        balance = ParserFloat.stringToFloat(this.guiNewProvider.getTxtBalance().getText());
+                    } else {
+                        balance = provider.getCurrentAccount(currentProviderId);
+                    }
                     boolean result = provider.modify(getCurrentProviderId(), this.guiNewProvider.getTxtProviderName().getText(), this.guiNewProvider.getTxtProviderCuit().getText(), this.guiNewProvider.getTxtProviderAddress().getText(),
-                            this.guiNewProvider.getTxtProviderDescription().getText(), this.guiNewProvider.getTxtProviderPhone().getText(), ParserFloat.stringToFloat(this.guiNewProvider.getTxtBalance().getText())) != null;
+                            this.guiNewProvider.getTxtProviderDescription().getText(), this.guiNewProvider.getTxtProviderPhone().getText(), balance) != null;
                     if (result) {
                         //Si el proveedor no es null, guardo sus categorías.
                         saveProviderCategories(getCurrentProviderId());
