@@ -4,10 +4,10 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<field name="product" class="java.lang.String"/>
-	<field name="productionPrice" class="java.lang.Float"/>
-	<field name="seggestedPrice" class="java.lang.Float"/>
-	<field name="sellPrice" class="java.lang.Float"/>
-	<field name="profit" class="java.lang.Float"/>
+	<field name="productionPrice" class="java.lang.Object"/>
+	<field name="seggestedPrice" class="java.lang.Object"/>
+	<field name="sellPrice" class="java.lang.Object"/>
+	<field name="profit" class="java.lang.Object"/>
 	<field name="category" class="java.lang.String"/>
 	<field name="subcategory" class="java.lang.String"/>
 	<background>

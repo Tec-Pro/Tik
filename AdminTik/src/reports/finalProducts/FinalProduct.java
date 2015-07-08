@@ -12,14 +12,14 @@ package reports.finalProducts;
 public class FinalProduct {
    
     private String product;
-    private float productionPrice;
-    private float suggestedPrice;
-    private float sellPrice;
-    private float profit;
+    private Object productionPrice;
+    private Object suggestedPrice;
+    private Object sellPrice;
+    private Object profit;
     private String category;
     private String subcategory;
 
-    public FinalProduct(String product, float productionPrice, float suggestedPrice, float sellPrice, float profit, String category, String subcategory) {
+    public FinalProduct(String product, Object productionPrice, Object suggestedPrice, Object sellPrice, Object profit, String category, String subcategory) {
         this.product = product;
         this.productionPrice = productionPrice;
         this.suggestedPrice = suggestedPrice;
@@ -53,35 +53,35 @@ public class FinalProduct {
         this.product = product;
     }
 
-    public float getProductionPrice() {
+    public Object getProductionPrice() {
         return productionPrice;
     }
 
-    public void setProductionPrice(float productionPrice) {
+    public void setProductionPrice(Object productionPrice) {
         this.productionPrice = productionPrice;
     }
 
-    public float getSuggestedPrice() {
+    public Object getSuggestedPrice() {
         return suggestedPrice;
     }
 
-    public void setSuggestedPrice(float suggestedPrice) {
+    public void setSuggestedPrice(Object suggestedPrice) {
         this.suggestedPrice = suggestedPrice;
     }
 
-    public float getSellPrice() {
+    public Object getSellPrice() {
         return sellPrice;
     }
 
-    public void setSellPrice(float sellPrice) {
+    public void setSellPrice(Object sellPrice) {
         this.sellPrice = sellPrice;
     }
 
-    public float getProfit() {
+    public Object getProfit() {
         return profit;
     }
 
-    public void setProfit(float profit) {
+    public void setProfit(Object profit) {
         this.profit = profit;
     }
     

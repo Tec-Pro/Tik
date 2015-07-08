@@ -5,6 +5,7 @@
  */
 package gui.statistics;
 
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -38,7 +39,9 @@ public class GuiProductList extends javax.swing.JInternalFrame {
         return btnPrintReport;
     }
     
-    
+    public void setActionListener(ActionListener al){
+        btnPrintReport.addActionListener(al);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
