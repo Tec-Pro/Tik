@@ -111,4 +111,12 @@ public class CRUDExpenses extends UnicastRemoteObject implements InterfaceExpens
         }
 
     }
+
+    @Override
+    public void removeAllExpenses() throws RemoteException {
+        Utils.abrirBase();
+        Base.openTransaction();
+        Expense.deleteAll();
+        Base.commitTransaction();
+    }
 }

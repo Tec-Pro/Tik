@@ -44,5 +44,11 @@ public interface InterfaceExpenses extends Remote {
      */
     public  float getSumExpenses(String turn) throws java.rmi.RemoteException;
 
+    
+    /**
+     * elimina TODOS los gastos que existen en la base de datos
+     * @throws java.rmi.RemoteException 
+     */
+    public void removeAllExpenses() throws java.rmi.RemoteException;
 
 }
