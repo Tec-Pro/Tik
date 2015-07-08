@@ -5,6 +5,7 @@
  */
 package gui.statistics;
 
+import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -32,6 +33,11 @@ public class GuiProductList extends javax.swing.JInternalFrame {
     public void cleanGuiProductList(){
         getModelTableProductList().setRowCount(0);
     }
+
+    public JButton getBtnPrintReport() {
+        return btnPrintReport;
+    }
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -45,6 +51,7 @@ public class GuiProductList extends javax.swing.JInternalFrame {
         panelImage1 = new org.edisoncor.gui.panel.PanelImage();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableProductList = new javax.swing.JTable();
+        btnPrintReport = new javax.swing.JButton();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -92,20 +99,28 @@ public class GuiProductList extends javax.swing.JInternalFrame {
             tableProductList.getColumnModel().getColumn(7).setPreferredWidth(120);
         }
 
+        btnPrintReport.setText("IMPRIMIR REPORTE");
+
         javax.swing.GroupLayout panelImage1Layout = new javax.swing.GroupLayout(panelImage1);
         panelImage1.setLayout(panelImage1Layout);
         panelImage1Layout.setHorizontalGroup(
             panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelImage1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1265, Short.MAX_VALUE)
+                .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1264, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelImage1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnPrintReport, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         panelImage1Layout.setVerticalGroup(
             panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelImage1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 646, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelImage1Layout.createSequentialGroup()
+                .addContainerGap(17, Short.MAX_VALUE)
+                .addComponent(btnPrintReport)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 609, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -125,6 +140,7 @@ public class GuiProductList extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnPrintReport;
     private javax.swing.JScrollPane jScrollPane1;
     private org.edisoncor.gui.panel.PanelImage panelImage1;
     private javax.swing.JTable tableProductList;
