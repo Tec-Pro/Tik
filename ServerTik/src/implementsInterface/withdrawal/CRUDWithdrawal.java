@@ -8,8 +8,14 @@ package implementsInterface.withdrawal;
 import implementsInterface.CRUDTurn;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import models.withdrawals.Withdrawal;
 import org.javalite.activejdbc.Base;
 import utils.Utils;
@@ -19,6 +25,7 @@ import utils.Utils;
  * @author joako
  */
 public class CRUDWithdrawal extends UnicastRemoteObject implements interfaces.withdrawals.InterfaceWithdrawal {
+    private Connection conn;
 
     public CRUDWithdrawal() throws RemoteException {
         super();
@@ -79,26 +86,41 @@ public class CRUDWithdrawal extends UnicastRemoteObject implements interfaces.wi
     }
 
     @Override
-    public Double getWithdrawalsTotal() throws RemoteException {
-        Utils.abrirBase();
-        String date = new java.sql.Date(System.currentTimeMillis()).toString();
-        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.withdrawals WHERE created_at >= ?", date);
-        System.out.println(results);
-        if (!(results.get(0).get("total") == null)) {
-            return (double) results.get(0).get("total");
+    public float getWithdrawalsTotal() throws RemoteException {
+        openBase();
+        String sql = "SELECT SUM(amount) as amount FROM withdrawal;";
+        float ret = 0;
+        try {
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                ret = rs.getFloat("amount");
+                rs.close();
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDWithdrawal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0.00;
+        return ret;
     }
 
     @Override
-    public Double getAdminWithdrawalsTotal(int id) throws RemoteException {
-        Utils.abrirBase();
-        String date = new java.sql.Date(System.currentTimeMillis()).toString();
-        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.withdrawals WHERE created_at >= ? AND admin_id = ?", date, id);
-        if (!(results.get(0).get("total") == null)) {
-            return (double) results.get(0).get("total");
+    public float getAdminWithdrawalsTotal(int id) throws RemoteException {
+        openBase();
+        String sql = "SELECT SUM(amount) as amount FROM withdrawals WHERE admin_id = '"+ id +"';";
+        float ret = 0;
+        try {
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                ret = rs.getFloat("amount");
+                rs.close();
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDWithdrawal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0.00;
+        return ret;
     }
 
     @Override
@@ -138,63 +160,132 @@ public class CRUDWithdrawal extends UnicastRemoteObject implements interfaces.wi
     }
 
     @Override
-    public Double getWithdrawalsTotalOnDate(String date) throws RemoteException {
-        Utils.abrirBase();
-        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.withdrawals WHERE created_at = ?", date);
-        if (!(results.get(0).get("total") == null)) {
-            return (double) results.get(0).get("total");
+    public float getWithdrawalsTotalOnDate(String date) throws RemoteException {
+        openBase();
+        String sql = "SELECT SUM(amount) as amount FROM withdrawals WHERE  created_at >= '"+date+"';";
+        float ret = 0;
+        try {
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                ret = rs.getFloat("amount");
+                rs.close();
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDWithdrawal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0.00;
+        return ret;
     }
 
     @Override
-    public Double getWithdrawalsTotalOnTurn(String turn) throws RemoteException {
-        Utils.abrirBase();
-        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.withdrawals WHERE turn = ? ", turn);
-        if (!(results.get(0).get("total") == null)) {
-            return (double) results.get(0).get("total");
+    public float getWithdrawalsTotalOnTurn(String turn) throws RemoteException {
+        openBase();
+        String sql = "SELECT SUM(amount) as amount FROM withdrawals WHERE turn = '" + turn + "';";
+        float ret = 0;
+        try {
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                ret = rs.getFloat("amount");
+                rs.close();
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDWithdrawal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0.00;
+        return ret;
     }
 
     @Override
-    public Double getWithdrawalsTotal(String date, String turn) throws RemoteException {
-        Utils.abrirBase();
-        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.withdrawals WHERE turn = ? AND created_at = ? ", turn, date);
-        if (!(results.get(0).get("total") == null)) {
-            return (double) results.get(0).get("total");
+    public float getWithdrawalsTotal(String date, String turn) throws RemoteException {
+        openBase();
+        String sql = "SELECT SUM(amount) as amount FROM withdrawals WHERE turn = '" + turn + "' AND created_at >= '"+date+"';";
+        float ret = 0;
+        try {
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                ret = rs.getFloat("amount");
+                rs.close();
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDWithdrawal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0.00;
+        return ret;
     }
 
     @Override
-    public Double getAdminWithdrawalsTotalOnDate(int admin_id, String date) throws RemoteException {
-        Utils.abrirBase();
-        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.withdrawals WHERE created_at = ? AND admin_id = ?", date, admin_id);
-        if (!(results.get(0).get("total") == null)) {
-            return (double) results.get(0).get("total");
+    public float getAdminWithdrawalsTotalOnDate(int admin_id, String date) throws RemoteException {
+        openBase();
+        String sql = "SELECT SUM(amount) as amount FROM withdrawals WHERE created_at >= '"+date+"' AND admin_id = '"+ admin_id +"';";
+        float ret = 0;
+        try {
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                ret = rs.getFloat("amount");
+                rs.close();
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDWithdrawal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0.00;
+        return ret;
     }
 
     @Override
-    public Double getAdminWithdrawalsTotalOnTurn(int admin_id, String turn) throws RemoteException {
-        Utils.abrirBase();
-        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.withdrawals WHERE turn = ? AND admin_id = ?", turn, admin_id);
-        if (!(results.get(0).get("total") == null)) {
-            return (double) results.get(0).get("total");
+    public float getAdminWithdrawalsTotalOnTurn(int admin_id, String turn) throws RemoteException {
+        openBase();
+        String sql = "SELECT SUM(amount) as amount FROM withdrawals WHERE turn = '" + turn + "' AND admin_id = '"+ admin_id +"';";
+        float ret = 0;
+        try {
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                ret = rs.getFloat("amount");
+                rs.close();
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDWithdrawal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0.00;
+        return ret;
     }
 
     @Override
-    public Double getAdminWithdrawalsTotal(int admin_id, String date, String turn) throws RemoteException {
-        Utils.abrirBase();
-        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.withdrawals WHERE created_at = ? AND turn = ? AND admin_id = ? ", date, turn, admin_id);
-        if (!(results.get(0).get("total") == null)) {
-            return (double) results.get(0).get("total");
+    public float getAdminWithdrawalsTotal(int admin_id, String date, String turn) throws RemoteException {
+       openBase();
+        String sql = "SELECT SUM(amount) as amount FROM withdrawals WHERE turn = '" + turn + "' AND created_at >= '"+date+"' AND admin_id = '"+ admin_id +"';";
+        float ret = 0;
+        try {
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                ret = rs.getFloat("amount");
+                rs.close();
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDWithdrawal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0.00;
+        return ret;
     }
 
+     private void openBase() {
+        try {
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(CRUDWithdrawal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (conn == null || conn.isClosed()) {
+                conn = DriverManager.getConnection("jdbc:mysql://localhost/tik", "root", "root");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDWithdrawal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
 }

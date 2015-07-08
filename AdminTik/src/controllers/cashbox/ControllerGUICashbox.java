@@ -214,6 +214,7 @@ public class ControllerGUICashbox implements ActionListener {
             total = total + (Float) w.get("amount");
         }
         gui.getWithdrawalTotalField().setText(String.format("%.2f", total));
+        System.out.println(total +"loadWithdrawals");
         gui.getECWithdrawalsField().setText(String.format("%.2f", total));
     }
 
@@ -317,7 +318,7 @@ public class ControllerGUICashbox implements ActionListener {
     */
     private static Float ECLoadAdminDeposits() throws RemoteException{
         String date = new java.sql.Date(System.currentTimeMillis()).toString();
-        Float adminDeposits = deposit.getAdminsDepositsTotal(date, turn.getTurn()).floatValue();
+        Float adminDeposits = deposit.getAdminsDepositsTotal(date, turn.getTurn());
         gui.getECAdminDepositsField().setText(ParserFloat.floatToString(adminDeposits));
         return adminDeposits;
     }
@@ -327,7 +328,7 @@ public class ControllerGUICashbox implements ActionListener {
     */
     private static Float ECLoadWaiterDeposits() throws RemoteException{
         String date = new java.sql.Date(System.currentTimeMillis()).toString();
-        Float waiterDeposits = deposit.getWaitersDepositsTotal(date, turn.getTurn()).floatValue();
+        Float waiterDeposits = deposit.getWaitersDepositsTotal(date, turn.getTurn());
         gui.getECWaiterDepositsField().setText(ParserFloat.floatToString(waiterDeposits));
         return waiterDeposits;
     }
@@ -336,7 +337,8 @@ public class ControllerGUICashbox implements ActionListener {
     */
     private static Float ECLoadWithdrawals() throws RemoteException{
         String date = new java.sql.Date(System.currentTimeMillis()).toString();
-        Float withdrawals = withdrawal.getWithdrawalsTotal(date, turn.getTurn()).floatValue();
+        Float withdrawals = withdrawal.getWithdrawalsTotal(date, turn.getTurn());
+        System.out.println(withdrawals + " ECLoadWithdrawals");
         gui.getECWithdrawalsField().setText(ParserFloat.floatToString(withdrawals));
         return withdrawals;
     }

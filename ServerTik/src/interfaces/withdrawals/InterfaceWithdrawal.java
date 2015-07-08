@@ -132,7 +132,7 @@ public interface InterfaceWithdrawal extends Remote {
      * @return total de retiros
      * @throws RemoteException error de conexión.
      */
-    public Double getWithdrawalsTotal() throws java.rmi.RemoteException;
+    public float getWithdrawalsTotal() throws java.rmi.RemoteException;
 
     /**
      * Devuelve el total de los retiros en una fecha.
@@ -140,7 +140,7 @@ public interface InterfaceWithdrawal extends Remote {
      * @return total de retiros
      * @throws RemoteException error de conexión.
      */
-    public Double getWithdrawalsTotalOnDate(String date) throws java.rmi.RemoteException;
+    public float getWithdrawalsTotalOnDate(String date) throws java.rmi.RemoteException;
     
     /**
      * Devuelve el total de los retiros en un turno.
@@ -148,7 +148,7 @@ public interface InterfaceWithdrawal extends Remote {
      * @return total de retiros
      * @throws RemoteException error de conexión.
      */
-    public Double getWithdrawalsTotalOnTurn(String turn) throws java.rmi.RemoteException;
+    public float getWithdrawalsTotalOnTurn(String turn) throws java.rmi.RemoteException;
     
     /**
      * Devuelve el total de los retiros en un turno y una fecha.
@@ -157,7 +157,7 @@ public interface InterfaceWithdrawal extends Remote {
      * @return total de retiros
      * @throws RemoteException error de conexión.
      */
-    public Double getWithdrawalsTotal(String date, String turn) throws java.rmi.RemoteException;
+    public float getWithdrawalsTotal(String date, String turn) throws java.rmi.RemoteException;
     
     /**
      * Devuelve el total de los retiros de un admin.
@@ -165,7 +165,7 @@ public interface InterfaceWithdrawal extends Remote {
      * @return total de retiros
      * @throws RemoteException error de conexión.
      */
-    public Double getAdminWithdrawalsTotal(int id) throws java.rmi.RemoteException;
+    public float getAdminWithdrawalsTotal(int id) throws java.rmi.RemoteException;
 
     /**
      * Devuelve el total de los retiros de un admin en una fecha.
@@ -174,7 +174,7 @@ public interface InterfaceWithdrawal extends Remote {
      * @return total de retiros
      * @throws RemoteException error de conexión.
      */
-    public Double getAdminWithdrawalsTotalOnDate(int admin_id, String date) throws java.rmi.RemoteException;
+    public float getAdminWithdrawalsTotalOnDate(int admin_id, String date) throws java.rmi.RemoteException;
     
     /**
      * Devuelve el total de los retiros de un admin en un turno.
@@ -183,7 +183,7 @@ public interface InterfaceWithdrawal extends Remote {
      * @return total de retiros
      * @throws RemoteException error de conexión.
      */
-    public Double getAdminWithdrawalsTotalOnTurn(int admin_id, String turn) throws java.rmi.RemoteException;
+    public float getAdminWithdrawalsTotalOnTurn(int admin_id, String turn) throws java.rmi.RemoteException;
     
     /**
      * Devuelve el total de los retiros de un admin en una fecha y un turno.
@@ -193,7 +193,7 @@ public interface InterfaceWithdrawal extends Remote {
      * @return total de retiros
      * @throws RemoteException error de conexión.
      */
-    public Double getAdminWithdrawalsTotal(int admin_id, String date, String turn) throws java.rmi.RemoteException;
+    public float getAdminWithdrawalsTotal(int admin_id, String date, String turn) throws java.rmi.RemoteException;
    
     /**
      * Borra todos los retiros de la base de datos.

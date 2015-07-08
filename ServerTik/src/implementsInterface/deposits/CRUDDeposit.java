@@ -8,8 +8,14 @@ package implementsInterface.deposits;
 import implementsInterface.CRUDTurn;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import models.deposit.Deposit;
 import org.javalite.activejdbc.Base;
 import utils.Utils;
@@ -20,6 +26,8 @@ import utils.Utils;
  */
 public class CRUDDeposit extends UnicastRemoteObject implements interfaces.deposits.InterfaceDeposit {
 
+    private Connection conn;
+    
     public CRUDDeposit() throws RemoteException {
         super();
     }
@@ -127,47 +135,79 @@ public class CRUDDeposit extends UnicastRemoteObject implements interfaces.depos
     }
 
     @Override
-    public Double getWaitersDepositsTotal() throws RemoteException {
-        Utils.abrirBase();
-        String date = new java.sql.Date(System.currentTimeMillis()).toString();
-        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.deposits WHERE created_at >= ? AND admin_id = 0", date);
-        if (!(results.get(0).get("total") == null)) {
-            return (double) results.get(0).get("total");
+    public float getWaitersDepositsTotal() throws RemoteException {
+        openBase();
+        String sql = "SELECT SUM(amount) as amount FROM deposits WHERE admin_id = '0';";
+        float ret = 0;
+        try {
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                ret = rs.getFloat("amount");
+                rs.close();
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDDeposit.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0.00;
+        return ret;
     }
 
     @Override
-    public Double getWaiterDepositsTotal(int id) throws RemoteException {
-        Utils.abrirBase();
-        String date = new java.sql.Date(System.currentTimeMillis()).toString();
-        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.deposits WHERE created_at >= ? AND waiter_id = ?", date, id);
-        if (!(results.get(0).get("total") == null)) {
-            return (double) results.get(0).get("total");
+    public float getWaiterDepositsTotal(int id) throws RemoteException {
+        openBase();
+        String sql = "SELECT SUM(amount) as amount FROM deposits WHERE waiter_id = '"+ id +"';";
+        float ret = 0;
+        try {
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                ret = rs.getFloat("amount");
+                rs.close();
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDDeposit.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0.00;
+        return ret;
     }
 
     @Override
-    public Double getAdminsDepositsTotal() throws RemoteException {
-        Utils.abrirBase();
-        String date = new java.sql.Date(System.currentTimeMillis()).toString();
-        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.deposits WHERE created_at >= ? AND waiter_id = 0", date);
-        if (!(results.get(0).get("total") == null)) {
-            return (double) results.get(0).get("total");
+    public float getAdminsDepositsTotal() throws RemoteException {
+        openBase();
+        String sql = "SELECT SUM(amount) as amount FROM deposits WHERE waiter_id = '0';";
+        float ret = 0;
+        try {
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                ret = rs.getFloat("amount");
+                rs.close();
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDDeposit.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0.00;
+        return ret;
     }
 
     @Override
-    public Double getAdminDepositsTotal(int id) throws RemoteException {
-        Utils.abrirBase();
-        String date = new java.sql.Date(System.currentTimeMillis()).toString();
-        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.deposits WHERE created_at >= ? AND admin_id = ?", date, id);
-        if (!(results.get(0).get("total") == null)) {
-            return (double) results.get(0).get("total");
+    public float getAdminDepositsTotal(int id) throws RemoteException {
+        openBase();
+        String sql = "SELECT SUM(amount) as amount FROM deposits WHERE admin_id = '"+ id +"';";
+        float ret = 0;
+        try {
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                ret = rs.getFloat("amount");
+                rs.close();
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDDeposit.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0.00;
+        return ret;
     }
 
     @Override
@@ -243,122 +283,246 @@ public class CRUDDeposit extends UnicastRemoteObject implements interfaces.depos
     }
 
     @Override
-    public Double getWaitersDepositsTotal(String date, String turn) throws RemoteException {
-        Utils.abrirBase();
-        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.deposits WHERE created_at >= ? AND turn = ? AND admin_id = 0", date, turn);
-        if (!(results.get(0).get("total") == null)) {
-            return (double) results.get(0).get("total");
+    public float getWaitersDepositsTotal(String date, String turn) throws RemoteException {
+        openBase();
+        String sql = "SELECT SUM(amount) as amount FROM deposits WHERE turn = '" + turn + "' AND created_at >= '"+date+"' AND admin_id = '0';";
+        float ret = 0;
+        try {
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                ret = rs.getFloat("amount");
+                rs.close();
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDDeposit.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0.00;
+        return ret;
     }
 
     @Override
-    public Double getWaitersDepositsTotalOnDate(String date) throws RemoteException {
-        Utils.abrirBase();
-        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.deposits WHERE created_at >= ? AND admin_id = 0", date);
-        if (!(results.get(0).get("total") == null)) {
-            return (double) results.get(0).get("total");
+    public float getWaitersDepositsTotalOnDate(String date) throws RemoteException {
+       openBase();
+        String sql = "SELECT SUM(amount) as amount FROM deposits WHERE created_at >= '"+date+"' AND admin_id = '0';";
+        float ret = 0;
+        try {
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                ret = rs.getFloat("amount");
+                rs.close();
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDDeposit.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0.00;
+        return ret;
     }
 
     @Override
-    public Double getWaitersDepositsTotalOnTurn(String turn) throws RemoteException {
-        Utils.abrirBase();
-        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.deposits WHERE turn = ? AND admin_id = 0", turn);
-        if (!(results.get(0).get("total") == null)) {
-            return (double) results.get(0).get("total");
+    public float getWaitersDepositsTotalOnTurn(String turn) throws RemoteException {
+        openBase();
+        String sql = "SELECT SUM(amount) as amount FROM deposits WHERE turn = '" + turn + "' AND admin_id = '0';";
+        float ret = 0;
+        try {
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                ret = rs.getFloat("amount");
+                rs.close();
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDDeposit.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0.00;
+        return ret;
     }
 
     @Override
-    public Double getWaiterDepositsTotal(int id, String date, String turn) throws RemoteException {
-        Utils.abrirBase();
-        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.deposits WHERE created_at >= ? AND turn = ? AND waiter_id = ?", date, turn, id);
-        if (!(results.get(0).get("total") == null)) {
-            return (double) results.get(0).get("total");
+    public float getWaiterDepositsTotal(int id, String date, String turn) throws RemoteException {
+openBase();
+        String sql = "SELECT SUM(amount) as amount FROM deposits WHERE turn = '" + turn + "' AND created_at >= '"+date+"' AND waiter_id = '"+ id +"';";
+        float ret = 0;
+        try {
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                ret = rs.getFloat("amount");
+                rs.close();
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDDeposit.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0.00;
+        return ret;
     }
 
     @Override
-    public Double getWaiterDepositsTotalOnDate(int id, String date) throws RemoteException {
-        Utils.abrirBase();
-        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.deposits WHERE created_at >= ? AND waiter_id = ?", date, id);
-        if (!(results.get(0).get("total") == null)) {
-            return (double) results.get(0).get("total");
+    public float getWaiterDepositsTotalOnDate(int id, String date) throws RemoteException {
+openBase();
+        String sql = "SELECT SUM(amount) as amount FROM deposits WHERE created_at >= '"+date+"' AND waiter_id = '"+ id +"';";
+        float ret = 0;
+        try {
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                ret = rs.getFloat("amount");
+                rs.close();
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDDeposit.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0.00;
+        return ret;
     }
 
     @Override
-    public Double getWaiterDepositsTotalOnTurn(int id, String turn) throws RemoteException {
-        Utils.abrirBase();
-        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.deposits WHERE turn = ? AND waiter_id = ?", turn, id);
-        if (!(results.get(0).get("total") == null)) {
-            return (double) results.get(0).get("total");
+    public float getWaiterDepositsTotalOnTurn(int id, String turn) throws RemoteException {
+        openBase();
+        String sql = "SELECT SUM(amount) as amount FROM deposits WHERE turn = '" + turn + "' AND waiter_id = '"+ id +"';";
+        float ret = 0;
+        try {
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                ret = rs.getFloat("amount");
+                rs.close();
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDDeposit.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0.00;
+        return ret;
     }
 
     @Override
-    public Double getAdminsDepositsTotal(String date, String turn) throws RemoteException {
-        Utils.abrirBase();
-        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.deposits WHERE created_at >= ? AND turn = ? AND waiter_id = 0", date, turn);
-        if (!(results.get(0).get("total") == null)) {
-            return (double) results.get(0).get("total");
+    public float getAdminsDepositsTotal(String date, String turn) throws RemoteException {
+        openBase();
+        String sql = "SELECT SUM(amount) as amount FROM deposits WHERE turn = '" + turn + "' AND created_at >= '"+date+"' AND waiter_id = '0';";
+        float ret = 0;
+        try {
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                ret = rs.getFloat("amount");
+                rs.close();
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDDeposit.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0.00;
+        return ret;
     }
 
     @Override
-    public Double getAdminsDepositsTotalOnDate(String date) throws RemoteException {
-        Utils.abrirBase();
-        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.deposits WHERE created_at >= ? AND waiter_id = 0", date);
-        if (!(results.get(0).get("total") == null)) {
-            return (double) results.get(0).get("total");
+    public float getAdminsDepositsTotalOnDate(String date) throws RemoteException {
+openBase();
+        String sql = "SELECT SUM(amount) as amount FROM deposits WHERE created_at >= '"+date+"' AND waiter_id = '0';";
+        float ret = 0;
+        try {
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                ret = rs.getFloat("amount");
+                rs.close();
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDDeposit.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0.00;
+        return ret;
     }
 
     @Override
-    public Double getAdminsDepositsTotalOnTurn(String turn) throws RemoteException {
-        Utils.abrirBase();
-        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.deposits WHERE turn = ? AND waiter_id = 0", turn);
-        if (!(results.get(0).get("total") == null)) {
-            return (double) results.get(0).get("total");
+    public float getAdminsDepositsTotalOnTurn(String turn) throws RemoteException {
+        openBase();
+        String sql = "SELECT SUM(amount) as amount FROM deposits WHERE turn = '" + turn + "' AND waiter_id = '0';";
+        float ret = 0;
+        try {
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                ret = rs.getFloat("amount");
+                rs.close();
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDDeposit.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0.00;
+        return ret;
     }
 
     @Override
-    public Double getAdminDepositsTotal(int id, String date, String turn) throws RemoteException {
-        Utils.abrirBase();
-        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.deposits WHERE created_at >= ? AND turn = ? AND admin_id = ?", date, turn, id);
-        if (!(results.get(0).get("total") == null)) {
-            return (double) results.get(0).get("total");
+    public float getAdminDepositsTotal(int id, String date, String turn) throws RemoteException {
+        openBase();
+        String sql = "SELECT SUM(amount) as amount FROM deposits WHERE turn = '" + turn + "' AND created_at >= '"+date+"' AND admin_id = '"+ id +"';";
+        float ret = 0;
+        try {
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                ret = rs.getFloat("amount");
+                rs.close();
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDDeposit.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0.00;
+        return ret;
     }
 
     @Override
-    public Double getAdminDepositsTotalOnDate(int id, String date) throws RemoteException {
-        Utils.abrirBase();
-        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.deposits WHERE created_at >= ? AND admin_id = ?", date, id);
-        if (!(results.get(0).get("total") == null)) {
-            return (double) results.get(0).get("total");
+    public float getAdminDepositsTotalOnDate(int id, String date) throws RemoteException {
+        openBase();
+        String sql = "SELECT SUM(amount) as amount FROM deposits WHERE created_at >= '" + date + "' AND admin_id = '"+ id +"';";
+        float ret = 0;
+        try {
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                ret = rs.getFloat("amount");
+                rs.close();
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDDeposit.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0.00;
+        return ret;
     }
 
     @Override
-    public Double getAdminDepositsTotalOnTurn(int id, String turn) throws RemoteException {
-        Utils.abrirBase();
-        List<Map> results = Base.findAll("SELECT SUM(amount) as total FROM tik.deposits WHERE turn = ? AND admin_id = ?", turn, id);
-        if (!(results.get(0).get("total") == null)) {
-            return (double) results.get(0).get("total");
+    public float getAdminDepositsTotalOnTurn(int id, String turn) throws RemoteException {
+        openBase();
+        String sql = "SELECT SUM(amount) as amount FROM deposits WHERE turn = '" + turn + "' AND admin_id = '"+ id +"';";
+        float ret = 0;
+        try {
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                ret = rs.getFloat("amount");
+                rs.close();
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDDeposit.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0.00;
+        return ret;
+    }
+    
+    private void openBase() {
+        try {
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(CRUDDeposit.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (conn == null || conn.isClosed()) {
+                conn = DriverManager.getConnection("jdbc:mysql://localhost/tik", "root", "root");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDDeposit.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 }

@@ -118,7 +118,7 @@ public interface InterfaceDeposit extends Remote {
      * @return Total de entregas de los mozos
      * @throws RemoteException problema de conexión. 
      */
-    public Double getWaitersDepositsTotal() throws java.rmi.RemoteException;
+    public float getWaitersDepositsTotal() throws java.rmi.RemoteException;
     
     /**
      * Devuelve el total de las entregas realizadas en una fecha y un turno.
@@ -127,7 +127,7 @@ public interface InterfaceDeposit extends Remote {
      * @return total de entregas.
      * @throws RemoteException problema de conexión.
      */
-    public Double getWaitersDepositsTotal(String date, String turn) throws java.rmi.RemoteException;
+    public float getWaitersDepositsTotal(String date, String turn) throws java.rmi.RemoteException;
     
     /**
      * Devuelve el total de las entregas realizadas en una fecha.
@@ -135,7 +135,7 @@ public interface InterfaceDeposit extends Remote {
      * @return total de entregas.
      * @throws RemoteException problema de conexión.
      */
-    public Double getWaitersDepositsTotalOnDate(String date) throws java.rmi.RemoteException;
+    public float getWaitersDepositsTotalOnDate(String date) throws java.rmi.RemoteException;
 
     /**
      * Devuelve el total de las entregas realizadas en un turno.
@@ -143,7 +143,7 @@ public interface InterfaceDeposit extends Remote {
      * @return total de entregas.
      * @throws RemoteException problema de conexión.
      */
-    public Double getWaitersDepositsTotalOnTurn(String turn) throws java.rmi.RemoteException;
+    public float getWaitersDepositsTotalOnTurn(String turn) throws java.rmi.RemoteException;
     
     /**
      * Devuelve el total de las entregas realizadas por un mozo, en un turno, en un día.
@@ -153,7 +153,7 @@ public interface InterfaceDeposit extends Remote {
      * @return total de entregas.
      * @throws RemoteException problema de conexión.
      */
-    public Double getWaiterDepositsTotal(int id, String date, String turn) throws java.rmi.RemoteException;
+    public float getWaiterDepositsTotal(int id, String date, String turn) throws java.rmi.RemoteException;
     
     /**
      * Devuelve el total de las entregas de un mozo en una fecha.
@@ -162,7 +162,7 @@ public interface InterfaceDeposit extends Remote {
      * @return total de entregas.
      * @throws RemoteException problema de conexión.
      */
-    public Double getWaiterDepositsTotalOnDate(int id, String date) throws java.rmi.RemoteException;
+    public float getWaiterDepositsTotalOnDate(int id, String date) throws java.rmi.RemoteException;
     
     /**
      * Devuelve el total de entregas de un mozo en un turno.
@@ -171,7 +171,7 @@ public interface InterfaceDeposit extends Remote {
      * @return total de entregas.
      * @throws RemoteException problema de conexión.
      */
-    public Double getWaiterDepositsTotalOnTurn(int id, String turn) throws java.rmi.RemoteException;
+    public float getWaiterDepositsTotalOnTurn(int id, String turn) throws java.rmi.RemoteException;
     
     /**
      * Devuelve el total de entregas de un mozo.
@@ -180,7 +180,7 @@ public interface InterfaceDeposit extends Remote {
      * @throws RemoteException problema de conexión.
      */
     
-    public Double getWaiterDepositsTotal(int id) throws java.rmi.RemoteException;
+    public float getWaiterDepositsTotal(int id) throws java.rmi.RemoteException;
   
     /**
      * Borra todos las entregas de la base de datos.
@@ -290,7 +290,7 @@ public interface InterfaceDeposit extends Remote {
      * @return total de los depósitos.
      * @throws RemoteException problema de conexión.
      */
-    public Double getAdminsDepositsTotal() throws java.rmi.RemoteException;
+    public float getAdminsDepositsTotal() throws java.rmi.RemoteException;
     
     /**
      * Devuelve el total de los depósitos de admins en una fecha y un turno.
@@ -299,7 +299,7 @@ public interface InterfaceDeposit extends Remote {
      * @return total de los depósitos.
      * @throws RemoteException problema de conexión.
      */
-    public Double getAdminsDepositsTotal(String date, String turn) throws java.rmi.RemoteException;
+    public float getAdminsDepositsTotal(String date, String turn) throws java.rmi.RemoteException;
     
     /**
      * Devuelve el total de los depósitos de admins en una fecha.
@@ -307,7 +307,7 @@ public interface InterfaceDeposit extends Remote {
      * @return total de los depósitos.
      * @throws RemoteException problema de conexión.
      */
-    public Double getAdminsDepositsTotalOnDate(String date) throws java.rmi.RemoteException;
+    public float getAdminsDepositsTotalOnDate(String date) throws java.rmi.RemoteException;
 
     /**
      * Devuelve el total de los depósitos de admins en un turno.
@@ -315,7 +315,7 @@ public interface InterfaceDeposit extends Remote {
      * @return total de los depósitos.
      * @throws RemoteException problema de conexión.
      */
-    public Double getAdminsDepositsTotalOnTurn(String turn) throws java.rmi.RemoteException;
+    public float getAdminsDepositsTotalOnTurn(String turn) throws java.rmi.RemoteException;
     
     /**
      * Devuelve el total de los depósitos de un admin en una fecha, en un turno.
@@ -325,7 +325,7 @@ public interface InterfaceDeposit extends Remote {
      * @return total de los depósitos.
      * @throws RemoteException problema de conexión.
      */
-    public Double getAdminDepositsTotal(int id, String date, String turn) throws java.rmi.RemoteException;
+    public float getAdminDepositsTotal(int id, String date, String turn) throws java.rmi.RemoteException;
     
     /**
      * Devuelve el total de los depósitos de un admin en una fecha.
@@ -334,7 +334,7 @@ public interface InterfaceDeposit extends Remote {
      * @return total de los depósitos.
      * @throws RemoteException problema de conexión.
      */
-    public Double getAdminDepositsTotalOnDate(int id, String date) throws java.rmi.RemoteException;
+    public float getAdminDepositsTotalOnDate(int id, String date) throws java.rmi.RemoteException;
     
     /**
      * Devuelve el total de los depósitos de un admin en un turno.
@@ -343,7 +343,7 @@ public interface InterfaceDeposit extends Remote {
      * @return total de los depósitos.
      * @throws RemoteException problema de conexión.
      */
-    public Double getAdminDepositsTotalOnTurn(int id, String turn) throws java.rmi.RemoteException;
+    public float getAdminDepositsTotalOnTurn(int id, String turn) throws java.rmi.RemoteException;
     
     /**
      * Devuelve el total de los depósitos de un admin.
@@ -351,7 +351,7 @@ public interface InterfaceDeposit extends Remote {
      * @return total de los depósitos.
      * @throws RemoteException problema de conexión.
      */
-    public Double getAdminDepositsTotal(int id) throws java.rmi.RemoteException;
+    public float getAdminDepositsTotal(int id) throws java.rmi.RemoteException;
     
     /**
      * Borra todos los depósitos de los admins.
