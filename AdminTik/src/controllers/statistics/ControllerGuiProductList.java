@@ -82,7 +82,7 @@ public class ControllerGuiProductList implements ActionListener {
                         tableFP.getValueAt(i, 3),
                         tableFP.getValueAt(i, 4),
                         tableFP.getValueAt(i, 5),
-                        tableFP.getValueAt(i, 6),
+                        tableFP.getValueAt(i, 7),
                         String.valueOf(tableFP.getValueAt(i, 1)),
                         String.valueOf(tableFP.getValueAt(i, 2)));
                 datasource.addFinalProduct(fp);
@@ -90,14 +90,13 @@ public class ControllerGuiProductList implements ActionListener {
 
             try {
                 JasperReport reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reports/finalProducts/ReportFinalProducts.jasper"));//cargo el reporte
-                //String ruta = getClass().getResource("reports/finalProducts/ReportFinalProducts.jasper").getPath();
                 JasperPrint jasperPrint;
                 jasperPrint = JasperFillManager.fillReport(reporte, null, datasource);
                 JasperViewer.viewReport(jasperPrint, false);
             } catch (JRException ex) {
                 Logger.getLogger(ControllerGuiProductList.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+            datasource.removeAllFinalProduct();
         }
     }
 
