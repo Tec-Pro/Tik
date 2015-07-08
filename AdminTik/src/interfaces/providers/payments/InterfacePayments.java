@@ -42,7 +42,7 @@ public interface InterfacePayments extends Remote {
      * @return
      * @throws java.rmi.RemoteException 
      */
-    public  List<Map> getPayments(String datefrom, String dateTo) throws java.rmi.RemoteException;
+    public  List<Map> getPayments(int id,String datefrom, String dateTo) throws java.rmi.RemoteException;
 
     /**
      * obtiene todos los pagos de un proveedor dado

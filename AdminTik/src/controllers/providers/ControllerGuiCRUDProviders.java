@@ -314,7 +314,13 @@ public class ControllerGuiCRUDProviders implements ActionListener {
         if (e.getSource().equals(this.guiCRUDProviders.getBtnPayments())) {
             //Creo el JDialog, creo el controlador y seteo el JDialog visible.
             GuiPaymentsToProviders guiPaymentsToProviders = new GuiPaymentsToProviders(ControllerMain.guiMain, true);
-            new ControllerGuiPaymentsToProviders(guiPaymentsToProviders, iDCurrentlySelectedProvider);
+            try {
+                new ControllerGuiPaymentsToProviders(guiPaymentsToProviders, iDCurrentlySelectedProvider);
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (NotBoundException ex) {
+                Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
+            }
             guiPaymentsToProviders.setVisible(true);
         }
         //si presiono el boton LISTADO DE FACTURACIÓN

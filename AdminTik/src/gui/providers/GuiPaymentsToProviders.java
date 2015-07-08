@@ -22,14 +22,18 @@ public class GuiPaymentsToProviders extends javax.swing.JDialog {
     public GuiPaymentsToProviders(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        Calendar c= Calendar.getInstance();
+        c.set(2010, 1, 1);
+        dateFrom.setCalendar(c);
+        dateTo.setCalendar(Calendar.getInstance());
     }
 
     public JDateChooser getDateFrom() {
         return dateFrom;
     }
 
-    public JDateChooser getDateUntil() {
-        return dateUntil;
+    public JDateChooser getDateTo() {
+        return dateTo;
     }
 
     public String getStringDateFrom() {
@@ -44,10 +48,10 @@ public class GuiPaymentsToProviders extends javax.swing.JDialog {
     }
 
     public String getStringDateUntil() {
-        if( dateUntil.getCalendar() != null){
-            int año = dateUntil.getCalendar().get(Calendar.YEAR);
-            int mes = dateUntil.getCalendar().get(Calendar.MONTH) + 1;
-            int dia = dateUntil.getCalendar().get(Calendar.DAY_OF_MONTH);
+        if( dateTo.getCalendar() != null){
+            int año = dateTo.getCalendar().get(Calendar.YEAR);
+            int mes = dateTo.getCalendar().get(Calendar.MONTH) + 1;
+            int dia = dateTo.getCalendar().get(Calendar.DAY_OF_MONTH);
             return año+"-"+mes+"-"+dia;
         }else{
             return null;
@@ -73,7 +77,7 @@ public class GuiPaymentsToProviders extends javax.swing.JDialog {
 
         jPanel5 = new javax.swing.JPanel();
         dateFrom = new com.toedter.calendar.JDateChooser();
-        dateUntil = new com.toedter.calendar.JDateChooser();
+        dateTo = new com.toedter.calendar.JDateChooser();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -96,11 +100,11 @@ public class GuiPaymentsToProviders extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Fecha", "Monto", "Descripción"
+                "Fecha", "Monto", "Descripción", "ID compra"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, false, true
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -117,16 +121,16 @@ public class GuiPaymentsToProviders extends javax.swing.JDialog {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addGap(6, 6, 6)
-                        .addComponent(dateFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addComponent(dateFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dateUntil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(dateTo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -135,7 +139,7 @@ public class GuiPaymentsToProviders extends javax.swing.JDialog {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(dateFrom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(dateUntil, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(dateTo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -201,7 +205,7 @@ public class GuiPaymentsToProviders extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.toedter.calendar.JDateChooser dateFrom;
-    private com.toedter.calendar.JDateChooser dateUntil;
+    private com.toedter.calendar.JDateChooser dateTo;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel5;
