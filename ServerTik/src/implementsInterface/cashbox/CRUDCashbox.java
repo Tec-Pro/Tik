@@ -41,5 +41,13 @@ public class CRUDCashbox extends UnicastRemoteObject implements InterfaceCashbox
          ret += (float) m.get("balance");
          return ret;
     }
+
+    @Override
+    public Map<String, Object> getLast() throws RemoteException {
+         Utils.abrirBase();
+         List<Map> last = Cashbox.findAll().orderBy("id desc").limit(1).toMaps();
+         Map m = last.get(0);
+         return m;
+    }
     
 }

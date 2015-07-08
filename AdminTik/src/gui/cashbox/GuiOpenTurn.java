@@ -81,6 +81,7 @@ public class GuiOpenTurn extends javax.swing.JInternalFrame {
         lblAGain = new javax.swing.JLabel();
 
         setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setTitle("Caja");
         setToolTipText("");
 
@@ -170,7 +171,7 @@ public class GuiOpenTurn extends javax.swing.JInternalFrame {
                         .addComponent(lblAGain)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnResume, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();

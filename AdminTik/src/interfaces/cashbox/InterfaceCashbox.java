@@ -36,4 +36,11 @@ public interface InterfaceCashbox extends Remote {
      * @throws RemoteException 
      */
     public float getPastBalance() throws RemoteException;
+    
+    /**
+     *  devuelve la ultima caja diaria
+     * @return 
+     * @throws RemoteException 
+     */    
+    public Map<String, Object> getLast() throws RemoteException;
 }

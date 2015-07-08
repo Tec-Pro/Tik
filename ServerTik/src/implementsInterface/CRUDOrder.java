@@ -389,12 +389,12 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
                 stmt.executeUpdate(sql);
                 //Me fijo si el producto pertenece a la cocina, si pertenece al bar no debería avisar al bar de que está listo.
                 if (fproduct.belongsTo((int) getProductFromOrder(idOrder, id).get("fproduct_id")) == 1) {
-                    
+
                     Map ord = getOrder(idOrder);
-                                       
-                    
+
+
                     Server.notifyBarKitchenOrderReady((int) ord.get("order_number"), (String) ord.get("user_name"));
-                                        
+
 
                 }
                 stmt.close();
@@ -602,41 +602,41 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         Utils.abrirBase();
         LazyList<Order> lo = Order.findAll();
         float total = 0;
-        for (Order o : lo){
-             LazyList<OrdersFproducts> lof = OrdersFproducts.where("order_id = ?", o.getId());
-             for (OrdersFproducts of : lof){
-                 float quantity = of.getFloat("quantity");
-                 float price = Fproduct.findById(of.getString("fproduct_id")).getFloat("sell_price");
-                 total += quantity*price;
-             }
+        for (Order o : lo) {
+            LazyList<OrdersFproducts> lof = OrdersFproducts.where("order_id = ?", o.getId());
+            for (OrdersFproducts of : lof) {
+                float quantity = of.getFloat("quantity");
+                float price = Fproduct.findById(of.getString("fproduct_id")).getFloat("sell_price");
+                total += quantity * price;
+            }
         }
         return total;
     }
 
     @Override
     public float EarnByUser(int userId) throws RemoteException {
-       Utils.abrirBase();
-        LazyList<Order> lo = Order.where("user_id = ?",userId);
+        Utils.abrirBase();
+        LazyList<Order> lo = Order.where("user_id = ?", userId);
         float total = 0;
-        for (Order o : lo){
-             LazyList<OrdersFproducts> lof = OrdersFproducts.where("order_id = ?", o.getId());
-             for (OrdersFproducts of : lof){
-                 float quantity = of.getFloat("quantity");
-                 float price = Fproduct.findById(of.getString("fproduct_id")).getFloat("sell_price");
-                 total += quantity*price;
-             }
+        for (Order o : lo) {
+            LazyList<OrdersFproducts> lof = OrdersFproducts.where("order_id = ?", o.getId());
+            for (OrdersFproducts of : lof) {
+                float quantity = of.getFloat("quantity");
+                float price = Fproduct.findById(of.getString("fproduct_id")).getFloat("sell_price");
+                total += quantity * price;
+            }
         }
         return total;
     }
 
     @Override
     public boolean addException(int orderId, float amount) throws RemoteException {
-       Utils.abrirBase();
-       Order ord= Order.findById(orderId);
-       Base.openTransaction();
-       ord.set("exceptions",ord.getFloat("exceptions")+amount);
-       boolean ret= ord.saveIt();
-       return ret;
+        Utils.abrirBase();
+        Order ord = Order.findById(orderId);
+        Base.openTransaction();
+        ord.set("exceptions", ord.getFloat("exceptions") + amount);
+        boolean ret = ord.saveIt();
+        return ret;
     }
 
     @Override
@@ -647,7 +647,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             Statement stmt = conn.createStatement();
             java.sql.ResultSet rs = stmt.executeQuery(sql);
             rs.next();
-            float ret=rs.getFloat("exceptions");
+            float ret = rs.getFloat("exceptions");
             rs.close();
             stmt.close();
             return ret;
@@ -660,10 +660,10 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
     @Override
     public float getExceptions(int userId) throws RemoteException {
         Utils.abrirBase();
-        LazyList<Order> lo = Order.where("user_id = ?",userId);
+        LazyList<Order> lo = Order.where("user_id = ?", userId);
         float total = 0;
-        for (Order o : lo){
-            total=total+o.getFloat("paid_exceptions")+o.getFloat("exceptions");
+        for (Order o : lo) {
+            total = total + o.getFloat("paid_exceptions") + o.getFloat("exceptions");
         }
         return total;
     }
@@ -676,7 +676,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             Statement stmt = conn.createStatement();
             java.sql.ResultSet rs = stmt.executeQuery(sql);
             rs.next();
-            float ret=rs.getFloat("paid_exceptions");
+            float ret = rs.getFloat("paid_exceptions");
             rs.close();
             stmt.close();
             return ret;
@@ -686,4 +686,23 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         return 0;
     }
 
+    @Override
+    public void deleteAll() throws RemoteException {
+        Utils.abrirBase();
+        Base.openTransaction();
+        OrdersFproducts.deleteAll();
+        Order.deleteAll();
+        Base.commitTransaction();
+    }
+
+    @Override
+    public float getAllExceptions() throws RemoteException {
+        Utils.abrirBase();
+        LazyList<Order> lo = Order.findAll();
+        float total = 0;
+        for (Order o : lo) {
+            total = total + o.getFloat("paid_exceptions") + o.getFloat("exceptions");
+        }
+        return total;
+    }
 }

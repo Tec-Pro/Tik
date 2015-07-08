@@ -11,6 +11,7 @@ import gui.cashbox.GuiOpenTurn;
 import interfaces.InterfaceAdmin;
 import interfaces.InterfaceOrder;
 import interfaces.InterfaceTurn;
+import interfaces.cashbox.expenses.InterfaceExpenses;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,15 +35,22 @@ public class ControllerGuiOpenTurn implements ActionListener {
     GUICashbox guiCashbox;
     InterfaceTurn turn;
     InterfaceOrder order;
+    InterfaceExpenses crudExpenses;
 
     public ControllerGuiOpenTurn(GuiOpenTurn guiOpenTurn, GUICashbox guiCashbox) throws RemoteException, NotBoundException {
         this.guiOpenTurn = guiOpenTurn;
         this.guiCashbox = guiCashbox;
         turn = (InterfaceTurn) InterfaceName.registry.lookup(InterfaceName.CRUDTurn);
         order = (InterfaceOrder) InterfaceName.registry.lookup(InterfaceName.CRUDOrder);
+        crudExpenses = (InterfaceExpenses) InterfaceName.registry.lookup(InterfaceName.CRUDExpenses);
         turn();
         guiOpenTurn.setActionListener(this);
     }
+    
+    /**
+     * Funcion para actualizar los txt, lbl y color del boton segun el turno
+     * @throws RemoteException 
+     */
 
     public void turn() throws RemoteException {
         if (turn.isTurnOpen()) {

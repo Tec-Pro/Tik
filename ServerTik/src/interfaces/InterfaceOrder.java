@@ -179,5 +179,19 @@ public interface InterfaceOrder extends Remote {
      * @throws RemoteException 
      */
     public float getExceptions(int userId)throws RemoteException;
+    
+    /**
+     * retorna el saldo total de todas las exepciones
+     * 
+     * @return
+     * @throws RemoteException 
+     */
+    public float getAllExceptions()throws RemoteException;
+    
+    /**
+     * elimina todas las ordenes
+     * @throws RemoteException 
+     */
+    public void deleteAll() throws RemoteException;
 
 }
