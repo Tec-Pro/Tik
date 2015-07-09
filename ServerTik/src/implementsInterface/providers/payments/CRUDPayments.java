@@ -60,9 +60,9 @@ public class CRUDPayments extends UnicastRemoteObject implements InterfacePaymen
     }
 
     @Override
-    public  List<Map> getPayments(String datefrom, String dateTo) throws RemoteException {
+    public  List<Map> getPayments(int id, String datefrom, String dateTo) throws RemoteException {
         Utils.abrirBase();
-        List<Map> payments = Payment.where("date>= ? AND date <= ?", datefrom, dateTo).toMaps();
+        List<Map> payments = Payment.where("date>= ? AND date <= ? AND provider_id = ?", datefrom, dateTo,id).toMaps();
         return payments;
     }
 

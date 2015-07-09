@@ -15,14 +15,12 @@ INSERT INTO `providercategories` (`id`,`name`) VALUES (3,'Bebidas');
 INSERT INTO `providercategories` (`id`,`name`) VALUES (4,'Harinas');
 
 -- Inserto categorías de productos
-INSERT INTO `categories` (`id`,`name`) VALUES (1,'CATEGORIA POR DEFECTO');
 INSERT INTO `categories` (`id`,`name`) VALUES (2,'Pizzas');
 INSERT INTO `categories` (`id`,`name`) VALUES (3,'Bebidas Alcoholicas');
 INSERT INTO `categories` (`id`,`name`) VALUES (4,'Bebidas Sin Alcohol');
 INSERT INTO `categories` (`id`,`name`) VALUES (5,'Ensaladas');
 
 -- Inserto subcategorías de productos
-INSERT INTO `subcategories` (`id`,`name`,`category_id`) VALUES (1,'SUBCATEGORIA POR DEFECTO',1);
 INSERT INTO `subcategories` (`id`,`name`,`category_id`) VALUES (2,'Con gas',4);
 INSERT INTO `subcategories` (`id`,`name`,`category_id`) VALUES (3,'Sin gas',4);
 INSERT INTO `subcategories` (`id`,`name`,`category_id`) VALUES (4,'Pizzetas',2);

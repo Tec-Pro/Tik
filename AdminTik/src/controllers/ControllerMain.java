@@ -6,6 +6,7 @@
 package controllers;
 
 import controllers.cashbox.ControllerGUICashbox;
+import controllers.cashbox.ControllerGuiOpenTurn;
 import controllers.logout.ControllerGuiLogout;
 import controllers.providers.ControllerGuiCRUDProviders;
 import controllers.providers.purchase.ControllerGuiPurchase;
@@ -23,6 +24,7 @@ import gui.GuiCRUDUser;
 import gui.GuiMenu;
 import gui.GuiLoadPurchase;
 import gui.cashbox.GUICashbox;
+import gui.cashbox.GuiOpenTurn;
 import gui.logout.GuiLogout;
 import gui.main.GuiConfig;
 import gui.main.GuiMain;
@@ -33,11 +35,16 @@ import gui.statistics.GuiProductStatistics;
 import gui.statistics.GuiSalesStatistics;
 //import gui.withdrawal.GUICRUDWithdrawal;
 import interfaces.InterfaceGeneralConfig;
+import interfaces.InterfaceOrder;
 import interfaces.InterfacePresence;
 import interfaces.InterfaceTurn;
+import interfaces.cashbox.InterfaceCashbox;
+import interfaces.cashbox.expenses.InterfaceExpenses;
+import interfaces.deposits.InterfaceDeposit;
 import interfaces.providers.InterfaceProvider;
 import interfaces.providers.InterfaceProviderCategory;
 import interfaces.providers.InterfaceProvidersSearch;
+import interfaces.withdrawals.InterfaceWithdrawal;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -82,6 +89,7 @@ public class ControllerMain implements ActionListener {
     private static GuiProductList guiProductList;
     private static GuiProductStatistics guiProductStatistics;
     private static GuiLogout guiLogout;
+    private static GuiOpenTurn guiOpenTurn;
     //controladores
     private static ControllerGuiCRUDAdmin controllerCRUDAdmin; //controlador de la gui para admin
     private ControllerGuiCRUDEproduct controllerCRUDEProduct; //controlador productos elaborados
@@ -97,9 +105,15 @@ public class ControllerMain implements ActionListener {
     private ControllerGuiProductStatistics controllerGuiProductStatistics;
     private ControllerGuiSalesStatistics controllerGuiSalesStatistics;
     private ControllerGuiLogout controllerGuiLogout;
+    private ControllerGuiOpenTurn controllerGuiOpenTurn;
 //    private ControllerGUICRUDWithdrawal controllerGuiCRUDWithdrawal;
     private InterfacePresence crudPresence;
     private InterfaceTurn crudTurn;
+    private InterfaceCashbox crudCashbox;
+    private InterfaceWithdrawal crudWithdrawal;
+    private InterfaceDeposit crudDeposit;
+    private InterfaceExpenses crudExpenses;
+    private InterfaceOrder crudOrder;
 
     public ControllerMain(GuiAdminLogin guiAdminLogin) throws NotBoundException, MalformedURLException, RemoteException {
         this.guiAdminLogin = guiAdminLogin; //hago esto, así si cierra sesión pongo en visible la ventana
@@ -131,6 +145,7 @@ public class ControllerMain implements ActionListener {
         guiProductList = new GuiProductList();
         guiProductStatistics = new GuiProductStatistics();
         guiLogout = new GuiLogout();
+        guiOpenTurn = new GuiOpenTurn();
 //        guiCRUDWithdrawal = new GUICRUDWithdrawal();
 
         //agrego las gui al desktop
@@ -150,6 +165,7 @@ public class ControllerMain implements ActionListener {
         guiMain.getDesktop().add(guiProductStatistics);
         guiMain.getDesktop().add(guiSalesStatistics);
         guiMain.getDesktop().add(guiLogout);
+        guiMain.getDesktop().add(guiOpenTurn);
 
         InterfaceProvider provider = (InterfaceProvider) InterfaceName.registry.lookup(InterfaceName.CRUDProvider);
         InterfaceProviderCategory providerCategory = (InterfaceProviderCategory) InterfaceName.registry.lookup(InterfaceName.CRUDProviderCategory);
@@ -172,11 +188,16 @@ public class ControllerMain implements ActionListener {
         controllerGuiProductList = new ControllerGuiProductList(guiProductList);
         controllerGuiProductStatistics = new ControllerGuiProductStatistics(guiProductStatistics);
         controllerGuiLogout = new ControllerGuiLogout(guiLogout);
+        controllerGuiOpenTurn = new ControllerGuiOpenTurn(guiOpenTurn, guiCashbox);
         //restauro el puntero asi ya se que termino de cargar todo
         guiMain.setCursor(Cursor.DEFAULT_CURSOR);
 
         crudPresence = (InterfacePresence) InterfaceName.registry.lookup(InterfaceName.CRUDPresence);
         crudTurn = (InterfaceTurn) InterfaceName.registry.lookup(InterfaceName.CRUDTurn);
+        crudCashbox = (InterfaceCashbox) InterfaceName.registry.lookup(InterfaceName.CRUDCashbox);
+        crudExpenses = (InterfaceExpenses) InterfaceName.registry.lookup(InterfaceName.CRUDExpenses);
+        crudOrder = (InterfaceOrder) InterfaceName.registry.lookup(InterfaceName.CRUDOrder);
+
 
     }
 
@@ -332,30 +353,36 @@ public class ControllerMain implements ActionListener {
         }
         if (ae.getSource() == guiMain.getBtnLogout()) {
             guiLogout.setVisible(true);
-            guiCashbox.toFront();
+            guiLogout.toFront();
         }
         if (ae.getSource() == guiMain.getBtnDailyCashbox()) {
-            try {
-                guiCashbox.setMaximum(true);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            guiCashbox.setVisible(true);
-            guiCashbox.toFront();
+            guiOpenTurn.setVisible(true);
+            guiOpenTurn.toFront();
         }
-        if (ae.getSource() == guiMain.getBtnCloseCashBox()) {
+        if (ae.getSource() == guiMain.getBtnCloseCashBox()) { //Cierro el turno
             try {
                 if (!crudTurn.isTurnOpen()) {
-                     JOptionPane.showMessageDialog(guiMain, "No hay ningun turno abierto");
+                    JOptionPane.showMessageDialog(guiMain, "No hay ningun turno abierto");
                 } else {
                     if (crudPresence.isSomeoneLogin()) {
                         JOptionPane.showMessageDialog(guiMain, "Aun hay empleados logeados, por favor deslogee todos los empleados antes de cerrar la caja");
                     } else {
-                        //BLOQUEAR BOTONES CAJA, eliminar todo, estadisticas.
-
+                        float collect = crudOrder.totalEarn() + crudOrder.getAllExceptions();
+                        String turn = crudTurn.getTurn();
+                        float withdrawal = crudWithdrawal.getWithdrawalsTotalOnTurn(turn);
+                        float spend = crudExpenses.getSumExpenses(turn);
+                        float enrtyCash = 0;
+                        float delveryCash = crudDeposit.getAdminsDepositsTotalOnTurn(turn);
+                        float deliveryWaiter = crudDeposit.getWaitersDepositsTotalOnTurn(turn);
+                        float balance = crudCashbox.getPastBalance() + collect + delveryCash + deliveryWaiter - withdrawal - spend;
+                        crudCashbox.create(turn, balance, collect, enrtyCash, spend, withdrawal, delveryCash, deliveryWaiter);
+                        if (turn.equals("T")) {
+                            //HACER RESUMEN ALAN???
+                        }
+                        //ESTADISTICAS ENANO???
                         if (crudTurn.changeTurn("N")) {
                             JOptionPane.showMessageDialog(guiMain, "El tunro se cerro exitosamente");
-
+                            controllerGuiOpenTurn.turn();
                         }
 
                     }
@@ -365,7 +392,7 @@ public class ControllerMain implements ActionListener {
             }
         }
 
-        if (ae.getSource() == guiMain.getBtnOpenTM()) {
+        if (ae.getSource() == guiMain.getBtnOpenTM()) {//Abro turno mañana
             try {
                 if (crudTurn.isTurnOpen()) {
                     if (crudTurn.getTurn().endsWith("M")) {
@@ -376,6 +403,12 @@ public class ControllerMain implements ActionListener {
                 } else {
                     if (crudTurn.changeTurn("M")) {
                         JOptionPane.showMessageDialog(guiMain, "Turno mañana abierto");
+                        crudOrder.deleteAll();
+                        crudExpenses.removeAllExpenses();
+                        crudWithdrawal.eraseWithdrawals();
+                        crudDeposit.eraseWaiterDeposits();
+                        crudDeposit.eraseAdminDeposits();
+                        controllerGuiOpenTurn.turn();
                     }
                 }
             } catch (RemoteException ex) {
@@ -383,7 +416,7 @@ public class ControllerMain implements ActionListener {
             }
         }
 
-        if (ae.getSource() == guiMain.getBntOpenTA()) {
+        if (ae.getSource() == guiMain.getBntOpenTA()) {// abro turno tarde
             try {
                 if (crudTurn.isTurnOpen()) {
                     if (crudTurn.getTurn().endsWith("T")) {
@@ -394,6 +427,8 @@ public class ControllerMain implements ActionListener {
                 } else {
                     if (crudTurn.changeTurn("T")) {
                         JOptionPane.showMessageDialog(guiMain, "Turno tarde abierto");
+                        crudOrder.deleteAll();
+                        controllerGuiOpenTurn.turn();
                     }
                 }
             } catch (RemoteException ex) {

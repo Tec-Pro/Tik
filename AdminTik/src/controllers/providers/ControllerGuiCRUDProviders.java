@@ -246,7 +246,7 @@ public class ControllerGuiCRUDProviders implements ActionListener {
         DefaultTableModel providerModel = ((DefaultTableModel) this.guiCRUDProviders.getTableProviders().getModel());
         providerModel.setRowCount(0);//limpio la tabla antes de cargarla nuevamente
 
-        Object[] o = new Object[7];
+        Object[] o = new Object[8];
         for (Map p : providers) {
             o[0] = (p.get("id"));
             o[1] = (p.get("name"));
@@ -263,6 +263,7 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                 categories += categoryMap.get("name") + " ";
             }
             o[6] = (categories);
+            o[7] = p.get("current_account");
             providerModel.addRow(o);
         }
 
@@ -281,7 +282,7 @@ public class ControllerGuiCRUDProviders implements ActionListener {
             DefaultTableModel providerModel = ((DefaultTableModel) this.guiCRUDProviders.getTableProviders().getModel());
             providerModel.setRowCount(0);//limpio la tabla antes de cargarla nuevamente
             Map<String, Object> providerMap;
-            Object[] o = new Object[7];
+            Object[] o = new Object[8];
             Iterator<Map> providerMapItr = providersList.iterator();
             while (providerMapItr.hasNext()) {
                 providerMap = providerMapItr.next();
@@ -300,6 +301,7 @@ public class ControllerGuiCRUDProviders implements ActionListener {
                     categories += categoryMap.get("name") + " ";
                 }
                 o[6] = (categories);
+                o[7] = providerMap.get("current_account");
                 providerModel.addRow(o);
             }
         }
@@ -312,7 +314,13 @@ public class ControllerGuiCRUDProviders implements ActionListener {
         if (e.getSource().equals(this.guiCRUDProviders.getBtnPayments())) {
             //Creo el JDialog, creo el controlador y seteo el JDialog visible.
             GuiPaymentsToProviders guiPaymentsToProviders = new GuiPaymentsToProviders(ControllerMain.guiMain, true);
-            new ControllerGuiPaymentsToProviders(guiPaymentsToProviders, iDCurrentlySelectedProvider);
+            try {
+                new ControllerGuiPaymentsToProviders(guiPaymentsToProviders, iDCurrentlySelectedProvider);
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (NotBoundException ex) {
+                Logger.getLogger(ControllerGuiCRUDProviders.class.getName()).log(Level.SEVERE, null, ex);
+            }
             guiPaymentsToProviders.setVisible(true);
         }
         //si presiono el boton LISTADO DE FACTURACIÓN

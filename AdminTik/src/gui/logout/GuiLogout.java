@@ -58,7 +58,12 @@ public class GuiLogout extends javax.swing.JInternalFrame {
     public JFormattedTextField getTxtDelivery() {
         return txtDelivery;
     }
-
+    
+    
+/**
+ * carga el set en el combo box
+ * @param online 
+ */
     public void loadOnlineEmployers(Set<Map> online){
         cBoxEmployers.setSelectedIndex(-1);
         cBoxEmployers.removeAllItems();

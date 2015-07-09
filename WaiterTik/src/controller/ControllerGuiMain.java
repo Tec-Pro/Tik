@@ -49,7 +49,7 @@ public class ControllerGuiMain implements ActionListener {
     private static InterfaceFproduct crudFproduct;
     private static Map orders; //Nos sirve para almacenar a los objetos creados   
     private static int orderClic;
-    private static int idWaiter; //id del mozo que esta en esta ventana
+    public static int idWaiter; //id del mozo que esta en esta ventana
     private ControllerGuiLoginGrid controllerGuiLoginGrid;
     private static GuiLoginGrid guiLoginGrid;
     private static LinkedList<GuiMenuDetail> listOrdersPanels;
@@ -221,7 +221,7 @@ public class ControllerGuiMain implements ActionListener {
      * @param idUser
      * @throws RemoteException
      */
-    private static void loadOrders(int idUser, boolean all) throws RemoteException {
+    public static void loadOrders(int idUser, boolean all) throws RemoteException {
         clearAllOrders();
         GuiPanelNew newButton = new GuiPanelNew();
         listOrdersPanels.clear();
@@ -390,5 +390,9 @@ public class ControllerGuiMain implements ActionListener {
         guiMain.setVisible(true);
         guiMain.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
+    }
+    
+    public static boolean seeAll(){
+        return guiMain.getChkAllOrders().isSelected();
     }
 }

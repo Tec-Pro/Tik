@@ -6,10 +6,17 @@ package implementsInterface;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import models.Category;
 import models.Eproduct;
 import models.EproductsPproducts;
@@ -31,6 +38,8 @@ import utils.Utils;
  */
 public class CRUDFproduct extends UnicastRemoteObject implements interfaces.InterfaceFproduct {
 
+    private Connection conn;
+    private String sql = "";
     /**
      * Constructor
      *
@@ -276,30 +285,38 @@ public class CRUDFproduct extends UnicastRemoteObject implements interfaces.Inte
 
     @Override
     public List<Map> getLastUsedProducts() throws RemoteException {
+        openBase();
         Utils.abrirBase();
-        List<Map> lastFProductsList = new LinkedList();
-        List<Map> lastFproduct = OrdersFproducts.findAll().orderBy("id desc").limit(5).toMaps();
-        //List<Map> lastFproduct = OrdersFproducts.findBySQL("select orders_fproducts.*, max(id) from orders_fproducts").toMaps();
-        if (!lastFproduct.isEmpty()) {
-            //Obtengo el ultimo registro y lo trato
-            for(Map ofp : lastFproduct){
-               Map fp = Fproduct.first("id = ?", ofp.get("fproduct_id")).toMap();
-               lastFProductsList.add(fp); 
-                System.out.println("FP "+ fp.get("id"));
+        List<Map> result = new LinkedList<>();
+        try {
+            sql = "SELECT DISTINCT fproduct_id FROM orders_fproducts ORDER BY id desc LIMIT 5";
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                Map fp = Fproduct.first("id = ?", rs.getInt("fproduct_id")).toMap();
+                result.add(fp);
             }
-           /* Map<String, Object> last = lastFproduct.get(0);
-            int lastId = (int) last.get("id");
-            int lastIdFP = (int) last.get("fproduct_id");
-            Map fp = Fproduct.first("id = ?", lastIdFP).toMap();
-            lastFProductsList.add(fp);
-            //obtengo los demas
-            for (int i = 1; i < 5; i++) {
-                Map ofp = OrdersFproducts.first("id = ?", lastId - i).toMap();
-                lastIdFP = (int) ofp.get("fproduct_id");
-                fp = Fproduct.first("id = ?", lastIdFP).toMap();
-                lastFProductsList.add(fp);
-            }*/
+            rs.close();
+            stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return lastFProductsList;
+        return result;
+    }
+    
+    private void openBase() {
+        try {
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (conn == null || conn.isClosed()) {
+                conn = DriverManager.getConnection("jdbc:mysql://localhost/tik", "root", "root");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 }

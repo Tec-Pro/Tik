@@ -25,10 +25,11 @@ public interface InterfaceProvider extends Remote {
      * @param address
      * @param description
      * @param phones
+     * @param balance
      * @return
      * @throws RemoteException
      */
-    public Map<String, Object> create(String name, String cuit, String address, String description, String phones) throws java.rmi.RemoteException;
+    public Map<String, Object> create(String name, String cuit, String address, String description, String phones, Float balance) throws java.rmi.RemoteException;
 
     /**
      *
@@ -38,10 +39,11 @@ public interface InterfaceProvider extends Remote {
      * @param address
      * @param description
      * @param phones
+     * @param balance
      * @return
      * @throws RemoteException
      */
-    public Map<String, Object> modify(int id, String name, String cuit, String address, String description, String phones) throws java.rmi.RemoteException;
+    public Map<String, Object> modify(int id, String name, String cuit, String address, String description, String phones, Float balance) throws java.rmi.RemoteException;
 
     /**
      *

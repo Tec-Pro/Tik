@@ -35,5 +35,20 @@ public interface InterfaceExpenses extends Remote {
      * @throws java.rmi.RemoteException 
      */
     public  List<Map> getExpenses(String turn) throws java.rmi.RemoteException;
+    
+    /**
+     * retorna la suma total de los gastos de UN TURNO
+     * @param turn solo puede ser M o T
+     * @return
+     * @throws java.rmi.RemoteException 
+     */
+    public  float getSumExpenses(String turn) throws java.rmi.RemoteException;
+
+    
+    /**
+     * elimina TODOS los gastos que existen en la base de datos
+     * @throws java.rmi.RemoteException 
+     */
+    public void removeAllExpenses() throws java.rmi.RemoteException;
 
 }

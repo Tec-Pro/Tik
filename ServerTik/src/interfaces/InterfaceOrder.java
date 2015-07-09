@@ -146,4 +146,52 @@ public interface InterfaceOrder extends Remote {
      * Devuelve la recaudacion total de un mozo
      */
     public float EarnByUser(int userId) throws RemoteException;
+    
+    /**
+     * Agrega una exepcion a un pedido, se suma siempre
+     * @param orderId
+     * @param amount
+     * @return
+     * @throws RemoteException 
+     */
+    public boolean addException(int orderId, float amount) throws RemoteException;
+    
+    /**
+     * retorna el saldo con las excepciones de una orden que NO están pagas
+     * @param orderId
+     * @return
+     * @throws RemoteException 
+     */
+    public float getException(int orderId)throws RemoteException;
+    
+        /**
+     * retorna el saldo de las excepciones de una orden,  PAGADAS
+     * @param orderId
+     * @return
+     * @throws RemoteException 
+     */
+    public float getPaidException(int orderId)throws RemoteException;
+    
+    /**
+     * retorna el saldo total de todas las exepciones de un mozo
+     * @param userId
+     * @return
+     * @throws RemoteException 
+     */
+    public float getExceptions(int userId)throws RemoteException;
+    
+    /**
+     * retorna el saldo total de todas las exepciones
+     * 
+     * @return
+     * @throws RemoteException 
+     */
+    public float getAllExceptions()throws RemoteException;
+    
+    /**
+     * elimina todas las ordenes
+     * @throws RemoteException 
+     */
+    public void deleteAll() throws RemoteException;
+
 }

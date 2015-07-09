@@ -255,6 +255,10 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
             stmt.close();
+            sql = "UPDATE orders SET paid_exceptions= exceptions+paid_exceptions,  exceptions = 0 WHERE id = '" + idOrder + "';";
+            stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+            stmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -385,12 +389,12 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
                 stmt.executeUpdate(sql);
                 //Me fijo si el producto pertenece a la cocina, si pertenece al bar no debería avisar al bar de que está listo.
                 if (fproduct.belongsTo((int) getProductFromOrder(idOrder, id).get("fproduct_id")) == 1) {
-                    
+
                     Map ord = getOrder(idOrder);
-                                       
-                    
+
+
                     Server.notifyBarKitchenOrderReady((int) ord.get("order_number"), (String) ord.get("user_name"));
-                                        
+
 
                 }
                 stmt.close();
@@ -598,31 +602,107 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         Utils.abrirBase();
         LazyList<Order> lo = Order.findAll();
         float total = 0;
-        for (Order o : lo){
-             LazyList<OrdersFproducts> lof = OrdersFproducts.where("order_id = ?", o.getId());
-             for (OrdersFproducts of : lof){
-                 float quantity = of.getFloat("quantity");
-                 float price = Fproduct.findById(of.getString("fproduct_id")).getFloat("sell_price");
-                 total += quantity*price;
-             }
+        for (Order o : lo) {
+            LazyList<OrdersFproducts> lof = OrdersFproducts.where("order_id = ?", o.getId());
+            for (OrdersFproducts of : lof) {
+                float quantity = of.getFloat("quantity");
+                float price = Fproduct.findById(of.getString("fproduct_id")).getFloat("sell_price");
+                total += quantity * price;
+            }
         }
         return total;
     }
 
     @Override
     public float EarnByUser(int userId) throws RemoteException {
-       Utils.abrirBase();
-        LazyList<Order> lo = Order.where("user_id = ?",userId);
+        Utils.abrirBase();
+        LazyList<Order> lo = Order.where("user_id = ?", userId);
         float total = 0;
-        for (Order o : lo){
-             LazyList<OrdersFproducts> lof = OrdersFproducts.where("order_id = ?", o.getId());
-             for (OrdersFproducts of : lof){
-                 float quantity = of.getFloat("quantity");
-                 float price = Fproduct.findById(of.getString("fproduct_id")).getFloat("sell_price");
-                 total += quantity*price;
-             }
+        for (Order o : lo) {
+            LazyList<OrdersFproducts> lof = OrdersFproducts.where("order_id = ?", o.getId());
+            for (OrdersFproducts of : lof) {
+                float quantity = of.getFloat("quantity");
+                float price = Fproduct.findById(of.getString("fproduct_id")).getFloat("sell_price");
+                total += quantity * price;
+            }
         }
         return total;
     }
 
+    @Override
+    public boolean addException(int orderId, float amount) throws RemoteException {
+        Utils.abrirBase();
+        Order ord = Order.findById(orderId);
+        Base.openTransaction();
+        ord.set("exceptions", ord.getFloat("exceptions") + amount);
+        boolean ret = ord.saveIt();
+        return ret;
+    }
+
+    @Override
+    public float getException(int orderId) throws RemoteException {
+        try {
+            openBase();
+            sql = "SELECT exceptions FROM orders WHERE id = '" + orderId + "';";
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            rs.next();
+            float ret = rs.getFloat("exceptions");
+            rs.close();
+            stmt.close();
+            return ret;
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
+    @Override
+    public float getExceptions(int userId) throws RemoteException {
+        Utils.abrirBase();
+        LazyList<Order> lo = Order.where("user_id = ?", userId);
+        float total = 0;
+        for (Order o : lo) {
+            total = total + o.getFloat("paid_exceptions") + o.getFloat("exceptions");
+        }
+        return total;
+    }
+
+    @Override
+    public float getPaidException(int orderId) throws RemoteException {
+        try {
+            openBase();
+            sql = "SELECT paid_exceptions FROM orders WHERE id = '" + orderId + "';";
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            rs.next();
+            float ret = rs.getFloat("paid_exceptions");
+            rs.close();
+            stmt.close();
+            return ret;
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
+    @Override
+    public void deleteAll() throws RemoteException {
+        Utils.abrirBase();
+        Base.openTransaction();
+        OrdersFproducts.deleteAll();
+        Order.deleteAll();
+        Base.commitTransaction();
+    }
+
+    @Override
+    public float getAllExceptions() throws RemoteException {
+        Utils.abrirBase();
+        LazyList<Order> lo = Order.findAll();
+        float total = 0;
+        for (Order o : lo) {
+            total = total + o.getFloat("paid_exceptions") + o.getFloat("exceptions");
+        }
+        return total;
+    }
 }
