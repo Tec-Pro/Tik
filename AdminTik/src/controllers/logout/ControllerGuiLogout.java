@@ -5,6 +5,7 @@
 package controllers.logout;
 
 import gui.logout.GuiLogout;
+import interfaces.InterfaceOrder;
 import interfaces.InterfacePresence;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,16 +30,23 @@ public class ControllerGuiLogout implements ActionListener {
     GuiLogout guiLogout;
     private InterfacePresence crudPresence;
     private Set<Map> online;
+    private InterfaceOrder crudOrder;
+    
 
     public ControllerGuiLogout(GuiLogout guiLogout) throws RemoteException, NotBoundException {
         this.guiLogout = guiLogout;
         crudPresence = (InterfacePresence) InterfaceName.registry.lookup(InterfaceName.CRUDPresence);
+        crudOrder = (InterfaceOrder) InterfaceName.registry.lookup(InterfaceName.CRUDOrder);
         updateOnline();
         userId = -1;
         guiLogout.clear();
         guiLogout.getcBoxEmployers().addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                changeEmployed();
+                try {
+                    changeEmployed();
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiLogout.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         guiLogout.getTxtDelivery().addKeyListener(new java.awt.event.KeyAdapter() {
@@ -50,13 +58,19 @@ public class ControllerGuiLogout implements ActionListener {
         guiLogout.setActionListener(this);
     }
 
+    /**
+     * calcula la diferencia entre lo que vendio y lo que entrego
+     */
      private void calculateDif(){
         float d = ParserFloat.stringToFloat(guiLogout.getTxtDelivery().getText());
         float e = ParserFloat.stringToFloat(guiLogout.getLblEarn().getText());
         guiLogout.getLblDif().setText(ParserFloat.floatToString(d-e));
      }
-    
-    private void changeEmployed() {
+     
+    /**
+     * change selection listener
+     */
+    private void changeEmployed() throws RemoteException {
         if (guiLogout.getcBoxEmployers().getSelectedIndex() > -1) {
             String name = (String) guiLogout.getcBoxEmployers().getSelectedItem();
             String split[] = name.split("-");
@@ -64,9 +78,11 @@ public class ControllerGuiLogout implements ActionListener {
             String pos = split[2];
             if (pos.equals("Mozo")) {
                 guiLogout.clear();
+                guiLogout.getTxtDelivery().setText("0");
+                float collect = crudOrder.EarnByUser(userId) + crudOrder.getExceptions(userId);
+                guiLogout.getTxtDelivery().setText(ParserFloat.floatToString(collect));
+                calculateDif();
                 guiLogout.getTxtDelivery().setEnabled(true);
-                //calculo de cuanto recuado
-                //ParserFloat
             } else {
                 guiLogout.clear();
             }
@@ -76,6 +92,10 @@ public class ControllerGuiLogout implements ActionListener {
         }
     }
 
+    /**
+     * actualiza la lista de usuario online
+     * @throws RemoteException 
+     */
     public void updateOnline() throws RemoteException {
         online = new HashSet<>();
         online.addAll(crudPresence.getWaiters());

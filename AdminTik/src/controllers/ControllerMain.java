@@ -353,13 +353,13 @@ public class ControllerMain implements ActionListener {
         }
         if (ae.getSource() == guiMain.getBtnLogout()) {
             guiLogout.setVisible(true);
-            guiCashbox.toFront();
+            guiLogout.toFront();
         }
         if (ae.getSource() == guiMain.getBtnDailyCashbox()) {
             guiOpenTurn.setVisible(true);
-            guiCashbox.toFront();
+            guiOpenTurn.toFront();
         }
-        if (ae.getSource() == guiMain.getBtnCloseCashBox()) {
+        if (ae.getSource() == guiMain.getBtnCloseCashBox()) { //Cierro el turno
             try {
                 if (!crudTurn.isTurnOpen()) {
                     JOptionPane.showMessageDialog(guiMain, "No hay ningun turno abierto");
@@ -369,17 +369,17 @@ public class ControllerMain implements ActionListener {
                     } else {
                         float collect = crudOrder.totalEarn() + crudOrder.getAllExceptions();
                         String turn = crudTurn.getTurn();
-                        // float withdrawal  = crudWithdrawal.getWithdrawalsTotalOnTurn(turn);
+                        float withdrawal = crudWithdrawal.getWithdrawalsTotalOnTurn(turn);
                         float spend = crudExpenses.getSumExpenses(turn);
                         float enrtyCash = 0;
-                        // float delveryCash = crudDeposit.getAdminsDepositsTotalOnTurn(turn);|
-                        // float deliveryWaiter = crudDeposit.getWaitersDepositsTotalOnTurn(turn);                      
-
-                        //BLOQUEAR BOTONES CAJA, estadisticas.
-
-
-                        //  crudCashbox.create(null, ganancia, ganancia, ganancia, ganancia, ganancia, ganancia, ganancia);
-
+                        float delveryCash = crudDeposit.getAdminsDepositsTotalOnTurn(turn);
+                        float deliveryWaiter = crudDeposit.getWaitersDepositsTotalOnTurn(turn);
+                        float balance = crudCashbox.getPastBalance() + collect + delveryCash + deliveryWaiter - withdrawal - spend;
+                        crudCashbox.create(turn, balance, collect, enrtyCash, spend, withdrawal, delveryCash, deliveryWaiter);
+                        if (turn.equals("T")) {
+                            //HACER RESUMEN ALAN???
+                        }
+                        //ESTADISTICAS ENANO???
                         if (crudTurn.changeTurn("N")) {
                             JOptionPane.showMessageDialog(guiMain, "El tunro se cerro exitosamente");
                             controllerGuiOpenTurn.turn();
@@ -392,7 +392,7 @@ public class ControllerMain implements ActionListener {
             }
         }
 
-        if (ae.getSource() == guiMain.getBtnOpenTM()) {
+        if (ae.getSource() == guiMain.getBtnOpenTM()) {//Abro turno mañana
             try {
                 if (crudTurn.isTurnOpen()) {
                     if (crudTurn.getTurn().endsWith("M")) {
@@ -403,7 +403,11 @@ public class ControllerMain implements ActionListener {
                 } else {
                     if (crudTurn.changeTurn("M")) {
                         JOptionPane.showMessageDialog(guiMain, "Turno mañana abierto");
-                        crudOrder.deleteAll();                        
+                        crudOrder.deleteAll();
+                        crudExpenses.removeAllExpenses();
+                        crudWithdrawal.eraseWithdrawals();
+                        crudDeposit.eraseWaiterDeposits();
+                        crudDeposit.eraseAdminDeposits();
                         controllerGuiOpenTurn.turn();
                     }
                 }
@@ -412,7 +416,7 @@ public class ControllerMain implements ActionListener {
             }
         }
 
-        if (ae.getSource() == guiMain.getBntOpenTA()) {
+        if (ae.getSource() == guiMain.getBntOpenTA()) {// abro turno tarde
             try {
                 if (crudTurn.isTurnOpen()) {
                     if (crudTurn.getTurn().endsWith("T")) {
@@ -423,7 +427,7 @@ public class ControllerMain implements ActionListener {
                 } else {
                     if (crudTurn.changeTurn("T")) {
                         JOptionPane.showMessageDialog(guiMain, "Turno tarde abierto");
-                         crudOrder.deleteAll();
+                        crudOrder.deleteAll();
                         controllerGuiOpenTurn.turn();
                     }
                 }

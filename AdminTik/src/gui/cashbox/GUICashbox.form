@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
+<Form version="1.5" maxVersion="1.8" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
   <Properties>
     <Property name="closable" type="boolean" value="true"/>
     <Property name="defaultCloseOperation" type="int" value="1"/>
@@ -95,17 +95,17 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="existantInCashboxPanel" pref="308" max="32767" attributes="0"/>
-                                  <Component id="dailyCashboxPanel" pref="308" max="32767" attributes="0"/>
+                                  <Component id="existantInCashboxPanel" pref="309" max="32767" attributes="0"/>
+                                  <Component id="dailyCashboxPanel" pref="309" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="adminDepositsPanel" alignment="0" pref="265" max="32767" attributes="0"/>
-                                  <Component id="withdrawalsPanel" alignment="0" pref="265" max="32767" attributes="0"/>
-                                  <Component id="waiterDepositsPanel" pref="265" max="32767" attributes="0"/>
+                                  <Component id="adminDepositsPanel" alignment="0" pref="267" max="32767" attributes="0"/>
+                                  <Component id="withdrawalsPanel" alignment="0" pref="267" max="32767" attributes="0"/>
+                                  <Component id="waiterDepositsPanel" pref="267" max="32767" attributes="0"/>
                               </Group>
                           </Group>
-                          <Component id="expensesDetailPanel" pref="579" max="32767" attributes="0"/>
+                          <Component id="expensesDetailPanel" pref="582" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -161,7 +161,7 @@
                               <Component id="jPanel5" max="32767" attributes="0"/>
                               <Component id="jPanel4" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Component id="jPanel6" min="-2" max="-2" attributes="0"/>
                               <Component id="DCBalanceField" min="-2" max="-2" attributes="0"/>
@@ -195,7 +195,7 @@
                           <Group type="102" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="DCInitialBalanceField" max="32767" attributes="0"/>
+                                  <Component id="DCInitialBalanceField" pref="247" max="32767" attributes="0"/>
                                   <Component id="DCEarningsField" alignment="0" max="32767" attributes="0"/>
                                   <Component id="DCCashboxIncomeField" alignment="0" max="32767" attributes="0"/>
                                   <Component id="DCExpensesField" alignment="0" max="32767" attributes="0"/>
@@ -599,7 +599,7 @@
                                   <Component id="jLabel23" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel24" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="35" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>

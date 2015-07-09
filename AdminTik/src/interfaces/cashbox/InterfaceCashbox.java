@@ -42,5 +42,13 @@ public interface InterfaceCashbox extends Remote {
      * @return 
      * @throws RemoteException 
      */    
-    public Map<String, Object> getLast() throws RemoteException;
+    public Map<String, Object> getLast() throws RemoteException;    
+     
+    /**
+     *  devuelve la ultima caja diaria del turno
+     * @param turno
+     * @return 
+     * @throws RemoteException 
+     */    
+    public Map<String, Object> getLast(String turn) throws RemoteException;
 }
