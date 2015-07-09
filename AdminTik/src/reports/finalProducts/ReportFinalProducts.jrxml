@@ -5,7 +5,7 @@
 	<property name="ireport.y" value="0"/>
 	<field name="product" class="java.lang.String"/>
 	<field name="productionPrice" class="java.lang.Object"/>
-	<field name="seggestedPrice" class="java.lang.Object"/>
+	<field name="suggestedPrice" class="java.lang.Object"/>
 	<field name="sellPrice" class="java.lang.Object"/>
 	<field name="profit" class="java.lang.Object"/>
 	<field name="category" class="java.lang.String"/>
@@ -56,10 +56,18 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch"/>
+		<band height="75" splitType="Stretch">
+			<staticText>
+				<reportElement x="12" y="21" width="311" height="33" uuid="7db1b6a8-822b-44ea-b5d8-4b41d07aa6e3"/>
+				<textElement>
+					<font size="22"/>
+				</textElement>
+				<text><![CDATA[Listado de productos finales]]></text>
+			</staticText>
+		</band>
 	</title>
 	<pageHeader>
-		<band height="35" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
 		<band height="20" splitType="Stretch">
@@ -111,16 +119,16 @@
 				<textFieldExpression><![CDATA[$F{productionPrice}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="305" y="1" width="88" height="20" uuid="1aaa11b8-7f3d-41bf-9f8f-100c7d64aebd"/>
-				<textFieldExpression><![CDATA[$F{seggestedPrice}]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement x="413" y="1" width="80" height="20" uuid="e77bf730-ab87-49d7-97d7-f72386b13449"/>
 				<textFieldExpression><![CDATA[$F{sellPrice}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="504" y="1" width="51" height="20" uuid="c9b468b6-f518-48fe-8e97-56d0da159a11"/>
 				<textFieldExpression><![CDATA[$F{profit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="313" y="0" width="100" height="20" uuid="ab5de426-2f43-40e8-8172-1b57611a0466"/>
+				<textFieldExpression><![CDATA[""+$F{suggestedPrice}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
