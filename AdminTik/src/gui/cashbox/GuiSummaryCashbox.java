@@ -90,7 +90,7 @@ public class GuiSummaryCashbox extends javax.swing.JDialog {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Resumen decaja");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
@@ -119,6 +119,8 @@ public class GuiSummaryCashbox extends javax.swing.JDialog {
         txtEarnings.setPreferredSize(new java.awt.Dimension(160, 28));
 
         txtExpenses.setPreferredSize(new java.awt.Dimension(160, 28));
+
+        txtFinalBalance.setPreferredSize(new java.awt.Dimension(160, 28));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

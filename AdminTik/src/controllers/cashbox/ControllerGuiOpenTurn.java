@@ -8,6 +8,7 @@ import controllers.ControllerMain;
 import static controllers.ControllerMain.guiMain;
 import gui.cashbox.GUICashbox;
 import gui.cashbox.GuiOpenTurn;
+import gui.cashbox.GuiSummaryCashbox;
 import interfaces.InterfaceAdmin;
 import interfaces.InterfaceOrder;
 import interfaces.InterfacePresence;
@@ -36,7 +37,7 @@ import utils.ParserFloat;
 public class ControllerGuiOpenTurn implements ActionListener {
 
     GuiOpenTurn guiOpenTurn;
-    //GuiResume
+    GuiSummaryCashbox guiSummaryCashbox;
     GUICashbox guiCashbox;
     private InterfaceTurn crudTurn;
     private InterfaceCashbox crudCashbox;
@@ -53,7 +54,9 @@ public class ControllerGuiOpenTurn implements ActionListener {
         crudCashbox = (InterfaceCashbox) InterfaceName.registry.lookup(InterfaceName.CRUDCashbox);
         crudOrder = (InterfaceOrder) InterfaceName.registry.lookup(InterfaceName.CRUDOrder);
         turn();
+        guiSummaryCashbox = new GuiSummaryCashbox(guiMain, false);
         guiOpenTurn.setActionListener(this);
+        
     }
 
     /**
@@ -168,7 +171,8 @@ public class ControllerGuiOpenTurn implements ActionListener {
             }
         }
         if (e.getSource() == guiOpenTurn.getBtnResume()) {
-            //ABRIR VENTANA DE ALAN             
+            guiSummaryCashbox.setVisible(true);
+            guiSummaryCashbox.setLocationRelativeTo(null);
         }
     }
 }

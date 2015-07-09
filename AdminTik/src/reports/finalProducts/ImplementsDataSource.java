@@ -47,16 +47,17 @@ public class ImplementsDataSource implements JRDataSource {
 
         return valor;
     }
-    
-    public void addFinalProduct(FinalProduct fp){
+
+    public void addFinalProduct(FinalProduct fp) {
         this.productList.add(fp);
     }
-    
-    public void removeAllFinalProduct(){
+
+    public void removeAllFinalProduct() {
         for (int i = 0; i < productList.size(); i++) {
             productList.remove(i);
-            index = -1;
         }
+        index = -1;
+
     }
 
 }
