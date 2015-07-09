@@ -6,6 +6,7 @@
 package interfaces.statistics;
 
 import java.rmi.Remote;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
@@ -86,6 +87,24 @@ public interface InterfaceStatistics extends Remote {
      * @return
      * @throws java.rmi.RemoteException
      */
-    public List<Map> findProductStatisticsBetweenDates(Timestamp since, Timestamp until) throws java.rmi.RemoteException;
+    public List<Map> findProductStatisticsBetweenDays(Date since, Date until) throws java.rmi.RemoteException;
+    
+    /**
+     * Realiza una busqueda de estadisticas de productos entre dos meses en las fechas dadas
+     * @param since fecha desde la cual se inicia la busqueda
+     * @param until fecha hasta la cual se realiza la busqueda
+     * @return
+     * @throws java.rmi.RemoteException
+     */
+    public List<Map> findProductStatisticsBetweenMonths(Date since, Date until) throws java.rmi.RemoteException;
+    
+    /**
+     * Realiza una busqueda de estadisticas de productos entre años en las fechas dadas
+     * @param since fecha desde la cual se inicia la busqueda
+     * @param until fecha hasta la cual se realiza la busqueda
+     * @return
+     * @throws java.rmi.RemoteException
+     */
+    public List<Map> findProductStatisticsBetweenYears(Date since, Date until) throws java.rmi.RemoteException;
     
 }

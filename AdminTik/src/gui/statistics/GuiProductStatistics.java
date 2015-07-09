@@ -88,17 +88,17 @@ public class GuiProductStatistics extends javax.swing.JInternalFrame {
         panelImage1 = new org.edisoncor.gui.panel.PanelImage();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableProductStatistics = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
-        dateUntil = new com.toedter.calendar.JDateChooser();
-        checkMonthly = new javax.swing.JCheckBox();
-        checkAnnual = new javax.swing.JCheckBox();
-        jLabel2 = new javax.swing.JLabel();
-        dateSince = new com.toedter.calendar.JDateChooser();
-        checkDaily = new javax.swing.JCheckBox();
         btnPrintReport = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        dateUntil = new com.toedter.calendar.JDateChooser();
+        jLabel1 = new javax.swing.JLabel();
+        dateSince = new com.toedter.calendar.JDateChooser();
+        jLabel2 = new javax.swing.JLabel();
+        checkAnnual = new javax.swing.JCheckBox();
         jLabel5 = new javax.swing.JLabel();
+        checkMonthly = new javax.swing.JCheckBox();
+        jLabel4 = new javax.swing.JLabel();
+        checkDaily = new javax.swing.JCheckBox();
+        jLabel3 = new javax.swing.JLabel();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -145,8 +145,19 @@ public class GuiProductStatistics extends javax.swing.JInternalFrame {
             tableProductStatistics.getColumnModel().getColumn(3).setPreferredWidth(120);
         }
 
+        btnPrintReport.setText("IMPRIMIR REPORTE");
+
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Hasta:");
+
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Desde:");
+
+        checkAnnual.setBackground(new java.awt.Color(0, 0, 0));
+        checkAnnual.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Anual");
 
         checkMonthly.setBackground(new java.awt.Color(0, 0, 0));
         checkMonthly.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
@@ -156,25 +167,14 @@ public class GuiProductStatistics extends javax.swing.JInternalFrame {
             }
         });
 
-        checkAnnual.setBackground(new java.awt.Color(0, 0, 0));
-        checkAnnual.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Desde:");
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Mensual");
 
         checkDaily.setBackground(new java.awt.Color(0, 0, 0));
         checkDaily.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
-        btnPrintReport.setText("IMPRIMIR REPORTE");
-
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Diario");
-
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Mensual");
-
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Anual");
 
         javax.swing.GroupLayout panelImage1Layout = new javax.swing.GroupLayout(panelImage1);
         panelImage1.setLayout(panelImage1Layout);
@@ -184,7 +184,7 @@ public class GuiProductStatistics extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1265, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelImage1Layout.createSequentialGroup()
+                    .addGroup(panelImage1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(checkDaily)
@@ -211,26 +211,21 @@ public class GuiProductStatistics extends javax.swing.JInternalFrame {
         panelImage1Layout.setVerticalGroup(
             panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelImage1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelImage1Layout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addComponent(btnPrintReport)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(panelImage1Layout.createSequentialGroup()
-                        .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(dateUntil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(checkDaily)
-                            .addComponent(jLabel4)
-                            .addComponent(checkMonthly)
-                            .addComponent(jLabel5)
-                            .addComponent(checkAnnual)
-                            .addComponent(dateSince, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addGap(12, 12, 12)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 606, Short.MAX_VALUE)))
+                .addGap(14, 14, 14)
+                .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(dateUntil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(checkDaily)
+                    .addComponent(jLabel4)
+                    .addComponent(checkMonthly)
+                    .addComponent(jLabel5)
+                    .addComponent(checkAnnual)
+                    .addComponent(dateSince, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addComponent(btnPrintReport))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
                 .addContainerGap())
         );
 

@@ -14,6 +14,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -163,7 +164,9 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
     }
 
     /**
-     * Retorna una lista de estadisticas de ventas de todos los productos, en todos los turnos
+     * Retorna una lista de estadisticas de ventas de todos los productos, en
+     * todos los turnos
+     *
      * @return
      * @throws java.rmi.RemoteException
      */
@@ -175,8 +178,10 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
     }
 
     /**
-     * Calcula automaticamente y Crea las estadisticas de ventas de productos del turno actual, en la base de datos
-     * @return 
+     * Calcula automaticamente y Crea las estadisticas de ventas de productos
+     * del turno actual, en la base de datos
+     *
+     * @return
      * @throws RemoteException
      */
     @Override
@@ -184,12 +189,13 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
         openBase();
         List<Map> ret = new LinkedList<>();
         try {
-            String sql = "SELECT SUM(ofp.quantity) AS quantity, ofp.fproduct_id AS id, fp.name AS name, ofp.created_at AS day  FROM orders_fproducts ofp INNER JOIN fproducts fp ON fp.id= ofp.fproduct_id GROUP BY fproduct_id";
-            try (Statement stmt = conn.createStatement(); 
-                java.sql.ResultSet rs = stmt.executeQuery(sql)) {
+            String sql = "SELECT SUM(ofp.quantity) AS quantity, ofp.fproduct_id AS id, fp.name AS name, ofp.created_at AS day"
+                    + "  FROM orders_fproducts ofp INNER JOIN fproducts fp ON fp.id= ofp.fproduct_id GROUP BY fproduct_id";
+            try (Statement stmt = conn.createStatement();
+                    java.sql.ResultSet rs = stmt.executeQuery(sql)) {
                 while (rs.next()) {
                     Map m = new HashMap();
-                    m.put("id",rs.getObject("id"));
+                    m.put("id", rs.getObject("id"));
                     m.put("name", rs.getObject("name"));
                     m.put("quantity", rs.getObject("quantity"));
                     m.put("turn", "turn");
@@ -198,7 +204,7 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
                 }
             }
             Statement stmtInsert = conn.createStatement();
-                    stmtInsert.executeUpdate("INSERT INTO productstatistics (quantity, fproduct_id, name, day) "+sql);
+            stmtInsert.executeUpdate("INSERT INTO productstatistics (quantity, fproduct_id, name, day) " + sql);
         } catch (SQLException ex) {
             Logger.getLogger(CRUDStatistics.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -206,16 +212,48 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
     }
 
     @Override
-    public List<Map> findProductStatisticsBetweenDates(Timestamp since, Timestamp until) throws RemoteException {
+    public List<Map> findProductStatisticsBetweenDays(java.sql.Date since, java.sql.Date until) throws RemoteException {
+        openBase();
+        List<Map> ret = new LinkedList<>();
+        ret = Productstatistic.where("day >= ? and day <= ?", since.toString(), until.toString()).toMaps();
+        return ret;
+    }
+
+    @Override
+    public List<Map> findProductStatisticsBetweenMonths(java.sql.Date since, java.sql.Date until) throws RemoteException {
         openBase();
         List<Map> ret = new LinkedList<>();
         try {
-            String sql = "SELECT FROM productstatistics WHERE "+ since.toString()+" >= day AND day <= "+until;
-            try (Statement stmt = conn.createStatement(); 
-                java.sql.ResultSet rs = stmt.executeQuery(sql)) {
+            String sql = "SELECT DISTINCT id, name, SUM(quantity) AS quantity, turn, day  FROM productstatistics GROUP BY fproduct_id, month(day)";
+            try (Statement stmt = conn.createStatement();
+                    java.sql.ResultSet rs = stmt.executeQuery(sql)) {
                 while (rs.next()) {
                     Map m = new HashMap();
-                    m.put("id",rs.getObject("id"));
+                    m.put("id", rs.getObject("id"));
+                    m.put("name", rs.getObject("name"));
+                    m.put("quantity", rs.getObject("quantity"));
+                    m.put("turn", rs.getObject("turn"));
+                    m.put("day", rs.getObject("day"));
+                    ret.add(m);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDStatistics.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
+    }
+
+    @Override
+    public List<Map> findProductStatisticsBetweenYears(java.sql.Date since, java.sql.Date until) throws RemoteException {
+        openBase();
+        List<Map> ret = new LinkedList<>();
+        try {
+            String sql = "SELECT DISTINCT id, name, SUM(quantity) AS quantity, turn, day  FROM productstatistics GROUP BY fproduct_id, year(day)";
+            try (Statement stmt = conn.createStatement();
+                    java.sql.ResultSet rs = stmt.executeQuery(sql)) {
+                while (rs.next()) {
+                    Map m = new HashMap();
+                    m.put("id", rs.getObject("id"));
                     m.put("name", rs.getObject("name"));
                     m.put("quantity", rs.getObject("quantity"));
                     m.put("turn", rs.getObject("turn"));
