@@ -6,6 +6,7 @@
 package implementsInterface.statistics;
 
 import implementsInterface.CRUDFproduct;
+import implementsInterface.CRUDTurn;
 import interfaces.statistics.InterfaceStatistics;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -201,10 +202,12 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
                     m.put("turn", "turn");
                     m.put("day", rs.getObject("day"));
                     ret.add(m);
+                    Statement stmtInsert = conn.createStatement();
+                    stmtInsert.executeUpdate("INSERT INTO productstatistics (quantity, fproduct_id, name, day, turn)"
+                            + " VALUES ("+rs.getObject("quantity")+","+rs.getObject("fproduct_id")+","+rs.getObject("name")+","+rs.getObject("day")+","+(new CRUDTurn()).getTurn() +") ");
                 }
             }
-            Statement stmtInsert = conn.createStatement();
-            stmtInsert.executeUpdate("INSERT INTO productstatistics (quantity, fproduct_id, name, day) " + sql);
+            
         } catch (SQLException ex) {
             Logger.getLogger(CRUDStatistics.class.getName()).log(Level.SEVERE, null, ex);
         }
