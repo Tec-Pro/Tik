@@ -53,7 +53,7 @@ public class ControllerGuiProductStatistics implements ActionListener {
                             //realizo la busqueda entre fechas
                             List<Map> findProductStatisticsBetweenDays = interfaceStatistics.findProductStatisticsBetweenDays(since, until);
                             //cargo la tabla de la gui
-                            loadProductTable(findProductStatisticsBetweenDays);
+                            cargarTablaDiaria(findProductStatisticsBetweenDays);
                         } catch (RemoteException ex) {
                             Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -64,7 +64,7 @@ public class ControllerGuiProductStatistics implements ActionListener {
                                 //realizo la busqueda entre fechas
                                 List<Map> findProductStatisticsBetweenMonths = interfaceStatistics.findProductStatisticsBetweenMonths(since, until);
                                 //cargo la tabla de la gui
-                                loadProductTable(findProductStatisticsBetweenMonths);
+                                cargarTablaMensual(findProductStatisticsBetweenMonths);
                             } catch (RemoteException ex) {
                                 Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -75,7 +75,7 @@ public class ControllerGuiProductStatistics implements ActionListener {
                                     //realizo la busqueda entre fechas
                                     List<Map> findProductStatisticsBetweenMonths = interfaceStatistics.findProductStatisticsBetweenYears(since, until);
                                     //cargo la tabla de la gui
-                                    loadProductTable(findProductStatisticsBetweenMonths);
+                                    cargarTablaAnual(findProductStatisticsBetweenMonths);
                                 } catch (RemoteException ex) {
                                     Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
                                 }
@@ -101,7 +101,7 @@ public class ControllerGuiProductStatistics implements ActionListener {
                             //realizo la busqueda entre fechas
                             List<Map> findProductStatisticsBetweenDays = interfaceStatistics.findProductStatisticsBetweenDays(since, until);
                             //cargo la tabla de la gui
-                            loadProductTable(findProductStatisticsBetweenDays);
+                            cargarTablaDiaria(findProductStatisticsBetweenDays);
                         } catch (RemoteException ex) {
                             Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -112,7 +112,7 @@ public class ControllerGuiProductStatistics implements ActionListener {
                                 //realizo la busqueda entre fechas
                                 List<Map> findProductStatisticsBetweenMonths = interfaceStatistics.findProductStatisticsBetweenMonths(since, until);
                                 //cargo la tabla de la gui
-                                loadProductTable(findProductStatisticsBetweenMonths);
+                                cargarTablaMensual(findProductStatisticsBetweenMonths);
                             } catch (RemoteException ex) {
                                 Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -123,7 +123,7 @@ public class ControllerGuiProductStatistics implements ActionListener {
                                     //realizo la busqueda entre fechas
                                     List<Map> findProductStatisticsBetweenMonths = interfaceStatistics.findProductStatisticsBetweenYears(since, until);
                                     //cargo la tabla de la gui
-                                    loadProductTable(findProductStatisticsBetweenMonths);
+                                    cargarTablaAnual(findProductStatisticsBetweenMonths);
                                 } catch (RemoteException ex) {
                                     Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
                                 }
@@ -141,29 +141,52 @@ public class ControllerGuiProductStatistics implements ActionListener {
      * Carga en la tabla tableProductStatistics todos los productos finales con sus estadisticos
      * dependiendo de la busqueda realizada
      */
-    private static void loadProductTable(List<Map> productStatistics) throws RemoteException {
+    private static void cargarTablaDiaria(List<Map> productStatistics) throws RemoteException {
         DefaultTableModel modelTableProductStatistics = guiProductStatistics.getModelTableProductStatistics();
         Object[] row = new Object[4];
         for (Map m : productStatistics) {
             row[0] = m.get("name");
             row[1] = m.get("quantity");
             row[2] = m.get("turn");
-            row[3] = m.get("day");
+            row[3] = "Día: "+m.get("day");
+            modelTableProductStatistics.addRow(row);
+        }
+    }
+    
+    /*
+     * Carga en la tabla tableProductStatistics todos los productos finales con sus estadisticos
+     * dependiendo de la busqueda realizada
+     */
+    private static void cargarTablaMensual(List<Map> productStatistics) throws RemoteException {
+        DefaultTableModel modelTableProductStatistics = guiProductStatistics.getModelTableProductStatistics();
+        Object[] row = new Object[4];
+        for (Map m : productStatistics) {
+            row[0] = m.get("name");
+            row[1] = m.get("quantity");
+            row[2] = m.get("turn");
+            Date date = Date.valueOf(m.get("day").toString());
+            row[3] = "Mes: "+(date.getMonth()+1)+" Año: "+(date.getYear()+1900);
+            modelTableProductStatistics.addRow(row);
+        }
+    }
+    
+    /*
+     * Carga en la tabla tableProductStatistics todos los productos finales con sus estadisticos
+     * dependiendo de la busqueda realizada
+     */
+    private static void cargarTablaAnual(List<Map> productStatistics) throws RemoteException {
+        DefaultTableModel modelTableProductStatistics = guiProductStatistics.getModelTableProductStatistics();
+        Object[] row = new Object[4];
+        for (Map m : productStatistics) {
+            row[0] = m.get("name");
+            row[1] = m.get("quantity");
+            row[2] = m.get("turn");
+            Date date = Date.valueOf(m.get("day").toString());
+            row[3] = "Año: "+(date.getYear()+1900);
             modelTableProductStatistics.addRow(row);
         }
     }
 
-    private void getYearStatistics() {
-
-    }
-
-    private void getMonthStatistics() {
-
-    }
-
-    private void getDayStatistics() {
-
-    }
 
     /*
      * Calcula las estadisticas de productos de un turno, cuando se cierra la caja
@@ -188,7 +211,7 @@ public class ControllerGuiProductStatistics implements ActionListener {
                     //realizo la busqueda entre fechas
                     List<Map> findProductStatisticsBetweenMonths = interfaceStatistics.findProductStatisticsBetweenMonths(since, until);
                     //cargo la tabla de la gui
-                    loadProductTable(findProductStatisticsBetweenMonths);
+                    cargarTablaMensual(findProductStatisticsBetweenMonths);
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -208,7 +231,7 @@ public class ControllerGuiProductStatistics implements ActionListener {
                     //realizo la busqueda entre fechas
                     List<Map> findProductStatisticsBetweenMonths = interfaceStatistics.findProductStatisticsBetweenYears(since, until);
                     //cargo la tabla de la gui
-                    loadProductTable(findProductStatisticsBetweenMonths);
+                    cargarTablaAnual(findProductStatisticsBetweenMonths);
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -228,7 +251,7 @@ public class ControllerGuiProductStatistics implements ActionListener {
                     //realizo la busqueda entre fechas
                     List<Map> findProductStatisticsBetweenDays = interfaceStatistics.findProductStatisticsBetweenDays(since, until);
                     //cargo la tabla de la gui
-                    loadProductTable(findProductStatisticsBetweenDays);
+                    cargarTablaDiaria(findProductStatisticsBetweenDays);
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
                 }

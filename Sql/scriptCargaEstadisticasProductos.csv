@@ -1,0 +1,21 @@
+id,fproduct_id,name,quantity,turn,day
+3,1,"Pizzeta sin queso",7,M,2015-07-10
+4,2,"Fernet con Coca",7,M,2015-07-10
+5,1,"Pizzeta sin queso",7,T,2015-07-15
+6,2,"Fernet con Coca",7,T,2015-07-15
+7,1,"Pizzeta sin queso",7,M,2015-08-10
+8,2,"Fernet con Coca",7,M,2015-08-10
+9,1,"Pizzeta sin queso",7,T,2015-08-10
+10,2,"Fernet con Coca",7,T,2015-08-10
+11,1,"Pizzeta sin queso",7,M,2015-09-10
+12,2,"Fernet con Coca",7,M,2015-09-10
+13,1,"Pizzeta sin queso",7,T,2015-09-10
+14,2,"Fernet con Coca",7,T,2015-09-10
+15,1,"Pizzeta sin queso",7,M,2015-07-10
+16,2,"Fernet con Coca",7,M,2015-07-10
+17,1,"Pizzeta sin queso",7,T,2015-07-10
+18,2,"Fernet con Coca",7,T,2015-07-10
+19,1,"Pizzeta sin queso",7,M,2016-07-10
+20,2,"Fernet con Coca",7,M,2016-07-10
+21,1,"Pizzeta sin queso",7,T,2016-07-10
+22,2,"Fernet con Coca",7,T,2016-07-10

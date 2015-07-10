@@ -190,21 +190,21 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
         openBase();
         List<Map> ret = new LinkedList<>();
         try {
-            String sql = "SELECT SUM(ofp.quantity) AS quantity, ofp.fproduct_id AS id, fp.name AS name, ofp.created_at AS day"
+            String sql = "SELECT SUM(ofp.quantity) AS quantity, ofp.fproduct_id AS fproduct_id, fp.name AS name, ofp.created_at AS day"
                     + "  FROM orders_fproducts ofp INNER JOIN fproducts fp ON fp.id= ofp.fproduct_id GROUP BY fproduct_id";
             try (Statement stmt = conn.createStatement();
                     java.sql.ResultSet rs = stmt.executeQuery(sql)) {
                 while (rs.next()) {
                     Map m = new HashMap();
-                    m.put("id", rs.getObject("id"));
+                    m.put("id", rs.getObject("fproduct_id"));
                     m.put("name", rs.getObject("name"));
                     m.put("quantity", rs.getObject("quantity"));
                     m.put("turn", "turn");
                     m.put("day", rs.getObject("day"));
                     ret.add(m);
                     Statement stmtInsert = conn.createStatement();
-                    stmtInsert.executeUpdate("INSERT INTO productstatistics (quantity, fproduct_id, name, day, turn)"
-                            + " VALUES ("+rs.getObject("quantity")+","+rs.getObject("fproduct_id")+","+rs.getObject("name")+","+rs.getObject("day")+","+(new CRUDTurn()).getTurn() +") ");
+                    stmtInsert.executeUpdate("INSERT INTO productstatistics (fproduct_id, name, quantity, turn, day) "
+                            + "VALUES ('"+rs.getObject("fproduct_id").toString()+"' , '"+rs.getObject("name").toString()+"' , '"+rs.getObject("quantity").toString()+"' , '"+(new CRUDTurn()).getTurn()+"' , '"+rs.getObject("day").toString() +"' )");
                 }
             }
             
@@ -217,8 +217,7 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
     @Override
     public List<Map> findProductStatisticsBetweenDays(java.sql.Date since, java.sql.Date until) throws RemoteException {
         openBase();
-        List<Map> ret = new LinkedList<>();
-        ret = Productstatistic.where("day >= ? and day <= ?", since.toString(), until.toString()).toMaps();
+        List<Map> ret = Productstatistic.where("day >= ? and day <= ?", since.toString(), until.toString()).toMaps();
         return ret;
     }
 
@@ -227,7 +226,7 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
         openBase();
         List<Map> ret = new LinkedList<>();
         try {
-            String sql = "SELECT DISTINCT id, name, SUM(quantity) AS quantity, turn, day  FROM productstatistics GROUP BY fproduct_id, month(day)";
+            String sql = "SELECT DISTINCT id, name, SUM(quantity) AS quantity, turn, day  FROM productstatistics GROUP BY turn, fproduct_id, year(day), month(day)";
             try (Statement stmt = conn.createStatement();
                     java.sql.ResultSet rs = stmt.executeQuery(sql)) {
                 while (rs.next()) {
