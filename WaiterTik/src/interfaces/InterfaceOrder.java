@@ -170,4 +170,9 @@ public interface InterfaceOrder extends Remote {
      */
     public float getExceptions(int userId)throws RemoteException;
 
+    /**
+     * Retorna la data para imprimir un pago de una orden
+     * @throws RemoteException 
+     */
+    public List<Map> getDataPrinterOrd(int id) throws RemoteException;
 }

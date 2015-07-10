@@ -392,9 +392,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
 
                     Map ord = getOrder(idOrder);
 
-
                     Server.notifyBarKitchenOrderReady((int) ord.get("order_number"), (String) ord.get("user_name"));
-
 
                 }
                 stmt.close();
@@ -704,5 +702,30 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             total = total + o.getFloat("paid_exceptions") + o.getFloat("exceptions");
         }
         return total;
+    }
+
+    public List<Map> getDataPrinterOrd(int id) throws RemoteException {
+        try {
+            openBase();
+            Map m = new HashMap();
+            LinkedList<Map> ret = new LinkedList<>();
+            sql = "SELECT ord.quantity, pr.name, pr.sell_price, orden.paid_exceptions FROM tik.orders_fproducts ord INNER JOIN tik.fproducts pr ON ord.fproduct_id = pr.id, tik.orders as orden WHERE ord.order_id = '" + id + "' and ord.paid =1 AND orden.id= ord.order_id;";
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                m = new HashMap();
+                m.put("quantity", rs.getFloat("quantity"));
+                m.put("name", rs.getString("name"));
+                m.put("sell_price", rs.getFloat("sell_price"));
+                m.put("paid_exceptions", rs.getFloat("paid_exceptions"));
+                ret.add(m);
+            }
+            rs.close();
+            stmt.close();
+            return ret;
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }
