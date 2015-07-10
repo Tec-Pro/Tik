@@ -269,4 +269,22 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
         return ret;
     }
 
+    @Override
+    public List<Map> findSalesStatisticsBetweenDays(java.sql.Date since, java.sql.Date until) throws RemoteException {
+        System.out.println("La movida diaria todavia no anda");
+        return (new LinkedList<>());
+    }
+
+    @Override
+    public List<Map> findSalesStatisticsBetweenMonths(java.sql.Date since, java.sql.Date until) throws RemoteException {
+        System.out.println("La movida mensual todavia no anda");
+        return (new LinkedList<>());
+    }
+
+    @Override
+    public List<Map> findSalesStatisticsBetweenYears(java.sql.Date since, java.sql.Date until) throws RemoteException {
+        System.out.println("La movida anual todavia no anda");
+        return (new LinkedList<>());
+    }
+
 }

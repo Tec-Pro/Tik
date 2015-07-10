@@ -73,9 +73,9 @@ public class ControllerGuiProductStatistics implements ActionListener {
                             if (guiProductStatistics.getCheckAnnual().isSelected()) {
                                 try {
                                     //realizo la busqueda entre fechas
-                                    List<Map> findProductStatisticsBetweenMonths = interfaceStatistics.findProductStatisticsBetweenYears(since, until);
+                                    List<Map> findProductStatisticsBetweenYears = interfaceStatistics.findProductStatisticsBetweenYears(since, until);
                                     //cargo la tabla de la gui
-                                    loadTableAnnualStatistics(findProductStatisticsBetweenMonths);
+                                    loadTableAnnualStatistics(findProductStatisticsBetweenYears);
                                 } catch (RemoteException ex) {
                                     Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
                                 }
@@ -121,9 +121,9 @@ public class ControllerGuiProductStatistics implements ActionListener {
                             if (guiProductStatistics.getCheckAnnual().isSelected()) {
                                 try {
                                     //realizo la busqueda entre fechas
-                                    List<Map> findProductStatisticsBetweenMonths = interfaceStatistics.findProductStatisticsBetweenYears(since, until);
+                                    List<Map> findProductStatisticsBetweenYears = interfaceStatistics.findProductStatisticsBetweenYears(since, until);
                                     //cargo la tabla de la gui
-                                    loadTableAnnualStatistics(findProductStatisticsBetweenMonths);
+                                    loadTableAnnualStatistics(findProductStatisticsBetweenYears);
                                 } catch (RemoteException ex) {
                                     Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
                                 }

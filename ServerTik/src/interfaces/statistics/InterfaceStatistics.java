@@ -58,6 +58,33 @@ public interface InterfaceStatistics extends Remote {
     public List<Map> getAllSalesStatistics() throws java.rmi.RemoteException;
     
     /**
+     * Realiza una busqueda de estadisticas de ventas de todos los mozos, en todos los turnos entre dos fechas
+     * @param since fecha desde la cual se inicia la busqueda
+     * @param until fecha hasta la cual se realiza la busqueda
+     * @return
+     * @throws java.rmi.RemoteException
+     */
+    public List<Map> findSalesStatisticsBetweenDays(Date since, Date until) throws java.rmi.RemoteException;
+    
+    /**
+     * Realiza una busqueda de estadisticas de ventas de todos los mozos, en todos los turnos entre dos fechas
+     * @param since fecha desde la cual se inicia la busqueda
+     * @param until fecha hasta la cual se realiza la busqueda
+     * @return
+     * @throws java.rmi.RemoteException
+     */
+    public List<Map> findSalesStatisticsBetweenMonths(Date since, Date until) throws java.rmi.RemoteException;
+    
+    /**
+     * Realiza una busqueda de estadisticas de productos entre años en las fechas dadas
+     * @param since fecha desde la cual se inicia la busqueda
+     * @param until fecha hasta la cual se realiza la busqueda
+     * @return
+     * @throws java.rmi.RemoteException
+     */
+    public List<Map> findSalesStatisticsBetweenYears(Date since, Date until) throws java.rmi.RemoteException;
+    
+    /**
      * Retorna una lista de estadisticas de ventas de un mozo, en todos los turnos
      * @param userId id del mozo
      * @return
