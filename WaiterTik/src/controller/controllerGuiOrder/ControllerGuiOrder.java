@@ -586,9 +586,11 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                 return;
             }
             try {
-                if(crudOrder.closeOrder(currentOrderId))
+                if (crudOrder.closeOrder(currentOrderId)) {
                     printTicket(currentOrderId);
+                }
                 currentOrder = crudOrder.getOrder(currentOrderId);
+                ControllerGuiMain.seeAll();
                 JOptionPane.showMessageDialog(guiOrder, "Pedido Cerrado!", "Atencion", JOptionPane.INFORMATION_MESSAGE);
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
