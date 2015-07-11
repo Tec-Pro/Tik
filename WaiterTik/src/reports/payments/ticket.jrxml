@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ticket" language="groovy" pageWidth="300" pageHeight="500" columnWidth="260" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="7b4002c9-a221-4530-8f8e-3ca9bb8b5a23">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="id_pago" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="cantidad" class="java.lang.Float"/>
+	<field name="precio" class="java.lang.Float"/>
+	<field name="producto" class="java.lang.String"/>
+	<field name="excepcion" class="java.lang.Float"/>
+	<variable name="total" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[($F{cantidad}*$F{precio})+$F{excepcion}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="56" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="260" height="27" uuid="f00a2c39-f700-4068-9a1d-be1eae3f14a3"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Restaurant Tik!]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="27" width="260" height="27" uuid="1407b9da-41f8-4378-94d5-663643b14fc0"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TICKET NO FISCAL]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="45" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="260" height="20" uuid="599f8682-41fc-4f8d-b895-333c443cb378"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Alvear 685 Río Cuarto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="20" width="109" height="20" uuid="65f5aeac-5d39-4e3a-9649-1cb5c911b6b3"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha y hora:]]></text>
+			</staticText>
+			<textField pattern="dd MMMMM yyyy h.mm a">
+				<reportElement x="100" y="20" width="160" height="20" uuid="9ae98b2c-9172-4f33-8de5-b358eeb01134"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement x="34" y="0" width="66" height="20" uuid="67e80a1d-81e3-4fd2-82f5-e334bf007d45"/>
+				<text><![CDATA[Detalle]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="160" y="1" width="100" height="20" uuid="d8b60555-8e01-40dd-8b37-228db6d48fdb"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Precio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="1" width="34" height="20" uuid="f06f18f7-f2f1-4916-8220-c03e4177542a"/>
+				<text><![CDATA[Cant.]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField pattern="###0.00">
+				<reportElement x="198" y="0" width="62" height="20" uuid="e2851f80-879b-4f8d-adb7-3f1e9531fe6f"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{precio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="0" width="32" height="20" uuid="9eb2f396-c5c9-4b3f-83e5-ef26790eff6d"/>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="34" y="0" width="164" height="20" uuid="43ba805d-6c0e-47ba-b766-6260935434b7"/>
+				<textFieldExpression><![CDATA[$F{producto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="88" splitType="Stretch">
+			<textField pattern="###0.00">
+				<reportElement x="198" y="34" width="61" height="20" uuid="636cf492-0b66-40ca-9ea2-0a62adfc898a"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="1" width="259" height="1" uuid="ab65e8e9-4cbc-4ef2-b9ab-59ee1a568c61"/>
+			</line>
+			<line>
+				<reportElement x="2" y="54" width="259" height="1" uuid="2544dae8-7aeb-4712-88cb-3af045f74e87"/>
+			</line>
+			<staticText>
+				<reportElement x="2" y="55" width="258" height="20" uuid="dda6d781-7515-4fd0-bc89-ad934971d8ba"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Muchas gracias por su compra]]></text>
+			</staticText>
+			<line>
+				<reportElement x="2" y="75" width="259" height="1" uuid="b8a2c3d7-4780-4280-a78a-bf52c38f00fb"/>
+			</line>
+			<textField pattern="###0.00">
+				<reportElement x="198" y="2" width="62" height="20" uuid="2e5131a8-6c4f-4d05-8fea-6ad9e2b3d834"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{excepcion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="2" width="196" height="20" uuid="f5180097-b1ee-46a6-abd3-dc9e9f75ea78"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[PRODUCTOS SIN CODIFICAR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="136" y="34" width="62" height="20" uuid="d58c8130-25c6-448b-a3ca-44b0c873ce34"/>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[TOTAL: $]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

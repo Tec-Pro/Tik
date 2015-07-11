@@ -38,6 +38,7 @@ public class ControllerGuiOpenTurn implements ActionListener {
 
     GuiOpenTurn guiOpenTurn;
     GuiSummaryCashbox guiSummaryCashbox;
+    ControllerGuiSummaryCashbox controllerGuiSummaryCashbox;
     GUICashbox guiCashbox;
     private InterfaceTurn crudTurn;
     private InterfaceCashbox crudCashbox;
@@ -45,6 +46,7 @@ public class ControllerGuiOpenTurn implements ActionListener {
     private InterfaceDeposit crudDeposit;
     private InterfaceExpenses crudExpenses;
     private InterfaceOrder crudOrder;
+    
 
     public ControllerGuiOpenTurn(GuiOpenTurn guiOpenTurn, GUICashbox guiCashbox) throws RemoteException, NotBoundException {
         this.guiOpenTurn = guiOpenTurn;
@@ -57,6 +59,7 @@ public class ControllerGuiOpenTurn implements ActionListener {
         crudDeposit = (InterfaceDeposit) InterfaceName.registry.lookup(InterfaceName.CRUDDeposit);
         turn();
         guiSummaryCashbox = new GuiSummaryCashbox(guiMain, false);
+        controllerGuiSummaryCashbox = new ControllerGuiSummaryCashbox(guiSummaryCashbox);
         guiOpenTurn.setActionListener(this);
         
     }
@@ -175,6 +178,11 @@ public class ControllerGuiOpenTurn implements ActionListener {
         if (e.getSource() == guiOpenTurn.getBtnResume()) {
             guiSummaryCashbox.setVisible(true);
             guiSummaryCashbox.setLocationRelativeTo(null);
+            try {
+                controllerGuiSummaryCashbox.loadData();
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerGuiOpenTurn.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 }

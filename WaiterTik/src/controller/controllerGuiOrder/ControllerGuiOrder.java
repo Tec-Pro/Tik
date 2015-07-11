@@ -47,6 +47,14 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
+import reports.payments.ImplementsDataSourcePayment;
+import reports.payments.Payment;
 import utils.Config;
 import utils.InterfaceName;
 import utils.ParserFloat;
@@ -75,6 +83,8 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
     private final InterfaceOrder crudOrder;
     private GuiMain guiMain;
     private ControllerGuiMain controllerGuiMain;
+
+    private ImplementsDataSourcePayment datasource;
 
     /**
      * Setea el id del mozo actual, y el id del pedido actual.
@@ -180,6 +190,8 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
         });
         CreateTree();
         loadProducts();
+        datasource = new ImplementsDataSourcePayment();
+
     }
 
     private void removeRowProviderCategoriesTable() {
@@ -418,7 +430,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
             row[0] = "";
             row[1] = 1;
             row[2] = "exepciones no pagas";
-            totalPrice=totalPrice+ex;
+            totalPrice = totalPrice + ex;
             row[3] = ex;
             row[4] = true;
             row[5] = true;
@@ -558,7 +570,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                         Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     controllerGuiMain.setLoginGridVisible(true);
-                    
+
                 } else {
                     return;
                 }
@@ -574,8 +586,11 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                 return;
             }
             try {
-                crudOrder.closeOrder(currentOrderId);
+                if (crudOrder.closeOrder(currentOrderId)) {
+                    printTicket(currentOrderId);
+                }
                 currentOrder = crudOrder.getOrder(currentOrderId);
+                ControllerGuiMain.seeAll();
                 JOptionPane.showMessageDialog(guiOrder, "Pedido Cerrado!", "Atencion", JOptionPane.INFORMATION_MESSAGE);
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
@@ -623,8 +638,8 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                     row[6] = true;
                     row[7] = false;
                     guiOrder.getTableProductsDefault().addRow(row);
-                    float totalPrice= ParserFloat.stringToFloat(guiOrder.getLblTotalPrice().getText());
-                    guiOrder.getLblTotalPrice().setText(ParserFloat.floatToString(totalPrice+f));
+                    float totalPrice = ParserFloat.stringToFloat(guiOrder.getLblTotalPrice().getText());
+                    guiOrder.getLblTotalPrice().setText(ParserFloat.floatToString(totalPrice + f));
 
                 } catch (RemoteException ex1) {
                     Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex1);
@@ -664,4 +679,25 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
 
     }
 
+    /**
+     * imprime el ticket dado un id de orden, solo muestra lo que no esta pago
+     *
+     * @param id
+     */
+    private void printTicket(int id) throws RemoteException {
+        List<Map> ord = crudOrder.getDataPrinterOrd(id);
+        for (Map m : ord) {
+            Payment p = new Payment((String) m.get("name"), (float) m.get("quantity"), (float) m.get("sell_price"), (float) m.get("paid_exceptions"));
+            datasource.addPayment(p);
+        }
+        try {
+            JasperReport reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reports/payments/ticket.jasper"));//cargo el reporte
+            JasperPrint jasperPrint;
+            jasperPrint = JasperFillManager.fillReport(reporte, null, datasource);
+            JasperViewer.viewReport(jasperPrint, false);
+        } catch (JRException ex) {
+            Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        datasource.removeAllFinalProduct();
+    }
 }
