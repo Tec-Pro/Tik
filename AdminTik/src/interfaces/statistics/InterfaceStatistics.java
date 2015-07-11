@@ -8,7 +8,6 @@ package interfaces.statistics;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +48,7 @@ public interface InterfaceStatistics extends Remote {
      * @return 
      * @throws java.rmi.RemoteException
      */
-    public Map<String, Object> saveSalesStatistics(String waiterName, int userId, Double saleAmount, int tables, int customers, int products, Double avgTables, Double avgCustomers, Double avgProducts, Double discounts, Double exceptions, String turn, Timestamp day) throws java.rmi.RemoteException;
+    public Map<String, Object> saveSalesStatistics(String waiterName, int userId, Double saleAmount, int tables, int customers, int products, Double avgTables, Double avgCustomers, Double avgProducts, Double discounts, Double exceptions, String turn, Date day) throws java.rmi.RemoteException;
     
     /**
      * Retorna una lista de estadisticas de ventas de todos los mozos, en todos los turnos

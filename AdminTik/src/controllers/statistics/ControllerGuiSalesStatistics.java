@@ -8,6 +8,7 @@ package controllers.statistics;
 import gui.statistics.GuiSalesStatistics;
 import interfaces.InterfaceFproduct;
 import interfaces.InterfaceOrder;
+import interfaces.InterfaceTurn;
 import interfaces.InterfaceUser;
 import interfaces.statistics.InterfaceStatistics;
 import java.awt.event.ActionEvent;
@@ -34,6 +35,7 @@ public class ControllerGuiSalesStatistics implements ActionListener {
     private static InterfaceOrder interfaceOrder;
     private static InterfaceUser interfaceUser;
     private static InterfaceFproduct interfaceFProduct;
+    private static InterfaceTurn interfaceTurn;
     private static GuiSalesStatistics guiSalesStatistics;
 
     public ControllerGuiSalesStatistics(GuiSalesStatistics guiSS) throws RemoteException, NotBoundException {
@@ -42,6 +44,7 @@ public class ControllerGuiSalesStatistics implements ActionListener {
         interfaceStatistics = (InterfaceStatistics) InterfaceName.registry.lookup(InterfaceName.CRUDStatistics);
         interfaceUser = (InterfaceUser) InterfaceName.registry.lookup(InterfaceName.CRUDUser);
         interfaceFProduct = (InterfaceFproduct) InterfaceName.registry.lookup(InterfaceName.CRUDFproduct);
+        interfaceTurn = (InterfaceTurn) InterfaceName.registry.lookup(InterfaceName.CRUDTurn);
         guiSalesStatistics.setActionListener(this);
         guiSalesStatistics.cleanComponents();
         //si cambia la fecha de busqueda "Desde"
@@ -164,8 +167,8 @@ public class ControllerGuiSalesStatistics implements ActionListener {
         Double avgTables = -1.00, avgCustomers = -1.00, avgProducts = -1.00, discounts = -1.00, exceptions = -1.00;
         int userId;//id del mozo
         String userName;//nombre del mozo
-        String turn = "SIN CALCULAR";//turno corriente
-        Timestamp day = null;//fecha del dia corriente
+        String turn = interfaceTurn.getTurn();//turno corriente
+        Date day = null;//fecha del dia corriente
 
         //Saco todos los mozos de la base de datos
         List<Map> waiters = interfaceUser.getWaiters();//todos los mozos de la base de datos
@@ -182,6 +185,11 @@ public class ControllerGuiSalesStatistics implements ActionListener {
                 products += orderProducts.size();//sumo la cantidad de productos a los vendidos por el mozo
                 //recorro cada producto del pedido
                 for (Map product : orderProducts) {
+                    //saco la fecha 
+                    if(day == null){
+                        Timestamp timestamp = Timestamp.valueOf((product.get("created_at").toString()));
+                        day = new Date(timestamp.getTime());
+                    }
                     //saco el producto final del orderProduct actual
                     Map<String, Object> fproduct = interfaceFProduct.getFproduct(Integer.parseInt(product.get("fproduct_id").toString()));
                     //saco el precio de venta de ese producto
@@ -203,8 +211,6 @@ public class ControllerGuiSalesStatistics implements ActionListener {
             exceptions = -1.00;
             userId = -1;//id del mozo
             userName = null;//nombre del mozo
-            turn = "SIN CALCULAR";//turno corriente
-            day = null;//fecha del dia corriente
 
         }
     }
