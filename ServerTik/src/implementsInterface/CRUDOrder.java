@@ -20,9 +20,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import models.Eproduct;
+import models.EproductsPproducts;
 import models.Fproduct;
+import models.FproductsEproducts;
+import models.FproductsFproducts;
+import models.FproductsPproducts;
 import models.Order;
 import models.OrdersFproducts;
+import models.Pproduct;
 import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.LazyList;
 import utils.Pair;
@@ -67,6 +73,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         final Order newOrder = Order.createIt("user_id", userId, "order_number", getOrdersCount(userId) + 1, "description", description, "closed", false, "persons", persons);
         for (Map<String, Object> prod : fproducts) {
             OrdersFproducts.createIt("order_id", newOrder.getId(), "fproduct_id", (int) prod.get("fproductId"), "quantity", (float) prod.get("quantity"), "done", (boolean) prod.get("done"), "commited", (boolean) prod.get("commited"), "issued", (boolean) prod.get("issued"));
+            updateStock((int) prod.get("fproductId"), (float) prod.get("quantity"));
         }
         Base.commitTransaction();
         Thread thread = new Thread() {
@@ -870,4 +877,42 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         }
         return null;
     }
+
+    public void updateStock(int fproduct_id, float quantity) {
+        Utils.abrirBase();
+        //actualizo el stock si el final tiene productos primarios
+        LazyList<FproductsPproducts> pproducts = Fproduct.findById(fproduct_id).getAll(FproductsPproducts.class);
+        for (FproductsPproducts fpp : pproducts) {
+            Pproduct p = Pproduct.findById(fpp.get("pproduct_id"));
+            p.set("stock", p.getFloat("stock") - (fpp.getFloat("amount") * quantity));
+            p.saveIt();
+        }
+        Base.commitTransaction();
+        //termino lo de productos primarios
+
+        //productos elaborados
+        Base.openTransaction();
+        //obtengo todos los productos elaborados(relaciones) del producto final
+        LazyList<FproductsEproducts> eproducts = Fproduct.findById(fproduct_id).getAll(FproductsEproducts.class);
+        for (FproductsEproducts epf : eproducts) {//para cada producto elaborado(relacion final-elaborado) de ese final, obtengo la relacion elaborado-primario
+            LazyList<EproductsPproducts> ep = EproductsPproducts.where("eproduct_id = ?", epf.get("eproduct_id"));
+            for (EproductsPproducts relacionEP : ep) {
+                //para cada relacion elaborado-primario, debo obtener el primerio y setearle el stock
+                Pproduct p = Pproduct.findById(relacionEP.get("pproduct_id"));
+                p.set("stock", p.getFloat("stock") - (quantity * relacionEP.getFloat("amount") * epf.getFloat("amount")));
+                p.saveIt();
+            }
+        }
+        Base.commitTransaction();
+        //termino elaborados
+
+        //combos (finales-finales)
+        LazyList<FproductsFproducts> fproducts =FproductsFproducts.where("fproduct_id2 = ?", fproduct_id);
+        //obtengo todos los productos finales que están en el combo
+        for(FproductsFproducts ff: fproducts){
+            Fproduct f= Fproduct.findById(ff.get("fproduct_id"));
+            updateStock(f.getInteger("id"), quantity*ff.getFloat("amount"));
+        }
+    }
+
 }
