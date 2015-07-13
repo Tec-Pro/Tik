@@ -483,6 +483,41 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         } catch (SQLException ex) {
             Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
+        //Realizo la busqueda de fproducts dentro de una promo
+        try {
+            sql = "SELECT orders_fproducts.id,order_id,fproduct_id,quantity,done,commited,issued,created_at,updated_at,name"
+                    + " FROM orders_fproducts INNER JOIN fproducts WHERE orders_fproducts.fproduct_id = fproducts.id AND"
+                    + " fproducts.belong = 'Promo' AND orders_fproducts.order_id = '" + orderId + "' AND orders_fproducts.done = 0;";
+            Statement stmt1 = conn.createStatement();
+            java.sql.ResultSet rs1 = stmt1.executeQuery(sql);
+
+            //recorro todas las promos encontradas en el pedido
+            while (rs1.next()) {
+                String sql1 = "SELECT fpfp.fproduct_id, fpfp.fproduct_id2, fpfp.amount, fproducts.name FROM fproducts_fproducts fpfp INNER JOIN fproducts WHERE "
+                        + "fpfp.fproduct_id2 = '" + rs1.getObject("fproduct_id").toString() + "' AND fpfp.fproduct_id = fproducts.id AND fproducts.belong = 'Cocina' ;";
+                Statement stmt2 = conn.createStatement();
+                java.sql.ResultSet rs2 = stmt2.executeQuery(sql1);
+                //recorro todos los fproducts encontrados en cada promo
+                while (rs2.next()) {
+                    Map m = new HashMap();
+                    m.put("id", rs1.getObject("id"));
+                    m.put("order_id", rs1.getObject("order_id"));
+                    m.put("fproduct_id", rs2.getObject("fproduct_id"));
+                    m.put("quantity", (Double.parseDouble(rs1.getObject("quantity").toString()) * Double.parseDouble(rs2.getObject("amount").toString())));//multiplico la cantidad de productos de una promo por la cantidad de promos
+                    m.put("done", rs1.getObject("done"));
+                    m.put("created_at", rs1.getObject("created_at"));
+                    m.put("updated_at", rs1.getObject("updated_at"));
+                    m.put("name", rs2.getObject("name"));
+                    result.add(m);
+                }
+                rs2.close();
+                stmt2.close();
+            }
+            rs1.close();
+            stmt1.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
         if (result.isEmpty()) {
             return null;
         } else {
@@ -516,6 +551,41 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             }
             rs.close();
             stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //Realizo la busqueda de fproducts dentro de una promo
+        try {
+            sql = "SELECT orders_fproducts.id,order_id,fproduct_id,quantity,done,commited,issued,created_at,updated_at,name"
+                    + " FROM orders_fproducts INNER JOIN fproducts WHERE orders_fproducts.fproduct_id = fproducts.id AND"
+                    + " fproducts.belong = 'Promo' AND orders_fproducts.order_id = '" + orderId + "' AND orders_fproducts.done = 0;";
+            Statement stmt1 = conn.createStatement();
+            java.sql.ResultSet rs1 = stmt1.executeQuery(sql);
+
+            //recorro todas las promos encontradas en el pedido
+            while (rs1.next()) {
+                String sql1 = "SELECT fpfp.fproduct_id, fpfp.fproduct_id2, fpfp.amount, fproducts.name FROM fproducts_fproducts fpfp INNER JOIN fproducts WHERE "
+                        + "fpfp.fproduct_id2 = '" + rs1.getObject("fproduct_id").toString() + "' AND fpfp.fproduct_id = fproducts.id AND fproducts.belong = 'Bar' ;";
+                Statement stmt2 = conn.createStatement();
+                java.sql.ResultSet rs2 = stmt2.executeQuery(sql1);
+                //recorro todos los fproducts encontrados en cada promo
+                while (rs2.next()) {
+                    Map m = new HashMap();
+                    m.put("id", rs1.getObject("id"));
+                    m.put("order_id", rs1.getObject("order_id"));
+                    m.put("fproduct_id", rs2.getObject("fproduct_id"));
+                    m.put("quantity", (Double.parseDouble(rs1.getObject("quantity").toString()) * Double.parseDouble(rs2.getObject("amount").toString())));//multiplico la cantidad de productos de una promo por la cantidad de promos
+                    m.put("done", rs1.getObject("done"));
+                    m.put("created_at", rs1.getObject("created_at"));
+                    m.put("updated_at", rs1.getObject("updated_at"));
+                    m.put("name", rs2.getObject("name"));
+                    result.add(m);
+                }
+                rs2.close();
+                stmt2.close();
+            }
+            rs1.close();
+            stmt1.close();
         } catch (SQLException ex) {
             Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -557,6 +627,43 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         } catch (SQLException ex) {
             Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        //Realizo la busqueda de fproducts dentro de una promo
+        try {
+            sql = "SELECT orders_fproducts.id,order_id,fproduct_id,quantity,done,commited,issued,created_at,updated_at,name"
+                    + " FROM orders_fproducts INNER JOIN fproducts WHERE orders_fproducts.fproduct_id = fproducts.id AND"
+                    + " fproducts.belong = 'Promo' AND orders_fproducts.done = 0;";
+            Statement stmt1 = conn.createStatement();
+            java.sql.ResultSet rs1 = stmt1.executeQuery(sql);
+
+            //recorro todas las promos encontradas en cada pedido
+            while (rs1.next()) {
+                String sql1 = "SELECT fpfp.fproduct_id, fpfp.fproduct_id2, fpfp.amount, fproducts.name FROM fproducts_fproducts fpfp INNER JOIN fproducts WHERE "
+                        + "fpfp.fproduct_id2 = '" + rs1.getObject("fproduct_id").toString() + "' AND fpfp.fproduct_id = fproducts.id AND fproducts.belong = 'Cocina' ;";
+                Statement stmt2 = conn.createStatement();
+                java.sql.ResultSet rs2 = stmt2.executeQuery(sql1);
+                //recorro todos los fproducts encontrados en cada promo
+                while (rs2.next()) {
+                    m = new HashMap();
+                    m.put("id", rs1.getObject("id"));
+                    m.put("order_id", rs1.getObject("order_id"));
+                    m.put("fproduct_id", rs2.getObject("fproduct_id"));
+                    m.put("quantity", (Double.parseDouble(rs1.getObject("quantity").toString()) * Double.parseDouble(rs2.getObject("amount").toString())));//multiplico la cantidad de productos de una promo por la cantidad de promos
+                    m.put("done", rs1.getObject("done"));
+                    m.put("created_at", rs1.getObject("created_at"));
+                    m.put("updated_at", rs1.getObject("updated_at"));
+                    m.put("name", rs2.getObject("name"));
+                    listOrdersFproducts.add(m);
+                }
+                rs2.close();
+                stmt2.close();
+            }
+            rs1.close();
+            stmt1.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         final Pair<List<Map>, List<Map>> pair = new Pair(getAllOrders(), listOrdersFproducts);
         return pair;
     }
@@ -588,6 +695,41 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             }
             rs.close();
             stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //Realizo la busqueda de fproducts dentro de una promo
+        try {
+            sql = "SELECT orders_fproducts.id,order_id,fproduct_id,quantity,done,commited,issued,created_at,updated_at,name"
+                    + " FROM orders_fproducts INNER JOIN fproducts WHERE orders_fproducts.fproduct_id = fproducts.id AND"
+                    + " fproducts.belong = 'Promo' AND orders_fproducts.done = 0;";
+            Statement stmt1 = conn.createStatement();
+            java.sql.ResultSet rs1 = stmt1.executeQuery(sql);
+
+            //recorro todas las promos encontradas en el pedido
+            while (rs1.next()) {
+                String sql1 = "SELECT fpfp.fproduct_id, fpfp.fproduct_id2, fpfp.amount, fproducts.name FROM fproducts_fproducts fpfp INNER JOIN fproducts WHERE "
+                        + "fpfp.fproduct_id2 = '" + rs1.getObject("fproduct_id").toString() + "' AND fpfp.fproduct_id = fproducts.id AND fproducts.belong = 'Bar' ;";
+                Statement stmt2 = conn.createStatement();
+                java.sql.ResultSet rs2 = stmt2.executeQuery(sql1);
+                //recorro todos los fproducts encontrados en cada promo
+                while (rs2.next()) {
+                    m = new HashMap();
+                    m.put("id", rs1.getObject("id"));
+                    m.put("order_id", rs1.getObject("order_id"));
+                    m.put("fproduct_id", rs2.getObject("fproduct_id"));
+                    m.put("quantity", (Double.parseDouble(rs1.getObject("quantity").toString()) * Double.parseDouble(rs2.getObject("amount").toString())));//multiplico la cantidad de productos de una promo por la cantidad de promos
+                    m.put("done", rs1.getObject("done"));
+                    m.put("created_at", rs1.getObject("created_at"));
+                    m.put("updated_at", rs1.getObject("updated_at"));
+                    m.put("name", rs2.getObject("name"));
+                    listOrdersFproducts.add(m);
+                }
+                rs2.close();
+                stmt2.close();
+            }
+            rs1.close();
+            stmt1.close();
         } catch (SQLException ex) {
             Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
