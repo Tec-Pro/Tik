@@ -362,7 +362,7 @@ public class ControllerGUICashbox implements ActionListener {
     /*
     Método que carga el balance en la caja existente.
     */
-    private static Float ECLoadBalance() throws RemoteException{
+    public static Float ECLoadBalance() throws RemoteException{
         Float initialBalance = ParserFloat.stringToFloat(gui.getECInitialBalanceField().getText());
         Float adminDeposits = ParserFloat.stringToFloat(gui.getECAdminDepositsField().getText());
         Float waiterDeposits = ParserFloat.stringToFloat(gui.getECWaiterDepositsField().getText());

@@ -24,6 +24,7 @@ import gui.GuiCRUDUser;
 import gui.GuiMenu;
 import gui.GuiLoadPurchase;
 import gui.cashbox.GUICashbox;
+import gui.cashbox.GUICloseTurnTarde;
 import gui.cashbox.GuiOpenTurn;
 import gui.logout.GuiLogout;
 import gui.main.GuiConfig;
@@ -33,6 +34,7 @@ import gui.providers.purchases.GuiPurchase;
 import gui.statistics.GuiProductList;
 import gui.statistics.GuiProductStatistics;
 import gui.statistics.GuiSalesStatistics;
+import interfaces.InterfaceAdmin;
 //import gui.withdrawal.GUICRUDWithdrawal;
 import interfaces.InterfaceGeneralConfig;
 import interfaces.InterfaceOrder;
@@ -60,6 +62,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import utils.GeneralConfig;
 import utils.InterfaceName;
+import utils.ParserFloat;
 
 /**
  *
@@ -114,6 +117,7 @@ public class ControllerMain implements ActionListener {
     private InterfaceDeposit crudDeposit;
     private InterfaceExpenses crudExpenses;
     private InterfaceOrder crudOrder;
+    private InterfaceAdmin crudAdmin;
 
     public ControllerMain(GuiAdminLogin guiAdminLogin) throws NotBoundException, MalformedURLException, RemoteException {
         this.guiAdminLogin = guiAdminLogin; //hago esto, así si cierra sesión pongo en visible la ventana
@@ -197,8 +201,9 @@ public class ControllerMain implements ActionListener {
         crudCashbox = (InterfaceCashbox) InterfaceName.registry.lookup(InterfaceName.CRUDCashbox);
         crudExpenses = (InterfaceExpenses) InterfaceName.registry.lookup(InterfaceName.CRUDExpenses);
         crudOrder = (InterfaceOrder) InterfaceName.registry.lookup(InterfaceName.CRUDOrder);
-
-
+        crudWithdrawal = (InterfaceWithdrawal) InterfaceName.registry.lookup(InterfaceName.CRUDWithdrawal);
+        crudDeposit = (InterfaceDeposit) InterfaceName.registry.lookup(InterfaceName.CRUDDeposit);
+        crudAdmin = (InterfaceAdmin) InterfaceName.registry.lookup(InterfaceName.CRUDAdmin);
     }
 
     public static void closeSession() {
@@ -375,13 +380,30 @@ public class ControllerMain implements ActionListener {
                         float delveryCash = crudDeposit.getAdminsDepositsTotalOnTurn(turn);
                         float deliveryWaiter = crudDeposit.getWaitersDepositsTotalOnTurn(turn);
                         float balance = crudCashbox.getPastBalance() + collect + delveryCash + deliveryWaiter - withdrawal - spend;
-                        crudCashbox.create(turn, balance, collect, enrtyCash, spend, withdrawal, delveryCash, deliveryWaiter);
                         if (turn.equals("T")) {
+                            //retiro la guita antes de cerrar
+                            GUICloseTurnTarde guiCloseTurnTarde = new GUICloseTurnTarde(guiMain, true, crudAdmin.getAdmins(), balance);
+                            guiCloseTurnTarde.setLocationRelativeTo(guiMain);
+                            guiCloseTurnTarde.setVisible(true);
+                            if (guiCloseTurnTarde.getReturnStatus() == guiCloseTurnTarde.RET_OK) {
+                                crudWithdrawal.create(guiCloseTurnTarde.getIdAdminSelected(), "cierre de caja", guiCloseTurnTarde.getAmountWithdrawal());
+                                
+                            }
+                            else
+                                return;// salgo de todo sin cerar el turno si no acepto
                             //HACER RESUMEN ALAN???
                         }
-                        //ESTADISTICAS ENANO???
+                        withdrawal = crudWithdrawal.getWithdrawalsTotalOnTurn(turn);
+                        balance = crudCashbox.getPastBalance() + collect + delveryCash + deliveryWaiter - withdrawal - spend;
+                        crudCashbox.create(turn, balance, collect, enrtyCash, spend, withdrawal, delveryCash, deliveryWaiter);
+
+                        //estadisticas
+                        ControllerGuiSalesStatistics.calculateAndSaveStatistics();
+                        ControllerGuiProductStatistics.calculateAndSaveProductStatistics();
+                        //borrar pedidos
+
                         if (crudTurn.changeTurn("N")) {
-                            JOptionPane.showMessageDialog(guiMain, "El tunro se cerro exitosamente");
+                            JOptionPane.showMessageDialog(guiMain, "El turno se cerro exitosamente");
                             controllerGuiOpenTurn.turn();
                         }
 
