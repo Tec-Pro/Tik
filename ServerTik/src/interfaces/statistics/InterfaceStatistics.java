@@ -84,14 +84,6 @@ public interface InterfaceStatistics extends Remote {
     public List<Map> findSalesStatisticsBetweenYears(Date since, Date until) throws java.rmi.RemoteException;
     
     /**
-     * Retorna una lista de estadisticas de ventas de un mozo, en todos los turnos
-     * @param userId id del mozo
-     * @return
-     * @throws java.rmi.RemoteException
-     */
-    public List<Map> getSalesStatisticsFromAWaiter(int userId) throws java.rmi.RemoteException;
-    
-    /**
      * Retorna una lista de estadisticas de ventas de todos los productos, en todos los turnos
      * @return
      * @throws java.rmi.RemoteException
@@ -132,5 +124,14 @@ public interface InterfaceStatistics extends Remote {
      * @throws java.rmi.RemoteException
      */
     public List<Map> findProductStatisticsBetweenYears(Date since, Date until) throws java.rmi.RemoteException;
+   
+    /**
+     * Retorna una lista con los mozos, el monto total de sus ventas y mesas que atendio entre las fechas dadas
+     * @param since
+     * @param until
+     * @return
+     * @throws java.rmi.RemoteException
+     */
+    public List<Map> getTotalSalesWaiterBetweenDays(Date since, Date until) throws java.rmi.RemoteException;
     
 }

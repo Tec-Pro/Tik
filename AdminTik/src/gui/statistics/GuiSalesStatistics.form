@@ -54,11 +54,6 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jScrollPane1" alignment="1" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jScrollPane2" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="checkDaily" min="-2" max="-2" attributes="0"/>
@@ -78,8 +73,20 @@
                           <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="dateUntil" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="355" max="32767" attributes="0"/>
+                          <EmptySpace pref="367" max="32767" attributes="0"/>
                           <Component id="btnPrintReport" min="-2" pref="229" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jScrollPane2" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="104" max="-2" attributes="0"/>
+                          <Component id="panelSalesChartWaiter" min="-2" pref="474" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
+                          <Component id="panelTablesChartWaiter" min="-2" pref="474" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -109,13 +116,18 @@
                       </Group>
                   </Group>
                   <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" min="-2" pref="328" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="jScrollPane1" pref="272" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                       <Component id="jScrollPane2" min="-2" pref="50" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="226" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Component id="panelSalesChartWaiter" min="-2" pref="272" max="-2" attributes="0"/>
+                      <Component id="panelTablesChartWaiter" min="-2" pref="272" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -391,6 +403,14 @@
             <Property name="text" type="java.lang.String" value="TOTAL:"/>
           </Properties>
         </Component>
+        <Container class="javax.swing.JPanel" name="panelSalesChartWaiter">
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+        </Container>
+        <Container class="javax.swing.JPanel" name="panelTablesChartWaiter">
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+        </Container>
       </SubComponents>
     </Container>
   </SubComponents>

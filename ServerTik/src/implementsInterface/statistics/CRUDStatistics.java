@@ -153,19 +153,6 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
     }
 
     /**
-     * Retorna una lista de estadisticas de ventas de un mozo, en todos los
-     * turnos
-     *
-     * @param userId id del mozo
-     * @return
-     * @throws RemoteException
-     */
-    @Override
-    public List<Map> getSalesStatisticsFromAWaiter(int userId) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    /**
      * Retorna una lista de estadisticas de ventas de todos los productos, en
      * todos los turnos
      *
@@ -347,4 +334,27 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
         return ret;
     }
 
+    @Override
+    public List<Map> getTotalSalesWaiterBetweenDays(java.sql.Date since, java.sql.Date until) throws RemoteException {
+        openBase();
+        List<Map> ret = new LinkedList<>();
+        try {
+            String sql = "SELECT DISTINCT waiter_name, user_id, SUM(sale_amount) AS sale_amount, SUM(tables) AS tables"
+                    + " FROM salesstatistics WHERE day >= '"+since.toString()+"' and day <= '"+until.toString()+"' GROUP BY user_id";
+            try (Statement stmt = conn.createStatement();
+                    java.sql.ResultSet rs = stmt.executeQuery(sql)) {
+                while (rs.next()) {
+                    Map m = new HashMap();
+                    m.put("waiter_name", rs.getObject("waiter_name"));
+                    m.put("user_id", rs.getObject("user_id"));
+                    m.put("sale_amount", rs.getObject("sale_amount"));
+                    m.put("tables", rs.getObject("tables"));
+                    ret.add(m);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDStatistics.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
+    }
 }

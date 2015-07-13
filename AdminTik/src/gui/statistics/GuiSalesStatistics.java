@@ -6,11 +6,23 @@
 package gui.statistics;
 
 import com.toedter.calendar.JDateChooser;
+import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.general.PieDataset;
+import utils.Pair;
 
 /**
  *
@@ -23,6 +35,64 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
      */
     public GuiSalesStatistics() {
         initComponents();
+    }
+
+    /**
+     *
+     * @param listMap
+     */
+    public void drawingSalesChartWaiter(List<Map> listMap) {
+        DefaultPieDataset dataset = new DefaultPieDataset();
+        for (Map m : listMap) {
+            dataset.setValue(m.get("waiter_name").toString(), Double.parseDouble(m.get("sale_amount").toString()));
+        }
+
+        JFreeChart chart = ChartFactory.createPieChart(
+                "Gráfica de Ventas por Mozo", //Titulo del grafico 
+                dataset, //Data
+                true, true, true);
+
+        PiePlot plot = (PiePlot) chart.getPlot();
+        plot.setLabelFont(new Font("SansSerif", Font.PLAIN, 12));
+        plot.setNoDataMessage("No data available");
+        plot.setCircular(false);
+        plot.setLabelGap(0.02);
+
+        ChartPanel chartPanel = new ChartPanel(chart);
+
+        panelSalesChartWaiter.removeAll();
+        panelSalesChartWaiter.add(chartPanel, BorderLayout.CENTER);
+        panelSalesChartWaiter.validate();
+
+    }
+    
+    /**
+     *
+     * @param listMap
+     */
+    public void drawingTablesChartWaiter(List<Map> listMap) {
+        DefaultPieDataset dataset = new DefaultPieDataset();
+        for (Map m : listMap) {
+            dataset.setValue(m.get("waiter_name").toString(), Double.parseDouble(m.get("tables").toString()));
+        }
+
+        JFreeChart chart = ChartFactory.createPieChart(
+                "Gráfica de Mesas Atendidas por Mozo", //Titulo del grafico 
+                dataset, //Data
+                true, true, true);
+
+        PiePlot plot = (PiePlot) chart.getPlot();
+        plot.setLabelFont(new Font("SansSerif", Font.PLAIN, 12));
+        plot.setNoDataMessage("No data available");
+        plot.setCircular(false);
+        plot.setLabelGap(0.02);
+
+        ChartPanel chartPanel = new ChartPanel(chart);
+
+        panelTablesChartWaiter.removeAll();
+        panelTablesChartWaiter.add(chartPanel, BorderLayout.CENTER);
+        panelTablesChartWaiter.validate();
+
     }
 
     public JButton getBtnPrintReport() {
@@ -56,7 +126,7 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
     public JTable getTableTotalSalesStatistics() {
         return tableTotalSalesStatistics;
     }
-    
+
     public DefaultTableModel getModelTableSalesStatisticsWaiter() {
         return (DefaultTableModel) tableSalesStatisticsWaiter.getModel();
     }
@@ -64,16 +134,20 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
     public DefaultTableModel getModelTableTotalSalesStatistics() {
         return (DefaultTableModel) tableTotalSalesStatistics.getModel();
     }
-    
+
     //limpia la gui completa y setea valores por defecto
-    public void cleanComponents(){
+    public void cleanComponents() {
         getModelTableSalesStatisticsWaiter().setRowCount(0);
         getModelTableTotalSalesStatistics().setRowCount(0);
         checkAnnual.setSelected(false);
         checkMonthly.setSelected(false);
         checkDaily.setSelected(false);
+        panelSalesChartWaiter.removeAll();
+        panelTablesChartWaiter.removeAll();
+        panelTablesChartWaiter.validate();
+        panelSalesChartWaiter.validate();
     }
-    
+
     /**
      *
      * @param lis
@@ -84,8 +158,7 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
         this.checkMonthly.addActionListener(lis);
         this.btnPrintReport.addActionListener(lis);
     }
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -112,6 +185,8 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
         dateUntil = new com.toedter.calendar.JDateChooser();
         btnPrintReport = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
+        panelSalesChartWaiter = new javax.swing.JPanel();
+        panelTablesChartWaiter = new javax.swing.JPanel();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -241,6 +316,10 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("TOTAL:");
 
+        panelSalesChartWaiter.setLayout(new java.awt.BorderLayout());
+
+        panelTablesChartWaiter.setLayout(new java.awt.BorderLayout());
+
         javax.swing.GroupLayout panelImage1Layout = new javax.swing.GroupLayout(panelImage1);
         panelImage1.setLayout(panelImage1Layout);
         panelImage1Layout.setHorizontalGroup(
@@ -249,10 +328,6 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(panelImage1Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2))
                     .addGroup(panelImage1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -273,8 +348,18 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(dateUntil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 355, Short.MAX_VALUE)
-                        .addComponent(btnPrintReport, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 367, Short.MAX_VALUE)
+                        .addComponent(btnPrintReport, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelImage1Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2))
+                    .addGroup(panelImage1Layout.createSequentialGroup()
+                        .addGap(104, 104, 104)
+                        .addComponent(panelSalesChartWaiter, javax.swing.GroupLayout.PREFERRED_SIZE, 474, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(58, 58, 58)
+                        .addComponent(panelTablesChartWaiter, javax.swing.GroupLayout.PREFERRED_SIZE, 474, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         panelImage1Layout.setVerticalGroup(
@@ -297,12 +382,16 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
                         .addComponent(dateSince, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel1)))
                 .addGap(10, 10, 10)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(226, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(panelSalesChartWaiter, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelTablesChartWaiter, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -340,6 +429,8 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private org.edisoncor.gui.panel.PanelImage panelImage1;
+    private javax.swing.JPanel panelSalesChartWaiter;
+    private javax.swing.JPanel panelTablesChartWaiter;
     private javax.swing.JTable tableSalesStatisticsWaiter;
     private javax.swing.JTable tableTotalSalesStatistics;
     // End of variables declaration//GEN-END:variables

@@ -67,6 +67,9 @@ public class ControllerGuiSalesStatistics implements ActionListener {
                             //cargo la tabla de la gui
                             loadTableDailyStatistics(findSalesStatisticsBetweenDays);
                             loadTableTotalSalesStatistics();
+                            List<Map> totalSalesWaiterBetweenDays = interfaceStatistics.getTotalSalesWaiterBetweenDays(since, until);
+                            guiSalesStatistics.drawingSalesChartWaiter(totalSalesWaiterBetweenDays);
+                            guiSalesStatistics.drawingTablesChartWaiter(totalSalesWaiterBetweenDays);
                         } catch (RemoteException ex) {
                             Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -79,6 +82,9 @@ public class ControllerGuiSalesStatistics implements ActionListener {
                                 //cargo la tabla de la gui
                                 loadTableMonthlyStatistics(findSalesStatisticsBetweenMonths);
                                 loadTableTotalSalesStatistics();
+                                List<Map> totalSalesWaiterBetweenMonths = interfaceStatistics.getTotalSalesWaiterBetweenDays(since, until);
+                                guiSalesStatistics.drawingSalesChartWaiter(totalSalesWaiterBetweenMonths);
+                                guiSalesStatistics.drawingTablesChartWaiter(totalSalesWaiterBetweenMonths);
                             } catch (RemoteException ex) {
                                 Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -91,6 +97,9 @@ public class ControllerGuiSalesStatistics implements ActionListener {
                                     //cargo la tabla de la gui
                                     loadTableAnnualStatistics(findSalesStatisticsBetweenYears);
                                     loadTableTotalSalesStatistics();
+                                    List<Map> totalSalesWaiterBetweenears = interfaceStatistics.getTotalSalesWaiterBetweenDays(since, until);
+                                    guiSalesStatistics.drawingSalesChartWaiter(totalSalesWaiterBetweenears);
+                                    guiSalesStatistics.drawingTablesChartWaiter(totalSalesWaiterBetweenears);
                                 } catch (RemoteException ex) {
                                     Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
                                 }
@@ -119,6 +128,9 @@ public class ControllerGuiSalesStatistics implements ActionListener {
                             //cargo la tabla de la gui
                             loadTableDailyStatistics(findSalesStatisticsBetweenDays);
                             loadTableTotalSalesStatistics();
+                            List<Map> totalSalesWaiterBetweenDays = interfaceStatistics.getTotalSalesWaiterBetweenDays(since, until);
+                            guiSalesStatistics.drawingSalesChartWaiter(totalSalesWaiterBetweenDays);
+                            guiSalesStatistics.drawingTablesChartWaiter(totalSalesWaiterBetweenDays);
                         } catch (RemoteException ex) {
                             Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -131,6 +143,9 @@ public class ControllerGuiSalesStatistics implements ActionListener {
                                 //cargo la tabla de la gui
                                 loadTableMonthlyStatistics(findSalesStatisticsBetweenMonths);
                                 loadTableTotalSalesStatistics();
+                                List<Map> totalSalesWaiterBetweenMonths = interfaceStatistics.getTotalSalesWaiterBetweenDays(since, until);
+                                guiSalesStatistics.drawingSalesChartWaiter(totalSalesWaiterBetweenMonths);
+                                guiSalesStatistics.drawingTablesChartWaiter(totalSalesWaiterBetweenMonths);
                             } catch (RemoteException ex) {
                                 Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -143,6 +158,9 @@ public class ControllerGuiSalesStatistics implements ActionListener {
                                     //cargo la tabla de la gui
                                     loadTableAnnualStatistics(findSalesStatisticsBetweenYears);
                                     loadTableTotalSalesStatistics();
+                                    List<Map> totalSalesWaiterBetweenYears = interfaceStatistics.getTotalSalesWaiterBetweenDays(since, until);
+                                    guiSalesStatistics.drawingSalesChartWaiter(totalSalesWaiterBetweenYears);
+                                    guiSalesStatistics.drawingTablesChartWaiter(totalSalesWaiterBetweenYears);
                                 } catch (RemoteException ex) {
                                     Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
                                 }
@@ -186,7 +204,7 @@ public class ControllerGuiSalesStatistics implements ActionListener {
                 //recorro cada producto del pedido
                 for (Map product : orderProducts) {
                     //saco la fecha 
-                    if(day == null){
+                    if (day == null) {
                         Timestamp timestamp = Timestamp.valueOf((product.get("created_at").toString()));
                         day = new Date(timestamp.getTime());
                     }
@@ -323,7 +341,7 @@ public class ControllerGuiSalesStatistics implements ActionListener {
             //limpio la tabla de resultados de la busqueda
             guiSalesStatistics.getModelTableSalesStatisticsWaiter().setRowCount(0);
             guiSalesStatistics.getModelTableTotalSalesStatistics().setRowCount(0);
-            
+
             //Si las fechas no son vacias
             if (guiSalesStatistics.getDateSince().getDate() != null && guiSalesStatistics.getDateUntil().getDate() != null) {
                 //saco ambas fechas del datechooser
@@ -335,6 +353,9 @@ public class ControllerGuiSalesStatistics implements ActionListener {
                     //cargo la tabla de la gui
                     loadTableMonthlyStatistics(findSalesStatisticsBetweenMonths);
                     loadTableTotalSalesStatistics();
+                    List<Map> totalSalesWaiterBetweenMonths = interfaceStatistics.getTotalSalesWaiterBetweenDays(since, until);
+                    guiSalesStatistics.drawingSalesChartWaiter(totalSalesWaiterBetweenMonths);
+                    guiSalesStatistics.drawingTablesChartWaiter(totalSalesWaiterBetweenMonths);
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -357,6 +378,9 @@ public class ControllerGuiSalesStatistics implements ActionListener {
                     //cargo la tabla de la gui
                     loadTableAnnualStatistics(findSalesStatisticsBetweenMonths);
                     loadTableTotalSalesStatistics();
+                    List<Map> totalSalesWaiterBetweenYears = interfaceStatistics.getTotalSalesWaiterBetweenDays(since, until);
+                    guiSalesStatistics.drawingSalesChartWaiter(totalSalesWaiterBetweenYears);
+                    guiSalesStatistics.drawingTablesChartWaiter(totalSalesWaiterBetweenYears);
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -379,6 +403,9 @@ public class ControllerGuiSalesStatistics implements ActionListener {
                     //cargo la tabla de la gui
                     loadTableDailyStatistics(findSalesStatisticsBetweenDays);
                     loadTableTotalSalesStatistics();
+                    List<Map> totalSalesWaiterBetweenDays = interfaceStatistics.getTotalSalesWaiterBetweenDays(since, until);
+                    guiSalesStatistics.drawingSalesChartWaiter(totalSalesWaiterBetweenDays);
+                    guiSalesStatistics.drawingTablesChartWaiter(totalSalesWaiterBetweenDays);
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
                 }
