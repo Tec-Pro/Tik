@@ -444,7 +444,9 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
             for (int j = 0; j < i; j++) {
                 if (tableReciper.getValueAt(j, 4).toString().equals("Primario")) {
                     Map pp = crudPproduct.getPproduct(Integer.parseInt(tableReciper.getValueAt(j, 0).toString()));
-                    price += ParserFloat.stringToFloat(pp.get("unit_price").toString()) * ParserFloat.stringToFloat(tableReciper.getValueAt(j, 2).toString());
+                    System.out.println(((float)pp.get("unit_price")));
+                    System.out.println(ParserFloat.stringToFloat(tableReciper.getValueAt(j, 2).toString()));
+                    price += (float)pp.get("unit_price") * ParserFloat.stringToFloat(tableReciper.getValueAt(j, 2).toString());
                 } else {
                     if (tableReciper.getValueAt(j, 4).toString().equals("Elaborado")) {
                         List<Map> leppp = crudEproduct.getEproductPproduts(Integer.parseInt(tableReciper.getValueAt(j, 0).toString()));
