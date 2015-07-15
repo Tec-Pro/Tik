@@ -25,7 +25,6 @@ import gui.GuiCRUDUser;
 import gui.GuiMenu;
 import gui.GuiLoadPurchase;
 import gui.cashbox.GUICashbox;
-import gui.cashbox.GUICloseTurnTarde;
 import gui.cashbox.GuiOpenTurn;
 import gui.logout.GuiLogout;
 import gui.main.GuiConfig;
@@ -63,7 +62,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import utils.GeneralConfig;
 import utils.InterfaceName;
-import utils.ParserFloat;
 
 /**
  *
@@ -365,7 +363,7 @@ public class ControllerMain implements ActionListener {
             guiOpenTurn.setVisible(true);
             guiOpenTurn.toFront();
         }
-        if (ae.getSource() == guiMain.getBtnCloseCashBox()) { //Cierro el turno
+       /* if (ae.getSource() == guiMain.getBtnCloseCashBox()) { //Cierro el turno
             try {
                 if (!crudTurn.isTurnOpen()) {
                     JOptionPane.showMessageDialog(guiMain, "No hay ningun turno abierto");
@@ -457,7 +455,7 @@ public class ControllerMain implements ActionListener {
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
+          } */
         if (ae.getSource() == guiMain.getBtnProductList()) {
             try {
                 guiProductList.setMaximum(true);

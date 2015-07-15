@@ -5,11 +5,7 @@
 package gui.main;
 
 import java.awt.event.ActionListener;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDesktopPane;
-import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 /**
@@ -17,21 +13,20 @@ import javax.swing.JMenuItem;
  * @author nico
  */
 public class GuiMain extends javax.swing.JFrame {
+
     /**
      * Creates new form GuiMain
      */
     private DesktopPaneImage desktop;
-    
+
     public GuiMain() {
         initComponents();
-        desktop= new DesktopPaneImage();
+        desktop = new DesktopPaneImage();
         this.add(desktop);
-        
-    }
-    
 
-    
-    public void setActionListener(ActionListener lis){
+    }
+
+    public void setActionListener(ActionListener lis) {
         this.btnDisconnect.addActionListener(lis);
         this.btnExit.addActionListener(lis);
         this.btnAdmins.addActionListener(lis);
@@ -45,32 +40,16 @@ public class GuiMain extends javax.swing.JFrame {
         this.btnPurchase.addActionListener(lis);
         this.btnConfig.addActionListener(lis);
         this.btnDailyCashbox.addActionListener(lis);
-        this.turn.addActionListener(lis);
         this.btnSalesStatistics.addActionListener(lis);
         this.btnProductStatistics.addActionListener(lis);
         this.btnProductList.addActionListener(lis);
-        this.bntOpenTA.addActionListener(lis);
-        this.btnCloseCashBox.addActionListener(lis);
         this.btnLogout.addActionListener(lis);
-        this.btnOpenTM.addActionListener(lis);
         this.btnViewOrders.addActionListener(lis);
-    }
-
-    public JMenuItem getBntOpenTA() {
-        return bntOpenTA;
-    }
-
-    public JMenuItem getBtnCloseCashBox() {
-        return btnCloseCashBox;
     }
 
     public JMenuItem getBtnLogout() {
         return btnLogout;
     }
-
-    public JMenuItem getBtnOpenTM() {
-        return btnOpenTM;
-    }     
 
     public JMenuItem getBtnConfig() {
         return btnConfig;
@@ -88,7 +67,6 @@ public class GuiMain extends javax.swing.JFrame {
         return btnEmployes;
     }
 
-    
     public JMenuItem getBtnEProduct() {
         return btnEProduct;
     }
@@ -107,7 +85,7 @@ public class GuiMain extends javax.swing.JFrame {
 
     public JMenuItem getBtnMenu() {
         return btnMenu;
-    }    
+    }
 
     public JMenuItem getBtnAbout() {
         return btnAbout;
@@ -121,12 +99,9 @@ public class GuiMain extends javax.swing.JFrame {
         return btnExit;
     }
 
-
     public JMenuItem getBtnAdmins() {
         return btnAdmins;
     }
-
-
 
     public DesktopPaneImage getDesktop() {
         return desktop;
@@ -147,7 +122,6 @@ public class GuiMain extends javax.swing.JFrame {
     public JMenuItem getBtnViewOrders() {
         return btnViewOrders;
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -186,10 +160,6 @@ public class GuiMain extends javax.swing.JFrame {
         btnConfig = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         btnAbout = new javax.swing.JMenuItem();
-        turn = new javax.swing.JMenu();
-        btnOpenTM = new javax.swing.JMenuItem();
-        bntOpenTA = new javax.swing.JMenuItem();
-        btnCloseCashBox = new javax.swing.JMenuItem();
         turn1 = new javax.swing.JMenu();
         btnViewOrders = new javax.swing.JMenuItem();
 
@@ -315,24 +285,6 @@ public class GuiMain extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
-        turn.setText("Turno");
-
-        btnOpenTM.setText("Abrir Turno Mañana");
-        btnOpenTM.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOpenTMActionPerformed(evt);
-            }
-        });
-        turn.add(btnOpenTM);
-
-        bntOpenTA.setText("Abrir Turno Tarde");
-        turn.add(bntOpenTA);
-
-        btnCloseCashBox.setText("Cerrar");
-        turn.add(btnCloseCashBox);
-
-        jMenuBar1.add(turn);
-
         turn1.setText("Pedidos");
 
         btnViewOrders.setText("ver pedidos ");
@@ -351,7 +303,7 @@ public class GuiMain extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAboutActionPerformed
-        About acercaDe= new About(this, true);
+        About acercaDe = new About(this, true);
         acercaDe.setLocationRelativeTo(this);
         acercaDe.setVisible(true);
     }//GEN-LAST:event_btnAboutActionPerformed
@@ -368,20 +320,12 @@ public class GuiMain extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnProductListActionPerformed
 
-    private void btnOpenTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenTMActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnOpenTMActionPerformed
-
     private void btnViewOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewOrdersActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnViewOrdersActionPerformed
-
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem bntOpenTA;
     private javax.swing.JMenuItem btnAbout;
     private javax.swing.JMenuItem btnAdmins;
-    private javax.swing.JMenuItem btnCloseCashBox;
     private javax.swing.JMenuItem btnConfig;
     private javax.swing.JMenuItem btnDailyCashbox;
     private javax.swing.JMenuItem btnDisconnect;
@@ -391,7 +335,6 @@ public class GuiMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem btnFProduct;
     private javax.swing.JMenuItem btnLogout;
     private javax.swing.JMenuItem btnMenu;
-    private javax.swing.JMenuItem btnOpenTM;
     private javax.swing.JMenuItem btnPProduct;
     private javax.swing.JMenuItem btnProductCategory;
     private javax.swing.JMenuItem btnProductList;
@@ -410,10 +353,8 @@ public class GuiMain extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu7;
     private javax.swing.JMenu jMenu8;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenu turn;
     private javax.swing.JMenu turn1;
     // End of variables declaration//GEN-END:variables
-
 
     /**
      * @return the btnNewWithdrawal

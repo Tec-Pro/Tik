@@ -27,7 +27,7 @@ public class GuiLogout extends javax.swing.JInternalFrame {
     
     public void setActionListener(ActionListener lis) {
         this.btnClose.addActionListener(lis);
-        this.btnCloseAllKitchen.addActionListener(lis);
+       // this.btnCloseAllKitchen.addActionListener(lis);
         this.btnUpdate.addActionListener(lis);
     }
 
@@ -35,9 +35,9 @@ public class GuiLogout extends javax.swing.JInternalFrame {
         return btnClose;
     }
 
-    public JButton getBtnCloseAllKitchen() {
+    /*public JButton getBtnCloseAllKitchen() {
         return btnCloseAllKitchen;
-    }
+    }*/
 
     public JButton getBtnUpdate() {
         return btnUpdate;
@@ -58,6 +58,16 @@ public class GuiLogout extends javax.swing.JInternalFrame {
     public JFormattedTextField getTxtDelivery() {
         return txtDelivery;
     }
+
+    public JLabel getLblDelivery() {
+        return lblDelivery;
+    }
+
+    public JLabel getLblException() {
+        return lblException;
+    }
+    
+    
     
     
 /**
@@ -78,7 +88,9 @@ public class GuiLogout extends javax.swing.JInternalFrame {
         lblDif.setText("");
         txtDelivery.setText("");
         txtDelivery.setEnabled(false);
-        lblEarn.setText("");        
+        lblEarn.setText("");  
+        lblDelivery.setText("");
+        lblException.setText(""); 
     }
     
     /**
@@ -92,7 +104,6 @@ public class GuiLogout extends javax.swing.JInternalFrame {
 
         jLabel1 = new javax.swing.JLabel();
         cBoxEmployers = new javax.swing.JComboBox();
-        btnCloseAllKitchen = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -101,14 +112,16 @@ public class GuiLogout extends javax.swing.JInternalFrame {
         lblDif = new javax.swing.JLabel();
         txtDelivery = new javax.swing.JFormattedTextField();
         btnClose = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        lblException = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        lblDelivery = new javax.swing.JLabel();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setTitle("Cerrar Sesiones");
 
         jLabel1.setText("Empleado:");
-
-        btnCloseAllKitchen.setText("Cerrar todos cocina");
 
         btnUpdate.setText("Actualizar");
 
@@ -127,22 +140,33 @@ public class GuiLogout extends javax.swing.JInternalFrame {
 
         btnClose.setText("Cerrar Sesion");
 
+        jLabel5.setText("Excepciones:");
+
+        lblException.setText("2000");
+
+        jLabel6.setText("Entregó:");
+
+        lblDelivery.setText("2000");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnClose)
-                        .addGap(131, 131, 131))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnCloseAllKitchen)
-                        .addGap(110, 110, 110))))
+                .addComponent(btnClose)
+                .addGap(131, 131, 131))
             .addGroup(layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblDelivery, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblException, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnUpdate)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -175,9 +199,17 @@ public class GuiLogout extends javax.swing.JInternalFrame {
                     .addComponent(jLabel1)
                     .addComponent(cBoxEmployers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblDelivery, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(txtDelivery, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblException, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -188,24 +220,25 @@ public class GuiLogout extends javax.swing.JInternalFrame {
                     .addComponent(lblDif, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnClose)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCloseAllKitchen)
-                .addContainerGap())
+                .addGap(46, 46, 46))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClose;
-    private javax.swing.JButton btnCloseAllKitchen;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JComboBox cBoxEmployers;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel lblDelivery;
     private javax.swing.JLabel lblDif;
     private javax.swing.JLabel lblEarn;
+    private javax.swing.JLabel lblException;
     private javax.swing.JFormattedTextField txtDelivery;
     // End of variables declaration//GEN-END:variables
 }

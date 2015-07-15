@@ -7,6 +7,8 @@ package controllers.logout;
 import gui.logout.GuiLogout;
 import interfaces.InterfaceOrder;
 import interfaces.InterfacePresence;
+import interfaces.InterfaceTurn;
+import interfaces.deposits.InterfaceDeposit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.NotBoundException;
@@ -16,7 +18,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import utils.InterfaceName;
 import utils.ParserFloat;
 
@@ -31,12 +32,16 @@ public class ControllerGuiLogout implements ActionListener {
     private InterfacePresence crudPresence;
     private Set<Map> online;
     private InterfaceOrder crudOrder;
+    private InterfaceDeposit crudDeposit;
+    private InterfaceTurn crudTurn; 
     
 
     public ControllerGuiLogout(GuiLogout guiLogout) throws RemoteException, NotBoundException {
         this.guiLogout = guiLogout;
         crudPresence = (InterfacePresence) InterfaceName.registry.lookup(InterfaceName.CRUDPresence);
         crudOrder = (InterfaceOrder) InterfaceName.registry.lookup(InterfaceName.CRUDOrder);
+        crudDeposit = (InterfaceDeposit) InterfaceName.registry.lookup(InterfaceName.CRUDDeposit);
+        crudTurn = (InterfaceTurn) InterfaceName.registry.lookup(InterfaceName.CRUDTurn);
         updateOnline();
         userId = -1;
         guiLogout.clear();
@@ -62,9 +67,11 @@ public class ControllerGuiLogout implements ActionListener {
      * calcula la diferencia entre lo que vendio y lo que entrego
      */
      private void calculateDif(){
+        float pd =  ParserFloat.stringToFloat(guiLogout.getLblDelivery().getText());
         float d = ParserFloat.stringToFloat(guiLogout.getTxtDelivery().getText());
         float e = ParserFloat.stringToFloat(guiLogout.getLblEarn().getText());
-        guiLogout.getLblDif().setText(ParserFloat.floatToString(d-e));
+        float ex = ParserFloat.stringToFloat(guiLogout.getLblException().getText());
+        guiLogout.getLblDif().setText(ParserFloat.floatToString(pd+d-e-ex));
      }
      
     /**
@@ -79,8 +86,9 @@ public class ControllerGuiLogout implements ActionListener {
             if (pos.equals("Mozo")) {
                 guiLogout.clear();
                 guiLogout.getTxtDelivery().setText("0");
-                float collect = crudOrder.EarnByUser(userId) + crudOrder.getExceptions(userId);
-                guiLogout.getTxtDelivery().setText(ParserFloat.floatToString(collect));
+                guiLogout.getLblEarn().setText(ParserFloat.floatToString(crudOrder.EarnByUser(userId)));
+                guiLogout.getLblException().setText(ParserFloat.floatToString(crudOrder.getExceptions(userId)));
+                guiLogout.getLblDelivery().setText(ParserFloat.floatToString(crudDeposit.getWaiterDepositsTotalOnTurn(userId, crudTurn.getTurn())));
                 calculateDif();
                 guiLogout.getTxtDelivery().setEnabled(true);
             } else {
@@ -123,7 +131,7 @@ public class ControllerGuiLogout implements ActionListener {
                 Logger.getLogger(ControllerGuiLogout.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        if (ae.getSource() == guiLogout.getBtnCloseAllKitchen()) {
+       /* if (ae.getSource() == guiLogout.getBtnCloseAllKitchen()) {
             try {
                 crudPresence.logoutAllCooks();
                 JOptionPane.showMessageDialog(guiLogout, "Las sesiones se cerraron exitosamente");
@@ -133,7 +141,7 @@ public class ControllerGuiLogout implements ActionListener {
                 Logger.getLogger(ControllerGuiLogout.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-        }
+        }*/
 
     }
 }

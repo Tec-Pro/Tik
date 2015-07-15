@@ -25,99 +25,291 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="58" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="btnOpenMorning" min="-2" pref="78" max="-2" attributes="0"/>
+                          <Component id="btnSeeMorning" alignment="0" min="-2" pref="78" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="btnCloseMorning" min="-2" pref="78" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="lblBalance" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                                      <Component id="btnResume" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                          </Group>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="lblMBalance" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblMGain" alignment="1" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
-                      <Component id="btnMorning" min="-2" pref="78" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
+                      <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="btnOpenAfternoon" alignment="0" min="-2" pref="78" max="-2" attributes="0"/>
+                  <Component id="btnCloseAfternoon" alignment="0" min="-2" pref="78" max="-2" attributes="0"/>
+                  <Component id="btnSeeAfternoon" alignment="0" min="-2" pref="78" max="-2" attributes="0"/>
+                  <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblWM1" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblMGain" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="lblWM5" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblWM6" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblWM7" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblWM8" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblWM9" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblWM10" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="lblWM4" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="lblWMGain4" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="lblWM3" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="lblWMGain3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="lblWM2" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="lblWMGain2" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="-2" pref="81" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="lblWMGain1" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                                  <Component id="lblWMGain7" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblWMGain6" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblWMGain5" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblWMGain8" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblWMGain9" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblWMGain10" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
                   </Group>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="jLabel5" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel7" alignment="1" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="lblABalance" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblAGain" alignment="1" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="lblAGain" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
-                      <Component id="btnAfternoon" min="-2" pref="72" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="lblWA1" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblWA2" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblWA3" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblWA4" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblWA5" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblWA6" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblWA7" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblWA8" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblWA9" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblWA10" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="lblWAGain1" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                              <Component id="lblWAGain3" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblWAGain2" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                              <Component id="lblWAGain5" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblWAGain4" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                              <Component id="lblWAGain7" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblWAGain6" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="lblWAGain8" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                              <Component id="lblWAGain10" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblWAGain9" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
               </Group>
-              <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="138" max="-2" attributes="0"/>
-              <Component id="btnResume" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="138" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnMorning" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnAfternoon" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel4" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="btnOpenMorning" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="btnCloseMorning" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="lblMBalance" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="lblMGain" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="btnOpenAfternoon" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="btnCloseAfternoon" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="lblABalance" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="lblAGain" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                      <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblBalance" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="btnSeeAfternoon" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnSeeMorning" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblMGain" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblAGain" alignment="0" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="lblWMGain1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblWM1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="lblWM2" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblWMGain2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="lblWM3" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblWMGain3" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="lblWM4" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblWMGain4" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="lblWM5" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblWMGain5" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="lblWM6" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="lblWM7" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="lblWM8" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="lblWM9" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="lblWM10" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
+                              <Component id="lblWMGain6" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="lblWMGain7" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="lblWMGain8" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="lblWMGain9" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="lblWMGain10" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Component id="lblWAGain1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblWAGain2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblWAGain3" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblWAGain4" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblWAGain5" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblWAGain6" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblWAGain7" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblWAGain8" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblWAGain9" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblWAGain10" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Component id="lblWA1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblWA2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblWA3" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblWA4" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblWA5" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblWA6" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblWA7" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblWA8" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblWA9" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblWA10" min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="btnResume" min="-2" pref="45" max="-2" attributes="0"/>
-              <EmptySpace pref="27" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JButton" name="btnMorning">
+    <Component class="javax.swing.JButton" name="btnOpenMorning">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Ma&#xf1;ana"/>
+        <Property name="text" type="java.lang.String" value="Abrir"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="btnAfternoon">
+    <Component class="javax.swing.JButton" name="btnSeeAfternoon">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Tarde"/>
+        <Property name="text" type="java.lang.String" value="Ver"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btnResume">
@@ -135,22 +327,12 @@
         <Property name="text" type="java.lang.String" value="Saldo:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="lblMBalance">
+    <Component class="javax.swing.JLabel" name="lblBalance">
       <Properties>
         <Property name="text" type="java.lang.String" value="20000"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblMGain">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="20000"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel5">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Saldo:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="lblABalance">
       <Properties>
         <Property name="text" type="java.lang.String" value="20000"/>
       </Properties>
@@ -163,6 +345,242 @@
     <Component class="javax.swing.JLabel" name="lblAGain">
       <Properties>
         <Property name="text" type="java.lang.String" value="20000"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnCloseMorning">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Cerrar"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnSeeMorning">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Ver"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnOpenAfternoon">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Abrir"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnCloseAfternoon">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Cerrar"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel3">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Cantarell" size="36" style="0"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Ma&#xf1;ana"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel4">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Cantarell" size="36" style="0"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Tarde"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWM1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="nombre"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWMGain1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="20000"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWM2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="nombre"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWMGain2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="20000"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWMGain3">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="20000"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWM3">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="nombre"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWMGain7">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="20000"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWM6">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="nombre"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWM7">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="nombre:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWMGain6">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="20000"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWM4">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="nombre"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWMGain4">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="20000"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWMGain5">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="20000"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWM5">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="nombre"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWM8">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="nombre"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWMGain8">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="20000"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWMGain9">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="20000"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWM9">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="nombre"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWM10">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="nombre"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWMGain10">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="20000"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWAGain2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="20000"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWA2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="nombre"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWAGain1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="20000"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWA1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="nombre"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWA9">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="nombre"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWAGain10">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="20000"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWA10">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="nombre"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWAGain9">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="20000"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWAGain6">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="20000"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWAGain8">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="20000"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWA7">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="nombre"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWA8">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="nombre"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWA3">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="nombre"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWAGain3">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="20000"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWA6">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="nombre"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWAGain7">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="20000"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWAGain4">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="20000"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWAGain5">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="20000"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWA5">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="nombre"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblWA4">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="nombre"/>
       </Properties>
     </Component>
   </SubComponents>

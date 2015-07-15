@@ -187,31 +187,6 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="turn">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Turno"/>
-          </Properties>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="btnOpenTM">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Abrir Turno Ma&#xf1;ana"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOpenTMActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="bntOpenTA">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Abrir Turno Tarde"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="btnCloseCashBox">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Cerrar"/>
-              </Properties>
-            </MenuItem>
-          </SubComponents>
-        </Menu>
         <Menu class="javax.swing.JMenu" name="turn1">
           <Properties>
             <Property name="text" type="java.lang.String" value="Pedidos"/>
