@@ -13,6 +13,7 @@ import controllers.providers.purchase.ControllerGuiPurchase;
 import controllers.statistics.ControllerGuiProductList;
 import controllers.statistics.ControllerGuiProductStatistics;
 import controllers.statistics.ControllerGuiSalesStatistics;
+import controllers.waiter.ControllerGuiMain;
 //import controllers.withdrawals.ControllerGUICRUDWithdrawal;
 import gui.GuiAdminLogin;
 import gui.GuiCRUDAdmin;
@@ -481,6 +482,19 @@ public class ControllerMain implements ActionListener {
                 guiSalesStatistics.setVisible(true);
                 guiSalesStatistics.toFront();
             } catch (PropertyVetoException ex) {
+                Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+        if(ae.getSource()==guiMain.getBtnViewOrders()){
+            try {
+                //abro un "programa" de mozo
+                ControllerGuiMain c = new ControllerGuiMain();
+            } catch (NotBoundException ex) {
+                Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (RemoteException ex) {
                 Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
             }
 

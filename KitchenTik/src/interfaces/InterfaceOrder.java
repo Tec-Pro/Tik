@@ -136,4 +136,19 @@ public interface InterfaceOrder extends Remote {
     public Pair<List<Map>, List<Map>> getAllOrdersForKitchen() throws java.rmi.RemoteException;
     
     public  List<Map> getOrderProductsWithName(int orderId) throws RemoteException;
+    
+        /**
+     * BORRA UN PRODUCTO DE UNA ORDEN
+     * @param id
+     * @throws RemoteException 
+     */
+    public void deleteProduct(int id_prod_order, int fprod, float quantity, int order_id) throws RemoteException;
+    
+    /**
+     * DESCUENTA UN PRODUCTO, o lo elimina del descuento
+     * @param id
+     * @param isDiscount
+     * @throws RemoteException 
+     */
+    public void discountProduct(int id, int isDiscount) throws RemoteException ;
 }

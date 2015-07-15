@@ -199,4 +199,20 @@ public interface InterfaceOrder extends Remote {
      * @throws RemoteException 
      */
     public List<Map> getDataPrinterOrd(int id) throws RemoteException;
+    
+    /**
+     * BORRA UN PRODUCTO DE UNA ORDEN
+     * @param id
+     * @throws RemoteException 
+     */
+   public void deleteProduct(int id_prod_order, int fprod, float quantity, int order_id) throws RemoteException;
+    
+    /**
+     * DESCUENTA UN PRODUCTO, o lo elimina del descuento
+     * @param id
+     * @param isDiscount
+     * @throws RemoteException 
+     */
+    public void discountProduct(int id, int isDiscount) throws RemoteException ;
+
 }

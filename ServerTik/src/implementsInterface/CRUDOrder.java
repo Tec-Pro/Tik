@@ -123,6 +123,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         order.saveIt();
         for (Map<String, Object> prod : fproducts) {
             OrdersFproducts.create("order_id", orderId, "fproduct_id", (int) prod.get("fproductId"), "quantity", (float) prod.get("quantity"), "done", (boolean) prod.get("done"), "commited", (boolean) prod.get("commited"), "issued", (boolean) prod.get("issued")).saveIt();
+            updateStock((int) prod.get("fproductId"), (float) prod.get("quantity"));
         }
         Base.commitTransaction();
         Thread thread = new Thread() {
@@ -342,6 +343,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
                 m.put("created_at", rs.getObject("created_at"));
                 m.put("updated_at", rs.getObject("updated_at"));
                 m.put("paid", rs.getObject("paid"));
+                m.put("discount", rs.getObject("discount"));
                 ret.add(m);
             }
             rs.close();
@@ -881,6 +883,8 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
     public void updateStock(int fproduct_id, float quantity) {
         Utils.abrirBase();
         //actualizo el stock si el final tiene productos primarios
+                Base.openTransaction();
+
         LazyList<FproductsPproducts> pproducts = Fproduct.findById(fproduct_id).getAll(FproductsPproducts.class);
         for (FproductsPproducts fpp : pproducts) {
             Pproduct p = Pproduct.findById(fpp.get("pproduct_id"));
@@ -907,12 +911,101 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         //termino elaborados
 
         //combos (finales-finales)
-        LazyList<FproductsFproducts> fproducts =FproductsFproducts.where("fproduct_id2 = ?", fproduct_id);
+        LazyList<FproductsFproducts> fproducts = FproductsFproducts.where("fproduct_id2 = ?", fproduct_id);
         //obtengo todos los productos finales que están en el combo
-        for(FproductsFproducts ff: fproducts){
-            Fproduct f= Fproduct.findById(ff.get("fproduct_id"));
-            updateStock(f.getInteger("id"), quantity*ff.getFloat("amount"));
+        for (FproductsFproducts ff : fproducts) {
+            Fproduct f = Fproduct.findById(ff.get("fproduct_id"));
+            updateStock(f.getInteger("id"), quantity * ff.getFloat("amount"));
         }
     }
 
+    @Override
+    public void deleteProduct(int id_prod_order, int fprod, float quantity, int order_id) throws RemoteException {
+        try {
+            openBase();
+            sql = "DELETE FROM `tik`.`orders_fproducts` WHERE `id`='" + id_prod_order + "';";
+            Statement stmt = conn.createStatement();
+            stmt.execute(sql);
+            stmt.close();
+            restoreStock(fprod, quantity);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Thread thread = new Thread() {
+            public void run() {
+                try {
+                    Pair<Map<String, Object>, List<Map>> mapBar = obtainOrdersBar(order_id);
+                    Pair<Map<String, Object>, List<Map>> mapKitchen = obtainOrdersKitchen(order_id);
+                    if (mapKitchen != null) {
+                        Server.notifyKitchenUpdatedOrder(mapKitchen);
+                    }
+                    if (mapBar != null) {
+                        Server.notifyBarUpdatedOrder(mapBar);
+                    }
+                    Pair<Map<String, Object>, List<Map>> pair = new Pair(getOrder(order_id), getOrderProductsWithName(order_id));
+                    Server.notifyWaitersOrderReady(pair);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        };
+        thread.start();
+    }
+
+    @Override
+    public void discountProduct(int id, int isDiscount) throws RemoteException {
+        try {
+            openBase();
+            sql = "UPDATE `tik`.`orders_fproducts` SET `discount`='" + isDiscount + "' WHERE `id`='" + id + "';";
+            Statement stmt = conn.createStatement();
+            stmt.execute(sql);
+            stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * restauro un producto
+     * @param fproduct_id
+     * @param quantity 
+     */
+    public void restoreStock(int fproduct_id, float quantity) {
+        Utils.abrirBase();
+        //actualizo el stock si el final tiene productos primarios
+        Base.openTransaction();
+        LazyList<FproductsPproducts> pproducts = Fproduct.findById(fproduct_id).getAll(FproductsPproducts.class);
+        for (FproductsPproducts fpp : pproducts) {
+            Pproduct p = Pproduct.findById(fpp.get("pproduct_id"));
+            p.set("stock", p.getFloat("stock") + (fpp.getFloat("amount") * quantity));
+            p.saveIt();
+        }
+        Base.commitTransaction();
+        //termino lo de productos primarios
+
+        //productos elaborados
+        Base.openTransaction();
+        //obtengo todos los productos elaborados(relaciones) del producto final
+        LazyList<FproductsEproducts> eproducts = Fproduct.findById(fproduct_id).getAll(FproductsEproducts.class);
+        for (FproductsEproducts epf : eproducts) {//para cada producto elaborado(relacion final-elaborado) de ese final, obtengo la relacion elaborado-primario
+            LazyList<EproductsPproducts> ep = EproductsPproducts.where("eproduct_id = ?", epf.get("eproduct_id"));
+            for (EproductsPproducts relacionEP : ep) {
+                //para cada relacion elaborado-primario, debo obtener el primerio y setearle el stock
+                Pproduct p = Pproduct.findById(relacionEP.get("pproduct_id"));
+                p.set("stock", p.getFloat("stock") + (quantity * relacionEP.getFloat("amount") * epf.getFloat("amount")));
+                p.saveIt();
+            }
+        }
+        Base.commitTransaction();
+        //termino elaborados
+
+        //combos (finales-finales)
+        LazyList<FproductsFproducts> fproducts = FproductsFproducts.where("fproduct_id2 = ?", fproduct_id);
+        //obtengo todos los productos finales que están en el combo
+        for (FproductsFproducts ff : fproducts) {
+            Fproduct f = Fproduct.findById(ff.get("fproduct_id"));
+            updateStock(f.getInteger("id"), quantity * ff.getFloat("amount"));
+        }
+    }
 }

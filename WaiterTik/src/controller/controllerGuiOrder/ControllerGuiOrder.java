@@ -404,20 +404,21 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
         List<Map> orderProducts = crudOrder.getOrderProducts(currentOrderId);
         for (Map Orderprod : orderProducts) {
             Map prod = crudFproduct.getFproduct((int) Orderprod.get("fproduct_id"));
-            Object[] row = new Object[8];
+            Object[] row = new Object[9];
             row[0] = prod.get("id");
             float quantity = (float) Orderprod.get("quantity");
             row[1] = quantity;
             row[2] = prod.get("name");
             float price = (float) prod.get("sell_price");
             row[3] = ParserFloat.floatToString(price * quantity);
-            if (!(boolean) Orderprod.get("paid")) {
+            if (!(boolean) Orderprod.get("paid")&& !(boolean) Orderprod.get("discount")) {
                 totalPrice += price * quantity;
             }
             row[4] = (boolean) Orderprod.get("done");
             row[5] = (boolean) Orderprod.get("commited");
             row[6] = (boolean) Orderprod.get("issued");
             row[7] = (boolean) Orderprod.get("paid");
+            row[8] = (boolean) Orderprod.get("discount");
             guiOrder.getTableProductsDefault().addRow(row);
         }
         /**
@@ -426,7 +427,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
         float paidEx = crudOrder.getPaidException(currentOrderId);
         float ex = crudOrder.getException(currentOrderId);
         if (ex > 0) {
-            Object[] row = new Object[8];
+            Object[] row = new Object[9];
             row[0] = "";
             row[1] = 1;
             row[2] = "exepciones no pagas";
@@ -436,10 +437,11 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
             row[5] = true;
             row[6] = true;
             row[7] = false;
+            row[8] = false;
             guiOrder.getTableProductsDefault().addRow(row);
         }
         if (paidEx > 0) {
-            Object[] row = new Object[8];
+            Object[] row = new Object[9];
             row[0] = "";
             row[1] = 1;
             row[2] = "exepciones pagas";
@@ -448,6 +450,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
             row[5] = true;
             row[6] = true;
             row[7] = true;
+            row[8] = false;
             guiOrder.getTableProductsDefault().addRow(row);
         }
         guiOrder.getjTextDescription().setText(currentOrder.get("description").toString());
@@ -628,7 +631,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                 float f = ex.getAmount();
                 try {
                     crudOrder.addException(currentOrderId, f);
-                    Object[] row = new Object[8];
+                    Object[] row = new Object[9];
                     row[0] = "";
                     row[1] = 1;
                     row[2] = "";
@@ -637,6 +640,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                     row[5] = true;
                     row[6] = true;
                     row[7] = false;
+                    row[8] = false;
                     guiOrder.getTableProductsDefault().addRow(row);
                     float totalPrice = ParserFloat.stringToFloat(guiOrder.getLblTotalPrice().getText());
                     guiOrder.getLblTotalPrice().setText(ParserFloat.floatToString(totalPrice + f));
@@ -653,7 +657,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                 List<Map> fproducts = crudFproduct.getFproducts(guiAmount.getLblProd().getText());
                 if (fproducts.size() == 1) {
                     Map<String, Object> fp = fproducts.get(0);
-                    Object[] row = new Object[8];
+                    Object[] row = new Object[9];
                     row[0] = fp.get("id");
                     row[1] = ParserFloat.stringToFloat(guiAmount.getTxtAmount().getText());
                     row[2] = guiAmount.getLblProd().getText();
@@ -664,6 +668,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                     row[5] = false;
                     row[6] = false;
                     row[7] = false;
+                    row[8] = false;
                     guiOrder.getTableProductsDefault().addRow(row);
                 } else {
                     JOptionPane.showMessageDialog(guiOrder, "No se encontro el producto o existen varios productos con el mismo nombre", "Atencion!", JOptionPane.WARNING_MESSAGE);

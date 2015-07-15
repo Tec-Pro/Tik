@@ -53,6 +53,7 @@ public class GuiMain extends javax.swing.JFrame {
         this.btnCloseCashBox.addActionListener(lis);
         this.btnLogout.addActionListener(lis);
         this.btnOpenTM.addActionListener(lis);
+        this.btnViewOrders.addActionListener(lis);
     }
 
     public JMenuItem getBntOpenTA() {
@@ -143,6 +144,10 @@ public class GuiMain extends javax.swing.JFrame {
         return btnSalesStatistics;
     }
 
+    public JMenuItem getBtnViewOrders() {
+        return btnViewOrders;
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -185,6 +190,8 @@ public class GuiMain extends javax.swing.JFrame {
         btnOpenTM = new javax.swing.JMenuItem();
         bntOpenTA = new javax.swing.JMenuItem();
         btnCloseCashBox = new javax.swing.JMenuItem();
+        turn1 = new javax.swing.JMenu();
+        btnViewOrders = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Tik administrador");
@@ -326,6 +333,18 @@ public class GuiMain extends javax.swing.JFrame {
 
         jMenuBar1.add(turn);
 
+        turn1.setText("Pedidos");
+
+        btnViewOrders.setText("ver pedidos ");
+        btnViewOrders.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewOrdersActionPerformed(evt);
+            }
+        });
+        turn1.add(btnViewOrders);
+
+        jMenuBar1.add(turn1);
+
         setJMenuBar(jMenuBar1);
 
         pack();
@@ -353,6 +372,10 @@ public class GuiMain extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnOpenTMActionPerformed
 
+    private void btnViewOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewOrdersActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnViewOrdersActionPerformed
+
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem bntOpenTA;
@@ -376,6 +399,7 @@ public class GuiMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem btnProviders;
     private javax.swing.JMenuItem btnPurchase;
     private javax.swing.JMenuItem btnSalesStatistics;
+    private javax.swing.JMenuItem btnViewOrders;
     private javax.swing.JMenu empleado;
     private javax.swing.JMenu jMenu;
     private javax.swing.JMenu jMenu1;
@@ -387,6 +411,7 @@ public class GuiMain extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu8;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu turn;
+    private javax.swing.JMenu turn1;
     // End of variables declaration//GEN-END:variables
 
 
