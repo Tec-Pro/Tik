@@ -114,17 +114,20 @@
                                               <Component id="btnException" max="32767" attributes="0"/>
                                               <Component id="btnModify" max="32767" attributes="0"/>
                                           </Group>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Group type="102" alignment="0" attributes="0">
-                                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                              <Group type="102" attributes="0">
                                                   <Component id="btnCommit" min="-2" pref="175" max="-2" attributes="0"/>
                                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                                   <Component id="btnClose" min="-2" pref="162" max="-2" attributes="0"/>
                                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                                   <Component id="btnSend" min="-2" pref="124" max="-2" attributes="0"/>
                                               </Group>
-                                              <Group type="102" alignment="1" attributes="0">
-                                                  <EmptySpace min="-2" pref="262" max="-2" attributes="0"/>
+                                              <Group type="102" attributes="0">
+                                                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="lblDiscount" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace max="32767" attributes="0"/>
                                                   <Component id="lblTotalText" min="-2" pref="145" max="-2" attributes="0"/>
                                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                                   <Component id="lblTotalPrice" min="-2" pref="64" max="-2" attributes="0"/>
@@ -152,6 +155,8 @@
                                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                                           <Component id="lblTotalText" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                                           <Component id="btnException" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lblDiscount" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <Component id="lblTotalPrice" min="-2" pref="27" max="-2" attributes="0"/>
                                   </Group>
@@ -393,6 +398,16 @@
                 <Component class="javax.swing.JButton" name="btnException">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Agregar excepcion"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabel1">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Descuento"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblDiscount">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="19.20"/>
                   </Properties>
                 </Component>
               </SubComponents>

@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import models.Discount;
 import models.Eproduct;
 import models.EproductsPproducts;
 import models.Fproduct;
@@ -359,7 +360,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         openBase();
         Map m = new HashMap();
         try {
-            sql = "SELECT orders.id,order_number,user_id,description,closed,persons,name FROM orders"
+            sql = "SELECT orders.discount, orders.id,order_number,user_id,description,closed,persons,name FROM orders"
                     + " INNER JOIN users WHERE orders.user_id = users.id AND orders.id = '" + orderId + "';";
             Statement stmt = conn.createStatement();
             java.sql.ResultSet rs;
@@ -374,6 +375,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
                 m.put("closed", rs.getObject("closed"));
                 m.put("persons", rs.getObject("persons"));
                 m.put("user_name", rs.getObject("name"));
+                m.put("discount", rs.getFloat("discount"));
             }
             rs.close();
             stmt.close();
@@ -883,7 +885,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
     public void updateStock(int fproduct_id, float quantity) {
         Utils.abrirBase();
         //actualizo el stock si el final tiene productos primarios
-                Base.openTransaction();
+        Base.openTransaction();
 
         LazyList<FproductsPproducts> pproducts = Fproduct.findById(fproduct_id).getAll(FproductsPproducts.class);
         for (FproductsPproducts fpp : pproducts) {
@@ -928,7 +930,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             stmt.execute(sql);
             stmt.close();
             restoreStock(fprod, quantity);
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -954,7 +956,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
     }
 
     @Override
-    public void discountProduct(int id, int isDiscount) throws RemoteException {
+    public void discountProduct(int id, int isDiscount, int fproduct_id, int user_id, int order_id) throws RemoteException {
         try {
             openBase();
             sql = "UPDATE `tik`.`orders_fproducts` SET `discount`='" + isDiscount + "' WHERE `id`='" + id + "';";
@@ -964,12 +966,17 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         } catch (SQLException ex) {
             Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
+        Utils.abrirBase();
+        Base.openTransaction();
+        Discount.createIt("fproduct_id", fproduct_id, "user_id", user_id, "order_id", order_id);
+        Base.commitTransaction();
     }
 
     /**
      * restauro un producto
+     *
      * @param fproduct_id
-     * @param quantity 
+     * @param quantity
      */
     public void restoreStock(int fproduct_id, float quantity) {
         Utils.abrirBase();
@@ -1007,5 +1014,84 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             Fproduct f = Fproduct.findById(ff.get("fproduct_id"));
             updateStock(f.getInteger("id"), quantity * ff.getFloat("amount"));
         }
+    }
+
+    @Override
+    public List<Map> getDiscounts(int user_id, String dateFrom, String dateTo) throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        if (user_id != -1) {
+            return Discount.where("user_id = ? and (created_at BETWEEN ? AND ?)", user_id, dateFrom, dateTo).toMaps();
+        } else {
+            return Discount.where("(created_at BETWEEN ? AND ?)", dateFrom, dateTo).toMaps();
+        }
+    }
+
+    @Override
+    public List<Map> getCurrentDiscounts(int user_id) throws java.rmi.RemoteException{
+        try {
+
+            openBase();
+            Map m = new HashMap();
+            LinkedList<Map> ret = new LinkedList<>();
+            sql = "SELECT f.sell_price, f.name, ord.order_number, ordf.quantity FROM tik.orders_fproducts as ordf INNER JOIN tik.fproducts as f ON f.id= ordf.fproduct_id, tik.orders as ord where ordf.discount = 1 AND ord.user_id= '"+user_id+"';";
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                m = new HashMap();
+                m.put("sell_price", rs.getFloat("sell_price"));
+                m.put("name", rs.getString("name"));
+                m.put("order_number", rs.getFloat("order_number"));
+                m.put("quantity", rs.getFloat("quantity"));
+                ret.add(m);
+            }
+            rs.close();
+            stmt.close();
+            return ret;
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    @Override
+    public List<Map> getCurrentDiscountsInEfective(int user_id) throws java.rmi.RemoteException{
+        try {
+
+            openBase();
+            Map m = new HashMap();
+            LinkedList<Map> ret = new LinkedList<>();
+            sql = "SELECT discount, order_number FROM tik.orders where user_id= '"+user_id+"';";
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                m = new HashMap();
+                m.put("discount", rs.getFloat("discount"));
+                m.put("order_number", rs.getFloat("order_number"));        
+
+            }
+            rs.close();
+            stmt.close();
+            return ret;
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    @Override
+    public void setDiscountEfec(int order_id, float amount) throws RemoteException {
+        Utils.abrirBase();
+        Base.openTransaction();
+        Order o= Order.findById(order_id);
+        o.setFloat("discount", amount);
+        o.saveIt();
+        Base.commitTransaction();
+    }
+
+    @Override
+    public float getDiscountEfec(int order_id) throws RemoteException {
+        Utils.abrirBase();
+        Order o = Order.findById(order_id);
+        return o.getFloat("discount");
     }
 }

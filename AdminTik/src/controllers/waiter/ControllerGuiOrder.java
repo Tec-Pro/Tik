@@ -220,7 +220,8 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
             persons = 0;
         }
         guiOrder.getjSpinnerPersons().setValue(persons);
-        guiOrder.getLblTotalPrice().setText(ParserFloat.floatToString(totalPrice));
+        guiOrder.getLblTotalPrice().setText(ParserFloat.floatToString(totalPrice-(float)currentOrder.get("discount")));
+        guiOrder.getLblDiscount().setText(ParserFloat.floatToString((float)currentOrder.get("discount")));
     }
 
     @Override
@@ -241,18 +242,24 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                         } else {
                             isDiscount = 0;
                         }
-                        crudOrder.discountProduct(Integer.valueOf(guiOrder.getTableProducts().getValueAt(i, 7).toString()), isDiscount);
+                        crudOrder.discountProduct(Integer.valueOf(guiOrder.getTableProducts().getValueAt(i, 7).toString()), isDiscount, Integer.valueOf(guiOrder.getTableProducts().getValueAt(i, 0).toString()), (int) currentOrder.get("user_id"), currentOrderId);
                     } catch (RemoteException ex) {
                         Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
+
             DefaultTableModel productsTable = guiOrder.getTableProductsDefault();
             try {
                 long idLong = (long) currentOrder.get("id");
                 currentOrderId = (int) idLong;
             } catch (java.lang.ClassCastException ex) {
                 currentOrderId = (int) currentOrder.get("id");
+            }
+            try {
+                crudOrder.setDiscountEfec(currentOrderId, ParserFloat.stringToFloat(guiOrder.getLblDiscount().getText()));
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
             }
             productsTable.setRowCount(0);
             try {

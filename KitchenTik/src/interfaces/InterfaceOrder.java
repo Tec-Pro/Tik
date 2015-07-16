@@ -150,5 +150,50 @@ public interface InterfaceOrder extends Remote {
      * @param isDiscount
      * @throws RemoteException 
      */
-    public void discountProduct(int id, int isDiscount) throws RemoteException ;
+    public void discountProduct(int id, int isDiscount, int fproduct_id, int user_id, int order_id) throws RemoteException ;
+
+
+    /**
+     * retorna los articulos que descontó un mozo entre 2 fechas, si el id es -1 retorna el de todos los mozos
+     * @param user_id
+     * @param dateFrom
+     * @param dateTo
+     * @return
+     * @throws java.rmi.RemoteException 
+     */
+    public List<Map> getDiscounts(int user_id, String dateFrom, String dateTo) throws java.rmi.RemoteException;
+
+    
+        /**
+     * obtiene los descuentos en productos de un mozo de ese mismo turno
+     * @param user_id
+     * @return
+     * @throws java.rmi.RemoteException 
+     */
+    public List<Map> getCurrentDiscounts(int user_id) throws java.rmi.RemoteException;
+    
+    
+    /**
+     * obtiene los descuentos en efectivos de un mozo en ese mismo turno
+     * @param user_id
+     * @return
+     * @throws java.rmi.RemoteException 
+     */
+    public List<Map> getCurrentDiscountsInEfective(int user_id) throws java.rmi.RemoteException;
+    
+        /**
+     * setea el el descuento en una orden, pisa la info si hay un valor
+     * @param order_id
+     * @param amount
+     * @throws java.rmi.RemoteException 
+     */
+    public void setDiscountEfec(int order_id, float amount) throws java.rmi.RemoteException;
+    
+    /**
+     * obtiene el descuento de un pedido
+     * @param order_id
+     * @return
+     * @throws java.rmi.RemoteException 
+     */
+    public float getDiscountEfec(int order_id) throws java.rmi.RemoteException;
 }

@@ -459,7 +459,8 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
             persons = 0;
         }
         guiOrder.getjSpinnerPersons().setValue(persons);
-        guiOrder.getLblTotalPrice().setText(ParserFloat.floatToString(totalPrice));
+        guiOrder.getLblTotalPrice().setText(ParserFloat.floatToString(totalPrice-(float)currentOrder.get("discount")));
+        guiOrder.getLblDiscount().setText(ParserFloat.floatToString((float)currentOrder.get("discount")));
     }
 
     @Override

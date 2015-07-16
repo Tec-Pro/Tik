@@ -4,6 +4,8 @@
  */
 package controllers.logout;
 
+import controllers.ControllerMain;
+import gui.cashbox.GUIUserDiscounts;
 import gui.logout.GuiLogout;
 import interfaces.InterfaceOrder;
 import interfaces.InterfacePresence;
@@ -14,6 +16,7 @@ import java.awt.event.ActionListener;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -33,8 +36,7 @@ public class ControllerGuiLogout implements ActionListener {
     private Set<Map> online;
     private InterfaceOrder crudOrder;
     private InterfaceDeposit crudDeposit;
-    private InterfaceTurn crudTurn; 
-    
+    private InterfaceTurn crudTurn;
 
     public ControllerGuiLogout(GuiLogout guiLogout) throws RemoteException, NotBoundException {
         this.guiLogout = guiLogout;
@@ -66,14 +68,16 @@ public class ControllerGuiLogout implements ActionListener {
     /**
      * calcula la diferencia entre lo que vendio y lo que entrego
      */
-     private void calculateDif(){
-        float pd =  ParserFloat.stringToFloat(guiLogout.getLblDelivery().getText());
+    private void calculateDif() {
+        float pd = ParserFloat.stringToFloat(guiLogout.getLblDelivery().getText());
         float d = ParserFloat.stringToFloat(guiLogout.getTxtDelivery().getText());
         float e = ParserFloat.stringToFloat(guiLogout.getLblEarn().getText());
         float ex = ParserFloat.stringToFloat(guiLogout.getLblException().getText());
-        guiLogout.getLblDif().setText(ParserFloat.floatToString(pd+d-e-ex));
-     }
-     
+        float desc=  ParserFloat.stringToFloat(guiLogout.getLblDiscount().getText());
+        guiLogout.getLblDif().setText(ParserFloat.floatToString(pd + d +desc - e - ex));
+        guiLogout.getLblUndelivered().setText(ParserFloat.floatToString(e+ex-desc-pd));
+    }
+
     /**
      * change selection listener
      */
@@ -89,8 +93,22 @@ public class ControllerGuiLogout implements ActionListener {
                 guiLogout.getLblEarn().setText(ParserFloat.floatToString(crudOrder.EarnByUser(userId)));
                 guiLogout.getLblException().setText(ParserFloat.floatToString(crudOrder.getExceptions(userId)));
                 guiLogout.getLblDelivery().setText(ParserFloat.floatToString(crudDeposit.getWaiterDepositsTotalOnTurn(userId, crudTurn.getTurn())));
-                calculateDif();
+                
+                
                 guiLogout.getTxtDelivery().setEnabled(true);
+                List<Map> prods = crudOrder.getCurrentDiscounts(userId);
+                List<Map> efec = crudOrder.getCurrentDiscountsInEfective(userId);
+                float totalProd = 0;
+                for (Map p : prods) {
+                    totalProd = totalProd + ((float) p.get("sell_price") * (float) p.get("quantity"));
+                }
+                float totalEfec = 0;
+                for (Map p : efec) {
+                    totalEfec = totalProd + ((float) p.get("discount"));
+                }
+                guiLogout.getLblDiscount().setText(ParserFloat.floatToString(totalEfec+totalProd));
+                calculateDif();
+                
             } else {
                 guiLogout.clear();
             }
@@ -102,7 +120,8 @@ public class ControllerGuiLogout implements ActionListener {
 
     /**
      * actualiza la lista de usuario online
-     * @throws RemoteException 
+     *
+     * @throws RemoteException
      */
     public void updateOnline() throws RemoteException {
         online = new HashSet<>();
@@ -131,17 +150,29 @@ public class ControllerGuiLogout implements ActionListener {
                 Logger.getLogger(ControllerGuiLogout.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-       /* if (ae.getSource() == guiLogout.getBtnCloseAllKitchen()) {
+        if (ae.getSource() == guiLogout.getBtnDiscounts()) {
+
             try {
-                crudPresence.logoutAllCooks();
-                JOptionPane.showMessageDialog(guiLogout, "Las sesiones se cerraron exitosamente");
-                updateOnline();
-                guiLogout.clear();
+                List<Map> prods = crudOrder.getCurrentDiscounts(userId);
+                List<Map> efec = crudOrder.getCurrentDiscountsInEfective(userId);
+                GUIUserDiscounts guiDiscounts = new GUIUserDiscounts(ControllerMain.guiMain, true, prods, efec);
+                guiDiscounts.setLocationRelativeTo(guiLogout);
+                guiDiscounts.setVisible(true);
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiLogout.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+        /* if (ae.getSource() == guiLogout.getBtnCloseAllKitchen()) {
+         try {
+         crudPresence.logoutAllCooks();
+         JOptionPane.showMessageDialog(guiLogout, "Las sesiones se cerraron exitosamente");
+         updateOnline();
+         guiLogout.clear();
+         } catch (RemoteException ex) {
+         Logger.getLogger(ControllerGuiLogout.class.getName()).log(Level.SEVERE, null, ex);
+         }
 
-        }*/
+         }*/
 
     }
 }
