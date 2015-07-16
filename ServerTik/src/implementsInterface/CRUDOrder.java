@@ -862,7 +862,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             openBase();
             Map m = new HashMap();
             LinkedList<Map> ret = new LinkedList<>();
-            sql = "SELECT ord.quantity, pr.name, pr.sell_price, orden.paid_exceptions FROM tik.orders_fproducts ord INNER JOIN tik.fproducts pr ON ord.fproduct_id = pr.id, tik.orders as orden WHERE ord.order_id = '" + id + "' and ord.paid =1 AND orden.id= ord.order_id AND ord.discount = 0 ;";
+            sql = "SELECT ord.quantity, pr.name, pr.sell_price, orden.paid_exceptions FROM tik.orders_fproducts ord INNER JOIN tik.fproducts pr ON ord.fproduct_id = pr.id, tik.orders as orden WHERE ord.order_id = '" + id + "' and ord.paid =0 AND orden.id= ord.order_id AND ord.discount = 0 ;";
             Statement stmt = conn.createStatement();
             java.sql.ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {

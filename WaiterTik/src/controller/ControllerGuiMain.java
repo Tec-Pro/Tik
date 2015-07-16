@@ -31,6 +31,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
+import reports.payments.ImplementsDataSourcePayment;
+import reports.payments.Payment;
 import utils.Pair;
 import utils.ParserFloat;
 
@@ -54,6 +63,8 @@ public class ControllerGuiMain implements ActionListener {
     private static GuiLoginGrid guiLoginGrid;
     private static LinkedList<GuiMenuDetail> listOrdersPanels;
 
+    private static ImplementsDataSourcePayment datasource;
+
     public ControllerGuiMain() throws NotBoundException, MalformedURLException, RemoteException {
         guiMain = new GuiMain();
         orders = new HashMap();
@@ -68,6 +79,8 @@ public class ControllerGuiMain implements ActionListener {
         guiLoginGrid = new GuiLoginGrid();
         controllerGuiLoginGrid = new ControllerGuiLoginGrid(guiLoginGrid, this);
         guiMain.setActionListener(this);
+        datasource = new ImplementsDataSourcePayment();
+
     }
 
     public static void setLoginGridVisible(boolean isVisible) {
@@ -78,8 +91,7 @@ public class ControllerGuiMain implements ActionListener {
         return buttonsOrder;
     }
 
-    
-        private static void removeGuiOrderPane(int orderId) {
+    private static void removeGuiOrderPane(int orderId) {
         boolean stop = false;
         int index = 1;
         while (!stop && index < guiMain.getPanelActivedOrders().getComponentCount()) {
@@ -95,6 +107,7 @@ public class ControllerGuiMain implements ActionListener {
         guiMain.validate();
         guiMain.repaint();
     }
+
     /**
      * Metodo para avisarle al controlador que se actualizaron los pedidos
      *
@@ -104,76 +117,76 @@ public class ControllerGuiMain implements ActionListener {
      */
     public static void UpdateOrder(Pair<Map<String, Object>, List<Map>> or) throws RemoteException {
         final Pair<Map<String, Object>, List<Map>> order = or;
-        if(or.first().get("user_id")!=null){
-        if (guiMain.isVisible() && (int) order.first().get("user_id") == idWaiter) {
-            Thread thread = new Thread() {
-                @Override
-                public void run() {
-                    List<Map> products = order.second();
-                    Iterator<GuiMenuDetail> itr = listOrdersPanels.iterator();
-                    //Recorro todos los paneles de la gridbaglayout
-                    while (itr.hasNext()) {
-                        GuiMenuDetail orderPane = itr.next();//saco el panel actual
-                        if (orderPane.getIdOrder() == (int) order.first().get("id")) {
-                            int productsReady = 0;
-                            int productsCommited = 0;
-                            for (Map prod : order.second()) {
-                                if ((boolean) prod.get("done")) {
-                                    productsReady++;
+        if (or.first().get("user_id") != null) {
+            if (guiMain.isVisible() && (int) order.first().get("user_id") == idWaiter) {
+                Thread thread = new Thread() {
+                    @Override
+                    public void run() {
+                        List<Map> products = order.second();
+                        Iterator<GuiMenuDetail> itr = listOrdersPanels.iterator();
+                        //Recorro todos los paneles de la gridbaglayout
+                        while (itr.hasNext()) {
+                            GuiMenuDetail orderPane = itr.next();//saco el panel actual
+                            if (orderPane.getIdOrder() == (int) order.first().get("id")) {
+                                int productsReady = 0;
+                                int productsCommited = 0;
+                                for (Map prod : order.second()) {
+                                    if ((boolean) prod.get("done")) {
+                                        productsReady++;
+                                    }
+                                    if ((boolean) prod.get("commited")) {
+                                        productsCommited++;
+                                    }
                                 }
-                                if ((boolean) prod.get("commited")) {
-                                    productsCommited++;
-                                }
-                            }
-                            int status = -1;
-                            if (productsCommited == products.size() && productsReady == productsCommited) {
-                                status = 0;
-                            } else {
-                                if (productsReady == 0) {
-                                    status = 3;
+                                int status = -1;
+                                if (productsCommited == products.size() && productsReady == productsCommited) {
+                                    status = 0;
                                 } else {
-                                    if (productsReady < products.size()) {
-                                        status = 2;
+                                    if (productsReady == 0) {
+                                        status = 3;
                                     } else {
-                                        if (productsReady == products.size() && productsCommited != productsReady) {
-                                            status = 1;
+                                        if (productsReady < products.size()) {
+                                            status = 2;
+                                        } else {
+                                            if (productsReady == products.size() && productsCommited != productsReady) {
+                                                status = 1;
+                                            }
                                         }
                                     }
                                 }
-                            }
-                            switch (status) {
-                                case 0:
-                                    orderPane.setColor(0);
-                                    break;
+                                switch (status) {
+                                    case 0:
+                                        orderPane.setColor(0);
+                                        break;
 
-                                case 3:
-                                    //poner el pedido en rojo, ningun producto esta listo
-                                    orderPane.setColor(3);
-                                    break;
+                                    case 3:
+                                        //poner el pedido en rojo, ningun producto esta listo
+                                        orderPane.setColor(3);
+                                        break;
 
-                                case 2:
-                                    //poner el pedido en amarillo , hay producto listos pero no todos
-                                    orderPane.setColor(2);
-                                    break;
-                                case 1:
-                                    //poner pedido en verde , todos los productos estan listos
-                                    orderPane.setColor(1);
-                                    break;
+                                    case 2:
+                                        //poner el pedido en amarillo , hay producto listos pero no todos
+                                        orderPane.setColor(2);
+                                        break;
+                                    case 1:
+                                        //poner pedido en verde , todos los productos estan listos
+                                        orderPane.setColor(1);
+                                        break;
+                                }
+                                guiMain.validateAll();
+                                return;
                             }
-                            guiMain.validateAll();
-                            return;
                         }
+                        //si estoy aca es porque no lo encontré, así que lo creo
+                        addOrderInGui(order.first(), products);
                     }
-                    //si estoy aca es porque no lo encontré, así que lo creo
-                    addOrderInGui(order.first(), products);
-                }
-            ;
+                ;
 
-            }
+                }
 
                 ;
                 thread.start();
-        }
+            }
         }
     }
 
@@ -293,9 +306,27 @@ public class ControllerGuiMain implements ActionListener {
                 int r = JOptionPane.showConfirmDialog(null, "Desea cerrar el pedido?");
                 if (r == JOptionPane.YES_OPTION) {
                     try {
+                        r = JOptionPane.showConfirmDialog(null, "Desea imprimir un comprobante?");
+                        if (r == JOptionPane.OK_OPTION) {
+                            List<Map> ord = crudOrder.getDataPrinterOrd(newOrder.getIdOrder());
+                            for (Map m : ord) {
+                                Payment p = new Payment((String) m.get("name"), (float) m.get("quantity"), (float) m.get("sell_price"), (float) m.get("paid_exceptions"));
+                                datasource.addPayment(p);
+                            }
+                            try {
+                                JasperReport reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reports/payments/ticket.jasper"));//cargo el reporte
+                                JasperPrint jasperPrint;
+                                jasperPrint = JasperFillManager.fillReport(reporte, null, datasource);
+                                JasperPrintManager.printReport(jasperPrint, true);
+                            } catch (JRException ex) {
+                                Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            datasource.removeAllFinalProduct();
+                        }
                         crudOrder.closeOrder(newOrder.getIdOrder());
-                        if(!guiMain.getChkAllOrders().isSelected())
+                        if (!guiMain.getChkAllOrders().isSelected()) {
                             removeGuiOrderPane(newOrder.getIdOrder());
+                        }
 
                     } catch (RemoteException ex) {
                         Logger.getLogger(ControllerGuiMain.class
@@ -385,14 +416,14 @@ public class ControllerGuiMain implements ActionListener {
      */
     public void waiterInit(int id) throws RemoteException {
         idWaiter = id;
-        
+
         loadOrders(id, guiMain.getChkAllOrders().isSelected());
         guiMain.setVisible(true);
         guiMain.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
     }
-    
-    public static boolean seeAll(){
+
+    public static boolean seeAll() {
         return guiMain.getChkAllOrders().isSelected();
     }
 }

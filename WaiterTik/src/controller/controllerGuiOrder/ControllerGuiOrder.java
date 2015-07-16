@@ -50,6 +50,7 @@ import javax.swing.tree.TreePath;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
@@ -459,8 +460,11 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
             persons = 0;
         }
         guiOrder.getjSpinnerPersons().setValue(persons);
-        guiOrder.getLblTotalPrice().setText(ParserFloat.floatToString(totalPrice-(float)currentOrder.get("discount")));
-        guiOrder.getLblDiscount().setText(ParserFloat.floatToString((float)currentOrder.get("discount")));
+        float aux=0;
+        if(currentOrder.get("discount")!=null)
+            aux=(float)currentOrder.get("discount");
+        guiOrder.getLblTotalPrice().setText(ParserFloat.floatToString(totalPrice-aux));
+        guiOrder.getLblDiscount().setText(ParserFloat.floatToString(aux));
     }
 
     @Override
@@ -590,9 +594,13 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
                 return;
             }
             try {
-                if (crudOrder.closeOrder(currentOrderId)) {
+                r = JOptionPane.showConfirmDialog(null, "Desea imprimir un comprobante?");
+                if(r==JOptionPane.OK_OPTION){
                     printTicket(currentOrderId);
                 }
+                crudOrder.closeOrder(currentOrderId); 
+                    
+                
                 currentOrder = crudOrder.getOrder(currentOrderId);
                 ControllerGuiMain.seeAll();
                 JOptionPane.showMessageDialog(guiOrder, "Pedido Cerrado!", "Atencion", JOptionPane.INFORMATION_MESSAGE);
@@ -700,7 +708,7 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
             JasperReport reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reports/payments/ticket.jasper"));//cargo el reporte
             JasperPrint jasperPrint;
             jasperPrint = JasperFillManager.fillReport(reporte, null, datasource);
-            JasperViewer.viewReport(jasperPrint, false);
+            JasperPrintManager.printReport(jasperPrint,true);
         } catch (JRException ex) {
             Logger.getLogger(ControllerGuiOrder.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -230,7 +230,7 @@ public class GuiOrder extends javax.swing.JDialog {
 
         jLabel1.setText("Descuento");
 
-        lblDiscount.setText("19.20");
+        lblDiscount.setText("0");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
