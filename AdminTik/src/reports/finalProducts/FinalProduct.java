@@ -10,7 +10,7 @@ package reports.finalProducts;
  * @author Alan
  */
 public class FinalProduct {
-   
+    //Atributos para reporte de productos
     private String product;
     private Object productionPrice;
     private Object suggestedPrice;
@@ -18,6 +18,11 @@ public class FinalProduct {
     private Object profit;
     private String category;
     private String subcategory;
+    
+    //Atributos para reporte de estadisticas de productos
+    private Object amount;
+    private Object turn;
+    private Object date;
 
     public FinalProduct(String product, Object productionPrice, Object suggestedPrice, Object sellPrice, Object profit, String category, String subcategory) {
         this.product = product;
@@ -27,6 +32,13 @@ public class FinalProduct {
         this.profit = profit;
         this.category = category;
         this.subcategory = subcategory;
+    }
+
+    public FinalProduct(String product, Object amount, Object turn, Object date) {
+        this.product = product;
+        this.amount = amount;
+        this.turn = turn;
+        this.date = date;
     }
 
     public String getCategory() {
@@ -83,6 +95,30 @@ public class FinalProduct {
 
     public void setProfit(Object profit) {
         this.profit = profit;
+    }
+
+    public Object getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Object amount) {
+        this.amount = amount;
+    }
+
+    public Object getTurn() {
+        return turn;
+    }
+
+    public void setTurn(Object turn) {
+        this.turn = turn;
+    }
+
+    public Object getDate() {
+        return date;
+    }
+
+    public void setDate(Object date) {
+        this.date = date;
     }
     
     

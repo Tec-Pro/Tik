@@ -19,7 +19,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
+import reports.finalProducts.FinalProduct;
+import reports.finalProducts.ImplementsDataSourceStatisticsProducts;
 import utils.InterfaceName;
 
 /**
@@ -30,12 +39,16 @@ public class ControllerGuiProductStatistics implements ActionListener {
 
     private static InterfaceStatistics interfaceStatistics;
     private static GuiProductStatistics guiProductStatistics;
+    private JTable tableFP;
+    private ImplementsDataSourceStatisticsProducts datasource;
 
     public ControllerGuiProductStatistics(GuiProductStatistics controllerGP) throws RemoteException, NotBoundException {
         guiProductStatistics = controllerGP;
         interfaceStatistics = (InterfaceStatistics) InterfaceName.registry.lookup(InterfaceName.CRUDStatistics);
         guiProductStatistics.setActionListener(this);
         guiProductStatistics.cleanComponents();
+        tableFP = guiProductStatistics.getTableProductStatistics();
+        datasource = new ImplementsDataSourceStatisticsProducts();
         //si cambia la fecha de busqueda "Desde"
         guiProductStatistics.getDateSince().addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             @Override
@@ -256,6 +269,25 @@ public class ControllerGuiProductStatistics implements ActionListener {
                     Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+        }
+        if (e.getSource() == guiProductStatistics.getBtnPrintReport()) {
+            for (int i = 0; i < guiProductStatistics.getTableProductStatistics().getRowCount(); i++) {
+                FinalProduct fp = new FinalProduct(String.valueOf(tableFP.getValueAt(i, 0)),
+                        tableFP.getValueAt(i, 1),
+                        tableFP.getValueAt(i, 2),
+                        tableFP.getValueAt(i, 3));
+                datasource.addFinalProduct(fp);
+            }
+
+            try {
+                JasperReport reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reports/finalProducts/ReportStatisticsProducts.jasper"));//cargo el reporte
+                JasperPrint jasperPrint;
+                jasperPrint = JasperFillManager.fillReport(reporte, null, datasource);
+                JasperViewer.viewReport(jasperPrint, false);
+            } catch (JRException ex) {
+                Logger.getLogger(ControllerGuiProductList.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            datasource.removeAllFinalProduct();
         }
     }
 
