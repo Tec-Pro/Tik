@@ -37,6 +37,7 @@ public class ControllerGuiLogout implements ActionListener {
     private InterfaceOrder crudOrder;
     private InterfaceDeposit crudDeposit;
     private InterfaceTurn crudTurn;
+    
 
     public ControllerGuiLogout(GuiLogout guiLogout) throws RemoteException, NotBoundException {
         this.guiLogout = guiLogout;
@@ -142,6 +143,7 @@ public class ControllerGuiLogout implements ActionListener {
         if (ae.getSource() == guiLogout.getBtnClose()) {
             try {
                 if (userId > -1) {
+                    crudDeposit.createWaiterDeposit(userId, ParserFloat.stringToFloat(guiLogout.getTxtDelivery().getText()));
                     crudPresence.logout(userId);
                     updateOnline();
                     guiLogout.clear();

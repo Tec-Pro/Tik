@@ -258,4 +258,13 @@ public interface InterfaceOrder extends Remote {
      * @throws java.rmi.RemoteException 
      */
     public float getDiscountEfec(int order_id) throws java.rmi.RemoteException;
+
+     /**
+     * Retorna el total de descuentos en efectivo mas el total de descuentos en productos
+     * del TURNO CORRIENTE (se obtiene de la tabla de pedidos)
+     * @return
+     * @throws RemoteException 
+     */
+    public float getTotalDiscounts() throws java.rmi.RemoteException;
+    
 }

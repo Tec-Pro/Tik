@@ -100,4 +100,12 @@ public interface InterfacePresence extends Remote {
      */
     public boolean isSomeoneLogin() throws java.rmi.RemoteException;
     
+      /**
+     * devuelve todos los mozos que estubieron online pero ahora no lo estan en el turno actual
+     *
+     * @return
+     * @throws java.rmi.RemoteException
+     */
+    public List<Map> getWaitersWereOnline() throws java.rmi.RemoteException;
+    
 }

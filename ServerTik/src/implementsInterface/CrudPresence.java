@@ -9,6 +9,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +54,6 @@ public class CrudPresence extends UnicastRemoteObject implements InterfacePresen
             SimpleDateFormat hour = new SimpleDateFormat("HH:mm:ss");
             Presence p = listP.get(0);
             p.set("departure_time", hour.format(now));
-            p.set("departure_day",date.format(now));
             p.saveIt();
             Base.commitTransaction();
             return p.toMap();
@@ -130,7 +130,6 @@ public class CrudPresence extends UnicastRemoteObject implements InterfacePresen
         for (Presence p : listP) {
             SimpleDateFormat hour = new SimpleDateFormat("HH:mm:ss");
             p.set("departure_time", hour.format(now));
-            p.set("departure_day",date.format(now));
             p.saveIt();
         }
         Base.commitTransaction();
@@ -147,7 +146,6 @@ public class CrudPresence extends UnicastRemoteObject implements InterfacePresen
             if (User.findById(p.get("user_id")).getString("position").equals("Cocinero")) {
                 SimpleDateFormat hour = new SimpleDateFormat("HH:mm:ss");
                 p.set("departure_time", hour.format(now));
-                p.set("departure_day",date.format(now));
                 p.saveIt();
             }
         }
@@ -167,5 +165,26 @@ public class CrudPresence extends UnicastRemoteObject implements InterfacePresen
                 return false;
             }
         }
+    }
+
+    @Override
+    public List<Map> getWaitersWereOnline() throws RemoteException {
+        Utils.abrirBase();
+        Date now = new Date(System.currentTimeMillis());
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setGregorianChange(now);
+        calendar.set(GregorianCalendar.DAY_OF_YEAR, calendar.get(GregorianCalendar.DAY_OF_YEAR) - 1);
+        Date y = calendar.getTime();
+        SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+        List<Map> list = Presence.where("departure_time <> '00:00:00' and (day = ? or day = ?)", date.format(now), date.format(y)).toMaps();
+        List<Map> listp = new LinkedList<Map>();
+        for (Map m : list) {
+            if (User.findById(m.get("user_id")).getString("position").equals("Mozo")) {
+                if (!listp.contains(User.findById(m.get("user_id")).toMap())) {
+                    listp.add(User.findById(m.get("user_id")).toMap());
+                }
+            }
+        }
+        return listp;
     }
 }

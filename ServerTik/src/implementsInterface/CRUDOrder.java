@@ -1094,4 +1094,35 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         Order o = Order.findById(order_id);
         return o.getFloat("discount");
     }
+    
+    public float getTotalDiscounts() throws RemoteException {
+        float discounts = 0;
+        try {
+            openBase();
+            sql = "SELECT f.sell_price,  ordf.quantity FROM tik.orders_fproducts as ordf INNER JOIN tik.fproducts as f ON f.id= ordf.fproduct_id, tik.orders as ord where ordf.discount = 1;";
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                discounts = discounts + (rs.getFloat("sell_price") * rs.getFloat("quantity"));
+            }
+            rs.close();
+            stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            openBase();
+            sql = "SELECT discount FROM tik.orders ;";
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                discounts = discounts + rs.getFloat("discount");
+            }
+            rs.close();
+            stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return discounts;
+    }
 }

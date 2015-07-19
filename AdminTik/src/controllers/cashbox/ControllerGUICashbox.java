@@ -14,6 +14,7 @@ import gui.deposit.GUINewDeposit;
 import gui.providers.purchases.GuiPayPurchase;
 import gui.withdrawal.GUINewWithdrawal;
 import interfaces.InterfaceAdmin;
+import interfaces.InterfaceOrder;
 import interfaces.InterfaceTurn;
 import interfaces.InterfaceUser;
 import interfaces.cashbox.InterfaceCashbox;
@@ -44,7 +45,7 @@ import utils.ParserFloat;
  */
 public class ControllerGUICashbox implements ActionListener {
 
-    private static GUICashbox gui;
+    public static GUICashbox gui; //DEJAR EN PUBLIC
     private static InterfaceWithdrawal withdrawal;
     private static InterfaceDeposit deposit;
     private static InterfaceAdmin admin;
@@ -57,6 +58,7 @@ public class ControllerGUICashbox implements ActionListener {
     private final InterfaceTurn interfaceTurn;
     private static InterfaceTurn turn;
     private static InterfaceExpenses expenses;
+    private static InterfaceOrder crudOrder;
 
     public ControllerGUICashbox(GUICashbox guiCashbox) throws RemoteException, NotBoundException {
         gui = guiCashbox;
@@ -67,6 +69,7 @@ public class ControllerGUICashbox implements ActionListener {
         cashbox = (InterfaceCashbox) InterfaceName.registry.lookup(InterfaceName.CRUDCashbox);
         turn = (InterfaceTurn) InterfaceName.registry.lookup(InterfaceName.CRUDTurn);
         expenses = (InterfaceExpenses) InterfaceName.registry.lookup(InterfaceName.CRUDExpenses);
+        crudOrder = (InterfaceOrder) InterfaceName.registry.lookup(InterfaceName.CRUDOrder);
         this.interfaceProvider = (InterfaceProvider) InterfaceName.registry.lookup(InterfaceName.CRUDProvider);
         this.interfacePayments = (InterfacePayments) InterfaceName.registry.lookup(InterfaceName.CRUDpayments);
         this.interfaceExpenses = (InterfaceExpenses) InterfaceName.registry.lookup(InterfaceName.CRUDExpenses);
@@ -74,7 +77,6 @@ public class ControllerGUICashbox implements ActionListener {
         this.interfaceTurn = (InterfaceTurn) InterfaceName.registry.lookup(InterfaceName.CRUDTurn);
         gui.setActionListener(this);
         gui.getCashboxIncomeLabel().addMouseListener(new MouseAdapter() {
-
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
@@ -91,13 +93,13 @@ public class ControllerGUICashbox implements ActionListener {
                     }
                 }
             }
-
         });
         loadWithdrawals();
         loadWaiterDeposits();
         loadAdminDeposits();
         loadExpenses();
         loadExistantCashbox();
+        reloadDialyCashbox();
     }
 
     @Override
@@ -198,13 +200,14 @@ public class ControllerGUICashbox implements ActionListener {
                     Logger.getLogger(ControllerGUICashbox.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 loadExpenses();
-                ECLoadExpenses();
+                ECLoadExpenses();                
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGUICashbox.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         try {
             ECLoadBalance();
+            reloadDialyCashbox();
         } catch (RemoteException ex) {
             Logger.getLogger(ControllerGUICashbox.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -453,4 +456,43 @@ public class ControllerGUICashbox implements ActionListener {
         ECLoadCashboxIncome();
     }
 
+    /**
+     * Método que actualiza todos los valores de la caja diaria.
+     *
+     * @throws RemoteException
+     */
+    public static void reloadDialyCashbox() throws RemoteException {
+        if (turn.isTurnOpen()) {
+            if (turn.getTurn().equals("M")) {
+                gui.getDCInitialBalanceField().setText(gui.getECInitialBalanceField().getText());
+                gui.getDCCashboxIncomeField().setText(gui.getECCashboxIncomeField().getText());
+                gui.getDCEarningsField().setText(ParserFloat.floatToString(crudOrder.totalEarn() + crudOrder.getAllExceptions()));
+                gui.getDCExpensesField().setText(gui.getECCashboxExpensesField().getText());
+                gui.getDCNextTurnField().setText("0");
+                gui.getDCBalanceField().setText(gui.getECBalanceField().getText());
+            } else {
+                Map m = cashbox.getLast();
+                Map mt = cashbox.getLast("T");
+                gui.getDCInitialBalanceField().setText(ParserFloat.floatToString((float) mt.get("balance")));
+                float currentIncomes = ParserFloat.stringToFloat(gui.getECCashboxIncomeField().getText());
+                gui.getDCCashboxIncomeField().setText(ParserFloat.floatToString(((float) m.get("entry_cash")) + currentIncomes));
+                float currentEarnes = crudOrder.totalEarn() + crudOrder.getAllExceptions();
+                gui.getDCEarningsField().setText(ParserFloat.floatToString(((float) m.get("collect")) + currentEarnes));
+                float currentExpenses = ParserFloat.stringToFloat(gui.getECCashboxExpensesField().getText());
+                gui.getDCExpensesField().setText(ParserFloat.floatToString(((float) m.get("spend")) + currentExpenses));
+                gui.getDCNextTurnField().setText("0");
+                gui.getDCBalanceField().setText(gui.getECBalanceField().getText());
+            }
+        } else {
+            Map m = cashbox.getLast();
+            Map mm = cashbox.getLast("M");
+            float initialBalance = ((float) mm.get("balance")) + ((float) mm.get("spend")) - ((float) mm.get("entry_cash")) - ((float) mm.get("collect"));
+            gui.getDCInitialBalanceField().setText(ParserFloat.floatToString(initialBalance));
+            gui.getDCCashboxIncomeField().setText(ParserFloat.floatToString(((float) m.get("entry_cash")) + ((float) mm.get("entry_cash"))));
+            gui.getDCEarningsField().setText(ParserFloat.floatToString(((float) m.get("collect")) + ((float) mm.get("collect"))));
+            gui.getDCExpensesField().setText(ParserFloat.floatToString(((float) m.get("spend")) + ((float) mm.get("spend"))));
+            gui.getDCNextTurnField().setText(ParserFloat.floatToString((float) m.get("balance")));
+            gui.getDCBalanceField().setText(ParserFloat.floatToString((float) m.get("balance")));
+        }
+    }
 }
