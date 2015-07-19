@@ -24,26 +24,25 @@ import utils.ParserFloat;
  *
  * @author joako
  */
-public class ControllerGUINewWithdrawal implements ActionListener{
+public class ControllerGUINewWithdrawal implements ActionListener {
 
     private final GUINewWithdrawal guiNewWithdrawal;
     private final InterfaceWithdrawal withdrawal;
     private final InterfaceAdmin admin;
-    
-    
-    public ControllerGUINewWithdrawal(GUINewWithdrawal gui) throws RemoteException, NotBoundException{
+
+    public ControllerGUINewWithdrawal(GUINewWithdrawal gui) throws RemoteException, NotBoundException {
         this.guiNewWithdrawal = gui;
         this.withdrawal = (InterfaceWithdrawal) InterfaceName.registry.lookup(InterfaceName.CRUDWithdrawal);
         this.admin = (InterfaceAdmin) InterfaceName.registry.lookup(InterfaceName.CRUDAdmin);
-        
+
         this.guiNewWithdrawal.setActionListener(this);
-    
+
         loadAdmins();
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("OK")){
+        if (e.getActionCommand().equals("OK")) {
             try {
                 int admin_id = Integer.parseInt(guiNewWithdrawal.getAdminComboBox().getSelectedItem().toString().split(" - ")[0]);
                 withdrawal.create(admin_id, guiNewWithdrawal.getDescriptionTxtArea().getText(), ParserFloat.stringToFloat(guiNewWithdrawal.getAmountTxtField().getText()));
@@ -52,7 +51,7 @@ public class ControllerGUINewWithdrawal implements ActionListener{
             }
         }
         Integer resp = JOptionPane.showConfirmDialog(guiNewWithdrawal, "¿Desea cargar otro retiro?", null, JOptionPane.YES_NO_OPTION);
-        if (resp == JOptionPane.NO_OPTION){
+        if (resp == JOptionPane.NO_OPTION) {
             guiNewWithdrawal.dispose();
         } else {
             guiNewWithdrawal.getAdminComboBox().setSelectedIndex(0);
@@ -68,9 +67,16 @@ public class ControllerGUINewWithdrawal implements ActionListener{
     }
 
     private void loadAdmins() throws RemoteException {
-        for(Map a : admin.getAdmins()){
-            guiNewWithdrawal.getAdminComboBox().addItem(a.get("id") + " - "+a.get("name"));
+        for (Map a : admin.getAdmins()) {
+            guiNewWithdrawal.getAdminComboBox().addItem(a.get("id") + " - " + a.get("name"));
         }
     }
-    
+
+    private boolean checkData() {
+        return (!guiNewWithdrawal.getAmountTxtField().getText().trim().isEmpty()
+                && !guiNewWithdrawal.getAmountTxtField().getText().matches("[a-zA-Z]+")
+                && !guiNewWithdrawal.getAmountTxtField().getText().contains(" ")
+                && !guiNewWithdrawal.getAmountTxtField().getText().contains("+")
+                && !guiNewWithdrawal.getAmountTxtField().getText().contains("-"));
+    }
 }

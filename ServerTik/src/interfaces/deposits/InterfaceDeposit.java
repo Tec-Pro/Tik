@@ -16,6 +16,13 @@ import java.util.Map;
  */
 public interface InterfaceDeposit extends Remote {
     
+    public Map<String, Object> createIncome(int admin_id, Float amount) throws java.rmi.RemoteException;
+    
+    public List<Map> getIncomes(String date, String turn) throws java.rmi.RemoteException;
+    
+    public float getIncomesTotal(String date, String turn) throws java.rmi.RemoteException;
+    
+    public boolean deleteIncomes() throws java.rmi.RemoteException;
     
     //Métodos de entregas de mozos:
 
@@ -187,7 +194,7 @@ public interface InterfaceDeposit extends Remote {
      * @return true si se borró más de un registro.
      * @throws RemoteException problema de conexión.
      */
-    public boolean eraseWaiterDeposits() throws java.rmi.RemoteException;
+    public boolean deleteWaiterDeposits() throws java.rmi.RemoteException;
     
     //Métodos de depósitos de admin:
     
@@ -358,7 +365,7 @@ public interface InterfaceDeposit extends Remote {
      * @return true si se borra al menos un registro.
      * @throws RemoteException problema de conexión.
      */
-    public boolean eraseAdminDeposits() throws java.rmi.RemoteException;
+    public boolean deleteAdminDeposits() throws java.rmi.RemoteException;
     
     
     //Buscar una entrega específica:

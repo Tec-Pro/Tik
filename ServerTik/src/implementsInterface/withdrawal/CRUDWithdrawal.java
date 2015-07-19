@@ -126,7 +126,10 @@ public class CRUDWithdrawal extends UnicastRemoteObject implements interfaces.wi
     @Override
     public boolean eraseWithdrawals() throws RemoteException {
         Utils.abrirBase();
-        return Withdrawal.deleteAll() > 0;
+        Base.openTransaction();
+        boolean res = Withdrawal.deleteAll()>0;
+        Base.commitTransaction();
+        return res;
     }
 
     @Override
@@ -138,13 +141,13 @@ public class CRUDWithdrawal extends UnicastRemoteObject implements interfaces.wi
     @Override
     public List<Map> getWithdrawalsOfAdminOnDate(int admin_id, String date) throws RemoteException {
         Utils.abrirBase();
-        return Withdrawal.where("admin_id = ? AND date = ?", admin_id, date).toMaps();
+        return Withdrawal.where("admin_id = ? AND created_at >= ?", admin_id, date).toMaps();
     }
 
     @Override
     public List<Map> getWithdrawalsOfAdmin(int admin_id, String turn, String date) throws RemoteException {
         Utils.abrirBase();
-        return Withdrawal.where("admin_id = ? AND turn = ? AND date = ?", admin_id, turn, date).toMaps();
+        return Withdrawal.where("admin_id = ? AND turn = ? AND created_at >= ?", admin_id, turn, date).toMaps();
     }
 
     @Override
@@ -156,7 +159,7 @@ public class CRUDWithdrawal extends UnicastRemoteObject implements interfaces.wi
     @Override
     public List<Map> getWithdrawals(String date, String turn) throws RemoteException {
         Utils.abrirBase();
-        return Withdrawal.where("date = ? AND turn = ?", date, turn).toMaps();
+        return Withdrawal.where("created_at >= ? AND turn = ?", date, turn).toMaps() ;
     }
 
     @Override

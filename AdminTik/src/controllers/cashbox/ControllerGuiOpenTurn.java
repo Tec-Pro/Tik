@@ -82,13 +82,14 @@ public class ControllerGuiOpenTurn implements ActionListener {
             guiOpenTurn.clear();
             float collect = crudOrder.totalEarn() + crudOrder.getAllExceptions();
             String turn = crudTurn.getTurn();
-            float withdrawal = crudWithdrawal.getWithdrawalsTotalOnTurn(turn);
+            String date = new java.sql.Date(System.currentTimeMillis()).toString();
+            float withdrawal = crudWithdrawal.getWithdrawalsTotal(date, turn);
             float spend = crudExpenses.getSumExpenses(turn);
-            float enrtyCash = 0;
-            float delveryCash = crudDeposit.getAdminsDepositsTotalOnTurn(turn);
-            float deliveryWaiter = crudDeposit.getWaitersDepositsTotalOnTurn(turn);
+            float cashboxIncome = crudDeposit.getIncomesTotal(date, turn);
+            float deliveryCash = crudDeposit.getAdminsDepositsTotal(date, turn);
+            float deliveryWaiter = crudDeposit.getWaitersDepositsTotal(date, turn);
             float pastBalance = crudCashbox.getPastBalance();
-            float balance = pastBalance + collect + delveryCash + deliveryWaiter - withdrawal - spend;
+            float balance = pastBalance + cashboxIncome + collect + deliveryCash + deliveryWaiter - withdrawal - spend;
             float lastCollect = (float) crudCashbox.getLast().get("collect");
             if (turn.equals("M")) {
                 guiOpenTurn.getBtnOpenAfternoon().setEnabled(false);
@@ -136,6 +137,10 @@ public class ControllerGuiOpenTurn implements ActionListener {
             Map lastA = crudCashbox.getLast("T");
             guiOpenTurn.getLblAGain().setText(ParserFloat.floatToString((float) lastA.get("collect")));
         }
+        ControllerGUICashbox.reloadAdminDeposits();
+        ControllerGUICashbox.reloadExistantCashbox();
+        ControllerGUICashbox.reloadWaiterDeposits();
+        ControllerGUICashbox.reloadWithdrawals();
     }
 
     @Override
@@ -145,17 +150,16 @@ public class ControllerGuiOpenTurn implements ActionListener {
                 if (crudPresence.isSomeoneLogin()) {
                     JOptionPane.showMessageDialog(guiMain, "Aun hay empleados logeados, por favor deslogee todos los empleados antes de cerrar la caja");
                 } else {
+                    String date = new java.sql.Date(System.currentTimeMillis()).toString();
                     float collect = crudOrder.totalEarn() + crudOrder.getAllExceptions();
                     String turn = crudTurn.getTurn();
-                    float withdrawal = crudWithdrawal.getWithdrawalsTotalOnTurn(turn);
+                    float withdrawal = crudWithdrawal.getWithdrawalsTotal(date, turn);
                     float spend = crudExpenses.getSumExpenses(turn);
-                    float enrtyCash = 0;
-                    float delveryCash = crudDeposit.getAdminsDepositsTotalOnTurn(turn);
-                    float deliveryWaiter = crudDeposit.getWaitersDepositsTotalOnTurn(turn);
-                    float balance = crudCashbox.getPastBalance() + collect + delveryCash + deliveryWaiter - withdrawal - spend;
-                    withdrawal = crudWithdrawal.getWithdrawalsTotalOnTurn(turn);
-                    balance = crudCashbox.getPastBalance() + collect + delveryCash + deliveryWaiter - withdrawal - spend;
-                    crudCashbox.create(turn, balance, collect, enrtyCash, spend, withdrawal, delveryCash, deliveryWaiter);
+                    float entryCash = crudDeposit.getIncomesTotal(date, turn);
+                    float deliveryCash = crudDeposit.getAdminsDepositsTotal(date, turn);
+                    float deliveryWaiter = crudDeposit.getWaitersDepositsTotal(date, turn);
+                    float balance = crudCashbox.getPastBalance() + collect + entryCash + deliveryCash + deliveryWaiter - withdrawal - spend;
+                    crudCashbox.create(turn, balance, collect, entryCash, spend, withdrawal, deliveryCash, deliveryWaiter);
                     //estadisticas
                     ControllerGuiSalesStatistics.calculateAndSaveStatistics();
                     ControllerGuiProductStatistics.calculateAndSaveProductStatistics();
@@ -175,15 +179,15 @@ public class ControllerGuiOpenTurn implements ActionListener {
                 if (crudPresence.isSomeoneLogin()) {
                     JOptionPane.showMessageDialog(guiOpenTurn, "Aun hay empleados logeados, por favor deslogee todos los empleados antes de cerrar la caja");
                 } else {
+                    String date = new java.sql.Date(System.currentTimeMillis()).toString();
                     float collect = crudOrder.totalEarn() + crudOrder.getAllExceptions();
                     String turn = crudTurn.getTurn();
-                    float withdrawal = crudWithdrawal.getWithdrawalsTotalOnTurn(turn);
+                    float withdrawal = crudWithdrawal.getWithdrawalsTotal(date, turn);
                     float spend = crudExpenses.getSumExpenses(turn);
-                    float enrtyCash = 0;
-                    float delveryCash = crudDeposit.getAdminsDepositsTotalOnTurn(turn);
-                    float deliveryWaiter = crudDeposit.getWaitersDepositsTotalOnTurn(turn);
-                    float balance = crudCashbox.getPastBalance() + collect + delveryCash + deliveryWaiter - withdrawal - spend;
-
+                    float entryCash = crudDeposit.getIncomesTotal(date, turn);
+                    float deliveryCash = crudDeposit.getAdminsDepositsTotal(date, turn);
+                    float deliveryWaiter = crudDeposit.getWaitersDepositsTotal(date, turn);
+                    float balance = crudCashbox.getPastBalance() + collect + deliveryCash + deliveryWaiter + entryCash - withdrawal - spend;
                     //retiro la guita antes de cerrar
                     GUICloseTurnTarde guiCloseTurnTarde = new GUICloseTurnTarde(guiMain, true, crudAdmin.getAdmins(), balance);
                     guiCloseTurnTarde.setLocationRelativeTo(guiMain);
@@ -194,9 +198,9 @@ public class ControllerGuiOpenTurn implements ActionListener {
                     } else {
                         return;// salgo de todo sin cerar el turno si no acepto
                     }                            //HACER RESUMEN ALAN???
-                    withdrawal = crudWithdrawal.getWithdrawalsTotalOnTurn(turn);
-                    balance = crudCashbox.getPastBalance() + collect + delveryCash + deliveryWaiter - withdrawal - spend;
-                    crudCashbox.create(turn, balance, collect, enrtyCash, spend, withdrawal, delveryCash, deliveryWaiter);
+                    withdrawal = crudWithdrawal.getWithdrawalsTotal(date, turn);
+                    balance = crudCashbox.getPastBalance() + collect + deliveryCash + deliveryWaiter - withdrawal - spend;
+                    crudCashbox.create(turn, balance, collect, entryCash, spend, withdrawal, deliveryCash, deliveryWaiter);
 
                     //estadisticas
                     ControllerGuiSalesStatistics.calculateAndSaveStatistics();
@@ -218,8 +222,8 @@ public class ControllerGuiOpenTurn implements ActionListener {
                     crudOrder.deleteAll();
                     crudExpenses.removeAllExpenses();
                     crudWithdrawal.eraseWithdrawals();
-                    crudDeposit.eraseWaiterDeposits();
-                    crudDeposit.eraseAdminDeposits();
+                    crudDeposit.deleteWaiterDeposits();
+                    crudDeposit.deleteAdminDeposits();
                     turn();
                 }
             } catch (RemoteException ex) {
@@ -238,25 +242,21 @@ public class ControllerGuiOpenTurn implements ActionListener {
             }
         }
 
-
-
-
-
-
-
         if (e.getSource() == guiOpenTurn.getBtnSeeMorning()) {
             try {
                 if (crudTurn.getTurn().equals("T")) {
+                    String date = new java.sql.Date(System.currentTimeMillis()).toString();
                     float collect = crudOrder.totalEarn() + crudOrder.getAllExceptions();
                     String turn = crudTurn.getTurn();
-                    float withdrawal = crudWithdrawal.getWithdrawalsTotalOnTurn(turn);
+                    float withdrawal = crudWithdrawal.getWithdrawalsTotal(date, turn);
                     float spend = crudExpenses.getSumExpenses(turn);
-                    float delveryCash = crudDeposit.getAdminsDepositsTotalOnTurn(turn);
-                    float deliveryWaiter = crudDeposit.getWaitersDepositsTotalOnTurn(turn);
+                    float deliveryCash = crudDeposit.getAdminsDepositsTotal(date, turn);
+                    float deliveryWaiter = crudDeposit.getWaitersDepositsTotal(date, turn);
                     float pastBalance = crudCashbox.getPastBalance();
-                    float balance = pastBalance + collect + delveryCash + deliveryWaiter - withdrawal - spend;
+                    float cashboxIncome = crudDeposit.getIncomesTotal(date, turn);
+                    float balance = pastBalance + collect + deliveryCash + cashboxIncome + deliveryWaiter - withdrawal - spend;
                     guiCashbox.getDCBalanceField().setText(ParserFloat.floatToString(pastBalance));
-                    guiCashbox.getDCCashboxIncomeField().setText("0");
+                    guiCashbox.getDCCashboxIncomeField().setText(ParserFloat.floatToString(cashboxIncome));
                     guiCashbox.getDCEarningsField().setText(ParserFloat.floatToString(collect));
                     guiCashbox.getDCExpensesField().setText(ParserFloat.floatToString(spend));
                     guiCashbox.getDCNextTurnField().setText(ParserFloat.floatToString(balance));
@@ -277,16 +277,18 @@ public class ControllerGuiOpenTurn implements ActionListener {
         if (e.getSource() == guiOpenTurn.getBtnSeeAfternoon()) {
             try {
                 if (crudTurn.getTurn().equals("M")) {
+                    String date = new java.sql.Date(System.currentTimeMillis()).toString();
                     float collect = crudOrder.totalEarn() + crudOrder.getAllExceptions();
                     String turn = crudTurn.getTurn();
-                    float withdrawal = crudWithdrawal.getWithdrawalsTotalOnTurn(turn);
+                    float withdrawal = crudWithdrawal.getWithdrawalsTotal(date, turn);
                     float spend = crudExpenses.getSumExpenses(turn);
-                    float delveryCash = crudDeposit.getAdminsDepositsTotalOnTurn(turn);
-                    float deliveryWaiter = crudDeposit.getWaitersDepositsTotalOnTurn(turn);
+                    float deliveryCash = crudDeposit.getAdminsDepositsTotal(date, turn);
+                    float deliveryWaiter = crudDeposit.getWaitersDepositsTotal(date, turn);
+                    float cashboxIncome = crudDeposit.getIncomesTotal(date, turn);
                     float pastBalance = crudCashbox.getPastBalance();
-                    float balance = pastBalance + collect + delveryCash + deliveryWaiter - withdrawal - spend;
+                    float balance = pastBalance + collect + cashboxIncome + deliveryCash + deliveryWaiter - withdrawal - spend;
                     guiCashbox.getDCBalanceField().setText(ParserFloat.floatToString(pastBalance));
-                    guiCashbox.getDCCashboxIncomeField().setText("0");
+                    guiCashbox.getDCCashboxIncomeField().setText(ParserFloat.floatToString(cashboxIncome));
                     guiCashbox.getDCEarningsField().setText(ParserFloat.floatToString(collect));
                     guiCashbox.getDCExpensesField().setText(ParserFloat.floatToString(spend));
                     guiCashbox.getDCNextTurnField().setText(ParserFloat.floatToString(balance));
