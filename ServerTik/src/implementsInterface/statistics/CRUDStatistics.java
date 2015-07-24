@@ -121,12 +121,12 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
      * @param exceptions excepciones
      * @param turn turno del dia correspondiente a este estadistico
      * @param day fecha
-     * @return 
+     * @return
      * @throws RemoteException
      */
     @Override
-    public Map<String, Object> saveSalesStatistics(String waiterName, int userId, Double saleAmount, int tables, 
-            int customers, int products, Double avgTables, Double avgCustomers, Double avgProducts, 
+    public Map<String, Object> saveSalesStatistics(String waiterName, int userId, Double saleAmount, int tables,
+            int customers, int products, Double avgTables, Double avgCustomers, Double avgProducts,
             Double discounts, Double exceptions, String turn, java.sql.Date day) throws RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
@@ -192,10 +192,10 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
                     ret.add(m);
                     Statement stmtInsert = conn.createStatement();
                     stmtInsert.executeUpdate("INSERT INTO productstatistics (fproduct_id, name, quantity, turn, day) "
-                            + "VALUES ('"+rs.getObject("fproduct_id").toString()+"' , '"+rs.getObject("name").toString()+"' , '"+rs.getObject("quantity").toString()+"' , '"+(new CRUDTurn()).getTurn()+"' , '"+rs.getObject("day").toString() +"' )");
+                            + "VALUES ('" + rs.getObject("fproduct_id").toString() + "' , '" + rs.getObject("name").toString() + "' , '" + rs.getObject("quantity").toString() + "' , '" + (new CRUDTurn()).getTurn() + "' , '" + rs.getObject("day").toString() + "' )");
                 }
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(CRUDStatistics.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -205,12 +205,149 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
     @Override
     public List<Map> findProductStatisticsBetweenDays(java.sql.Date since, java.sql.Date until) throws RemoteException {
         openBase();
-        List<Map> ret = Productstatistic.where("day >= ? and day <= ?", since.toString(), until.toString()).toMaps();
+        List<Map> ret = new LinkedList<>();
+        try {
+            String sql = "SELECT DISTINCT id, name, SUM(quantity) AS quantity, turn, day  FROM productstatistics WHERE day >= '" + since.toString() + "' AND day <= '" + until.toString() + "' GROUP BY day, fproduct_id";
+            try (Statement stmt = conn.createStatement();
+                    java.sql.ResultSet rs = stmt.executeQuery(sql)) {
+                while (rs.next()) {
+                    Map m = new HashMap();
+                    m.put("id", rs.getObject("id"));
+                    m.put("name", rs.getObject("name"));
+                    m.put("quantity", rs.getObject("quantity"));
+                    m.put("turn", "M y T");
+                    m.put("day", rs.getObject("day"));
+                    ret.add(m);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDStatistics.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return ret;
     }
 
     @Override
     public List<Map> findProductStatisticsBetweenMonths(java.sql.Date since, java.sql.Date until) throws RemoteException {
+        openBase();
+        List<Map> ret = new LinkedList<>();
+        try {
+            String sql = "SELECT DISTINCT id, name, SUM(quantity) AS quantity, turn, day  FROM productstatistics GROUP BY fproduct_id, year(day), month(day)";
+            try (Statement stmt = conn.createStatement();
+                    java.sql.ResultSet rs = stmt.executeQuery(sql)) {
+                while (rs.next()) {
+                    Map m = new HashMap();
+                    m.put("id", rs.getObject("id"));
+                    m.put("name", rs.getObject("name"));
+                    m.put("quantity", rs.getObject("quantity"));
+                    m.put("turn", "M y T");
+                    m.put("day", rs.getObject("day"));
+                    ret.add(m);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDStatistics.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
+    }
+
+    @Override
+    public List<Map> findProductStatisticsBetweenYears(java.sql.Date since, java.sql.Date until) throws RemoteException {
+        openBase();
+        List<Map> ret = new LinkedList<>();
+        try {
+            String sql = "SELECT DISTINCT id, name, SUM(quantity) AS quantity, turn, day  FROM productstatistics GROUP BY fproduct_id, year(day)";
+            try (Statement stmt = conn.createStatement();
+                    java.sql.ResultSet rs = stmt.executeQuery(sql)) {
+                while (rs.next()) {
+                    Map m = new HashMap();
+                    m.put("id", rs.getObject("id"));
+                    m.put("name", rs.getObject("name"));
+                    m.put("quantity", rs.getObject("quantity"));
+                    m.put("turn", "M y T");
+                    m.put("day", rs.getObject("day"));
+                    ret.add(m);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDStatistics.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
+    }
+
+    @Override
+    public List<Map> findAllProductStatisticsBetweenDates(java.sql.Date since, java.sql.Date until) throws RemoteException {
+        openBase();
+        List<Map> ret = new LinkedList<>();
+        try {
+            String sql = "SELECT DISTINCT id, name, SUM(quantity) AS quantity, turn, day  FROM productstatistics GROUP BY fproduct_id";
+            try (Statement stmt = conn.createStatement();
+                    java.sql.ResultSet rs = stmt.executeQuery(sql)) {
+                while (rs.next()) {
+                    Map m = new HashMap();
+                    m.put("id", rs.getObject("id"));
+                    m.put("name", rs.getObject("name"));
+                    m.put("quantity", rs.getObject("quantity"));
+                    m.put("turn", "M y T");
+                    m.put("day", rs.getObject("day"));
+                    ret.add(m);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDStatistics.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
+    }
+
+    @Override
+    public List<Map> findAllProductStatisticsBetweenDatesWithTurn(java.sql.Date since, java.sql.Date until) throws RemoteException {
+        openBase();
+        List<Map> ret = new LinkedList<>();
+        try {
+            String sql = "SELECT DISTINCT id, name, SUM(quantity) AS quantity, turn, day  FROM productstatistics GROUP BY turn, fproduct_id";
+            try (Statement stmt = conn.createStatement();
+                    java.sql.ResultSet rs = stmt.executeQuery(sql)) {
+                while (rs.next()) {
+                    Map m = new HashMap();
+                    m.put("id", rs.getObject("id"));
+                    m.put("name", rs.getObject("name"));
+                    m.put("quantity", rs.getObject("quantity"));
+                    m.put("turn", rs.getObject("turn"));
+                    m.put("day", rs.getObject("day"));
+                    ret.add(m);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDStatistics.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
+    }
+
+    @Override
+    public List<Map> findProductStatisticsBetweenDaysWithTurn(java.sql.Date since, java.sql.Date until) throws RemoteException {
+        openBase();
+        List<Map> ret = new LinkedList<>();
+        try {
+            String sql = "SELECT DISTINCT id, name, quantity, turn, day  FROM productstatistics WHERE day >= '" + since.toString() + "' AND day <= '" + until.toString() + "'";
+            try (Statement stmt = conn.createStatement();
+                    java.sql.ResultSet rs = stmt.executeQuery(sql)) {
+                while (rs.next()) {
+                    Map m = new HashMap();
+                    m.put("id", rs.getObject("id"));
+                    m.put("name", rs.getObject("name"));
+                    m.put("quantity", rs.getObject("quantity"));
+                    m.put("turn", rs.getObject("turn"));
+                    m.put("day", rs.getObject("day"));
+                    ret.add(m);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDStatistics.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
+    }
+
+    @Override
+    public List<Map> findProductStatisticsBetweenMonthsWithTurn(java.sql.Date since, java.sql.Date until) throws RemoteException {
         openBase();
         List<Map> ret = new LinkedList<>();
         try {
@@ -234,7 +371,7 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
     }
 
     @Override
-    public List<Map> findProductStatisticsBetweenYears(java.sql.Date since, java.sql.Date until) throws RemoteException {
+    public List<Map> findProductStatisticsBetweenYearsWithTurn(java.sql.Date since, java.sql.Date until) throws RemoteException {
         openBase();
         List<Map> ret = new LinkedList<>();
         try {
@@ -340,7 +477,7 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
         List<Map> ret = new LinkedList<>();
         try {
             String sql = "SELECT DISTINCT waiter_name, user_id, SUM(sale_amount) AS sale_amount, SUM(tables) AS tables"
-                    + " FROM salesstatistics WHERE day >= '"+since.toString()+"' and day <= '"+until.toString()+"' GROUP BY user_id";
+                    + " FROM salesstatistics WHERE day >= '" + since.toString() + "' and day <= '" + until.toString() + "' GROUP BY user_id";
             try (Statement stmt = conn.createStatement();
                     java.sql.ResultSet rs = stmt.executeQuery(sql)) {
                 while (rs.next()) {
@@ -357,4 +494,5 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
         }
         return ret;
     }
+
 }

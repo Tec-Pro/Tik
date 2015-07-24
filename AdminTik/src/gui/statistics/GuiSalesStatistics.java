@@ -111,6 +111,14 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
         return checkMonthly;
     }
 
+    public JCheckBox getCheckAll() {
+        return checkAll;
+    }
+
+    public JCheckBox getCheckTurn() {
+        return checkTurn;
+    }
+
     public JDateChooser getDateSince() {
         return dateSince;
     }
@@ -142,6 +150,8 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
         checkAnnual.setSelected(false);
         checkMonthly.setSelected(false);
         checkDaily.setSelected(false);
+        checkAll.setSelected(false);
+        checkTurn.setSelected(true);
         panelSalesChartWaiter.removeAll();
         panelTablesChartWaiter.removeAll();
         panelTablesChartWaiter.validate();
@@ -156,6 +166,8 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
         this.checkAnnual.addActionListener(lis);
         this.checkDaily.addActionListener(lis);
         this.checkMonthly.addActionListener(lis);
+        this.checkAll.addActionListener(lis);
+        this.checkTurn.addActionListener(lis);
         this.btnPrintReport.addActionListener(lis);
     }
 
@@ -187,6 +199,10 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
         jLabel6 = new javax.swing.JLabel();
         panelSalesChartWaiter = new javax.swing.JPanel();
         panelTablesChartWaiter = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        checkAll = new javax.swing.JCheckBox();
+        jLabel8 = new javax.swing.JLabel();
+        checkTurn = new javax.swing.JCheckBox();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -204,14 +220,14 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Ventas", "Mesas", "Personas", "Productos", "Prom. Mesa", "Prom. Persona", "Prom. Producto", "Descuentos", "Excepciones"
+                "Ventas", "Mesas", "Personas", "Productos", "Prom. Mesa", "Prom. Persona", "Prom. Producto", "Descuentos", "Excepciones", "Turno"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -222,6 +238,7 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        tableTotalSalesStatistics.setToolTipText("");
         tableTotalSalesStatistics.setAutoscrolls(false);
         tableTotalSalesStatistics.setColumnSelectionAllowed(true);
         tableTotalSalesStatistics.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -320,6 +337,23 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
 
         panelTablesChartWaiter.setLayout(new java.awt.BorderLayout());
 
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("Todo");
+
+        checkAll.setBackground(new java.awt.Color(0, 0, 0));
+        checkAll.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        checkAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkAllActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Separar por Turnos");
+
+        checkTurn.setBackground(new java.awt.Color(0, 0, 0));
+        checkTurn.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+
         javax.swing.GroupLayout panelImage1Layout = new javax.swing.GroupLayout(panelImage1);
         panelImage1.setLayout(panelImage1Layout);
         panelImage1Layout.setHorizontalGroup(
@@ -340,7 +374,15 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(checkAnnual)
-                        .addGap(38, 38, 38)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(checkAll)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(checkTurn)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(dateSince, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -348,39 +390,44 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(dateUntil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 367, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnPrintReport, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelImage1Layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1202, Short.MAX_VALUE))
                     .addGroup(panelImage1Layout.createSequentialGroup()
                         .addGap(104, 104, 104)
                         .addComponent(panelSalesChartWaiter, javax.swing.GroupLayout.PREFERRED_SIZE, 474, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(58, 58, 58)
                         .addComponent(panelTablesChartWaiter, javax.swing.GroupLayout.PREFERRED_SIZE, 474, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         panelImage1Layout.setVerticalGroup(
             panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelImage1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelImage1Layout.createSequentialGroup()
-                        .addGap(2, 2, 2)
+                        .addGap(14, 14, 14)
                         .addComponent(btnPrintReport))
-                    .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(dateUntil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel2)
-                        .addComponent(jLabel3)
-                        .addComponent(checkDaily)
-                        .addComponent(jLabel4)
-                        .addComponent(checkMonthly)
-                        .addComponent(jLabel5)
-                        .addComponent(checkAnnual)
-                        .addComponent(dateSince, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel1)))
+                    .addGroup(panelImage1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(dateUntil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2)
+                            .addComponent(dateSince, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel3)
+                            .addComponent(checkDaily)
+                            .addComponent(jLabel4)
+                            .addComponent(checkMonthly)
+                            .addComponent(jLabel5)
+                            .addComponent(checkAnnual)
+                            .addComponent(jLabel7)
+                            .addComponent(checkAll)
+                            .addComponent(jLabel8)
+                            .addComponent(checkTurn))))
                 .addGap(10, 10, 10)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -412,12 +459,18 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_checkMonthlyActionPerformed
 
+    private void checkAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkAllActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_checkAllActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnPrintReport;
+    private javax.swing.JCheckBox checkAll;
     private javax.swing.JCheckBox checkAnnual;
     private javax.swing.JCheckBox checkDaily;
     private javax.swing.JCheckBox checkMonthly;
+    private javax.swing.JCheckBox checkTurn;
     private com.toedter.calendar.JDateChooser dateSince;
     private com.toedter.calendar.JDateChooser dateUntil;
     private javax.swing.JLabel jLabel1;
@@ -426,6 +479,8 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private org.edisoncor.gui.panel.PanelImage panelImage1;

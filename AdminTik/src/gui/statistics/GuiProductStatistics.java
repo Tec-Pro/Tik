@@ -41,6 +41,14 @@ public class GuiProductStatistics extends javax.swing.JInternalFrame {
         return checkMonthly;
     }
 
+    public JCheckBox getCheckAll() {
+        return checkAll;
+    }
+
+    public JCheckBox getCheckTurn() {
+        return checkTurn;
+    }
+
     public JDateChooser getDateSince() {
         return dateSince;
     }
@@ -63,6 +71,7 @@ public class GuiProductStatistics extends javax.swing.JInternalFrame {
         checkAnnual.setSelected(false);
         checkMonthly.setSelected(false);
         checkDaily.setSelected(false);
+        checkTurn.setSelected(true);
     }
     
     /**
@@ -73,6 +82,8 @@ public class GuiProductStatistics extends javax.swing.JInternalFrame {
         this.checkAnnual.addActionListener(lis);
         this.checkDaily.addActionListener(lis);
         this.checkMonthly.addActionListener(lis);
+        this.checkAll.addActionListener(lis);
+        this.checkTurn.addActionListener(lis);
         this.btnPrintReport.addActionListener(lis);
     }
     
@@ -99,6 +110,10 @@ public class GuiProductStatistics extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         checkDaily = new javax.swing.JCheckBox();
         jLabel3 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        checkTurn = new javax.swing.JCheckBox();
+        checkAll = new javax.swing.JCheckBox();
+        jLabel7 = new javax.swing.JLabel();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -176,6 +191,23 @@ public class GuiProductStatistics extends javax.swing.JInternalFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Diario");
 
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Separar por Turnos");
+
+        checkTurn.setBackground(new java.awt.Color(0, 0, 0));
+        checkTurn.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+
+        checkAll.setBackground(new java.awt.Color(0, 0, 0));
+        checkAll.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        checkAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkAllActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("Todo");
+
         javax.swing.GroupLayout panelImage1Layout = new javax.swing.GroupLayout(panelImage1);
         panelImage1.setLayout(panelImage1Layout);
         panelImage1Layout.setHorizontalGroup(
@@ -183,7 +215,7 @@ public class GuiProductStatistics extends javax.swing.JInternalFrame {
             .addGroup(panelImage1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1265, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(panelImage1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -196,7 +228,15 @@ public class GuiProductStatistics extends javax.swing.JInternalFrame {
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(checkAnnual)
-                        .addGap(38, 38, 38)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(checkAll)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(checkTurn)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(dateSince, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -204,7 +244,7 @@ public class GuiProductStatistics extends javax.swing.JInternalFrame {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(dateUntil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
                         .addComponent(btnPrintReport, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -223,7 +263,11 @@ public class GuiProductStatistics extends javax.swing.JInternalFrame {
                     .addComponent(checkAnnual)
                     .addComponent(dateSince, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
-                    .addComponent(btnPrintReport))
+                    .addComponent(btnPrintReport)
+                    .addComponent(jLabel7)
+                    .addComponent(checkAll)
+                    .addComponent(jLabel8)
+                    .addComponent(checkTurn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
                 .addContainerGap())
@@ -247,12 +291,18 @@ public class GuiProductStatistics extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_checkMonthlyActionPerformed
 
+    private void checkAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkAllActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_checkAllActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnPrintReport;
+    private javax.swing.JCheckBox checkAll;
     private javax.swing.JCheckBox checkAnnual;
     private javax.swing.JCheckBox checkDaily;
     private javax.swing.JCheckBox checkMonthly;
+    private javax.swing.JCheckBox checkTurn;
     private com.toedter.calendar.JDateChooser dateSince;
     private com.toedter.calendar.JDateChooser dateUntil;
     private javax.swing.JLabel jLabel1;
@@ -260,6 +310,8 @@ public class GuiProductStatistics extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private org.edisoncor.gui.panel.PanelImage panelImage1;
     private javax.swing.JTable tableProductStatistics;

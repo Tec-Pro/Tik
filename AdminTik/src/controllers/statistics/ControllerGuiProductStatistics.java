@@ -64,7 +64,13 @@ public class ControllerGuiProductStatistics implements ActionListener {
                     if (guiProductStatistics.getCheckDaily().isSelected()) {
                         try {
                             //realizo la busqueda entre fechas
-                            List<Map> findProductStatisticsBetweenDays = interfaceStatistics.findProductStatisticsBetweenDays(since, until);
+                            List<Map> findProductStatisticsBetweenDays;
+                            //si hay que hacer la busqueda dividida por turnos
+                            if (guiProductStatistics.getCheckTurn().isSelected()) {
+                                findProductStatisticsBetweenDays = interfaceStatistics.findProductStatisticsBetweenDaysWithTurn(since, until);
+                            } else {
+                                findProductStatisticsBetweenDays = interfaceStatistics.findProductStatisticsBetweenDays(since, until);;
+                            }
                             //cargo la tabla de la gui
                             loadTableDailyStatistics(findProductStatisticsBetweenDays);
                         } catch (RemoteException ex) {
@@ -75,7 +81,13 @@ public class ControllerGuiProductStatistics implements ActionListener {
                         if (guiProductStatistics.getCheckMonthly().isSelected()) {
                             try {
                                 //realizo la busqueda entre fechas
-                                List<Map> findProductStatisticsBetweenMonths = interfaceStatistics.findProductStatisticsBetweenMonths(since, until);
+                                List<Map> findProductStatisticsBetweenMonths;
+                                //si hay que hacer la busqueda dividida por turnos
+                                if (guiProductStatistics.getCheckTurn().isSelected()) {
+                                    findProductStatisticsBetweenMonths = interfaceStatistics.findProductStatisticsBetweenMonthsWithTurn(since, until);
+                                } else {
+                                    findProductStatisticsBetweenMonths = interfaceStatistics.findProductStatisticsBetweenMonths(since, until);
+                                }
                                 //cargo la tabla de la gui
                                 loadTableMonthlyStatistics(findProductStatisticsBetweenMonths);
                             } catch (RemoteException ex) {
@@ -86,11 +98,35 @@ public class ControllerGuiProductStatistics implements ActionListener {
                             if (guiProductStatistics.getCheckAnnual().isSelected()) {
                                 try {
                                     //realizo la busqueda entre fechas
-                                    List<Map> findProductStatisticsBetweenYears = interfaceStatistics.findProductStatisticsBetweenYears(since, until);
+                                    List<Map> findProductStatisticsBetweenYears;
+                                    //si hay que hacer la busqueda dividida por turnos
+                                    if (guiProductStatistics.getCheckTurn().isSelected()) {
+                                        findProductStatisticsBetweenYears = interfaceStatistics.findProductStatisticsBetweenYearsWithTurn(since, until);
+                                    } else {
+                                        findProductStatisticsBetweenYears = interfaceStatistics.findProductStatisticsBetweenYears(since, until);
+                                    }
                                     //cargo la tabla de la gui
                                     loadTableAnnualStatistics(findProductStatisticsBetweenYears);
                                 } catch (RemoteException ex) {
                                     Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            } else {
+                                //si se presiono el checkbox "todo"
+                                if (guiProductStatistics.getCheckAll().isSelected()) {
+                                    try {
+                                        //realizo la busqueda entre fechas
+                                        List<Map> findAllProductStatisticsBetweenDatesWithTurn;
+                                        //si hay que hacer la busqueda dividida por turnos
+                                        if (guiProductStatistics.getCheckTurn().isSelected()) {
+                                            findAllProductStatisticsBetweenDatesWithTurn = interfaceStatistics.findAllProductStatisticsBetweenDatesWithTurn(since, until);
+                                        } else {
+                                            findAllProductStatisticsBetweenDatesWithTurn = interfaceStatistics.findAllProductStatisticsBetweenDates(since, until);
+                                        }
+                                        //cargo la tabla de la gui
+                                        loadTableAnnualStatistics(findAllProductStatisticsBetweenDatesWithTurn);
+                                    } catch (RemoteException ex) {
+                                        Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
                                 }
                             }
                         }
@@ -109,10 +145,17 @@ public class ControllerGuiProductStatistics implements ActionListener {
                     //saco ambas fechas del datechooser
                     java.sql.Date since = new Date(guiProductStatistics.getDateSince().getDate().getTime());
                     java.sql.Date until = new Date(guiProductStatistics.getDateUntil().getDate().getTime());
+                    //si se presiono el checkbox "diario"
                     if (guiProductStatistics.getCheckDaily().isSelected()) {
                         try {
                             //realizo la busqueda entre fechas
-                            List<Map> findProductStatisticsBetweenDays = interfaceStatistics.findProductStatisticsBetweenDays(since, until);
+                            List<Map> findProductStatisticsBetweenDays;
+                            //si hay que hacer la busqueda dividida por turnos
+                            if (guiProductStatistics.getCheckTurn().isSelected()) {
+                                findProductStatisticsBetweenDays = interfaceStatistics.findProductStatisticsBetweenDaysWithTurn(since, until);
+                            } else {
+                                findProductStatisticsBetweenDays = interfaceStatistics.findProductStatisticsBetweenDays(since, until);;
+                            }
                             //cargo la tabla de la gui
                             loadTableDailyStatistics(findProductStatisticsBetweenDays);
                         } catch (RemoteException ex) {
@@ -123,7 +166,13 @@ public class ControllerGuiProductStatistics implements ActionListener {
                         if (guiProductStatistics.getCheckMonthly().isSelected()) {
                             try {
                                 //realizo la busqueda entre fechas
-                                List<Map> findProductStatisticsBetweenMonths = interfaceStatistics.findProductStatisticsBetweenMonths(since, until);
+                                List<Map> findProductStatisticsBetweenMonths;
+                                //si hay que hacer la busqueda dividida por turnos
+                                if (guiProductStatistics.getCheckTurn().isSelected()) {
+                                    findProductStatisticsBetweenMonths = interfaceStatistics.findProductStatisticsBetweenMonthsWithTurn(since, until);
+                                } else {
+                                    findProductStatisticsBetweenMonths = interfaceStatistics.findProductStatisticsBetweenMonths(since, until);
+                                }
                                 //cargo la tabla de la gui
                                 loadTableMonthlyStatistics(findProductStatisticsBetweenMonths);
                             } catch (RemoteException ex) {
@@ -134,16 +183,39 @@ public class ControllerGuiProductStatistics implements ActionListener {
                             if (guiProductStatistics.getCheckAnnual().isSelected()) {
                                 try {
                                     //realizo la busqueda entre fechas
-                                    List<Map> findProductStatisticsBetweenYears = interfaceStatistics.findProductStatisticsBetweenYears(since, until);
+                                    List<Map> findProductStatisticsBetweenYears;
+                                    //si hay que hacer la busqueda dividida por turnos
+                                    if (guiProductStatistics.getCheckTurn().isSelected()) {
+                                        findProductStatisticsBetweenYears = interfaceStatistics.findProductStatisticsBetweenYearsWithTurn(since, until);
+                                    } else {
+                                        findProductStatisticsBetweenYears = interfaceStatistics.findProductStatisticsBetweenYears(since, until);
+                                    }
                                     //cargo la tabla de la gui
                                     loadTableAnnualStatistics(findProductStatisticsBetweenYears);
                                 } catch (RemoteException ex) {
                                     Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
                                 }
+                            } else {
+                                //si se presiono el checkbox "todo"
+                                if (guiProductStatistics.getCheckAll().isSelected()) {
+                                    try {
+                                        //realizo la busqueda entre fechas
+                                        List<Map> findAllProductStatisticsBetweenDatesWithTurn;
+                                        //si hay que hacer la busqueda dividida por turnos
+                                        if (guiProductStatistics.getCheckTurn().isSelected()) {
+                                            findAllProductStatisticsBetweenDatesWithTurn = interfaceStatistics.findAllProductStatisticsBetweenDatesWithTurn(since, until);
+                                        } else {
+                                            findAllProductStatisticsBetweenDatesWithTurn = interfaceStatistics.findAllProductStatisticsBetweenDates(since, until);
+                                        }
+                                        //cargo la tabla de la gui
+                                        loadTableAnnualStatistics(findAllProductStatisticsBetweenDatesWithTurn);
+                                    } catch (RemoteException ex) {
+                                        Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                }
                             }
                         }
                     }
-
                 }
             }
         });
@@ -161,11 +233,11 @@ public class ControllerGuiProductStatistics implements ActionListener {
             row[0] = m.get("name");
             row[1] = m.get("quantity");
             row[2] = m.get("turn");
-            row[3] = "Día: "+m.get("day");
+            row[3] = "Día: " + m.get("day");
             modelTableProductStatistics.addRow(row);
         }
     }
-    
+
     /*
      * Carga en la tabla tableProductStatistics todos los productos finales con sus estadisticos
      * dependiendo de la busqueda realizada
@@ -178,11 +250,11 @@ public class ControllerGuiProductStatistics implements ActionListener {
             row[1] = m.get("quantity");
             row[2] = m.get("turn");
             Date date = Date.valueOf(m.get("day").toString());
-            row[3] = "Mes: "+(date.getMonth()+1)+" Año: "+(date.getYear()+1900);
+            row[3] = "Mes: " + (date.getMonth() + 1) + " Año: " + (date.getYear() + 1900);
             modelTableProductStatistics.addRow(row);
         }
     }
-    
+
     /*
      * Carga en la tabla tableProductStatistics todos los productos finales con sus estadisticos
      * dependiendo de la busqueda realizada
@@ -195,7 +267,24 @@ public class ControllerGuiProductStatistics implements ActionListener {
             row[1] = m.get("quantity");
             row[2] = m.get("turn");
             Date date = Date.valueOf(m.get("day").toString());
-            row[3] = "Año: "+(date.getYear()+1900);
+            row[3] = "Año: " + (date.getYear() + 1900);
+            modelTableProductStatistics.addRow(row);
+        }
+    }
+    /*
+     * Carga en la tabla tableProductStatistics todos los productos finales con sus estadisticos
+     * dependiendo de la busqueda realizada
+     */
+
+    private static void loadTableAllStatistics(List<Map> productStatistics) throws RemoteException {
+        DefaultTableModel modelTableProductStatistics = guiProductStatistics.getModelTableProductStatistics();
+        Object[] row = new Object[4];
+        for (Map m : productStatistics) {
+            row[0] = m.get("name");
+            row[1] = m.get("quantity");
+            row[2] = m.get("turn");
+            Date date = Date.valueOf(m.get("day").toString());
+            row[3] = "Entre: " + m.get("day");;
             modelTableProductStatistics.addRow(row);
         }
     }
@@ -213,6 +302,7 @@ public class ControllerGuiProductStatistics implements ActionListener {
         if (e.getSource() == guiProductStatistics.getCheckMonthly()) {
             guiProductStatistics.getCheckDaily().setSelected(false);
             guiProductStatistics.getCheckAnnual().setSelected(false);
+            guiProductStatistics.getCheckAll().setSelected(false);
             //limpio la tabla de resultados de la busqueda
             guiProductStatistics.getModelTableProductStatistics().setRowCount(0);
             //Si las fechas no son vacias
@@ -222,7 +312,13 @@ public class ControllerGuiProductStatistics implements ActionListener {
                 java.sql.Date until = new Date(guiProductStatistics.getDateUntil().getDate().getTime());
                 try {
                     //realizo la busqueda entre fechas
-                    List<Map> findProductStatisticsBetweenMonths = interfaceStatistics.findProductStatisticsBetweenMonths(since, until);
+                    List<Map> findProductStatisticsBetweenMonths;
+                    //si la busqueda debe realizarse por turno
+                    if (guiProductStatistics.getCheckTurn().isSelected()) {
+                        findProductStatisticsBetweenMonths = interfaceStatistics.findProductStatisticsBetweenMonthsWithTurn(since, until);
+                    } else {
+                        findProductStatisticsBetweenMonths = interfaceStatistics.findProductStatisticsBetweenMonths(since, until);
+                    }
                     //cargo la tabla de la gui
                     loadTableMonthlyStatistics(findProductStatisticsBetweenMonths);
                 } catch (RemoteException ex) {
@@ -233,6 +329,7 @@ public class ControllerGuiProductStatistics implements ActionListener {
         if (e.getSource() == guiProductStatistics.getCheckAnnual()) {
             guiProductStatistics.getCheckDaily().setSelected(false);
             guiProductStatistics.getCheckMonthly().setSelected(false);
+            guiProductStatistics.getCheckAll().setSelected(false);
             //limpio la tabla de resultados de la busqueda
             guiProductStatistics.getModelTableProductStatistics().setRowCount(0);
             //Si las fechas no son vacias
@@ -242,9 +339,15 @@ public class ControllerGuiProductStatistics implements ActionListener {
                 java.sql.Date until = new Date(guiProductStatistics.getDateUntil().getDate().getTime());
                 try {
                     //realizo la busqueda entre fechas
-                    List<Map> findProductStatisticsBetweenMonths = interfaceStatistics.findProductStatisticsBetweenYears(since, until);
+                    List<Map> findProductStatisticsBetweenYears;
+                    //si la busqueda debe realizarse por turno
+                    if (guiProductStatistics.getCheckTurn().isSelected()) {
+                        findProductStatisticsBetweenYears = interfaceStatistics.findProductStatisticsBetweenYearsWithTurn(since, until);
+                    } else {
+                        findProductStatisticsBetweenYears = interfaceStatistics.findProductStatisticsBetweenYears(since, until);
+                    }
                     //cargo la tabla de la gui
-                    loadTableAnnualStatistics(findProductStatisticsBetweenMonths);
+                    loadTableAnnualStatistics(findProductStatisticsBetweenYears);
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -253,6 +356,7 @@ public class ControllerGuiProductStatistics implements ActionListener {
         if (e.getSource() == guiProductStatistics.getCheckDaily()) {
             guiProductStatistics.getCheckMonthly().setSelected(false);
             guiProductStatistics.getCheckAnnual().setSelected(false);
+            guiProductStatistics.getCheckAll().setSelected(false);
             //limpio la tabla de resultados de la busqueda
             guiProductStatistics.getModelTableProductStatistics().setRowCount(0);
             //Si las fechas no son vacias
@@ -262,11 +366,126 @@ public class ControllerGuiProductStatistics implements ActionListener {
                 java.sql.Date until = new Date(guiProductStatistics.getDateUntil().getDate().getTime());
                 try {
                     //realizo la busqueda entre fechas
-                    List<Map> findProductStatisticsBetweenDays = interfaceStatistics.findProductStatisticsBetweenDays(since, until);
+                    List<Map> findProductStatisticsBetweenDays;
+                    //si la busqueda debe realizarse por turno
+                    if (guiProductStatistics.getCheckTurn().isSelected()) {
+                        findProductStatisticsBetweenDays = interfaceStatistics.findProductStatisticsBetweenDaysWithTurn(since, until);
+                    } else {
+                        findProductStatisticsBetweenDays = interfaceStatistics.findProductStatisticsBetweenDays(since, until);
+                    }
                     //cargo la tabla de la gui
                     loadTableDailyStatistics(findProductStatisticsBetweenDays);
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        if (e.getSource() == guiProductStatistics.getCheckAll()) {
+            guiProductStatistics.getCheckMonthly().setSelected(false);
+            guiProductStatistics.getCheckAnnual().setSelected(false);
+            guiProductStatistics.getCheckDaily().setSelected(false);
+            //limpio la tabla de resultados de la busqueda
+            guiProductStatistics.getModelTableProductStatistics().setRowCount(0);
+            //Si las fechas no son vacias
+            if (guiProductStatistics.getDateSince().getDate() != null && guiProductStatistics.getDateUntil().getDate() != null) {
+                //saco ambas fechas del datechooser
+                java.sql.Date since = new Date(guiProductStatistics.getDateSince().getDate().getTime());
+                java.sql.Date until = new Date(guiProductStatistics.getDateUntil().getDate().getTime());
+                try {
+                    //realizo la busqueda entre fechas
+                    List<Map> findAllProductStatisticsBetweenDatesWithTurn;
+                    //si la busqueda debe realizarse por turno
+                    if (guiProductStatistics.getCheckTurn().isSelected()) {
+                        findAllProductStatisticsBetweenDatesWithTurn = interfaceStatistics.findAllProductStatisticsBetweenDatesWithTurn(since, until);
+                    } else {
+                        findAllProductStatisticsBetweenDatesWithTurn = interfaceStatistics.findAllProductStatisticsBetweenDates(since, until);
+                    }
+                    //cargo la tabla de la gui
+                    loadTableDailyStatistics(findAllProductStatisticsBetweenDatesWithTurn);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        //Si presiono para buscar por turnos
+        if (e.getSource() == guiProductStatistics.getCheckTurn()) {
+            //limpio la tabla de resultados de la busqueda
+            guiProductStatistics.getModelTableProductStatistics().setRowCount(0);
+            //si la fecha "desde" y "hasta" no estan vacias
+            if (guiProductStatistics.getDateSince().getDate() != null && guiProductStatistics.getDateUntil().getDate() != null) {
+                //saco ambas fechas del datechooser
+                java.sql.Date since = new Date(guiProductStatistics.getDateSince().getDate().getTime());
+                java.sql.Date until = new Date(guiProductStatistics.getDateUntil().getDate().getTime());
+                //si se presiono el checkbox "diario"
+                if (guiProductStatistics.getCheckDaily().isSelected()) {
+                    try {
+                        //realizo la busqueda entre fechas
+                        List<Map> findProductStatisticsBetweenDays;
+                        //si hay que hacer la busqueda dividida por turnos
+                        if (guiProductStatistics.getCheckTurn().isSelected()) {
+                            findProductStatisticsBetweenDays = interfaceStatistics.findProductStatisticsBetweenDaysWithTurn(since, until);
+                        } else {
+                            findProductStatisticsBetweenDays = interfaceStatistics.findProductStatisticsBetweenDays(since, until);;
+                        }
+                        //cargo la tabla de la gui
+                        loadTableDailyStatistics(findProductStatisticsBetweenDays);
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    //si se presiono el checkbox "mensual"
+                    if (guiProductStatistics.getCheckMonthly().isSelected()) {
+                        try {
+                            //realizo la busqueda entre fechas
+                            List<Map> findProductStatisticsBetweenMonths;
+                            //si hay que hacer la busqueda dividida por turnos
+                            if (guiProductStatistics.getCheckTurn().isSelected()) {
+                                findProductStatisticsBetweenMonths = interfaceStatistics.findProductStatisticsBetweenMonthsWithTurn(since, until);
+                            } else {
+                                findProductStatisticsBetweenMonths = interfaceStatistics.findProductStatisticsBetweenMonths(since, until);
+                            }
+                            //cargo la tabla de la gui
+                            loadTableMonthlyStatistics(findProductStatisticsBetweenMonths);
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    } else {
+                        //si se presiono el checkbox "anual"
+                        if (guiProductStatistics.getCheckAnnual().isSelected()) {
+                            try {
+                                //realizo la busqueda entre fechas
+                                List<Map> findProductStatisticsBetweenYears;
+                                //si hay que hacer la busqueda dividida por turnos
+                                if (guiProductStatistics.getCheckTurn().isSelected()) {
+                                    findProductStatisticsBetweenYears = interfaceStatistics.findProductStatisticsBetweenYearsWithTurn(since, until);
+                                } else {
+                                    findProductStatisticsBetweenYears = interfaceStatistics.findProductStatisticsBetweenYears(since, until);
+                                }
+                                //cargo la tabla de la gui
+                                loadTableAnnualStatistics(findProductStatisticsBetweenYears);
+                            } catch (RemoteException ex) {
+                                Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        } else {
+                            //si se presiono el checkbox "todo"
+                            if (guiProductStatistics.getCheckAll().isSelected()) {
+                                try {
+                                    //realizo la busqueda entre fechas
+                                    List<Map> findAllProductStatisticsBetweenDatesWithTurn;
+                                    //si hay que hacer la busqueda dividida por turnos
+                                    if (guiProductStatistics.getCheckTurn().isSelected()) {
+                                        findAllProductStatisticsBetweenDatesWithTurn = interfaceStatistics.findAllProductStatisticsBetweenDatesWithTurn(since, until);
+                                    } else {
+                                        findAllProductStatisticsBetweenDatesWithTurn = interfaceStatistics.findAllProductStatisticsBetweenDates(since, until);
+                                    }
+                                    //cargo la tabla de la gui
+                                    loadTableAnnualStatistics(findAllProductStatisticsBetweenDatesWithTurn);
+                                } catch (RemoteException ex) {
+                                    Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

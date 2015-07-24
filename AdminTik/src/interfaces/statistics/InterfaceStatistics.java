@@ -95,16 +95,56 @@ public interface InterfaceStatistics extends Remote {
      * Calcula automaticamente y Crea las estadisticas de ventas de productos del turno actual, en la base de datos
      * Retorna una Lista de productos con sus cantidades vendidas, turno y fecha
      * @return 
-     * @throws RemoteException
+     * @throws java.rmi.RemoteException
      */
     public List<Map> saveStatisticsCurrentProductShift() throws java.rmi.RemoteException;
+    
+    /**
+     * Realiza una busqueda de estadisticas de productos entre dos fechas dadas
+     * Separadas por turno
+     * @param since fecha desde la cual se inicia la busqueda
+     * @param until fecha hasta la cual se realiza la busqueda
+     * @return
+     * @throws java.rmi.RemoteException
+     */
+    public List<Map> findProductStatisticsBetweenDaysWithTurn(Date since, Date until) throws java.rmi.RemoteException;
+    
+    /**
+     * Realiza una busqueda de estadisticas de productos entre dos meses en las fechas dadas
+     * Separadas por turno
+     * @param since fecha desde la cual se inicia la busqueda
+     * @param until fecha hasta la cual se realiza la busqueda
+     * @return
+     * @throws java.rmi.RemoteException
+     */
+    public List<Map> findProductStatisticsBetweenMonthsWithTurn(Date since, Date until) throws java.rmi.RemoteException;
+    
+    /**
+     * Realiza una busqueda de estadisticas de productos entre años en las fechas dadas
+     * Separadas por turno
+     * @param since fecha desde la cual se inicia la busqueda
+     * @param until fecha hasta la cual se realiza la busqueda
+     * @return
+     * @throws java.rmi.RemoteException
+     */
+    public List<Map> findProductStatisticsBetweenYearsWithTurn(Date since, Date until) throws java.rmi.RemoteException;
+
+    /**
+     * Realiza una busqueda de estadisticas de productos entre las fechas dadas agrupandolas por mozo y turno
+     * @param since fecha desde la cual se inicia la busqueda
+     * @param until fecha hasta la cual se realiza la busqueda
+     * @return
+     * @throws RemoteException
+     */
+    public List<Map> findAllProductStatisticsBetweenDatesWithTurn (Date since, Date until) throws java.rmi.RemoteException;
+    
     
     /**
      * Realiza una busqueda de estadisticas de productos entre dos fechas dadas
      * @param since fecha desde la cual se inicia la busqueda
      * @param until fecha hasta la cual se realiza la busqueda
      * @return
-     * @throws RemoteException
+     * @throws java.rmi.RemoteException
      */
     public List<Map> findProductStatisticsBetweenDays(Date since, Date until) throws java.rmi.RemoteException;
     
@@ -125,13 +165,22 @@ public interface InterfaceStatistics extends Remote {
      * @throws java.rmi.RemoteException
      */
     public List<Map> findProductStatisticsBetweenYears(Date since, Date until) throws java.rmi.RemoteException;
+
+    /**
+     * Realiza una busqueda de estadisticas de productos entre las fechas dadas agrupandolas por mozo
+     * @param since fecha desde la cual se inicia la busqueda
+     * @param until fecha hasta la cual se realiza la busqueda
+     * @return
+     * @throws RemoteException
+     */
+    public List<Map> findAllProductStatisticsBetweenDates (Date since, Date until) throws java.rmi.RemoteException;
     
     /**
      * Retorna una lista con los mozos, el monto total de sus ventas y mesas que atendio entre las fechas dadas
      * @param since
      * @param until
      * @return
-     * @throws RemoteException
+     * @throws java.rmi.RemoteException
      */
     public List<Map> getTotalSalesWaiterBetweenDays(Date since, Date until) throws java.rmi.RemoteException;
     
