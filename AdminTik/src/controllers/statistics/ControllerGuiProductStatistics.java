@@ -197,15 +197,15 @@ public class ControllerGuiProductStatistics implements ActionListener {
                             if (guiProductStatistics.getCheckAll().isSelected()) {
                                 try {
                                     //realizo la busqueda entre fechas
-                                    List<Map> findAllProductStatisticsBetweenDatesWithTurn;
+                                    List<Map> findAllProductStatisticsBetweenDates;
                                     //si hay que hacer la busqueda dividida por turnos
                                     if (guiProductStatistics.getCheckTurn().isSelected()) {
-                                        findAllProductStatisticsBetweenDatesWithTurn = interfaceStatistics.findAllProductStatisticsBetweenDatesWithTurn(since, until);
+                                        findAllProductStatisticsBetweenDates = interfaceStatistics.findAllProductStatisticsBetweenDatesWithTurn(since, until);
                                     } else {
-                                        findAllProductStatisticsBetweenDatesWithTurn = interfaceStatistics.findAllProductStatisticsBetweenDates(since, until);
+                                        findAllProductStatisticsBetweenDates = interfaceStatistics.findAllProductStatisticsBetweenDates(since, until);
                                     }
                                     //cargo la tabla de la gui
-                                    loadTableAllStatistics(findAllProductStatisticsBetweenDatesWithTurn);
+                                    loadTableAllStatistics(findAllProductStatisticsBetweenDates);
                                 } catch (RemoteException ex) {
                                     Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
                                 }

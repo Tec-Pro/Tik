@@ -51,124 +51,14 @@ public class ControllerGuiSalesStatistics implements ActionListener {
         guiSalesStatistics.getDateSince().addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                //limpio la tabla de resultados de la busqueda
-                guiSalesStatistics.getModelTableSalesStatisticsWaiter().setRowCount(0);
-                guiSalesStatistics.getModelTableTotalSalesStatistics().setRowCount(0);
-                //si la fecha "hasta" no esta vacia
-                if (guiSalesStatistics.getDateUntil().getDate() != null) {
-                    //saco ambas fechas del datechooser
-                    java.sql.Date since = new Date(guiSalesStatistics.getDateSince().getDate().getTime());
-                    java.sql.Date until = new Date(guiSalesStatistics.getDateUntil().getDate().getTime());
-                    //si se presiono el checkbox "diario"
-                    if (guiSalesStatistics.getCheckDaily().isSelected()) {
-                        try {
-                            //realizo la busqueda entre fechas
-                            List<Map> findSalesStatisticsBetweenDays = interfaceStatistics.findSalesStatisticsBetweenDays(since, until);
-                            //cargo la tabla de la gui
-                            loadTableDailyStatistics(findSalesStatisticsBetweenDays);
-                            loadTableTotalSalesStatistics();
-                            List<Map> totalSalesWaiterBetweenDays = interfaceStatistics.getTotalSalesWaiterBetweenDays(since, until);
-                            guiSalesStatistics.drawingSalesChartWaiter(totalSalesWaiterBetweenDays);
-                            guiSalesStatistics.drawingTablesChartWaiter(totalSalesWaiterBetweenDays);
-                        } catch (RemoteException ex) {
-                            Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        //si se presiono el checkbox "mensual"
-                        if (guiSalesStatistics.getCheckMonthly().isSelected()) {
-                            try {
-                                //realizo la busqueda entre fechas
-                                List<Map> findSalesStatisticsBetweenMonths = interfaceStatistics.findSalesStatisticsBetweenMonths(since, until);
-                                //cargo la tabla de la gui
-                                loadTableMonthlyStatistics(findSalesStatisticsBetweenMonths);
-                                loadTableTotalSalesStatistics();
-                                List<Map> totalSalesWaiterBetweenMonths = interfaceStatistics.getTotalSalesWaiterBetweenDays(since, until);
-                                guiSalesStatistics.drawingSalesChartWaiter(totalSalesWaiterBetweenMonths);
-                                guiSalesStatistics.drawingTablesChartWaiter(totalSalesWaiterBetweenMonths);
-                            } catch (RemoteException ex) {
-                                Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        } else {
-                            //si se presiono el checkbox "anual"
-                            if (guiSalesStatistics.getCheckAnnual().isSelected()) {
-                                try {
-                                    //realizo la busqueda entre fechas
-                                    List<Map> findSalesStatisticsBetweenYears = interfaceStatistics.findSalesStatisticsBetweenYears(since, until);
-                                    //cargo la tabla de la gui
-                                    loadTableAnnualStatistics(findSalesStatisticsBetweenYears);
-                                    loadTableTotalSalesStatistics();
-                                    List<Map> totalSalesWaiterBetweenears = interfaceStatistics.getTotalSalesWaiterBetweenDays(since, until);
-                                    guiSalesStatistics.drawingSalesChartWaiter(totalSalesWaiterBetweenears);
-                                    guiSalesStatistics.drawingTablesChartWaiter(totalSalesWaiterBetweenears);
-                                } catch (RemoteException ex) {
-                                    Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
-                                }
-                            }
-                        }
-                    }
-                }
+                obtainAndLoadSalesStatistics();
             }
         });
         //Si cambia la fecha de busqueda "Hasta"
         guiSalesStatistics.getDateUntil().addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                //limpio la tabla de resultados de la busqueda
-                guiSalesStatistics.getModelTableSalesStatisticsWaiter().setRowCount(0);
-                guiSalesStatistics.getModelTableTotalSalesStatistics().setRowCount(0);
-                //si la fecha "desde" no esta vacia
-                if (guiSalesStatistics.getDateSince().getDate() != null) {
-                    //saco ambas fechas del datechooser
-                    java.sql.Date since = new Date(guiSalesStatistics.getDateSince().getDate().getTime());
-                    java.sql.Date until = new Date(guiSalesStatistics.getDateUntil().getDate().getTime());
-                    if (guiSalesStatistics.getCheckDaily().isSelected()) {
-                        try {
-                            //realizo la busqueda entre fechas
-                            List<Map> findSalesStatisticsBetweenDays = interfaceStatistics.findSalesStatisticsBetweenDays(since, until);
-                            //cargo la tabla de la gui
-                            loadTableDailyStatistics(findSalesStatisticsBetweenDays);
-                            loadTableTotalSalesStatistics();
-                            List<Map> totalSalesWaiterBetweenDays = interfaceStatistics.getTotalSalesWaiterBetweenDays(since, until);
-                            guiSalesStatistics.drawingSalesChartWaiter(totalSalesWaiterBetweenDays);
-                            guiSalesStatistics.drawingTablesChartWaiter(totalSalesWaiterBetweenDays);
-                        } catch (RemoteException ex) {
-                            Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        //si se presiono el checkbox "mensual"
-                        if (guiSalesStatistics.getCheckMonthly().isSelected()) {
-                            try {
-                                //realizo la busqueda entre fechas
-                                List<Map> findSalesStatisticsBetweenMonths = interfaceStatistics.findSalesStatisticsBetweenMonths(since, until);
-                                //cargo la tabla de la gui
-                                loadTableMonthlyStatistics(findSalesStatisticsBetweenMonths);
-                                loadTableTotalSalesStatistics();
-                                List<Map> totalSalesWaiterBetweenMonths = interfaceStatistics.getTotalSalesWaiterBetweenDays(since, until);
-                                guiSalesStatistics.drawingSalesChartWaiter(totalSalesWaiterBetweenMonths);
-                                guiSalesStatistics.drawingTablesChartWaiter(totalSalesWaiterBetweenMonths);
-                            } catch (RemoteException ex) {
-                                Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        } else {
-                            //si se presiono el checkbox "anual"
-                            if (guiSalesStatistics.getCheckAnnual().isSelected()) {
-                                try {
-                                    //realizo la busqueda entre fechas
-                                    List<Map> findSalesStatisticsBetweenYears = interfaceStatistics.findSalesStatisticsBetweenYears(since, until);
-                                    //cargo la tabla de la gui
-                                    loadTableAnnualStatistics(findSalesStatisticsBetweenYears);
-                                    loadTableTotalSalesStatistics();
-                                    List<Map> totalSalesWaiterBetweenYears = interfaceStatistics.getTotalSalesWaiterBetweenDays(since, until);
-                                    guiSalesStatistics.drawingSalesChartWaiter(totalSalesWaiterBetweenYears);
-                                    guiSalesStatistics.drawingTablesChartWaiter(totalSalesWaiterBetweenYears);
-                                } catch (RemoteException ex) {
-                                    Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
-                                }
-                            }
-                        }
-                    }
-
-                }
+                obtainAndLoadSalesStatistics();
             }
         });
     }
@@ -178,11 +68,11 @@ public class ControllerGuiSalesStatistics implements ActionListener {
      */
     public static void calculateAndSaveStatistics() throws RemoteException {
         //Inicializo todas las variables
-        Double saleAmount = 0.00;//monto total de las ventas de un mozo
+        float saleAmount = (float) 0.00;//monto total de las ventas de un mozo
         int tables = 0;//cantidad de mesas atendidas
         int customers = 0;//clientes atendidos por el mozo
         int products = 0;//cantidad de productos vendidos
-        Double avgTables = -1.00, avgCustomers = -1.00, avgProducts = -1.00, discounts = -1.00, exceptions = -1.00;
+        float avgTables = (float) -1.00, avgCustomers = (float) -1.00, avgProducts = (float) -1.00, discounts = (float) -1.00, exceptions = (float) -1.00;
         int userId;//id del mozo
         String userName;//nombre del mozo
         String turn = interfaceTurn.getTurn();//turno corriente
@@ -193,6 +83,7 @@ public class ControllerGuiSalesStatistics implements ActionListener {
         for (Map m : waiters) {
             userId = Integer.parseInt(m.get("id").toString());//id de mozo actual
             userName = m.get("name").toString();//nombre del mozo actual
+            exceptions = interfaceOrder.getExceptions(userId);
             List<Map> ordersByUser = interfaceOrder.getOrdersByUser(userId);//los pedidos del mozo actual
             //recorro los pedidos del mozo actual
             for (Map order : ordersByUser) {
@@ -211,22 +102,22 @@ public class ControllerGuiSalesStatistics implements ActionListener {
                     //saco el producto final del orderProduct actual
                     Map<String, Object> fproduct = interfaceFProduct.getFproduct(Integer.parseInt(product.get("fproduct_id").toString()));
                     //saco el precio de venta de ese producto
-                    Double price = Double.parseDouble(fproduct.get("sell_price").toString());
+                    float price = Float.parseFloat(fproduct.get("sell_price").toString());
                     //incremento el monto total de ventas del mozo
                     saleAmount += price;
                 }
             }
-            interfaceStatistics.saveSalesStatistics(userName, userId, saleAmount, tables, customers, products, avgTables, avgCustomers, avgProducts, discounts, exceptions, turn, day);
+//            interfaceStatistics.saveSalesStatistics(userName, userId, saleAmount, tables, customers, products, avgTables, avgCustomers, avgProducts, discounts, exceptions, turn, day);
             //Reinicio todas las variables
-            saleAmount = 0.00;//monto total de las ventas de un mozo
+            saleAmount = (float) 0.00;//monto total de las ventas de un mozo
             tables = 0;//cantidad de mesas atendidas
             customers = 0;//clientes atendidos por el mozo
             products = 0;//cantidad de productos vendidos
-            avgTables = -1.00;
-            avgCustomers = -1.00;
-            avgProducts = -1.00;
-            discounts = -1.00;
-            exceptions = -1.00;
+            avgTables = (float) -1.00;
+            avgCustomers = (float) -1.00;
+            avgProducts = (float) -1.00;
+            discounts = (float) -1.00;
+            exceptions = (float) -1.00;
             userId = -1;//id del mozo
             userName = null;//nombre del mozo
 
@@ -298,6 +189,28 @@ public class ControllerGuiSalesStatistics implements ActionListener {
         }
     }
 
+    //Carga las estadisticas de la ventas de cada mozo en la tabla correspondiente
+    private static void loadTableAllStatistics(List<Map> productStatistics) throws RemoteException {
+        DefaultTableModel modelTableSalesStatisticsWaiter = guiSalesStatistics.getModelTableSalesStatisticsWaiter();
+        Object[] row = new Object[12];
+        for (Map m : productStatistics) {
+            row[0] = m.get("waiter_name"); //nombre del mozo
+            row[1] = "Entre: " + (new Date(guiSalesStatistics.getDateSince().getDate().getTime())).toString()
+                    +" - "+(new Date(guiSalesStatistics.getDateUntil().getDate().getTime())).toString();
+            row[2] = m.get("turn"); //turno en esa fecha
+            row[3] = m.get("sale_amount"); //monto total de ventas del mozo
+            row[4] = m.get("tables"); //cantidad de mesas atendidas
+            row[5] = m.get("customers"); //cantidad de clientes atendidos
+            row[6] = m.get("products"); //cantidad de productos vendidos
+            row[7] = m.get("average_tables"); //promedio 
+            row[8] = m.get("average_customers"); //promedio
+            row[9] = m.get("average_products"); //promedio
+            row[10] = m.get("discounts"); //descuentos realizados
+            row[11] = m.get("exceptions"); //excepciones
+            modelTableSalesStatisticsWaiter.addRow(row);
+        }
+    }
+
     /*
      * Carga las estadisticas del total de ventas de todos los mozos(suma de las ventas de todos los 
      * mozos proveniente de la tabla 'salesStatisticsWaiter' en la tabla correspondiente ('totalSalesStatistics').
@@ -305,18 +218,18 @@ public class ControllerGuiSalesStatistics implements ActionListener {
     private static void loadTableTotalSalesStatistics() {
         //calculo los estadisticos totales
         DefaultTableModel modelTableSalesStatisticsWaiter = guiSalesStatistics.getModelTableSalesStatisticsWaiter();
-        Double saleAmount = 0.00;//monto total de las ventas de un mozo
+        float saleAmount = (float) 0.00;//monto total de las ventas de un mozo
         int tables = 0;//cantidad de mesas atendidas
         int customers = 0;//clientes atendidos por el mozo
         int products = 0;//cantidad de productos vendidos
-        Double avgTables = 0.00, avgCustomers = 0.00, avgProducts = 0.00, discounts = 0.00, exceptions = 0.00;
+        float avgTables = (float) 0.00, avgCustomers = (float) 0.00, avgProducts = (float) 0.00, discounts = (float) 0.00, exceptions = (float) 0.00;
         for (int i = 0; i < guiSalesStatistics.getTableSalesStatisticsWaiter().getRowCount(); i++) {
-            saleAmount += Double.parseDouble(modelTableSalesStatisticsWaiter.getValueAt(i, 3).toString());//sumo todas las ventas totales de los mozos
+            saleAmount += Float.parseFloat(modelTableSalesStatisticsWaiter.getValueAt(i, 3).toString());//sumo todas las ventas totales de los mozos
             tables += Integer.parseInt(modelTableSalesStatisticsWaiter.getValueAt(i, 4).toString());//sumo todas las mesas atendidas por todos los mozos
             customers += Integer.parseInt(modelTableSalesStatisticsWaiter.getValueAt(i, 5).toString());//sumo todos los clientes atendidos por todos los mozos
             products += Integer.parseInt(modelTableSalesStatisticsWaiter.getValueAt(i, 6).toString());//sumo todos los productos vendidos por todos los mozos
-            discounts += Double.parseDouble(modelTableSalesStatisticsWaiter.getValueAt(i, 10).toString());//sumo todos los descuentos
-            exceptions += Double.parseDouble(modelTableSalesStatisticsWaiter.getValueAt(i, 11).toString());//sumo todas las excepciones
+            discounts += Float.parseFloat(modelTableSalesStatisticsWaiter.getValueAt(i, 10).toString());//sumo todos los descuentos
+            exceptions += Float.parseFloat(modelTableSalesStatisticsWaiter.getValueAt(i, 11).toString());//sumo todas las excepciones
         }
 
         DefaultTableModel modelTableTotalSalesStatistics = guiSalesStatistics.getModelTableTotalSalesStatistics();
@@ -333,83 +246,135 @@ public class ControllerGuiSalesStatistics implements ActionListener {
         modelTableTotalSalesStatistics.addRow(row);
     }
 
+    private void obtainAndLoadSalesStatistics(){
+        //limpio la tabla de resultados de la busqueda
+                guiSalesStatistics.getModelTableSalesStatisticsWaiter().setRowCount(0);
+                guiSalesStatistics.getModelTableTotalSalesStatistics().setRowCount(0);
+            //si la fecha "desde" y "hasta" no estan vacias
+            if (guiSalesStatistics.getDateSince().getDate() != null && guiSalesStatistics.getDateUntil().getDate() != null) {
+                //saco ambas fechas del datechooser
+                java.sql.Date since = new Date(guiSalesStatistics.getDateSince().getDate().getTime());
+                java.sql.Date until = new Date(guiSalesStatistics.getDateUntil().getDate().getTime());
+                //si se presiono el checkbox "diario"
+                if (guiSalesStatistics.getCheckDaily().isSelected()) {
+                    try {
+                        //realizo la busqueda entre fechas
+                        List<Map> findSalesStatisticsBetweenDays;
+                        //si hay que hacer la busqueda dividida por turnos
+                        if (guiSalesStatistics.getCheckTurn().isSelected()) {
+                            findSalesStatisticsBetweenDays = interfaceStatistics.findSalesStatisticsBetweenDaysWithTurn(since, until);
+                        } else {
+                            findSalesStatisticsBetweenDays = interfaceStatistics.findSalesStatisticsBetweenDays(since, until);;
+                        }
+                        //cargo la tabla de la gui
+                        loadTableDailyStatistics(findSalesStatisticsBetweenDays);
+                        loadTableTotalSalesStatistics();
+                            List<Map> totalSalesWaiterBetweenDays = interfaceStatistics.getTotalSalesWaiterBetweenDays(since, until);
+                            guiSalesStatistics.drawingSalesChartWaiter(totalSalesWaiterBetweenDays);
+                            guiSalesStatistics.drawingTablesChartWaiter(totalSalesWaiterBetweenDays);
+                    } catch (RemoteException ex) {
+                        Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    //si se presiono el checkbox "mensual"
+                    if (guiSalesStatistics.getCheckMonthly().isSelected()) {
+                        try {
+                            //realizo la busqueda entre fechas
+                            List<Map> findSalesStatisticsBetweenMonths;
+                            //si hay que hacer la busqueda dividida por turnos
+                            if (guiSalesStatistics.getCheckTurn().isSelected()) {
+                                findSalesStatisticsBetweenMonths = interfaceStatistics.findSalesStatisticsBetweenMonthsWithTurn(since, until);
+                            } else {
+                                findSalesStatisticsBetweenMonths = interfaceStatistics.findSalesStatisticsBetweenMonths(since, until);
+                            }
+                            //cargo la tabla de la gui
+                            loadTableMonthlyStatistics(findSalesStatisticsBetweenMonths);
+                            loadTableTotalSalesStatistics();
+                            List<Map> totalSalesWaiterBetweenDays = interfaceStatistics.getTotalSalesWaiterBetweenDays(since, until);
+                            guiSalesStatistics.drawingSalesChartWaiter(totalSalesWaiterBetweenDays);
+                            guiSalesStatistics.drawingTablesChartWaiter(totalSalesWaiterBetweenDays);
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    } else {
+                        //si se presiono el checkbox "anual"
+                        if (guiSalesStatistics.getCheckAnnual().isSelected()) {
+                            try {
+                                //realizo la busqueda entre fechas
+                                List<Map> findSalesStatisticsBetweenYears;
+                                //si hay que hacer la busqueda dividida por turnos
+                                if (guiSalesStatistics.getCheckTurn().isSelected()) {
+                                    findSalesStatisticsBetweenYears = interfaceStatistics.findSalesStatisticsBetweenYearsWithTurn(since, until);
+                                } else {
+                                    findSalesStatisticsBetweenYears = interfaceStatistics.findSalesStatisticsBetweenYears(since, until);
+                                }
+                                //cargo la tabla de la gui
+                                loadTableAnnualStatistics(findSalesStatisticsBetweenYears);
+                                loadTableTotalSalesStatistics();
+                            List<Map> totalSalesWaiterBetweenDays = interfaceStatistics.getTotalSalesWaiterBetweenDays(since, until);
+                            guiSalesStatistics.drawingSalesChartWaiter(totalSalesWaiterBetweenDays);
+                            guiSalesStatistics.drawingTablesChartWaiter(totalSalesWaiterBetweenDays);
+                            } catch (RemoteException ex) {
+                                Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        } else {
+                            //si se presiono el checkbox "todo"
+                            if (guiSalesStatistics.getCheckAll().isSelected()) {
+                                try {
+                                    //realizo la busqueda entre fechas
+                                    List<Map> findAllSalesStatisticsBetweenDates;
+                                    //si hay que hacer la busqueda dividida por turnos
+                                    if (guiSalesStatistics.getCheckTurn().isSelected()) {
+                                        findAllSalesStatisticsBetweenDates = interfaceStatistics.findAllSalesStatisticsBetweenDatesWithTurn(since, until);
+                                    } else {
+                                        findAllSalesStatisticsBetweenDates = interfaceStatistics.findAllSalesStatisticsBetweenDates(since, until);
+                                    }
+                                    //cargo la tabla de la gui
+                                    loadTableAllStatistics(findAllSalesStatisticsBetweenDates);
+                                    loadTableTotalSalesStatistics();
+                            List<Map> totalSalesWaiterBetweenDays = interfaceStatistics.getTotalSalesWaiterBetweenDays(since, until);
+                            guiSalesStatistics.drawingSalesChartWaiter(totalSalesWaiterBetweenDays);
+                            guiSalesStatistics.drawingTablesChartWaiter(totalSalesWaiterBetweenDays);
+                                } catch (RemoteException ex) {
+                                    Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+    }
+    
+    
+  
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == guiSalesStatistics.getCheckMonthly()) {
             guiSalesStatistics.getCheckDaily().setSelected(false);
             guiSalesStatistics.getCheckAnnual().setSelected(false);
-            //limpio la tabla de resultados de la busqueda
-            guiSalesStatistics.getModelTableSalesStatisticsWaiter().setRowCount(0);
-            guiSalesStatistics.getModelTableTotalSalesStatistics().setRowCount(0);
-
-            //Si las fechas no son vacias
-            if (guiSalesStatistics.getDateSince().getDate() != null && guiSalesStatistics.getDateUntil().getDate() != null) {
-                //saco ambas fechas del datechooser
-                java.sql.Date since = new Date(guiSalesStatistics.getDateSince().getDate().getTime());
-                java.sql.Date until = new Date(guiSalesStatistics.getDateUntil().getDate().getTime());
-                try {
-                    //realizo la busqueda entre fechas
-                    List<Map> findSalesStatisticsBetweenMonths = interfaceStatistics.findSalesStatisticsBetweenMonths(since, until);
-                    //cargo la tabla de la gui
-                    loadTableMonthlyStatistics(findSalesStatisticsBetweenMonths);
-                    loadTableTotalSalesStatistics();
-                    List<Map> totalSalesWaiterBetweenMonths = interfaceStatistics.getTotalSalesWaiterBetweenDays(since, until);
-                    guiSalesStatistics.drawingSalesChartWaiter(totalSalesWaiterBetweenMonths);
-                    guiSalesStatistics.drawingTablesChartWaiter(totalSalesWaiterBetweenMonths);
-                } catch (RemoteException ex) {
-                    Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+            guiSalesStatistics.getCheckAll().setSelected(false);
+            obtainAndLoadSalesStatistics();
         }
         if (e.getSource() == guiSalesStatistics.getCheckAnnual()) {
             guiSalesStatistics.getCheckDaily().setSelected(false);
             guiSalesStatistics.getCheckMonthly().setSelected(false);
-            //limpio la tabla de resultados de la busqueda
-            guiSalesStatistics.getModelTableSalesStatisticsWaiter().setRowCount(0);
-            guiSalesStatistics.getModelTableTotalSalesStatistics().setRowCount(0);
-            //Si las fechas no son vacias
-            if (guiSalesStatistics.getDateSince().getDate() != null && guiSalesStatistics.getDateUntil().getDate() != null) {
-                //saco ambas fechas del datechooser
-                java.sql.Date since = new Date(guiSalesStatistics.getDateSince().getDate().getTime());
-                java.sql.Date until = new Date(guiSalesStatistics.getDateUntil().getDate().getTime());
-                try {
-                    //realizo la busqueda entre fechas
-                    List<Map> findSalesStatisticsBetweenMonths = interfaceStatistics.findSalesStatisticsBetweenYears(since, until);
-                    //cargo la tabla de la gui
-                    loadTableAnnualStatistics(findSalesStatisticsBetweenMonths);
-                    loadTableTotalSalesStatistics();
-                    List<Map> totalSalesWaiterBetweenYears = interfaceStatistics.getTotalSalesWaiterBetweenDays(since, until);
-                    guiSalesStatistics.drawingSalesChartWaiter(totalSalesWaiterBetweenYears);
-                    guiSalesStatistics.drawingTablesChartWaiter(totalSalesWaiterBetweenYears);
-                } catch (RemoteException ex) {
-                    Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+            guiSalesStatistics.getCheckAll().setSelected(false);
+            obtainAndLoadSalesStatistics();
         }
         if (e.getSource() == guiSalesStatistics.getCheckDaily()) {
             guiSalesStatistics.getCheckMonthly().setSelected(false);
             guiSalesStatistics.getCheckAnnual().setSelected(false);
-            //limpio la tabla de resultados de la busqueda
-            guiSalesStatistics.getModelTableSalesStatisticsWaiter().setRowCount(0);
-            guiSalesStatistics.getModelTableTotalSalesStatistics().setRowCount(0);
-            //Si las fechas no son vacias
-            if (guiSalesStatistics.getDateSince().getDate() != null && guiSalesStatistics.getDateUntil().getDate() != null) {
-                //saco ambas fechas del datechooser
-                java.sql.Date since = new Date(guiSalesStatistics.getDateSince().getDate().getTime());
-                java.sql.Date until = new Date(guiSalesStatistics.getDateUntil().getDate().getTime());
-                try {
-                    //realizo la busqueda entre fechas
-                    List<Map> findSalesStatisticsBetweenDays = interfaceStatistics.findSalesStatisticsBetweenDays(since, until);
-                    //cargo la tabla de la gui
-                    loadTableDailyStatistics(findSalesStatisticsBetweenDays);
-                    loadTableTotalSalesStatistics();
-                    List<Map> totalSalesWaiterBetweenDays = interfaceStatistics.getTotalSalesWaiterBetweenDays(since, until);
-                    guiSalesStatistics.drawingSalesChartWaiter(totalSalesWaiterBetweenDays);
-                    guiSalesStatistics.drawingTablesChartWaiter(totalSalesWaiterBetweenDays);
-                } catch (RemoteException ex) {
-                    Logger.getLogger(ControllerGuiProductStatistics.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+            guiSalesStatistics.getCheckAll().setSelected(false);
+            obtainAndLoadSalesStatistics();
+        }
+        if (e.getSource() == guiSalesStatistics.getCheckAll()) {
+            guiSalesStatistics.getCheckMonthly().setSelected(false);
+            guiSalesStatistics.getCheckAnnual().setSelected(false);
+            guiSalesStatistics.getCheckDaily().setSelected(false);
+            obtainAndLoadSalesStatistics();
+        }
+        if (e.getSource() == guiSalesStatistics.getCheckTurn()) {
+            obtainAndLoadSalesStatistics();
         }
     }
 

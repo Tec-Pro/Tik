@@ -231,7 +231,9 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
         openBase();
         List<Map> ret = new LinkedList<>();
         try {
-            String sql = "SELECT DISTINCT id, name, SUM(quantity) AS quantity, turn, day  FROM productstatistics GROUP BY fproduct_id, year(day), month(day)";
+            String sql = "SELECT DISTINCT id, name, SUM(quantity) AS quantity, turn, day  FROM productstatistics "
+                    + "WHERE day >= '" + since.toString() + "' and day <= '" + until.toString() + "' "
+                    + "GROUP BY fproduct_id, year(day), month(day)";
             try (Statement stmt = conn.createStatement();
                     java.sql.ResultSet rs = stmt.executeQuery(sql)) {
                 while (rs.next()) {
@@ -255,7 +257,9 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
         openBase();
         List<Map> ret = new LinkedList<>();
         try {
-            String sql = "SELECT DISTINCT id, name, SUM(quantity) AS quantity, turn, day  FROM productstatistics GROUP BY fproduct_id, year(day)";
+            String sql = "SELECT DISTINCT id, name, SUM(quantity) AS quantity, turn, day  FROM productstatistics "
+                    + "WHERE day >= '" + since.toString() + "' and day <= '" + until.toString() + "' "
+                    + "GROUP BY fproduct_id, year(day)";
             try (Statement stmt = conn.createStatement();
                     java.sql.ResultSet rs = stmt.executeQuery(sql)) {
                 while (rs.next()) {
@@ -279,7 +283,9 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
         openBase();
         List<Map> ret = new LinkedList<>();
         try {
-            String sql = "SELECT DISTINCT id, name, SUM(quantity) AS quantity, turn, day  FROM productstatistics GROUP BY fproduct_id";
+            String sql = "SELECT DISTINCT id, name, SUM(quantity) AS quantity, turn, day  FROM productstatistics "
+                    + "WHERE day >= '" + since.toString() + "' and day <= '" + until.toString() + "' "
+                    + "GROUP BY fproduct_id";
             try (Statement stmt = conn.createStatement();
                     java.sql.ResultSet rs = stmt.executeQuery(sql)) {
                 while (rs.next()) {
@@ -303,7 +309,9 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
         openBase();
         List<Map> ret = new LinkedList<>();
         try {
-            String sql = "SELECT DISTINCT id, name, SUM(quantity) AS quantity, turn, day  FROM productstatistics GROUP BY turn, fproduct_id";
+            String sql = "SELECT DISTINCT id, name, SUM(quantity) AS quantity, turn, day  FROM productstatistics"
+                    + " WHERE day >= '" + since.toString() + "' and day <= '" + until.toString() + "' "
+                    + "GROUP BY turn, fproduct_id";
             try (Statement stmt = conn.createStatement();
                     java.sql.ResultSet rs = stmt.executeQuery(sql)) {
                 while (rs.next()) {
@@ -327,7 +335,8 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
         openBase();
         List<Map> ret = new LinkedList<>();
         try {
-            String sql = "SELECT DISTINCT id, name, quantity, turn, day  FROM productstatistics WHERE day >= '" + since.toString() + "' AND day <= '" + until.toString() + "'";
+            String sql = "SELECT DISTINCT id, name, quantity, turn, day  FROM productstatistics "
+                    + "WHERE day >= '" + since.toString() + "' AND day <= '" + until.toString() + "'";
             try (Statement stmt = conn.createStatement();
                     java.sql.ResultSet rs = stmt.executeQuery(sql)) {
                 while (rs.next()) {
@@ -351,7 +360,9 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
         openBase();
         List<Map> ret = new LinkedList<>();
         try {
-            String sql = "SELECT DISTINCT id, name, SUM(quantity) AS quantity, turn, day  FROM productstatistics GROUP BY turn, fproduct_id, year(day), month(day)";
+            String sql = "SELECT DISTINCT id, name, SUM(quantity) AS quantity, turn, day  FROM productstatistics"
+                    + " WHERE day >= '" + since.toString() + "' and day <= '" + until.toString() + "' "
+                    + "GROUP BY turn, fproduct_id, year(day), month(day)";
             try (Statement stmt = conn.createStatement();
                     java.sql.ResultSet rs = stmt.executeQuery(sql)) {
                 while (rs.next()) {
@@ -375,7 +386,9 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
         openBase();
         List<Map> ret = new LinkedList<>();
         try {
-            String sql = "SELECT DISTINCT id, name, SUM(quantity) AS quantity, turn, day  FROM productstatistics GROUP BY turn, fproduct_id, year(day)";
+            String sql = "SELECT DISTINCT id, name, SUM(quantity) AS quantity, turn, day  FROM productstatistics "
+                    + "WHERE day >= '" + since.toString() + "' and day <= '" + until.toString() + "' "
+                    + "GROUP BY turn, fproduct_id, year(day)";
             try (Statement stmt = conn.createStatement();
                     java.sql.ResultSet rs = stmt.executeQuery(sql)) {
                 while (rs.next()) {
@@ -395,21 +408,15 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
     }
 
     @Override
-    public List<Map> findSalesStatisticsBetweenDays(java.sql.Date since, java.sql.Date until) throws RemoteException {
-        openBase();
-        List<Map> ret = Salesstatistic.where("day >= ? and day <= ?", since.toString(), until.toString()).toMaps();
-        return ret;
-    }
-
-    @Override
-    public List<Map> findSalesStatisticsBetweenMonths(java.sql.Date since, java.sql.Date until) throws RemoteException {
+    public List<Map> findSalesStatisticsBetweenDaysWithTurn(java.sql.Date since, java.sql.Date until) throws RemoteException {
         openBase();
         List<Map> ret = new LinkedList<>();
         try {
-            String sql = "SELECT DISTINCT waiter_name, user_id, SUM(sale_amount) AS sale_amount, SUM(tables) AS tables, "
-                    + "SUM(customers) AS customers, SUM(products) AS products, AVG(average_tables) AS avg_tables, "
-                    + "AVG(average_customers) AS avg_customers, AVG(average_products) AS avg_products, SUM(discounts) AS discounts,"
-                    + " SUM(exceptions) AS exceptions, turn, day FROM salesstatistics GROUP BY turn, user_id, year(day), month(day)";
+            String sql = "SELECT DISTINCT waiter_name, user_id, sale_amount, tables, "
+                    + "customers, products, average_tables AS avg_tables, "
+                    + "average_customers AS avg_customers, average_products AS avg_products, discounts AS discounts,"
+                    + " exceptions, turn, day FROM salesstatistics "
+                    + "WHERE day >= '" + since.toString() + "' AND day <= '" + until.toString() + "'";
             try (Statement stmt = conn.createStatement();
                     java.sql.ResultSet rs = stmt.executeQuery(sql)) {
                 while (rs.next()) {
@@ -426,6 +433,191 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
                     m.put("discounts", rs.getObject("discounts"));
                     m.put("exceptions", rs.getObject("exceptions"));
                     m.put("turn", rs.getObject("turn"));
+                    m.put("day", rs.getObject("day"));
+                    ret.add(m);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDStatistics.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
+    }
+
+    @Override
+    public List<Map> findSalesStatisticsBetweenMonthsWithTurn(java.sql.Date since, java.sql.Date until) throws RemoteException {
+        openBase();
+        List<Map> ret = new LinkedList<>();
+        try {
+            String sql = "SELECT DISTINCT waiter_name, user_id, SUM(sale_amount) AS sale_amount, SUM(tables) AS tables, "
+                    + "SUM(customers) AS customers, SUM(products) AS products, AVG(average_tables) AS avg_tables, "
+                    + "AVG(average_customers) AS avg_customers, AVG(average_products) AS avg_products, SUM(discounts) AS discounts,"
+                    + " SUM(exceptions) AS exceptions, turn, day FROM salesstatistics "
+                    + "WHERE day >= '" + since.toString() + "' and day <= '" + until.toString() + "' "
+                    + "GROUP BY turn, user_id, year(day), month(day)";
+            try (Statement stmt = conn.createStatement();
+                    java.sql.ResultSet rs = stmt.executeQuery(sql)) {
+                while (rs.next()) {
+                    Map m = new HashMap();
+                    m.put("waiter_name", rs.getObject("waiter_name"));
+                    m.put("user_id", rs.getObject("user_id"));
+                    m.put("sale_amount", rs.getObject("sale_amount"));
+                    m.put("tables", rs.getObject("tables"));
+                    m.put("customers", rs.getObject("customers"));
+                    m.put("products", rs.getObject("products"));
+                    m.put("average_tables", rs.getObject("avg_tables"));
+                    m.put("average_customers", rs.getObject("avg_customers"));
+                    m.put("average_products", rs.getObject("avg_products"));
+                    m.put("discounts", rs.getObject("discounts"));
+                    m.put("exceptions", rs.getObject("exceptions"));
+                    m.put("turn", rs.getObject("turn"));
+                    m.put("day", rs.getObject("day"));
+                    ret.add(m);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDStatistics.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
+    }
+
+    @Override
+    public List<Map> findSalesStatisticsBetweenYearsWithTurn(java.sql.Date since, java.sql.Date until) throws RemoteException {
+        openBase();
+        List<Map> ret = new LinkedList<>();
+        try {
+            String sql = "SELECT DISTINCT waiter_name, user_id, SUM(sale_amount) AS sale_amount, SUM(tables) AS tables, "
+                    + "SUM(customers) AS customers, SUM(products) AS products, AVG(average_tables) AS avg_tables, "
+                    + "AVG(average_customers) AS avg_customers, AVG(average_products) AS avg_products, SUM(discounts) AS discounts,"
+                    + " SUM(exceptions) AS exceptions, turn, day FROM salesstatistics "
+                    + "WHERE day >= '" + since.toString() + "' and day <= '" + until.toString() + "' "
+                    + "GROUP BY turn, user_id, year(day)";
+            try (Statement stmt = conn.createStatement();
+                    java.sql.ResultSet rs = stmt.executeQuery(sql)) {
+                while (rs.next()) {
+                    Map m = new HashMap();
+                    m.put("waiter_name", rs.getObject("waiter_name"));
+                    m.put("user_id", rs.getObject("user_id"));
+                    m.put("sale_amount", rs.getObject("sale_amount"));
+                    m.put("tables", rs.getObject("tables"));
+                    m.put("customers", rs.getObject("customers"));
+                    m.put("products", rs.getObject("products"));
+                    m.put("average_tables", rs.getObject("avg_tables"));
+                    m.put("average_customers", rs.getObject("avg_customers"));
+                    m.put("average_products", rs.getObject("avg_products"));
+                    m.put("discounts", rs.getObject("discounts"));
+                    m.put("exceptions", rs.getObject("exceptions"));
+                    m.put("turn", rs.getObject("turn"));
+                    m.put("day", rs.getObject("day"));
+                    ret.add(m);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDStatistics.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
+    }
+
+    @Override
+    public List<Map> findAllSalesStatisticsBetweenDatesWithTurn(java.sql.Date since, java.sql.Date until) throws RemoteException {
+        openBase();
+        List<Map> ret = new LinkedList<>();
+        try {
+            String sql = "SELECT DISTINCT waiter_name, user_id, SUM(sale_amount) AS sale_amount, SUM(tables) AS tables, "
+                    + "SUM(customers) AS customers, SUM(products) AS products, AVG(average_tables) AS avg_tables, "
+                    + "AVG(average_customers) AS avg_customers, AVG(average_products) AS avg_products, SUM(discounts) AS discounts,"
+                    + " SUM(exceptions) AS exceptions, turn, day FROM salesstatistics "
+                    + "WHERE day >= '" + since.toString() + "' and day <= '" + until.toString() + "' "
+                    + "GROUP BY turn, user_id";
+            try (Statement stmt = conn.createStatement();
+                    java.sql.ResultSet rs = stmt.executeQuery(sql)) {
+                while (rs.next()) {
+                    Map m = new HashMap();
+                    m.put("waiter_name", rs.getObject("waiter_name"));
+                    m.put("user_id", rs.getObject("user_id"));
+                    m.put("sale_amount", rs.getObject("sale_amount"));
+                    m.put("tables", rs.getObject("tables"));
+                    m.put("customers", rs.getObject("customers"));
+                    m.put("products", rs.getObject("products"));
+                    m.put("average_tables", rs.getObject("avg_tables"));
+                    m.put("average_customers", rs.getObject("avg_customers"));
+                    m.put("average_products", rs.getObject("avg_products"));
+                    m.put("discounts", rs.getObject("discounts"));
+                    m.put("exceptions", rs.getObject("exceptions"));
+                    m.put("turn", "M y T");
+                    m.put("day", rs.getObject("day"));
+                    ret.add(m);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDStatistics.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
+    }
+
+    @Override
+    public List<Map> findSalesStatisticsBetweenDays(java.sql.Date since, java.sql.Date until) throws RemoteException {
+        openBase();
+        List<Map> ret = new LinkedList<>();
+        try {
+            String sql = "SELECT DISTINCT waiter_name, user_id, SUM(sale_amount) AS sale_amount, SUM(tables) AS tables, "
+                    + "SUM(customers) AS customers, SUM(products) AS products, AVG(average_tables) AS avg_tables, "
+                    + "AVG(average_customers) AS avg_customers, AVG(average_products) AS avg_products, SUM(discounts) AS discounts,"
+                    + " SUM(exceptions) AS exceptions, turn, day FROM salesstatistics "
+                    + "WHERE day >= '" + since.toString() + "' AND day <= '" + until.toString() + "' "
+                    + "GROUP BY day, user_id";
+            try (Statement stmt = conn.createStatement();
+                    java.sql.ResultSet rs = stmt.executeQuery(sql)) {
+                while (rs.next()) {
+                    Map m = new HashMap();
+                    m.put("waiter_name", rs.getObject("waiter_name"));
+                    m.put("user_id", rs.getObject("user_id"));
+                    m.put("sale_amount", rs.getObject("sale_amount"));
+                    m.put("tables", rs.getObject("tables"));
+                    m.put("customers", rs.getObject("customers"));
+                    m.put("products", rs.getObject("products"));
+                    m.put("average_tables", rs.getObject("avg_tables"));
+                    m.put("average_customers", rs.getObject("avg_customers"));
+                    m.put("average_products", rs.getObject("avg_products"));
+                    m.put("discounts", rs.getObject("discounts"));
+                    m.put("exceptions", rs.getObject("exceptions"));
+                    m.put("turn", "M y T");
+                    m.put("day", rs.getObject("day"));
+                    ret.add(m);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDStatistics.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
+    }
+
+    @Override
+    public List<Map> findSalesStatisticsBetweenMonths(java.sql.Date since, java.sql.Date until) throws RemoteException {
+        openBase();
+        List<Map> ret = new LinkedList<>();
+        try {
+            String sql = "SELECT DISTINCT waiter_name, user_id, SUM(sale_amount) AS sale_amount, SUM(tables) AS tables, "
+                    + "SUM(customers) AS customers, SUM(products) AS products, AVG(average_tables) AS avg_tables, "
+                    + "AVG(average_customers) AS avg_customers, AVG(average_products) AS avg_products, SUM(discounts) AS discounts,"
+                    + " SUM(exceptions) AS exceptions, turn, day FROM salesstatistics "
+                    + "WHERE day >= '" + since.toString() + "' and day <= '" + until.toString() + "' "
+                    + "GROUP BY user_id, year(day), month(day)";
+            try (Statement stmt = conn.createStatement();
+                    java.sql.ResultSet rs = stmt.executeQuery(sql)) {
+                while (rs.next()) {
+                    Map m = new HashMap();
+                    m.put("waiter_name", rs.getObject("waiter_name"));
+                    m.put("user_id", rs.getObject("user_id"));
+                    m.put("sale_amount", rs.getObject("sale_amount"));
+                    m.put("tables", rs.getObject("tables"));
+                    m.put("customers", rs.getObject("customers"));
+                    m.put("products", rs.getObject("products"));
+                    m.put("average_tables", rs.getObject("avg_tables"));
+                    m.put("average_customers", rs.getObject("avg_customers"));
+                    m.put("average_products", rs.getObject("avg_products"));
+                    m.put("discounts", rs.getObject("discounts"));
+                    m.put("exceptions", rs.getObject("exceptions"));
+                    m.put("turn", "M y T");
                     m.put("day", rs.getObject("day"));
                     ret.add(m);
                 }
@@ -444,7 +636,9 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
             String sql = "SELECT DISTINCT waiter_name, user_id, SUM(sale_amount) AS sale_amount, SUM(tables) AS tables, "
                     + "SUM(customers) AS customers, SUM(products) AS products, AVG(average_tables) AS avg_tables, "
                     + "AVG(average_customers) AS avg_customers, AVG(average_products) AS avg_products, SUM(discounts) AS discounts,"
-                    + " SUM(exceptions) AS exceptions, turn, day FROM salesstatistics GROUP BY turn, user_id, year(day)";
+                    + " SUM(exceptions) AS exceptions, turn, day FROM salesstatistics "
+                    + "WHERE day >= '" + since.toString() + "' and day <= '" + until.toString() + "' "
+                    + "GROUP BY user_id, year(day)";
             try (Statement stmt = conn.createStatement();
                     java.sql.ResultSet rs = stmt.executeQuery(sql)) {
                 while (rs.next()) {
@@ -460,7 +654,44 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
                     m.put("average_products", rs.getObject("avg_products"));
                     m.put("discounts", rs.getObject("discounts"));
                     m.put("exceptions", rs.getObject("exceptions"));
-                    m.put("turn", rs.getObject("turn"));
+                    m.put("turn", "M y T");
+                    m.put("day", rs.getObject("day"));
+                    ret.add(m);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDStatistics.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
+    }
+
+    @Override
+    public List<Map> findAllSalesStatisticsBetweenDates(java.sql.Date since, java.sql.Date until) throws RemoteException {
+        openBase();
+        List<Map> ret = new LinkedList<>();
+        try {
+            String sql = "SELECT DISTINCT waiter_name, user_id, SUM(sale_amount) AS sale_amount, SUM(tables) AS tables, "
+                    + "SUM(customers) AS customers, SUM(products) AS products, AVG(average_tables) AS avg_tables, "
+                    + "AVG(average_customers) AS avg_customers, AVG(average_products) AS avg_products, SUM(discounts) AS discounts,"
+                    + " SUM(exceptions) AS exceptions, turn, day FROM salesstatistics "
+                    + "WHERE day >= '" + since.toString() + "' and day <= '" + until.toString() + "' "
+                    + "GROUP BY user_id";
+            try (Statement stmt = conn.createStatement();
+                    java.sql.ResultSet rs = stmt.executeQuery(sql)) {
+                while (rs.next()) {
+                    Map m = new HashMap();
+                    m.put("waiter_name", rs.getObject("waiter_name"));
+                    m.put("user_id", rs.getObject("user_id"));
+                    m.put("sale_amount", rs.getObject("sale_amount"));
+                    m.put("tables", rs.getObject("tables"));
+                    m.put("customers", rs.getObject("customers"));
+                    m.put("products", rs.getObject("products"));
+                    m.put("average_tables", rs.getObject("avg_tables"));
+                    m.put("average_customers", rs.getObject("avg_customers"));
+                    m.put("average_products", rs.getObject("avg_products"));
+                    m.put("discounts", rs.getObject("discounts"));
+                    m.put("exceptions", rs.getObject("exceptions"));
+                    m.put("turn", "M y T");
                     m.put("day", rs.getObject("day"));
                     ret.add(m);
                 }
@@ -477,7 +708,9 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
         List<Map> ret = new LinkedList<>();
         try {
             String sql = "SELECT DISTINCT waiter_name, user_id, SUM(sale_amount) AS sale_amount, SUM(tables) AS tables"
-                    + " FROM salesstatistics WHERE day >= '" + since.toString() + "' and day <= '" + until.toString() + "' GROUP BY user_id";
+                    + " FROM salesstatistics "
+                    + "WHERE day >= '" + since.toString() + "' and day <= '" + until.toString() + "' "
+                    + "GROUP BY user_id";
             try (Statement stmt = conn.createStatement();
                     java.sql.ResultSet rs = stmt.executeQuery(sql)) {
                 while (rs.next()) {
