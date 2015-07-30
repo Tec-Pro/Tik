@@ -46,16 +46,7 @@ public interface InterfaceStatistics extends Remote {
      * @return
      * @throws java.rmi.RemoteException
      */
-    public Map<String, Object> saveSalesStatistics(String waiterName, int userId, Double saleAmount, int tables, int customers, int products, Double avgTables, Double avgCustomers, Double avgProducts, Double discounts, Double exceptions, String turn, Date day) throws java.rmi.RemoteException;
-
-    /**
-     * Retorna una lista de estadisticas de ventas de todos los mozos, en todos
-     * los turnos
-     *
-     * @return
-     * @throws java.rmi.RemoteException
-     */
-    public List<Map> getAllSalesStatistics() throws java.rmi.RemoteException;
+    public Map<String, Object> saveSalesStatistics(String waiterName, int userId, float saleAmount, int tables, int customers, int products, float avgTables, float avgCustomers, float avgProducts, float discounts, float exceptions, String turn, Date day) throws java.rmi.RemoteException;
 
     /**
      * Realiza una busqueda de estadisticas de ventas de todos los mozos entre
@@ -101,6 +92,28 @@ public interface InterfaceStatistics extends Remote {
      */
     public List<Map> findAllSalesStatisticsBetweenDatesWithTurn(Date since, Date until) throws java.rmi.RemoteException;
 
+    /**
+     * Realiza una busqueda de estadisticas de ventas de todos los mozos entre
+     * dos fechas Separadas por turno, resumiendolas en una sola sumatoria total
+     *
+     * @param since fecha desde la cual se inicia la busqueda
+     * @param until fecha hasta la cual se realiza la busqueda
+     * @return
+     * @throws java.rmi.RemoteException
+     */
+    public List<Map> findTotalSalesStatisticsBetweenDatesWithTurn(Date since, Date until) throws java.rmi.RemoteException;
+    
+    /**
+     * Realiza una busqueda de estadisticas de ventas de todos los mozos entre
+     * dos fechas No separadas por turno, resumiendolas en una sola sumatoria total
+     *
+     * @param since fecha desde la cual se inicia la busqueda
+     * @param until fecha hasta la cual se realiza la busqueda
+     * @return
+     * @throws java.rmi.RemoteException
+     */
+    public List<Map> findTotalSalesStatisticsBetweenDates(Date since, Date until) throws java.rmi.RemoteException;
+    
     /**
      * Realiza una busqueda de estadisticas de ventas de todos los mozos entre
      * dos fechas No separadas por turno
