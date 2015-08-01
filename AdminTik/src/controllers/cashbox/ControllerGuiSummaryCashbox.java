@@ -5,7 +5,9 @@
  */
 package controllers.cashbox;
 
+import controllers.ControllerMain;
 import gui.cashbox.GuiSummaryCashbox;
+import gui.cashbox.GuiSummaryCashboxForDate;
 import interfaces.InterfaceAdmin;
 import interfaces.InterfaceTurn;
 import interfaces.InterfaceUser;
@@ -13,10 +15,13 @@ import interfaces.cashbox.InterfaceCashbox;
 import interfaces.cashbox.expenses.InterfaceExpenses;
 import interfaces.deposits.InterfaceDeposit;
 import interfaces.withdrawals.InterfaceWithdrawal;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
+import org.apache.poi.hpsf.SummaryInformation;
 import utils.InterfaceName;
 import utils.ParserFloat;
 
@@ -24,9 +29,10 @@ import utils.ParserFloat;
  *
  * @author Alan
  */
-public class ControllerGuiSummaryCashbox {
+public class ControllerGuiSummaryCashbox implements ActionListener{
 
     public static GuiSummaryCashbox guiSummaryCashbox;
+    public static GuiSummaryCashboxForDate guiSummaryCashboxForDate;
     private static InterfaceCashbox cashbox;
     private static InterfaceExpenses expenses;
     public static InterfaceWithdrawal withdrawal;
@@ -42,6 +48,8 @@ public class ControllerGuiSummaryCashbox {
         user = (InterfaceUser) InterfaceName.registry.lookup(InterfaceName.CRUDUser);
         cashbox = (InterfaceCashbox) InterfaceName.registry.lookup(InterfaceName.CRUDCashbox);
         expenses = (InterfaceExpenses) InterfaceName.registry.lookup(InterfaceName.CRUDExpenses);
+        guiSummaryCashbox.setActionListner(this);
+        guiSummaryCashboxForDate = new GuiSummaryCashboxForDate(ControllerMain.guiMain, true);
     }
 
     /*
@@ -126,6 +134,14 @@ public class ControllerGuiSummaryCashbox {
         row[2] = totalW;
         row[3] = total;
         guiSummaryCashbox.getTableSummaryDefault().addRow(row);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+        if(ae.getSource().equals(guiSummaryCashbox.getBtnOtherResume())){
+            guiSummaryCashboxForDate.setVisible(true);
+            guiSummaryCashboxForDate.setLocationRelativeTo(null);
+        }
     }
 
 }
