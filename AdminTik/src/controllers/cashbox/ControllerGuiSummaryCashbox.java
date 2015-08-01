@@ -15,6 +15,8 @@ import interfaces.deposits.InterfaceDeposit;
 import interfaces.withdrawals.InterfaceWithdrawal;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.List;
+import java.util.Map;
 import utils.InterfaceName;
 import utils.ParserFloat;
 
@@ -24,12 +26,12 @@ import utils.ParserFloat;
  */
 public class ControllerGuiSummaryCashbox {
 
-    private GuiSummaryCashbox guiSummaryCashbox;
+    public static GuiSummaryCashbox guiSummaryCashbox;
     private static InterfaceCashbox cashbox;
     private static InterfaceExpenses expenses;
-    private static InterfaceWithdrawal withdrawal;
-    private static InterfaceDeposit deposit;
-    private static InterfaceAdmin admin;
+    public static InterfaceWithdrawal withdrawal;
+    public static InterfaceDeposit deposit;
+    public static InterfaceAdmin admin;
     private static InterfaceUser user;
 
     public ControllerGuiSummaryCashbox(GuiSummaryCashbox guiSC) throws RemoteException, NotBoundException {
@@ -92,10 +94,38 @@ public class ControllerGuiSummaryCashbox {
         return withdrawals;
     }
 
-    public void loadData() throws RemoteException{
+    public void loadData() throws RemoteException {
         loadBalance();
         loadExpenses();
         loadInitialBalance();
     }
-    
+
+    public static void loadTableOfAdmins() throws RemoteException {
+        guiSummaryCashbox.getTableSummaryDefault().setRowCount(0);
+        List<Map> admins = admin.getAdmins();
+        float totalD = 0;
+        float totalW = 0;
+        float total = 0;
+        for (Map a : admins) {
+            float d = deposit.getAdminDepositsTotal((int) a.get("id"));
+            totalD = totalD + d;
+            float w = withdrawal.getAdminWithdrawalsTotal((int) a.get("id"));
+            totalW = totalW + w;
+            float t = d - w;
+            total = total + t;
+            Object[] row = new Object[4];
+            row[0] = a.get("name");
+            row[1] = d;
+            row[2] = w;
+            row[3] = t;
+            guiSummaryCashbox.getTableSummaryDefault().addRow(row);
+        }
+        Object[] row = new Object[4];
+        row[0] = "Total";
+        row[1] = totalD;
+        row[2] = totalW;
+        row[3] = total;
+        guiSummaryCashbox.getTableSummaryDefault().addRow(row);
+    }
+
 }

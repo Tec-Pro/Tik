@@ -275,6 +275,7 @@ public class ControllerGuiOpenTurn implements ActionListener {
             guiSummaryCashbox.setLocationRelativeTo(null);
             try {
                 controllerGuiSummaryCashbox.loadData();
+                ControllerGuiSummaryCashbox.loadTableOfAdmins();
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiOpenTurn.class.getName()).log(Level.SEVERE, null, ex);
             }
