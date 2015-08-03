@@ -7,6 +7,7 @@ package implementsInterface;
 
 import interfaces.resume.InterfaceResume;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +23,15 @@ import utils.Utils;
  *
  * @author Alan
  */
-public class CRUDResume implements InterfaceResume{
+public class CRUDResume extends UnicastRemoteObject implements InterfaceResume{
 
+        /**
+     *
+     * @throws RemoteException
+     */
+    public CRUDResume() throws RemoteException {
+        super();
+    }
     
     @Override
     public Map<String, Object> create(Float income, Float earning, Float expenses, Float final_balance, Date resume_date, List<Triple> listAdmin) throws RemoteException {
