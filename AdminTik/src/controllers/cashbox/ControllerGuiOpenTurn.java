@@ -191,7 +191,8 @@ public class ControllerGuiOpenTurn implements ActionListener {
                     guiCloseTurnTarde.setVisible(true);
                     if (guiCloseTurnTarde.getReturnStatus() == guiCloseTurnTarde.RET_OK) {
                         crudWithdrawal.create(guiCloseTurnTarde.getIdAdminSelected(), "cierre de caja", guiCloseTurnTarde.getAmountWithdrawal());
-
+                        //ACA LLAMAR PARA GUARDAR RESUMEN DIARIO.
+                        ControllerGuiSummaryCashbox.saveResume();
                     } else {
                         return;// salgo de todo sin cerar el turno si no acepto
                     }                            //HACER RESUMEN ALAN???

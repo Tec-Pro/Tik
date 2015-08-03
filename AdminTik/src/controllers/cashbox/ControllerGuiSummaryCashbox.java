@@ -15,16 +15,20 @@ import interfaces.InterfaceUser;
 import interfaces.cashbox.InterfaceCashbox;
 import interfaces.cashbox.expenses.InterfaceExpenses;
 import interfaces.deposits.InterfaceDeposit;
+import interfaces.resume.InterfaceResume;
 import interfaces.withdrawals.InterfaceWithdrawal;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import org.apache.poi.hpsf.SummaryInformation;
 import utils.InterfaceName;
 import utils.ParserFloat;
+import utils.Triple;
 
 /**
  *
@@ -40,6 +44,7 @@ public class ControllerGuiSummaryCashbox implements ActionListener{
     public static InterfaceDeposit deposit;
     public static InterfaceAdmin admin;
     private static InterfaceUser user;
+    private static InterfaceResume resume;
 
     public ControllerGuiSummaryCashbox(GuiSummaryCashbox guiSC) throws RemoteException, NotBoundException {
         guiSummaryCashbox = guiSC;
@@ -49,6 +54,7 @@ public class ControllerGuiSummaryCashbox implements ActionListener{
         user = (InterfaceUser) InterfaceName.registry.lookup(InterfaceName.CRUDUser);
         cashbox = (InterfaceCashbox) InterfaceName.registry.lookup(InterfaceName.CRUDCashbox);
         expenses = (InterfaceExpenses) InterfaceName.registry.lookup(InterfaceName.CRUDExpenses);
+        resume = (InterfaceResume) InterfaceName.registry.lookup(InterfaceName.CRUDResume);
         guiSummaryCashbox.setActionListner(this);
         guiSummaryCashboxForDate = new GuiSummaryCashboxForDate(ControllerMain.guiMain, true);
     }
@@ -56,13 +62,13 @@ public class ControllerGuiSummaryCashbox implements ActionListener{
     /*
      Método que carga el saldo inicial de la caja.
      */
-    private Float loadInitialBalance() throws RemoteException {
+    private static Float loadInitialBalance() throws RemoteException {
         Float initialBalance = cashbox.getPastBalance();
         guiSummaryCashbox.getTxtInitialBalance().setText(ParserFloat.floatToString(initialBalance));
         return initialBalance;
     }
 
-    private Float loadExpenses() throws RemoteException {
+    private static Float loadExpenses() throws RemoteException {
         Float exp = expenses.getSumExpenses("M") + expenses.getSumExpenses("T");
         guiSummaryCashbox.getTxtExpenses().setText(ParserFloat.floatToString(exp));
         return exp;
@@ -75,7 +81,7 @@ public class ControllerGuiSummaryCashbox implements ActionListener{
         return incomes;
     }
     
-    private Float loadBalance() throws RemoteException {
+    private static Float loadBalance() throws RemoteException {
         Float initialBalance = loadInitialBalance();
         Float adminDeposits = loadAdminDeposits();
         Float waiterDeposits = loadWaiterTotalDeposits();
@@ -86,7 +92,7 @@ public class ControllerGuiSummaryCashbox implements ActionListener{
         return balance;
     }
 
-    private Float loadAdminDeposits() throws RemoteException {
+    private static Float loadAdminDeposits() throws RemoteException {
         String date = new java.sql.Date(System.currentTimeMillis()).toString();
         Float adminDeposits = deposit.getAdminsDepositsTotal(date, "M") + deposit.getAdminsDepositsTotal(date, "T");
         return adminDeposits;
@@ -95,7 +101,7 @@ public class ControllerGuiSummaryCashbox implements ActionListener{
     /*
      Método que carga las entregas de mozo en la caja existente.
      */
-    private Float loadWaiterMorningDeposits() throws RemoteException {
+    private static Float loadWaiterMorningDeposits() throws RemoteException {
         String date = new java.sql.Date(System.currentTimeMillis()).toString();
         Float waiterDeposits = deposit.getWaitersDepositsTotal(date, "M");
         guiSummaryCashbox.getTxtEarningsMorning().setText(ParserFloat.floatToString(waiterDeposits));
@@ -105,7 +111,7 @@ public class ControllerGuiSummaryCashbox implements ActionListener{
     /*
      Método que carga las entregas de mozo en la caja existente.
      */
-    private Float loadWaiterAfternoonDeposits() throws RemoteException {
+    private static Float loadWaiterAfternoonDeposits() throws RemoteException {
         String date = new java.sql.Date(System.currentTimeMillis()).toString();
         Float waiterDeposits = deposit.getWaitersDepositsTotal(date, "T");
         guiSummaryCashbox.getTxtEarningAfternoon().setText(ParserFloat.floatToString(waiterDeposits));
@@ -115,7 +121,7 @@ public class ControllerGuiSummaryCashbox implements ActionListener{
     /*
      Método que carga las entregas de mozo en la caja existente.
      */
-    private Float loadWaiterTotalDeposits() throws RemoteException {
+    private static Float loadWaiterTotalDeposits() throws RemoteException {
         String date = new java.sql.Date(System.currentTimeMillis()).toString();
         Float waiterDeposits = deposit.getWaitersDepositsTotal(date, "M") + deposit.getWaitersDepositsTotal(date, "T");
         guiSummaryCashbox.getTxtEarnings().setText(ParserFloat.floatToString(waiterDeposits));
@@ -125,13 +131,13 @@ public class ControllerGuiSummaryCashbox implements ActionListener{
      Método que carga los retiros en la caja existente.
      */
 
-    private Float loadWithdrawals() throws RemoteException {
+    private static Float loadWithdrawals() throws RemoteException {
         String date = new java.sql.Date(System.currentTimeMillis()).toString();
         Float withdrawals = withdrawal.getWithdrawalsTotal(date, "M") + withdrawal.getWithdrawalsTotal(date, "T");
         return withdrawals;
     }
 
-    public void loadData() throws RemoteException {
+    public static void loadData() throws RemoteException {
         loadBalance();
         loadExpenses();
         loadInitialBalance();
@@ -167,6 +173,18 @@ public class ControllerGuiSummaryCashbox implements ActionListener{
         row[2] = totalW;
         row[3] = total;
         guiSummaryCashbox.getTableSummaryDefault().addRow(row);
+    }
+    
+    public static void saveResume() throws RemoteException{
+        List<Triple> admins = new LinkedList<Triple>();
+        List<Map> list = admin.getAdmins();
+        for(Map a : list){
+            String n = (String) a.get("name");
+            float d = deposit.getAdminDepositsTotal((int) a.get("id"));
+            float w = withdrawal.getAdminWithdrawalsTotal((int) a.get("id"));
+            admins.add(new Triple(n, d, w));
+        }
+        resume.create(loadCashboxIncome(),loadWaiterTotalDeposits() ,loadExpenses(), loadBalance(),Calendar.getInstance().getTime(), null);
     }
 
     @Override
