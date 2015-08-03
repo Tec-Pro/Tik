@@ -43,7 +43,7 @@ public class GuiLoginGrid extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         panelLogin = new org.edisoncor.gui.panel.PanelImage();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         panelLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/fondo gris.png"))); // NOI18N
         panelLogin.setLayout(new java.awt.GridBagLayout());

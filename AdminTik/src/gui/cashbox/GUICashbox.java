@@ -7,6 +7,7 @@ package gui.cashbox;
 
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -20,6 +21,10 @@ public class GUICashbox extends javax.swing.JInternalFrame {
      */
     public GUICashbox() {
         initComponents();
+    }
+
+    public JLabel getLblCurrentTurn() {
+        return lblCurrentTurn;
     }
 
     /**
@@ -100,6 +105,7 @@ public class GUICashbox extends javax.swing.JInternalFrame {
         withdrawalTotalField = new javax.swing.JTextField();
         newWithdrawalButton = new javax.swing.JButton();
         watchPanel = new javax.swing.JPanel();
+        lblCurrentTurn = new javax.swing.JLabel();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -145,7 +151,7 @@ public class GUICashbox extends javax.swing.JInternalFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(DCInitialBalanceField, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
+                    .addComponent(DCInitialBalanceField, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
                     .addComponent(DCEarningsField)
                     .addComponent(DCCashboxIncomeField)
                     .addComponent(DCExpensesField)
@@ -189,7 +195,7 @@ public class GUICashbox extends javax.swing.JInternalFrame {
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
+                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 90, Short.MAX_VALUE)
                 .addGap(24, 24, 24))
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -361,6 +367,7 @@ public class GUICashbox extends javax.swing.JInternalFrame {
 
         cashboxIncomeLabel.setForeground(java.awt.Color.white);
         cashboxIncomeLabel.setText("CAJA ENTRADA");
+        cashboxIncomeLabel.setToolTipText("doble click aquí para cargar una entrada");
 
         jLabel20.setForeground(java.awt.Color.white);
         jLabel20.setText("ENTREGAS MOZO");
@@ -435,7 +442,7 @@ public class GUICashbox extends javax.swing.JInternalFrame {
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(1, 1, 1)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ECBalanceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel18)))
@@ -753,15 +760,20 @@ public class GUICashbox extends javax.swing.JInternalFrame {
         watchPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         watchPanel.setOpaque(false);
 
+        lblCurrentTurn.setFont(new java.awt.Font("DejaVu Sans", 1, 20)); // NOI18N
+        lblCurrentTurn.setForeground(new java.awt.Color(255, 255, 255));
+        lblCurrentTurn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblCurrentTurn.setText("TURNO MAÑANA ABIERTO");
+
         javax.swing.GroupLayout watchPanelLayout = new javax.swing.GroupLayout(watchPanel);
         watchPanel.setLayout(watchPanelLayout);
         watchPanelLayout.setHorizontalGroup(
             watchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(lblCurrentTurn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         watchPanelLayout.setVerticalGroup(
             watchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 41, Short.MAX_VALUE)
+            .addComponent(lblCurrentTurn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout panelImage1Layout = new javax.swing.GroupLayout(panelImage1);
@@ -776,7 +788,7 @@ public class GUICashbox extends javax.swing.JInternalFrame {
                             .addGroup(panelImage1Layout.createSequentialGroup()
                                 .addComponent(dailyCashboxPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(existantInCashboxPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE))
+                                .addComponent(existantInCashboxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 414, Short.MAX_VALUE))
                             .addGroup(panelImage1Layout.createSequentialGroup()
                                 .addComponent(waiterDepositsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -791,21 +803,21 @@ public class GUICashbox extends javax.swing.JInternalFrame {
         panelImage1Layout.setVerticalGroup(
             panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelImage1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(1, 1, 1)
                 .addComponent(watchPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelImage1Layout.createSequentialGroup()
                         .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(existantInCashboxPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
-                            .addComponent(dailyCashboxPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE))
+                            .addComponent(existantInCashboxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 321, Short.MAX_VALUE)
+                            .addComponent(dailyCashboxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 321, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(adminDepositsPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
-                            .addComponent(withdrawalsPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
-                            .addComponent(waiterDepositsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)))
-                    .addComponent(expensesDetailPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE))
-                .addContainerGap())
+                            .addComponent(adminDepositsPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
+                            .addComponent(withdrawalsPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
+                            .addComponent(waiterDepositsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)))
+                    .addComponent(expensesDetailPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE))
+                .addGap(1, 1, 1))
         );
 
         jScrollPane3.setViewportView(panelImage1);
@@ -886,6 +898,7 @@ public class GUICashbox extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JLabel lblCurrentTurn;
     private javax.swing.JButton newAdminDepositButton;
     private javax.swing.JButton newWaiterDepositButton;
     private javax.swing.JButton newWithdrawalButton;

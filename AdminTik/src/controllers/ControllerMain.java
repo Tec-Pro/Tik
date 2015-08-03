@@ -26,6 +26,7 @@ import gui.GuiMenu;
 import gui.GuiLoadPurchase;
 import gui.cashbox.GUICashbox;
 import gui.cashbox.GuiOpenTurn;
+import gui.discounts.GuiProductsDiscount;
 import gui.logout.GuiLogout;
 import gui.main.GuiConfig;
 import gui.main.GuiMain;
@@ -40,6 +41,7 @@ import interfaces.InterfaceGeneralConfig;
 import interfaces.InterfaceOrder;
 import interfaces.InterfacePresence;
 import interfaces.InterfaceTurn;
+import interfaces.InterfaceUser;
 import interfaces.cashbox.InterfaceCashbox;
 import interfaces.cashbox.expenses.InterfaceExpenses;
 import interfaces.deposits.InterfaceDeposit;
@@ -117,7 +119,7 @@ public class ControllerMain implements ActionListener {
     private InterfaceExpenses crudExpenses;
     private InterfaceOrder crudOrder;
     private InterfaceAdmin crudAdmin;
-
+    private InterfaceUser crudUser;
     public ControllerMain(GuiAdminLogin guiAdminLogin) throws NotBoundException, MalformedURLException, RemoteException {
         this.guiAdminLogin = guiAdminLogin; //hago esto, así si cierra sesión pongo en visible la ventana
         guiMain = new GuiMain();
@@ -203,6 +205,8 @@ public class ControllerMain implements ActionListener {
         crudWithdrawal = (InterfaceWithdrawal) InterfaceName.registry.lookup(InterfaceName.CRUDWithdrawal);
         crudDeposit = (InterfaceDeposit) InterfaceName.registry.lookup(InterfaceName.CRUDDeposit);
         crudAdmin = (InterfaceAdmin) InterfaceName.registry.lookup(InterfaceName.CRUDAdmin);
+        crudUser = (InterfaceUser) InterfaceName.registry.lookup(InterfaceName.CRUDUser);
+
     }
 
     public static void closeSession() {
@@ -360,6 +364,11 @@ public class ControllerMain implements ActionListener {
             guiLogout.toFront();
         }
         if (ae.getSource() == guiMain.getBtnDailyCashbox()) {
+            try {
+                controllerGuiOpenTurn.turn();
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
             guiOpenTurn.setVisible(true);
             guiOpenTurn.toFront();
         }
@@ -496,6 +505,19 @@ public class ControllerMain implements ActionListener {
                 Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
             }
 
+        }
+        if(ae.getSource()== guiMain.getBtnDiscounts()){
+            try {
+                try {
+                    GuiProductsDiscount g= new GuiProductsDiscount(guiMain, true, crudUser.getWaiters());
+                    g.setLocationRelativeTo(guiMain);
+                    g.setVisible(true);
+                } catch (NotBoundException ex) {
+                    Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 }

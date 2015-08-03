@@ -66,95 +66,72 @@
           </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblWM1" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lblMGain" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Component id="lblWM5" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblWM6" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblWM7" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblWM8" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblWM9" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblWM10" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <Component id="lblWM4" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="lblWMGain4" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <Component id="lblWM3" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="lblWMGain3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <Component id="lblWM2" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="lblWMGain2" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="-2" pref="81" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="lblWMGain1" min="-2" max="-2" attributes="0"/>
-                              <Group type="103" alignment="1" groupAlignment="0" attributes="0">
-                                  <Component id="lblWMGain7" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblWMGain6" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblWMGain5" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblWMGain8" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblWMGain9" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblWMGain10" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                      </Group>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="jLabel1" max="32767" attributes="0"/>
+                  <Component id="lblWM1" alignment="0" max="32767" attributes="0"/>
+                  <Component id="lblWM2" alignment="0" max="32767" attributes="0"/>
+                  <Component id="lblWM3" alignment="0" max="32767" attributes="0"/>
+                  <Component id="lblWM4" alignment="0" max="32767" attributes="0"/>
+                  <Component id="lblWM5" alignment="0" max="32767" attributes="0"/>
+                  <Component id="lblWM6" alignment="0" max="32767" attributes="0"/>
+                  <Component id="lblWM7" alignment="0" max="32767" attributes="0"/>
+                  <Component id="lblWM8" alignment="0" max="32767" attributes="0"/>
+                  <Component id="lblWM9" alignment="0" max="32767" attributes="0"/>
+                  <Component id="lblWM10" alignment="0" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="lblMGain" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblWMGain4" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblWMGain3" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblWMGain2" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblWMGain1" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                      <Component id="lblWMGain7" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblWMGain6" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblWMGain5" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblWMGain8" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblWMGain9" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblWMGain10" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="jLabel7" alignment="0" max="32767" attributes="0"/>
+                  <Component id="lblWA1" alignment="0" max="32767" attributes="0"/>
+                  <Component id="lblWA2" alignment="0" max="32767" attributes="0"/>
+                  <Component id="lblWA3" alignment="0" max="32767" attributes="0"/>
+                  <Component id="lblWA4" alignment="0" max="32767" attributes="0"/>
+                  <Component id="lblWA5" alignment="0" max="32767" attributes="0"/>
+                  <Component id="lblWA6" alignment="0" max="32767" attributes="0"/>
+                  <Component id="lblWA7" alignment="0" max="32767" attributes="0"/>
+                  <Component id="lblWA8" alignment="0" max="32767" attributes="0"/>
+                  <Component id="lblWA9" alignment="0" max="32767" attributes="0"/>
+                  <Component id="lblWA10" alignment="0" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lblAGain" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblWA1" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblWA2" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblWA3" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblWA4" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblWA5" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblWA6" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblWA7" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblWA8" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblWA9" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblWA10" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="lblWAGain1" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                          <Component id="lblWAGain3" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblWAGain2" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblWAGain1" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Group type="103" alignment="1" groupAlignment="0" attributes="0">
-                              <Component id="lblWAGain3" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblWAGain2" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="103" alignment="1" groupAlignment="0" attributes="0">
-                              <Component id="lblWAGain5" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblWAGain4" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="103" alignment="1" groupAlignment="0" attributes="0">
-                              <Component id="lblWAGain7" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblWAGain6" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="lblWAGain8" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Group type="103" alignment="1" groupAlignment="0" attributes="0">
-                              <Component id="lblWAGain10" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblWAGain9" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                      <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                          <Component id="lblWAGain5" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblWAGain4" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                          <Component id="lblWAGain7" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblWAGain6" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="lblWAGain8" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                          <Component id="lblWAGain10" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblWAGain9" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
+                  <Component id="lblAGain" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
           </Group>
@@ -164,9 +141,9 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jLabel4" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -200,56 +177,25 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lblWMGain1" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblWM1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="lblWM1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lblWM2" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblWMGain2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="lblWM2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lblWM3" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblWMGain3" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="lblWM4" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblWMGain4" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="lblWM5" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblWMGain5" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lblWM6" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lblWM7" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lblWM8" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lblWM9" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lblWM10" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
-                              <Component id="lblWMGain6" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lblWMGain7" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lblWMGain8" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lblWMGain9" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lblWMGain10" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
+                      <Component id="lblWM3" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblWM4" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblWM5" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblWM6" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblWM7" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblWM8" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblWM9" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblWM10" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Component id="lblWAGain1" min="-2" max="-2" attributes="0"/>
@@ -292,6 +238,33 @@
                       <Component id="lblWA9" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lblWA10" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Component id="lblWMGain1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblWMGain2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblWMGain3" min="-2" pref="16" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="lblWMGain4" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="lblWMGain5" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
+                              <Component id="lblWMGain6" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="lblWMGain7" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="lblWMGain8" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="lblWMGain9" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="lblWMGain10" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>

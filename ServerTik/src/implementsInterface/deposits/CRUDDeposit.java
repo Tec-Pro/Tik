@@ -49,10 +49,22 @@ public class CRUDDeposit extends UnicastRemoteObject implements interfaces.depos
         return Income.where("created_at >= ? and turn = ?", date,turn).toMaps();
     }
     
+    /**
+     * si turno es N retorna todos
+     * @param date
+     * @param turn
+     * @return
+     * @throws RemoteException 
+     */
     @Override
     public float getIncomesTotal(String date, String turn) throws RemoteException {
         openBase();
-        String sql = "SELECT SUM(amount) as amount FROM incomes WHERE created_at >='"+date+"' AND turn = '"+turn+"';";
+        String sql;
+        if(!"N".equals(turn))
+             sql = "SELECT SUM(amount) as amount FROM incomes WHERE created_at >='"+date+"' AND turn = '"+turn+"';";
+        else
+             sql = "SELECT SUM(amount) as amount FROM incomes ;";
+
         float ret = 0;
         try {
             Statement stmt = conn.createStatement();
@@ -67,6 +79,7 @@ public class CRUDDeposit extends UnicastRemoteObject implements interfaces.depos
         }
         return ret;
     }
+    
     
     @Override
     public Map<String, Object> createWaiterDeposit(int waiter_id, Float amount) throws RemoteException {

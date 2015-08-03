@@ -13,6 +13,7 @@ import implementsInterface.CRUDPproduct;
 import implementsInterface.CRUDResume;
 import implementsInterface.CRUDTurn;
 import implementsInterface.CrudAdmin;
+import implementsInterface.CrudDiscounts;
 import implementsInterface.CrudPresence;
 import implementsInterface.CrudProvider;
 import implementsInterface.CrudProviderCategory;
@@ -39,6 +40,7 @@ import java.rmi.registry.LocateRegistry;
 import java.util.Enumeration;
 import search.providersSearch.ProvidersSearch;
 import utils.InterfaceName;
+import static utils.InterfaceName.CRUDDiscounts;
 
 /**
  *
@@ -95,6 +97,7 @@ public class ServerTik {
         CRUDDeposit CRUDDeposit = new CRUDDeposit();
         CRUDExpenses CRUDExpenses = new CRUDExpenses();
         CRUDCashbox CRUDCashbox = new CRUDCashbox();
+        CrudDiscounts CRUDdiscounts = new CrudDiscounts();
         CRUDResume CRUDResume = new CRUDResume();
         //Cargo las configuraciones generales
         generalConfig.loadProperties();
@@ -122,6 +125,7 @@ public class ServerTik {
         Naming.rebind(InterfaceName.CRUDTurn, CRUDTurn);
         Naming.rebind(InterfaceName.CRUDExpenses, CRUDExpenses);
         Naming.rebind(InterfaceName.CRUDCashbox, CRUDCashbox);
+        Naming.rebind(InterfaceName.CRUDDiscounts, CRUDdiscounts);
         Naming.rebind(InterfaceName.CRUDResume, CRUDResume);
     }
 

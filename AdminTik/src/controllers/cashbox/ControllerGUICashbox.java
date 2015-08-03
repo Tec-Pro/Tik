@@ -200,7 +200,7 @@ public class ControllerGUICashbox implements ActionListener {
                     Logger.getLogger(ControllerGUICashbox.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 loadExpenses();
-                ECLoadExpenses();                
+                ECLoadExpenses();
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGUICashbox.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -226,7 +226,7 @@ public class ControllerGUICashbox implements ActionListener {
     //Método que carga la tabla con los retiros y modifica los campos de caja existente.
     private static void loadWithdrawals() throws RemoteException {
         String date = new java.sql.Date(System.currentTimeMillis()).toString();
-        List<Map> withdrawalList = withdrawal.getWithdrawals(date, turn.getTurn());
+        List<Map> withdrawalList = withdrawal.getWithdrawals();
         gui.getWithdrawalsTableModel().setRowCount(0);
         Object[] o = new Object[4];
         Float total = 0.0f;
@@ -259,7 +259,7 @@ public class ControllerGUICashbox implements ActionListener {
      */
     private static void loadWaiterDeposits() throws RemoteException {
         String date = new java.sql.Date(System.currentTimeMillis()).toString();
-        List<Map> depositsList = deposit.getWaitersDeposits(date, turn.getTurn());
+        List<Map> depositsList = deposit.getWaitersDeposits();
         gui.getWaiterDepositsTableModel().setRowCount(0);
         Object[] o = new Object[4];
         Float total = 0.0f;
@@ -293,7 +293,7 @@ public class ControllerGUICashbox implements ActionListener {
 
     private static void loadAdminDeposits() throws RemoteException {
         String date = new java.sql.Date(System.currentTimeMillis()).toString();
-        List<Map> depositsList = deposit.getAdminsDeposits(date, turn.getTurn());
+        List<Map> depositsList = deposit.getAdminsDeposits();
         gui.getAdminDepositsTableModel().setRowCount(0);
         Object[] o = new Object[4];
         Float total = 0.0f;
@@ -325,7 +325,7 @@ public class ControllerGUICashbox implements ActionListener {
      Método que carga los gastos pagados con dinero de la caja.
      */
     private static void loadExpenses() throws RemoteException {
-        List<Map> exp = expenses.getExpenses(turn.getTurn());
+        List<Map> exp = expenses.getExpenses("N");
         gui.getExpensesTableModel().setRowCount(0);
         Object[] o = new Object[4];
         Float total = 0.0f;
@@ -345,9 +345,15 @@ public class ControllerGUICashbox implements ActionListener {
      Método que carga el saldo inicial de la caja.
      */
     private static Float ECLoadInitialBalance() throws RemoteException {
-        Float initialBalance = cashbox.getPastBalance();
-        gui.getECInitialBalanceField().setText(ParserFloat.floatToString(initialBalance));
-        return initialBalance;
+        Map lastTurn = cashbox.getLast();
+        Map mm;
+        if (lastTurn.get("turn").equals("T")) {
+            mm = cashbox.getLast("TT"); // si el ultimo turno es tarde, necesito el otro turno tarde
+        } else {
+            mm = cashbox.getLast("T");
+        }
+        //con esto busco el ultimo turno mañana para tener cual es el saldo inicial
+        return ((float) mm.get("balance")) + ((float) mm.get("spend")) - ((float) mm.get("entry_cash")) - ((float) mm.get("collect"));
     }
 
     /*
@@ -355,7 +361,7 @@ public class ControllerGUICashbox implements ActionListener {
      */
     private static Float ECLoadAdminDeposits() throws RemoteException {
         String date = new java.sql.Date(System.currentTimeMillis()).toString();
-        Float adminDeposits = deposit.getAdminsDepositsTotal(date, turn.getTurn());
+        Float adminDeposits = deposit.getAdminsDepositsTotal();
         gui.getECAdminDepositsField().setText(ParserFloat.floatToString(adminDeposits));
         return adminDeposits;
     }
@@ -365,7 +371,7 @@ public class ControllerGUICashbox implements ActionListener {
      */
     private static Float ECLoadWaiterDeposits() throws RemoteException {
         String date = new java.sql.Date(System.currentTimeMillis()).toString();
-        Float waiterDeposits = deposit.getWaitersDepositsTotal(date, turn.getTurn());
+        Float waiterDeposits = deposit.getWaitersDepositsTotal();
         gui.getECWaiterDepositsField().setText(ParserFloat.floatToString(waiterDeposits));
         return waiterDeposits;
     }
@@ -375,14 +381,14 @@ public class ControllerGUICashbox implements ActionListener {
 
     private static Float ECLoadWithdrawals() throws RemoteException {
         String date = new java.sql.Date(System.currentTimeMillis()).toString();
-        Float withdrawals = withdrawal.getWithdrawalsTotal(date, turn.getTurn());
+        Float withdrawals = withdrawal.getWithdrawalsTotal();
         gui.getECWithdrawalsField().setText(ParserFloat.floatToString(withdrawals));
         return withdrawals;
     }
 
     private static Float ECLoadCashboxIncome() throws RemoteException {
         String date = new java.sql.Date(System.currentTimeMillis()).toString();
-        Float incomes = deposit.getIncomesTotal(date, turn.getTurn());
+        Float incomes = deposit.getIncomesTotal(date, "N"); // con N retorno todos
         gui.getECCashboxIncomeField().setText(ParserFloat.floatToString(incomes));
         return incomes;
     }
@@ -391,7 +397,7 @@ public class ControllerGUICashbox implements ActionListener {
      Método que carga los gastos en la caja existente.
      */
     private static Float ECLoadExpenses() throws RemoteException {
-        Float exp = expenses.getSumExpenses(turn.getTurn());
+        Float exp = expenses.getSumExpenses("N");
         gui.getECCashboxExpensesField().setText(ParserFloat.floatToString(exp));
         return exp;
     }
@@ -462,37 +468,84 @@ public class ControllerGUICashbox implements ActionListener {
      * @throws RemoteException
      */
     public static void reloadDialyCashbox() throws RemoteException {
+        //cargo siempre el saldo inicial
+        Map lastTurn = cashbox.getLast();
+        Map mm;
+        if (lastTurn.get("turn").equals("T") && !turn.isTurnOpen()) {
+            mm = cashbox.getLast("TT"); // si el ultimo turno es tarde, necesito el otro turno tarde
+        } else {
+            mm = cashbox.getLast("T");
+        }
+        //con esto busco el ultimo turno mañana para tener cual es el saldo inicial
+        float initialBalance = ((float) mm.get("balance"));
+        gui.getDCInitialBalanceField().setText(ParserFloat.floatToString(initialBalance));
+        gui.getECInitialBalanceField().setText(ParserFloat.floatToString(initialBalance));
         if (turn.isTurnOpen()) {
             if (turn.getTurn().equals("M")) {
-                gui.getDCInitialBalanceField().setText(gui.getECInitialBalanceField().getText());
                 gui.getDCCashboxIncomeField().setText(gui.getECCashboxIncomeField().getText());
                 gui.getDCEarningsField().setText(ParserFloat.floatToString(crudOrder.totalEarn() + crudOrder.getAllExceptions()));
                 gui.getDCExpensesField().setText(gui.getECCashboxExpensesField().getText());
                 gui.getDCNextTurnField().setText("0");
-                gui.getDCBalanceField().setText(gui.getECBalanceField().getText());
+                gui.getLblCurrentTurn().setText("TURNO MAÑANA ABIERTO");
             } else {
                 Map m = cashbox.getLast();
                 Map mt = cashbox.getLast("T");
                 gui.getDCInitialBalanceField().setText(ParserFloat.floatToString((float) mt.get("balance")));
-                float currentIncomes = ParserFloat.stringToFloat(gui.getECCashboxIncomeField().getText());
-                gui.getDCCashboxIncomeField().setText(ParserFloat.floatToString(((float) m.get("entry_cash")) + currentIncomes));
+                gui.getDCCashboxIncomeField().setText(ParserFloat.floatToString(((float) m.get("entry_cash")) ));
                 float currentEarnes = crudOrder.totalEarn() + crudOrder.getAllExceptions();
                 gui.getDCEarningsField().setText(ParserFloat.floatToString(((float) m.get("collect")) + currentEarnes));
                 float currentExpenses = ParserFloat.stringToFloat(gui.getECCashboxExpensesField().getText());
-                gui.getDCExpensesField().setText(ParserFloat.floatToString(((float) m.get("spend")) + currentExpenses));
+                gui.getDCExpensesField().setText(ParserFloat.floatToString(currentExpenses));
                 gui.getDCNextTurnField().setText("0");
-                gui.getDCBalanceField().setText(gui.getECBalanceField().getText());
+                gui.getLblCurrentTurn().setText("TURNO TARDE ABIERTO");
             }
+
         } else {
+            gui.getLblCurrentTurn().setText("NO HAY TURNO ABIERTO");
+            lastTurn = cashbox.getLast();
+            if (lastTurn.get("turn").equals("T")) {
+                /**
+                 * ahora esta cerrado todos los turnos, si el turno anterior es
+                 * T entonces tengo que setear el turno siguiente sino queda
+                 * vacio con 0
+                 *
+                 */
+                gui.getDCNextTurnField().setText(ParserFloat.floatToString((float) lastTurn.get("balance")));
+            } else// lo dejo en 0, todavía no se definio cuanto deja para el día de mañana
+            {
+                gui.getDCNextTurnField().setText(ParserFloat.floatToString((float) 0));
+            }
             Map m = cashbox.getLast();
-            Map mm = cashbox.getLast("M");
-            float initialBalance = ((float) mm.get("balance")) + ((float) mm.get("spend")) - ((float) mm.get("entry_cash")) - ((float) mm.get("collect"));
-            gui.getDCInitialBalanceField().setText(ParserFloat.floatToString(initialBalance));
-            gui.getDCCashboxIncomeField().setText(ParserFloat.floatToString(((float) m.get("entry_cash")) + ((float) mm.get("entry_cash"))));
-            gui.getDCEarningsField().setText(ParserFloat.floatToString(((float) m.get("collect")) + ((float) mm.get("collect"))));
-            gui.getDCExpensesField().setText(ParserFloat.floatToString(((float) m.get("spend")) + ((float) mm.get("spend"))));
-            gui.getDCNextTurnField().setText(ParserFloat.floatToString((float) m.get("balance")));
-            gui.getDCBalanceField().setText(ParserFloat.floatToString((float) m.get("balance")));
+            if (m.get("turn").equals("M")) {
+                gui.getDCCashboxIncomeField().setText(ParserFloat.floatToString(((float) m.get("entry_cash"))));
+                gui.getDCEarningsField().setText(ParserFloat.floatToString((float) m.get("collect")));
+                gui.getDCExpensesField().setText(ParserFloat.floatToString(((float) m.get("spend"))));
+            }
+            if (m.get("turn").equals("T")) {
+                mm= cashbox.getLast("M");
+                gui.getDCCashboxIncomeField().setText(ParserFloat.floatToString((float) m.get("entry_cash")-(float)mm.get("entry_cash")));
+                gui.getDCEarningsField().setText(ParserFloat.floatToString((float) m.get("collect")-(float) mm.get("collect")));
+                gui.getDCExpensesField().setText(ParserFloat.floatToString(((float) m.get("spend")-(float) mm.get("spend"))));
+            }
+        }
+        float incomes = ParserFloat.stringToFloat(gui.getDCCashboxIncomeField().getText());
+        float earning = ParserFloat.stringToFloat(gui.getDCEarningsField().getText());
+        float expenses = ParserFloat.stringToFloat(gui.getDCExpensesField().getText());
+        gui.getDCBalanceField().setText(ParserFloat.floatToString(incomes + earning - expenses));
+    }
+    
+    public  static void blockButtons() throws RemoteException{
+        if(turn.isTurnOpen()){
+            gui.getBtnNewExpense().setEnabled(true);
+            gui.getNewWithdrawalButton().setEnabled(true);
+            gui.getNewWaiterDepositButton().setEnabled(true);
+            gui.getNewAdminDepositButton().setEnabled(true);
+        }
+        else{
+            gui.getBtnNewExpense().setEnabled(false);
+            gui.getNewWithdrawalButton().setEnabled(false);
+            gui.getNewWaiterDepositButton().setEnabled(false);
+            gui.getNewAdminDepositButton().setEnabled(false);
         }
     }
 }

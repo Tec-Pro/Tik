@@ -88,7 +88,7 @@ public class CRUDWithdrawal extends UnicastRemoteObject implements interfaces.wi
     @Override
     public float getWithdrawalsTotal() throws RemoteException {
         openBase();
-        String sql = "SELECT SUM(amount) as amount FROM withdrawal;";
+        String sql = "SELECT SUM(amount) as amount FROM withdrawals;";
         float ret = 0;
         try {
             Statement stmt = conn.createStatement();
