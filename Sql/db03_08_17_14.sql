@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `tik` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `tik`;
--- MySQL dump 10.13  Distrib 5.5.43, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 5.5.44, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: tik
 -- ------------------------------------------------------
--- Server version	5.5.43-0+deb8u1
+-- Server version	5.5.44-0+deb8u1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -51,6 +51,28 @@ CREATE TABLE `admins` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `cashboxes`
+--
+
+DROP TABLE IF EXISTS `cashboxes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `cashboxes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `day` date DEFAULT NULL,
+  `turn` varchar(1) DEFAULT NULL,
+  `balance` float DEFAULT NULL,
+  `collect` float DEFAULT NULL,
+  `entry_cash` float DEFAULT NULL,
+  `spend` float DEFAULT NULL,
+  `withdrawal` float DEFAULT NULL,
+  `delivery_cash` float DEFAULT NULL,
+  `delivery_waiter` float DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `categories`
 --
 
@@ -76,10 +98,30 @@ CREATE TABLE `deposits` (
   `admin_id` int(11) DEFAULT '0',
   `waiter_id` int(11) DEFAULT '0',
   `amount` float DEFAULT '0',
-  `created_at` date DEFAULT NULL,
-  `updated_at` date DEFAULT NULL,
+  `column` varchar(45) DEFAULT NULL,
+  `turn` varchar(10) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `discounts`
+--
+
+DROP TABLE IF EXISTS `discounts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `discounts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fproduct_id` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `order_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,7 +171,7 @@ CREATE TABLE `expenses` (
   `purchase_id` int(11) DEFAULT NULL,
   `turn` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -199,6 +241,24 @@ CREATE TABLE `fproducts_pproducts` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `incomes`
+--
+
+DROP TABLE IF EXISTS `incomes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `incomes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `admin_id` int(11) DEFAULT '0',
+  `amount` float DEFAULT '0',
+  `turn` varchar(10) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `innings`
 --
 
@@ -226,8 +286,11 @@ CREATE TABLE `orders` (
   `description` varchar(200) DEFAULT NULL,
   `closed` tinyint(1) DEFAULT NULL,
   `persons` int(11) DEFAULT NULL,
+  `exceptions` float DEFAULT '0',
+  `paid_exceptions` float DEFAULT '0',
+  `discount` float DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -245,11 +308,12 @@ CREATE TABLE `orders_fproducts` (
   `done` tinyint(1) DEFAULT NULL,
   `commited` tinyint(1) DEFAULT NULL,
   `issued` tinyint(1) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   `paid` tinyint(1) DEFAULT '0',
+  `discount` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -268,7 +332,7 @@ CREATE TABLE `payments` (
   `date` date DEFAULT NULL,
   `name_admin` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -304,7 +368,7 @@ CREATE TABLE `pproducts_purchases` (
   `amount` varchar(45) NOT NULL,
   `final_price` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -320,6 +384,7 @@ CREATE TABLE `presences` (
   `entry_time` time DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `departure_time` time DEFAULT '00:00:00',
+  `departure_day` date DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -337,7 +402,7 @@ CREATE TABLE `productstatistics` (
   `name` varchar(45) NOT NULL,
   `quantity` int(11) NOT NULL DEFAULT '0',
   `turn` varchar(45) NOT NULL,
-  `day` varchar(45) NOT NULL,
+  `day` date NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -420,7 +485,7 @@ CREATE TABLE `purchases` (
   `provider_id` int(11) DEFAULT NULL,
   `date_paid` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -444,7 +509,7 @@ CREATE TABLE `salesstatistics` (
   `discounts` double DEFAULT NULL,
   `exceptions` double DEFAULT NULL,
   `turn` varchar(45) DEFAULT NULL,
-  `day` timestamp NULL DEFAULT NULL,
+  `day` date DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -524,10 +589,11 @@ CREATE TABLE `withdrawals` (
   `admin_id` int(11) DEFAULT '0',
   `amount` float DEFAULT '0',
   `detail` varchar(100) DEFAULT '',
+  `turn` varchar(10) DEFAULT '',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -539,4 +605,4 @@ CREATE TABLE `withdrawals` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-07-02 20:16:29
+-- Dump completed on 2015-08-03 17:14:43
