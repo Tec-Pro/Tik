@@ -5,6 +5,7 @@
  */
 package controllers.deposits;
 
+import controllers.cashbox.ControllerGUICashbox;
 import gui.deposit.GUINewDeposit;
 import interfaces.InterfaceAdmin;
 import interfaces.InterfacePresence;
@@ -70,6 +71,7 @@ public class ControllerGUINewDeposit implements ActionListener {
                     try{
                         deposit.createIncome(admin_income_id, ParserFloat.stringToFloat(guiNewDeposit.getAmountTxtField().getText()));
                         controllers.cashbox.ControllerGUICashbox.reloadIncome();
+                        ControllerGUICashbox.reloadDialyCashbox();
                     } catch (RemoteException ex){
                         Logger.getLogger(ControllerGUINewDeposit.class.getName()).log(Level.SEVERE, null, ex);
                     }

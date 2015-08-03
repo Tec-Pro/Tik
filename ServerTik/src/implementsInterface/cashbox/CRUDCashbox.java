@@ -55,11 +55,28 @@ public class CRUDCashbox extends UnicastRemoteObject implements InterfaceCashbox
         return m;
     }
 
+    /**
+     * si el turno es TT retorna el penultimo turno tarde, NO EL ULTIMO
+     *
+     * @param turn
+     * @return
+     * @throws RemoteException
+     */
     @Override
     public Map<String, Object> getLast(String turn) throws RemoteException {
         Utils.abrirBase();
-        List<Map> last = Cashbox.where("turn = ?", turn).orderBy("id desc").limit(1).toMaps();
-        Map m = last.get(0);
+        List<Map> last;
+        Map m;
+        if (turn.equals("TT")) {
+            last = Cashbox.where("turn = ?", "T").orderBy("id desc").limit(2).toMaps();
+            if(last.size()==2)
+                m = last.get(1);
+            else
+                m = last.get(0);
+        } else {
+            last = Cashbox.where("turn = ?", turn).orderBy("id desc").limit(1).toMaps();
+            m = last.get(0);
+        }
         return m;
     }
 }

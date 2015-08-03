@@ -5,6 +5,7 @@
 package controllers.logout;
 
 import controllers.ControllerMain;
+import controllers.cashbox.ControllerGUICashbox;
 import gui.cashbox.GUIUserDiscounts;
 import gui.logout.GuiLogout;
 import interfaces.InterfaceOrder;
@@ -37,7 +38,6 @@ public class ControllerGuiLogout implements ActionListener {
     private InterfaceOrder crudOrder;
     private InterfaceDeposit crudDeposit;
     private InterfaceTurn crudTurn;
-    
 
     public ControllerGuiLogout(GuiLogout guiLogout) throws RemoteException, NotBoundException {
         this.guiLogout = guiLogout;
@@ -74,9 +74,9 @@ public class ControllerGuiLogout implements ActionListener {
         float d = ParserFloat.stringToFloat(guiLogout.getTxtDelivery().getText());
         float e = ParserFloat.stringToFloat(guiLogout.getLblEarn().getText());
         float ex = ParserFloat.stringToFloat(guiLogout.getLblException().getText());
-        float desc=  ParserFloat.stringToFloat(guiLogout.getLblDiscount().getText());
-        guiLogout.getLblDif().setText(ParserFloat.floatToString(pd + d +desc - e - ex));
-        guiLogout.getLblUndelivered().setText(ParserFloat.floatToString(e+ex-desc-pd));
+        float desc = ParserFloat.stringToFloat(guiLogout.getLblDiscount().getText());
+        guiLogout.getLblDif().setText(ParserFloat.floatToString(pd + d + desc - e - ex));
+        guiLogout.getLblUndelivered().setText(ParserFloat.floatToString(e + ex - desc - pd));
     }
 
     /**
@@ -94,8 +94,7 @@ public class ControllerGuiLogout implements ActionListener {
                 guiLogout.getLblEarn().setText(ParserFloat.floatToString(crudOrder.EarnByUser(userId)));
                 guiLogout.getLblException().setText(ParserFloat.floatToString(crudOrder.getExceptions(userId)));
                 guiLogout.getLblDelivery().setText(ParserFloat.floatToString(crudDeposit.getWaiterDepositsTotalOnTurn(userId, crudTurn.getTurn())));
-                
-                
+
                 guiLogout.getTxtDelivery().setEnabled(true);
                 List<Map> prods = crudOrder.getCurrentDiscounts(userId);
                 List<Map> efec = crudOrder.getCurrentDiscountsInEfective(userId);
@@ -107,9 +106,9 @@ public class ControllerGuiLogout implements ActionListener {
                 for (Map p : efec) {
                     totalEfec = totalProd + ((float) p.get("discount"));
                 }
-                guiLogout.getLblDiscount().setText(ParserFloat.floatToString(totalEfec+totalProd));
+                guiLogout.getLblDiscount().setText(ParserFloat.floatToString(totalEfec + totalProd));
                 calculateDif();
-                
+
             } else {
                 guiLogout.clear();
             }
@@ -143,11 +142,22 @@ public class ControllerGuiLogout implements ActionListener {
         if (ae.getSource() == guiLogout.getBtnClose()) {
             try {
                 if (userId > -1) {
-                    crudDeposit.createWaiterDeposit(userId, ParserFloat.stringToFloat(guiLogout.getTxtDelivery().getText()));
+                    String name = (String) guiLogout.getcBoxEmployers().getSelectedItem();
+                    String split[] = name.split("-");
+                    userId = Integer.parseInt(split[0]);
+                    String pos = split[2];
+                    if (pos.equals("Mozo")) {
+                        crudDeposit.createWaiterDeposit(userId, ParserFloat.stringToFloat(guiLogout.getTxtDelivery().getText()));
+                    }
                     crudPresence.logout(userId);
                     updateOnline();
                     guiLogout.clear();
                 }
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerGuiLogout.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                ControllerGUICashbox.reloadDialyCashbox();
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiLogout.class.getName()).log(Level.SEVERE, null, ex);
             }
