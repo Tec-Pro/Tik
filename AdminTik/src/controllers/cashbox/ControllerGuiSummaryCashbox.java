@@ -6,6 +6,7 @@
 package controllers.cashbox;
 
 import controllers.ControllerMain;
+import static controllers.cashbox.ControllerGUICashbox.gui;
 import gui.cashbox.GuiSummaryCashbox;
 import gui.cashbox.GuiSummaryCashboxForDate;
 import interfaces.InterfaceAdmin;
@@ -67,10 +68,17 @@ public class ControllerGuiSummaryCashbox implements ActionListener{
         return exp;
     }
 
+    private static Float loadCashboxIncome() throws RemoteException {
+        String date = new java.sql.Date(System.currentTimeMillis()).toString();
+        Float incomes = deposit.getIncomesTotal(date, "M") + deposit.getIncomesTotal(date, "T");
+        guiSummaryCashbox.getTxtCashboxIncome().setText(ParserFloat.floatToString(incomes));
+        return incomes;
+    }
+    
     private Float loadBalance() throws RemoteException {
         Float initialBalance = loadInitialBalance();
         Float adminDeposits = loadAdminDeposits();
-        Float waiterDeposits = loadWaiterDeposits();
+        Float waiterDeposits = loadWaiterTotalDeposits();
         Float withdrawals = loadWithdrawals();
         Float exp = loadExpenses();
         Float balance = initialBalance + adminDeposits + waiterDeposits - withdrawals - exp;
@@ -87,9 +95,30 @@ public class ControllerGuiSummaryCashbox implements ActionListener{
     /*
      Método que carga las entregas de mozo en la caja existente.
      */
-    private Float loadWaiterDeposits() throws RemoteException {
+    private Float loadWaiterMorningDeposits() throws RemoteException {
+        String date = new java.sql.Date(System.currentTimeMillis()).toString();
+        Float waiterDeposits = deposit.getWaitersDepositsTotal(date, "M");
+        guiSummaryCashbox.getTxtEarningsMorning().setText(ParserFloat.floatToString(waiterDeposits));
+        return waiterDeposits;
+    }
+    
+    /*
+     Método que carga las entregas de mozo en la caja existente.
+     */
+    private Float loadWaiterAfternoonDeposits() throws RemoteException {
+        String date = new java.sql.Date(System.currentTimeMillis()).toString();
+        Float waiterDeposits = deposit.getWaitersDepositsTotal(date, "T");
+        guiSummaryCashbox.getTxtEarningAfternoon().setText(ParserFloat.floatToString(waiterDeposits));
+        return waiterDeposits;
+    }
+    
+    /*
+     Método que carga las entregas de mozo en la caja existente.
+     */
+    private Float loadWaiterTotalDeposits() throws RemoteException {
         String date = new java.sql.Date(System.currentTimeMillis()).toString();
         Float waiterDeposits = deposit.getWaitersDepositsTotal(date, "M") + deposit.getWaitersDepositsTotal(date, "T");
+        guiSummaryCashbox.getTxtEarnings().setText(ParserFloat.floatToString(waiterDeposits));
         return waiterDeposits;
     }
     /*
@@ -106,6 +135,10 @@ public class ControllerGuiSummaryCashbox implements ActionListener{
         loadBalance();
         loadExpenses();
         loadInitialBalance();
+        loadWaiterMorningDeposits();
+        loadWaiterAfternoonDeposits();
+        loadWaiterTotalDeposits();
+        loadCashboxIncome();
     }
 
     public static void loadTableOfAdmins() throws RemoteException {

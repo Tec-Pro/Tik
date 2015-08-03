@@ -10,6 +10,7 @@ import implementsInterface.CRUDEproduct;
 import implementsInterface.CRUDFproduct;
 import implementsInterface.CRUDOrder;
 import implementsInterface.CRUDPproduct;
+import implementsInterface.CRUDResume;
 import implementsInterface.CRUDTurn;
 import implementsInterface.CrudAdmin;
 import implementsInterface.CrudDiscounts;
@@ -97,6 +98,7 @@ public class ServerTik {
         CRUDExpenses CRUDExpenses = new CRUDExpenses();
         CRUDCashbox CRUDCashbox = new CRUDCashbox();
         CrudDiscounts CRUDdiscounts = new CrudDiscounts();
+        CRUDResume CRUDResume = new CRUDResume();
         //Cargo las configuraciones generales
         generalConfig.loadProperties();
 
@@ -124,6 +126,7 @@ public class ServerTik {
         Naming.rebind(InterfaceName.CRUDExpenses, CRUDExpenses);
         Naming.rebind(InterfaceName.CRUDCashbox, CRUDCashbox);
         Naming.rebind(InterfaceName.CRUDDiscounts, CRUDdiscounts);
+        Naming.rebind(InterfaceName.CRUDResume, CRUDResume);
     }
 
 }
