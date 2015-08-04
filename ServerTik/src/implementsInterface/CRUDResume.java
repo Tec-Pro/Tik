@@ -14,6 +14,7 @@ import java.util.Map;
 import models.resume.Adminresume;
 import models.resume.Resume;
 import org.javalite.activejdbc.Base;
+import org.javalite.activejdbc.LazyList;
 import org.javalite.activejdbc.Model;
 import utils.Pair;
 import utils.Triple;
@@ -45,6 +46,18 @@ public class CRUDResume extends UnicastRemoteObject implements InterfaceResume{
         }
         Base.commitTransaction();
         return r.toMap();
+    }
+    
+    public List<Map> getResume(Date since, Date until){
+        Utils.abrirBase();
+        LazyList<Resume> list  = Resume.where("resume_date >= ? and resume_date <= ? ", since, until);
+        return list.toMaps();
+    }
+    
+    public List<Map> getAdminResume(int idResume){
+        Utils.abrirBase();
+        LazyList<Adminresume> list = Adminresume.where("resume_id = ?", idResume);
+        return list.toMaps();
     }
     
 }

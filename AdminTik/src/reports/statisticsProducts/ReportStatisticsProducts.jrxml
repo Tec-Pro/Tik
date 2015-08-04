@@ -31,21 +31,21 @@
 				<text><![CDATA[Producto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="209" y="15" width="136" height="20" backcolor="#CCCCCC" uuid="c33d1386-0683-4504-951c-6642b2fe3529"/>
+				<reportElement mode="Opaque" x="209" y="15" width="85" height="20" backcolor="#CCCCCC" uuid="c33d1386-0683-4504-951c-6642b2fe3529"/>
 				<textElement>
 					<font size="13" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Cantidad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="345" y="15" width="75" height="20" backcolor="#CCCCCC" uuid="2d60d11c-568b-49d6-af17-99a3e381328c"/>
+				<reportElement mode="Opaque" x="294" y="15" width="79" height="20" backcolor="#CCCCCC" uuid="2d60d11c-568b-49d6-af17-99a3e381328c"/>
 				<textElement>
 					<font size="13" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Turno]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="420" y="15" width="135" height="20" backcolor="#CCCCCC" uuid="88bc75d7-2c6f-469f-9df1-67a61dd81f4f"/>
+				<reportElement mode="Opaque" x="373" y="15" width="182" height="20" backcolor="#CCCCCC" uuid="88bc75d7-2c6f-469f-9df1-67a61dd81f4f"/>
 				<textElement>
 					<font size="13" isBold="true"/>
 				</textElement>
@@ -54,35 +54,35 @@
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="40" splitType="Stretch">
+		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="209" height="20" uuid="967a1a86-9a88-489f-a014-d71bbf144cf8"/>
+				<reportElement x="0" y="0" width="209" height="20" uuid="693cc0fb-7e8f-4d6f-a8fd-c4e0c3dd287b"/>
 				<textFieldExpression><![CDATA[$F{product}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="231" y="0" width="114" height="20" uuid="9460993a-da8b-4a7e-929e-d20ee38ef777"/>
+				<reportElement x="209" y="0" width="62" height="20" uuid="a3bbe35c-f89b-4006-9d6f-88f99becfb81"/>
 				<textFieldExpression><![CDATA[""+$F{amount}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="356" y="0" width="64" height="20" uuid="fb6c2e0e-0079-4c02-98e6-63634814da37"/>
+				<reportElement x="294" y="0" width="79" height="20" uuid="5d9994ce-c525-438a-8f28-e9c381296b9f"/>
 				<textFieldExpression><![CDATA[""+$F{turn}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="420" y="0" width="135" height="20" uuid="1cc61e61-4d13-4717-8784-c75a59e8afdf"/>
+				<reportElement x="373" y="0" width="182" height="20" uuid="65987dc9-9d7c-42d6-8262-d3ce85e53a5e"/>
 				<textFieldExpression><![CDATA[""+$F{date}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="38" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</detail>
 	<columnFooter>
-		<band height="45" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="42" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</summary>
 </jasperReport>

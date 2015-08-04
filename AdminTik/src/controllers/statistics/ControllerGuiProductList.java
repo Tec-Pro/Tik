@@ -76,7 +76,7 @@ public class ControllerGuiProductList implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource().equals(guiProductList.getBtnPrintReport())) {
-
+            datasource.removeAllFinalProduct();
             for (int i = 0; i < guiProductList.getTableProductList().getRowCount(); i++) {
                 FinalProduct fp = new FinalProduct(String.valueOf(tableFP.getValueAt(i, 0)),
                         tableFP.getValueAt(i, 3),
@@ -96,7 +96,7 @@ public class ControllerGuiProductList implements ActionListener {
             } catch (JRException ex) {
                 Logger.getLogger(ControllerGuiProductList.class.getName()).log(Level.SEVERE, null, ex);
             }
-            datasource.removeAllFinalProduct();
+            
         }
     }
 

@@ -262,6 +262,9 @@ public class ControllerGuiProductStatistics implements ActionListener {
                         tableFP.getValueAt(i, 3));
                 datasource.addFinalProduct(fp);
             }
+            for(FinalProduct ff : datasource.getProductList()){
+                System.out.println(ff.getProduct());
+            }
 
             try {
                 JasperReport reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reports/statisticsProducts/ReportStatisticsProducts.jasper"));//cargo el reporte
