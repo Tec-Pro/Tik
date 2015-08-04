@@ -24,39 +24,51 @@
 	<pageHeader>
 		<band height="35" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="15" width="165" height="20" uuid="81140b80-f62c-4eda-95ee-2227ef565ae3"/>
-				<text><![CDATA[product]]></text>
+				<reportElement mode="Opaque" x="0" y="15" width="209" height="20" backcolor="#CCCCCC" uuid="81140b80-f62c-4eda-95ee-2227ef565ae3"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Producto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="165" y="15" width="100" height="20" uuid="c33d1386-0683-4504-951c-6642b2fe3529"/>
-				<text><![CDATA[amount]]></text>
+				<reportElement mode="Opaque" x="209" y="15" width="136" height="20" backcolor="#CCCCCC" uuid="c33d1386-0683-4504-951c-6642b2fe3529"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="265" y="15" width="100" height="20" uuid="2d60d11c-568b-49d6-af17-99a3e381328c"/>
-				<text><![CDATA[turn]]></text>
+				<reportElement mode="Opaque" x="345" y="15" width="75" height="20" backcolor="#CCCCCC" uuid="2d60d11c-568b-49d6-af17-99a3e381328c"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Turno]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="365" y="15" width="100" height="20" uuid="88bc75d7-2c6f-469f-9df1-67a61dd81f4f"/>
-				<text><![CDATA[date]]></text>
+				<reportElement mode="Opaque" x="420" y="15" width="135" height="20" backcolor="#CCCCCC" uuid="88bc75d7-2c6f-469f-9df1-67a61dd81f4f"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="20" splitType="Stretch">
+		<band height="40" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="165" height="20" uuid="967a1a86-9a88-489f-a014-d71bbf144cf8"/>
+				<reportElement x="0" y="0" width="209" height="20" uuid="967a1a86-9a88-489f-a014-d71bbf144cf8"/>
 				<textFieldExpression><![CDATA[$F{product}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="165" y="0" width="100" height="20" uuid="9460993a-da8b-4a7e-929e-d20ee38ef777"/>
+				<reportElement x="231" y="0" width="114" height="20" uuid="9460993a-da8b-4a7e-929e-d20ee38ef777"/>
 				<textFieldExpression><![CDATA[""+$F{amount}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="265" y="0" width="100" height="20" uuid="fb6c2e0e-0079-4c02-98e6-63634814da37"/>
+				<reportElement x="356" y="0" width="64" height="20" uuid="fb6c2e0e-0079-4c02-98e6-63634814da37"/>
 				<textFieldExpression><![CDATA[""+$F{turn}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="365" y="0" width="100" height="20" uuid="1cc61e61-4d13-4717-8784-c75a59e8afdf"/>
+				<reportElement x="420" y="0" width="135" height="20" uuid="1cc61e61-4d13-4717-8784-c75a59e8afdf"/>
 				<textFieldExpression><![CDATA[""+$F{date}]]></textFieldExpression>
 			</textField>
 		</band>

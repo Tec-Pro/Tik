@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package reports.finalProducts;
+package reports.statisticsProducts;
 
 import java.util.ArrayList;
 import java.util.List;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
+import reports.finalProducts.FinalProduct;
 
 /**
  *
@@ -24,6 +25,12 @@ public class ImplementsDataSourceStatisticsProducts implements JRDataSource {
     public boolean next() throws JRException {
         return ++index < productList.size();
     }
+
+    public List<FinalProduct> getProductList() {
+        return productList;
+    }
+    
+    
 
     @Override
     public Object getFieldValue(JRField jrf) throws JRException {

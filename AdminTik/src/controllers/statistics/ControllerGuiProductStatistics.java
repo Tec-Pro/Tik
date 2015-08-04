@@ -28,7 +28,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import reports.finalProducts.FinalProduct;
-import reports.finalProducts.ImplementsDataSourceStatisticsProducts;
+import reports.statisticsProducts.ImplementsDataSourceStatisticsProducts;
 import utils.InterfaceName;
 
 /**
@@ -264,7 +264,7 @@ public class ControllerGuiProductStatistics implements ActionListener {
             }
 
             try {
-                JasperReport reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reports/finalProducts/ReportStatisticsProducts.jasper"));//cargo el reporte
+                JasperReport reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reports/statisticsProducts/ReportStatisticsProducts.jasper"));//cargo el reporte
                 JasperPrint jasperPrint;
                 jasperPrint = JasperFillManager.fillReport(reporte, null, datasource);
                 JasperViewer.viewReport(jasperPrint, false);

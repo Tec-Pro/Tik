@@ -30,7 +30,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
-import reports.finalProducts.ImplementsDataSourceStatisticsProducts;
+import reports.statisticsProducts.ImplementsDataSourceStatisticsProducts;
 import utils.InterfaceName;
 
 /**
