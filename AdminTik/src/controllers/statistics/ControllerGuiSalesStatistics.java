@@ -22,7 +22,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
+import reports.finalProducts.ImplementsDataSourceStatisticsProducts;
 import utils.InterfaceName;
 
 /**
@@ -83,7 +91,18 @@ public class ControllerGuiSalesStatistics implements ActionListener {
             userId = Integer.parseInt(m.get("id").toString());//id de mozo actual
             userName = m.get("name").toString();//nombre del mozo actual
             exceptions = interfaceOrder.getExceptions(userId);//excepciones realizada por el mozo
-//            discounts =          ;//descuentos realizadas por el mozo
+            //saco los descuentos realizados por cada mozo
+            List<Map> prods = interfaceOrder.getCurrentDiscounts(userId);
+                List<Map> efec = interfaceOrder.getCurrentDiscountsInEfective(userId);
+                float totalProd = 0;
+                for (Map p : prods) {
+                    totalProd = totalProd + ((float) p.get("sell_price") * (float) p.get("quantity"));
+                }
+                float totalEfec = 0;
+                for (Map p : efec) {
+                    totalEfec = totalProd + ((float) p.get("discount"));
+                }
+            discounts = totalEfec + totalProd;//descuentos realizadas por el mozo
             List<Map> ordersByUser = interfaceOrder.getOrdersByUser(userId);//los pedidos del mozo actual
             //recorro los pedidos del mozo actual
             for (Map order : ordersByUser) {
@@ -375,6 +394,10 @@ public class ControllerGuiSalesStatistics implements ActionListener {
         if (e.getSource() == guiSalesStatistics.getCheckTurn()) {
             obtainAndLoadSalesStatistics();
         }
+        if (e.getSource() == guiSalesStatistics.getBtnPrintReport()){
+            System.out.println("Boton imprimir oprimido");
+        }
+        
     }
 
 }
