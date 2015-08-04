@@ -245,35 +245,6 @@ public class ControllerGuiSalesStatistics implements ActionListener {
                 modelTableTotalSalesStatistics.addRow(row);
             }
         }
-
-        //calculo los estadisticos totales
-        /*DefaultTableModel modelTableSalesStatisticsWaiter = guiSalesStatistics.getModelTableSalesStatisticsWaiter();
-         float saleAmount = (float) 0.00;//monto total de las ventas de un mozo
-         int tables = 0;//cantidad de mesas atendidas
-         int customers = 0;//clientes atendidos por el mozo
-         int products = 0;//cantidad de productos vendidos
-         float avgTables = (float) 0.00, avgCustomers = (float) 0.00, avgProducts = (float) 0.00, discounts = (float) 0.00, exceptions = (float) 0.00;
-         for (int i = 0; i < guiSalesStatistics.getTableSalesStatisticsWaiter().getRowCount(); i++) {
-         saleAmount += Float.parseFloat(modelTableSalesStatisticsWaiter.getValueAt(i, 3).toString());//sumo todas las ventas totales de los mozos
-         tables += Integer.parseInt(modelTableSalesStatisticsWaiter.getValueAt(i, 4).toString());//sumo todas las mesas atendidas por todos los mozos
-         customers += Integer.parseInt(modelTableSalesStatisticsWaiter.getValueAt(i, 5).toString());//sumo todos los clientes atendidos por todos los mozos
-         products += Integer.parseInt(modelTableSalesStatisticsWaiter.getValueAt(i, 6).toString());//sumo todos los productos vendidos por todos los mozos
-         discounts += Float.parseFloat(modelTableSalesStatisticsWaiter.getValueAt(i, 10).toString());//sumo todos los descuentos
-         exceptions += Float.parseFloat(modelTableSalesStatisticsWaiter.getValueAt(i, 11).toString());//sumo todas las excepciones
-         }
-
-         DefaultTableModel modelTableTotalSalesStatistics = guiSalesStatistics.getModelTableTotalSalesStatistics();
-         Object[] row = new Object[9];
-         row[0] = saleAmount;// monto ventas(suma total de todos los mozos)
-         row[1] = tables;// numero de mesas
-         row[2] = customers;// cantidad de clientes atendidos por todos los mozos
-         row[3] = products;// cantidad de productos vendidos por todos los mozos
-         row[4] = -1;// promedio de mesas que atendio el mozo
-         row[5] = -1;// promedio a preguntar
-         row[6] = -1;// promedio a preguntar
-         row[7] = discounts;// descuentos
-         row[8] = exceptions;// excepciones
-         modelTableTotalSalesStatistics.addRow(row);*/
     }
 
     private void obtainAndLoadSalesStatistics() {
