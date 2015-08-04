@@ -184,7 +184,7 @@ public class ControllerGuiSummaryCashbox implements ActionListener{
             float w = withdrawal.getAdminWithdrawalsTotal((int) a.get("id"));
             admins.add(new Triple(n, d, w));
         }
-        resume.create(loadCashboxIncome(),loadWaiterTotalDeposits() ,loadExpenses(), loadBalance(),Calendar.getInstance().getTime(), null);
+        resume.create(loadCashboxIncome(),loadWaiterTotalDeposits() ,loadExpenses(), loadBalance(),Calendar.getInstance().getTime(), admins);
     }
 
     @Override

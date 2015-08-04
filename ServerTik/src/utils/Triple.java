@@ -5,12 +5,15 @@
  */
 package utils;
 
+import java.io.Serializable;
+import java.util.Objects;
+
 
 /**
  *
  * @author Alan
  */
-public class Triple {
+public class Triple implements Serializable{
     
     String name;
     Float deposit;
@@ -44,6 +47,36 @@ public class Triple {
 
     public void setWithdrawal(Float withdrawal) {
         this.withdrawal = withdrawal;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 53 * hash + Objects.hashCode(this.name);
+        hash = 53 * hash + Objects.hashCode(this.deposit);
+        hash = 53 * hash + Objects.hashCode(this.withdrawal);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Triple other = (Triple) obj;
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.deposit, other.deposit)) {
+            return false;
+        }
+        if (!Objects.equals(this.withdrawal, other.withdrawal)) {
+            return false;
+        }
+        return true;
     }
 
    
