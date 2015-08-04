@@ -963,13 +963,31 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             Statement stmt = conn.createStatement();
             stmt.execute(sql);
             stmt.close();
+
         } catch (SQLException ex) {
             Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
         Utils.abrirBase();
-        Base.openTransaction();
-        Discount.createIt("fproduct_id", fproduct_id, "user_id", user_id, "order_id", order_id);
-        Base.commitTransaction();
+        if (isDiscount == 1) {
+            try {
+                Base.openTransaction();
+                sql = "SELECT quantity FROM orders_fproducts o where o.id = '" + id + "';";
+                Statement stmt = conn.createStatement();
+                stmt.executeQuery(sql);
+                java.sql.ResultSet rs = stmt.executeQuery(sql);
+                rs.next();
+                int quantity = rs.getInt("quantity");
+                for (int i = 0; i < quantity; i++) {
+                    Discount.createIt("fproduct_id", fproduct_id, "user_id", user_id, "order_id", order_id);
+                }
+                stmt.close();
+
+                Base.commitTransaction();
+            } catch (SQLException ex) {
+                Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
     }
 
     /**
@@ -1027,13 +1045,13 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
     }
 
     @Override
-    public List<Map> getCurrentDiscounts(int user_id) throws java.rmi.RemoteException{
+    public List<Map> getCurrentDiscounts(int user_id) throws java.rmi.RemoteException {
         try {
 
             openBase();
             Map m = new HashMap();
             LinkedList<Map> ret = new LinkedList<>();
-            sql = "SELECT f.sell_price, f.name, ord.order_number, ordf.quantity FROM tik.orders_fproducts as ordf INNER JOIN tik.fproducts as f ON f.id= ordf.fproduct_id, tik.orders as ord where ordf.discount = 1 AND ord.user_id= '"+user_id+"';";
+            sql = "SELECT f.sell_price, f.name, ord.order_number, ordf.quantity FROM tik.orders_fproducts as ordf INNER JOIN tik.fproducts as f ON f.id= ordf.fproduct_id, tik.orders as ord where ordf.discount = 1 AND ord.user_id= '" + user_id + "';";
             Statement stmt = conn.createStatement();
             java.sql.ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
@@ -1052,21 +1070,21 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         }
         return null;
     }
-    
+
     @Override
-    public List<Map> getCurrentDiscountsInEfective(int user_id) throws java.rmi.RemoteException{
+    public List<Map> getCurrentDiscountsInEfective(int user_id) throws java.rmi.RemoteException {
         try {
 
             openBase();
             Map m = new HashMap();
             LinkedList<Map> ret = new LinkedList<>();
-            sql = "SELECT discount, order_number FROM tik.orders where user_id= '"+user_id+"';";
+            sql = "SELECT discount, order_number FROM tik.orders where user_id= '" + user_id + "';";
             Statement stmt = conn.createStatement();
             java.sql.ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 m = new HashMap();
                 m.put("discount", rs.getFloat("discount"));
-                m.put("order_number", rs.getFloat("order_number"));        
+                m.put("order_number", rs.getFloat("order_number"));
 
             }
             rs.close();
@@ -1082,7 +1100,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
     public void setDiscountEfec(int order_id, float amount) throws RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
-        Order o= Order.findById(order_id);
+        Order o = Order.findById(order_id);
         o.setFloat("discount", amount);
         o.saveIt();
         Base.commitTransaction();
@@ -1094,7 +1112,8 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         Order o = Order.findById(order_id);
         return o.getFloat("discount");
     }
-    
+
+    @Override
     public float getTotalDiscounts() throws RemoteException {
         float discounts = 0;
         try {

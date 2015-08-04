@@ -45,6 +45,7 @@ public class GuiMain extends javax.swing.JFrame {
         this.btnProductList.addActionListener(lis);
         this.btnLogout.addActionListener(lis);
         this.btnViewOrders.addActionListener(lis);
+        this.btnDiscounts.addActionListener(lis);
     }
 
     public JMenuItem getBtnLogout() {
@@ -123,6 +124,10 @@ public class GuiMain extends javax.swing.JFrame {
         return btnViewOrders;
     }
 
+    public JMenuItem getBtnDiscounts() {
+        return btnDiscounts;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -156,6 +161,7 @@ public class GuiMain extends javax.swing.JFrame {
         btnSalesStatistics = new javax.swing.JMenuItem();
         btnProductStatistics = new javax.swing.JMenuItem();
         btnProductList = new javax.swing.JMenuItem();
+        btnDiscounts = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         btnConfig = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
@@ -263,6 +269,14 @@ public class GuiMain extends javax.swing.JFrame {
         });
         jMenu8.add(btnProductList);
 
+        btnDiscounts.setText("Articulos descontados");
+        btnDiscounts.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDiscountsActionPerformed(evt);
+            }
+        });
+        jMenu8.add(btnDiscounts);
+
         jMenuBar1.add(jMenu8);
 
         jMenu6.setText("Configuracion");
@@ -323,12 +337,18 @@ public class GuiMain extends javax.swing.JFrame {
     private void btnViewOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewOrdersActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnViewOrdersActionPerformed
+
+    private void btnDiscountsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDiscountsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDiscountsActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnAbout;
     private javax.swing.JMenuItem btnAdmins;
     private javax.swing.JMenuItem btnConfig;
     private javax.swing.JMenuItem btnDailyCashbox;
     private javax.swing.JMenuItem btnDisconnect;
+    private javax.swing.JMenuItem btnDiscounts;
     private javax.swing.JMenuItem btnEProduct;
     private javax.swing.JMenuItem btnEmployes;
     private javax.swing.JMenuItem btnExit;

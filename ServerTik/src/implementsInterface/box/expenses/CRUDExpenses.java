@@ -70,17 +70,37 @@ public class CRUDExpenses extends UnicastRemoteObject implements InterfaceExpens
         return (expense != null);
     }
 
+    /**
+     * si turn es N retorna todos
+     * @param turn
+     * @return
+     * @throws RemoteException 
+     */
     @Override
     public List<Map> getExpenses(String turn) throws RemoteException {
         Utils.abrirBase();
-        List<Map> expenses = Expense.where("turn = ?", turn).toMaps();
+        List<Map> expenses;
+        if(!"N".equals(turn))
+            expenses = Expense.where("turn = ?", turn).toMaps();
+        else
+            expenses = Expense.findAll().toMaps();
         return expenses;
     }
 
+    /**
+     * Si turn es N retorna el de todos
+     * @param turn
+     * @return
+     * @throws RemoteException 
+     */
     @Override
     public float getSumExpenses(String turn) throws RemoteException {
         openBase();
-        String sql = "SELECT SUM(amount) as amount FROM expenses WHERE turn = '" + turn + "';";
+        String sql;
+        if(!"N".equals(turn))
+         sql = "SELECT SUM(amount) as amount FROM expenses WHERE turn = '" + turn + "';";
+        else
+         sql = "SELECT SUM(amount) as amount FROM expenses ;";
         float ret = 0;
         try {
             Statement stmt = conn.createStatement();
