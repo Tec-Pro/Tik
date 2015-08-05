@@ -19,12 +19,16 @@ import interfaces.resume.InterfaceResume;
 import interfaces.withdrawals.InterfaceWithdrawal;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.poi.hpsf.SummaryInformation;
 import utils.InterfaceName;
 import utils.ParserFloat;
@@ -57,8 +61,68 @@ public class ControllerGuiSummaryCashbox implements ActionListener{
         resume = (InterfaceResume) InterfaceName.registry.lookup(InterfaceName.CRUDResume);
         guiSummaryCashbox.setActionListner(this);
         guiSummaryCashboxForDate = new GuiSummaryCashboxForDate(ControllerMain.guiMain, true);
+        
+        guiSummaryCashboxForDate.getDateSince().addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                try {
+                    loadResumeForDate();
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiSummaryCashbox.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        
+        guiSummaryCashboxForDate.getDateUntil().addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                try {
+                    loadResumeForDate();
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiSummaryCashbox.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
     }
 
+    public void loadResumeForDate() throws RemoteException{
+        List<Map> listResume = resume.getResume(dateToMySQLDate(guiSummaryCashboxForDate.getDateSince().getCalendar().getTime(),false), dateToMySQLDate(guiSummaryCashboxForDate.getDateUntil().getCalendar().getTime(),false));
+        guiSummaryCashboxForDate.getTableResumeDefault().setRowCount(0);
+        guiSummaryCashboxForDate.getTableResumeForAdminDefault().setRowCount(0);
+        for(Map r : listResume){
+            Object[] rr = new Object[3];
+            rr[0] = r.get("resume_date");
+            rr[1] = "Caja entrada";
+            rr[2] = r.get("income");
+            guiSummaryCashboxForDate.getTableResumeDefault().addRow(rr);
+            rr[0] = r.get("resume_date");
+            rr[1] = "Recaudacion";
+            rr[2] = r.get("earning");
+            guiSummaryCashboxForDate.getTableResumeDefault().addRow(rr);
+            rr[0] = r.get("resume_date");
+            rr[1] = "Gastos";
+            rr[2] = r.get("expenses");
+            guiSummaryCashboxForDate.getTableResumeDefault().addRow(rr);
+            rr[0] = r.get("resume_date");
+            rr[1] = "Saldo final";
+            rr[2] = r.get("final_balance");
+            guiSummaryCashboxForDate.getTableResumeDefault().addRow(rr);
+            
+        }
+    }
+    
+    /*paraMostrar == true: retorna la fecha en formato dd/mm/yyyy (formato pantalla)
+     * paraMostrar == false: retorna la fecha en formato yyyy/mm/dd (formato SQL)
+     */
+    public String dateToMySQLDate(Date fecha, boolean paraMostrar) {
+        if (paraMostrar) {
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
+            return sdf.format(fecha);
+        } else {
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+            return sdf.format(fecha);
+        }
+    }
     /*
      Método que carga el saldo inicial de la caja.
      */
@@ -186,10 +250,13 @@ public class ControllerGuiSummaryCashbox implements ActionListener{
         }
         resume.create(loadCashboxIncome(),loadWaiterTotalDeposits() ,loadExpenses(), loadBalance(),Calendar.getInstance().getTime(), admins);
     }
+    
 
     @Override
     public void actionPerformed(ActionEvent ae) {
         if(ae.getSource().equals(guiSummaryCashbox.getBtnOtherResume())){
+            guiSummaryCashboxForDate.getDateSince().setDate(Calendar.getInstance().getTime());
+            guiSummaryCashboxForDate.getDateUntil().setDate(Calendar.getInstance().getTime());
             guiSummaryCashboxForDate.setVisible(true);
             guiSummaryCashboxForDate.setLocationRelativeTo(null);
         }

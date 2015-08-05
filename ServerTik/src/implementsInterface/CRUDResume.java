@@ -47,14 +47,14 @@ public class CRUDResume extends UnicastRemoteObject implements InterfaceResume{
         Base.commitTransaction();
         return r.toMap();
     }
-    
-    public List<Map> getResume(Date since, Date until){
+    @Override
+    public List<Map> getResume(String since, String until) throws RemoteException{
         Utils.abrirBase();
         LazyList<Resume> list  = Resume.where("resume_date >= ? and resume_date <= ? ", since, until);
         return list.toMaps();
     }
-    
-    public List<Map> getAdminResume(int idResume){
+    @Override
+    public List<Map> getAdminResume(int idResume) throws RemoteException{
         Utils.abrirBase();
         LazyList<Adminresume> list = Adminresume.where("resume_id = ?", idResume);
         return list.toMaps();
