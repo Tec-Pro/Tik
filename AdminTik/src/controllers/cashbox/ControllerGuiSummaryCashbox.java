@@ -38,7 +38,7 @@ import utils.Triple;
  *
  * @author Alan
  */
-public class ControllerGuiSummaryCashbox implements ActionListener{
+public class ControllerGuiSummaryCashbox implements ActionListener {
 
     public static GuiSummaryCashbox guiSummaryCashbox;
     public static GuiSummaryCashboxForDate guiSummaryCashboxForDate;
@@ -49,6 +49,10 @@ public class ControllerGuiSummaryCashbox implements ActionListener{
     public static InterfaceAdmin admin;
     private static InterfaceUser user;
     private static InterfaceResume resume;
+
+    float totalD = 0;
+    float totalW = 0;
+    float total = 0;
 
     public ControllerGuiSummaryCashbox(GuiSummaryCashbox guiSC) throws RemoteException, NotBoundException {
         guiSummaryCashbox = guiSC;
@@ -61,7 +65,7 @@ public class ControllerGuiSummaryCashbox implements ActionListener{
         resume = (InterfaceResume) InterfaceName.registry.lookup(InterfaceName.CRUDResume);
         guiSummaryCashbox.setActionListner(this);
         guiSummaryCashboxForDate = new GuiSummaryCashboxForDate(ControllerMain.guiMain, true);
-        
+
         guiSummaryCashboxForDate.getDateSince().addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
@@ -72,7 +76,7 @@ public class ControllerGuiSummaryCashbox implements ActionListener{
                 }
             }
         });
-        
+
         guiSummaryCashboxForDate.getDateUntil().addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
@@ -85,11 +89,14 @@ public class ControllerGuiSummaryCashbox implements ActionListener{
         });
     }
 
-    public void loadResumeForDate() throws RemoteException{
-        List<Map> listResume = resume.getResume(dateToMySQLDate(guiSummaryCashboxForDate.getDateSince().getCalendar().getTime(),false), dateToMySQLDate(guiSummaryCashboxForDate.getDateUntil().getCalendar().getTime(),false));
+    public void loadResumeForDate() throws RemoteException {
+        List<Map> listResume = resume.getResume(dateToMySQLDate(guiSummaryCashboxForDate.getDateSince().getCalendar().getTime(), false), dateToMySQLDate(guiSummaryCashboxForDate.getDateUntil().getCalendar().getTime(), false));
         guiSummaryCashboxForDate.getTableResumeDefault().setRowCount(0);
         guiSummaryCashboxForDate.getTableResumeForAdminDefault().setRowCount(0);
-        for(Map r : listResume){
+        totalD = 0;
+        totalW = 0;
+        total = 0;
+        for (Map r : listResume) {
             Object[] rr = new Object[3];
             rr[0] = r.get("resume_date");
             rr[1] = "Caja entrada";
@@ -107,10 +114,31 @@ public class ControllerGuiSummaryCashbox implements ActionListener{
             rr[1] = "Saldo final";
             rr[2] = r.get("final_balance");
             guiSummaryCashboxForDate.getTableResumeDefault().addRow(rr);
-            
+            List<Map> listAdminResume = resume.getAdminResume((int) r.get("id"));
+
+            for (Map m : listAdminResume) {
+                Object[] ra = new Object[5];
+                ra[0] = r.get("resume_date");
+                ra[1] = m.get("admin");
+                float d = (float) m.get("deposit");
+                totalD = totalD + d;
+                ra[2] = d;
+                float w = (float) m.get("withdrawal");
+                totalW = totalW + w;
+                total = total + (d - w);
+                ra[3] = w;
+                ra[4] = d - w;
+                guiSummaryCashboxForDate.getTableResumeForAdminDefault().addRow(ra);
+            }
         }
+        Object[] ra = new Object[5];
+        ra[1] = "Total";
+        ra[2] = totalD;
+        ra[3] = totalW;
+        ra[4] = total;
+        guiSummaryCashboxForDate.getTableResumeForAdminDefault().addRow(ra);
     }
-    
+
     /*paraMostrar == true: retorna la fecha en formato dd/mm/yyyy (formato pantalla)
      * paraMostrar == false: retorna la fecha en formato yyyy/mm/dd (formato SQL)
      */
@@ -126,6 +154,7 @@ public class ControllerGuiSummaryCashbox implements ActionListener{
     /*
      Método que carga el saldo inicial de la caja.
      */
+
     private static Float loadInitialBalance() throws RemoteException {
         Float initialBalance = cashbox.getPastBalance();
         guiSummaryCashbox.getTxtInitialBalance().setText(ParserFloat.floatToString(initialBalance));
@@ -144,7 +173,7 @@ public class ControllerGuiSummaryCashbox implements ActionListener{
         guiSummaryCashbox.getTxtCashboxIncome().setText(ParserFloat.floatToString(incomes));
         return incomes;
     }
-    
+
     private static Float loadBalance() throws RemoteException {
         Float initialBalance = loadInitialBalance();
         Float adminDeposits = loadAdminDeposits();
@@ -171,7 +200,7 @@ public class ControllerGuiSummaryCashbox implements ActionListener{
         guiSummaryCashbox.getTxtEarningsMorning().setText(ParserFloat.floatToString(waiterDeposits));
         return waiterDeposits;
     }
-    
+
     /*
      Método que carga las entregas de mozo en la caja existente.
      */
@@ -181,7 +210,7 @@ public class ControllerGuiSummaryCashbox implements ActionListener{
         guiSummaryCashbox.getTxtEarningAfternoon().setText(ParserFloat.floatToString(waiterDeposits));
         return waiterDeposits;
     }
-    
+
     /*
      Método que carga las entregas de mozo en la caja existente.
      */
@@ -238,23 +267,22 @@ public class ControllerGuiSummaryCashbox implements ActionListener{
         row[3] = total;
         guiSummaryCashbox.getTableSummaryDefault().addRow(row);
     }
-    
-    public static void saveResume() throws RemoteException{
+
+    public static void saveResume() throws RemoteException {
         List<Triple> admins = new LinkedList<Triple>();
         List<Map> list = admin.getAdmins();
-        for(Map a : list){
+        for (Map a : list) {
             String n = (String) a.get("name");
             float d = deposit.getAdminDepositsTotal((int) a.get("id"));
             float w = withdrawal.getAdminWithdrawalsTotal((int) a.get("id"));
             admins.add(new Triple(n, d, w));
         }
-        resume.create(loadCashboxIncome(),loadWaiterTotalDeposits() ,loadExpenses(), loadBalance(),Calendar.getInstance().getTime(), admins);
+        resume.create(loadCashboxIncome(), loadWaiterTotalDeposits(), loadExpenses(), loadBalance(), Calendar.getInstance().getTime(), admins);
     }
-    
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        if(ae.getSource().equals(guiSummaryCashbox.getBtnOtherResume())){
+        if (ae.getSource().equals(guiSummaryCashbox.getBtnOtherResume())) {
             guiSummaryCashboxForDate.getDateSince().setDate(Calendar.getInstance().getTime());
             guiSummaryCashboxForDate.getDateUntil().setDate(Calendar.getInstance().getTime());
             guiSummaryCashboxForDate.setVisible(true);
