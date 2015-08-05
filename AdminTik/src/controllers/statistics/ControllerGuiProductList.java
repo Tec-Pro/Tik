@@ -38,16 +38,15 @@ public class ControllerGuiProductList implements ActionListener {
 
     private static InterfaceStatistics interfaceStatistics;
     private static GuiProductList guiProductList;
-    private ImplementsDataSource datasource;
-    private JTable tableFP;
+    
 
     public ControllerGuiProductList(GuiProductList guiPL) throws RemoteException, NotBoundException {
         interfaceStatistics = (InterfaceStatistics) InterfaceName.registry.lookup(InterfaceName.CRUDStatistics);
         guiProductList = guiPL;
         loadProductTable();
         guiProductList.setActionListener(this);
-        datasource = new ImplementsDataSource();
-        tableFP = guiProductList.getTableProductList();
+        
+       
     }
     /*
      * Carga en la tabla tableProductList todos los productos finales con sus estadisticos
@@ -76,7 +75,8 @@ public class ControllerGuiProductList implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource().equals(guiProductList.getBtnPrintReport())) {
-            datasource.removeAllFinalProduct();
+            ImplementsDataSource datasource = new ImplementsDataSource();
+            JTable tableFP = guiProductList.getTableProductList();
             for (int i = 0; i < guiProductList.getTableProductList().getRowCount(); i++) {
                 FinalProduct fp = new FinalProduct(String.valueOf(tableFP.getValueAt(i, 0)),
                         tableFP.getValueAt(i, 3),
