@@ -98,19 +98,19 @@ public class ControllerGuiSummaryCashbox implements ActionListener {
         total = 0;
         for (Map r : listResume) {
             Object[] rr = new Object[3];
-            rr[0] = r.get("resume_date");
+            rr[0] = dateToMySQLDate((Date) r.get("resume_date"), true);
             rr[1] = "Caja entrada";
             rr[2] = r.get("income");
             guiSummaryCashboxForDate.getTableResumeDefault().addRow(rr);
-            rr[0] = r.get("resume_date");
+            rr[0] = dateToMySQLDate((Date) r.get("resume_date"), true);
             rr[1] = "Recaudacion";
             rr[2] = r.get("earning");
             guiSummaryCashboxForDate.getTableResumeDefault().addRow(rr);
-            rr[0] = r.get("resume_date");
+            rr[0] = dateToMySQLDate((Date) r.get("resume_date"), true);
             rr[1] = "Gastos";
             rr[2] = r.get("expenses");
             guiSummaryCashboxForDate.getTableResumeDefault().addRow(rr);
-            rr[0] = r.get("resume_date");
+            rr[0] = dateToMySQLDate((Date) r.get("resume_date"), true);
             rr[1] = "Saldo final";
             rr[2] = r.get("final_balance");
             guiSummaryCashboxForDate.getTableResumeDefault().addRow(rr);
@@ -118,7 +118,7 @@ public class ControllerGuiSummaryCashbox implements ActionListener {
 
             for (Map m : listAdminResume) {
                 Object[] ra = new Object[5];
-                ra[0] = r.get("resume_date");
+                ra[0] = dateToMySQLDate((Date) r.get("resume_date"), true);
                 ra[1] = m.get("admin");
                 float d = (float) m.get("deposit");
                 totalD = totalD + d;
