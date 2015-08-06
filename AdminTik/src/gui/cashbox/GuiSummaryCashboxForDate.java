@@ -120,6 +120,7 @@ public class GuiSummaryCashboxForDate extends javax.swing.JDialog {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
+        tableResumeForAdmin.setAutoCreateRowSorter(true);
         tableResumeForAdmin.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -159,6 +160,7 @@ public class GuiSummaryCashboxForDate extends javax.swing.JDialog {
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
+        tableResume.setAutoCreateRowSorter(true);
         tableResume.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
