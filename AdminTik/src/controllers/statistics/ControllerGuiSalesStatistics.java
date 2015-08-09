@@ -18,6 +18,8 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -28,9 +30,12 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
+
 import reports.statisticsProducts.ImplementsDataSourceStatisticsProducts;
+import reports.statisticsSales.SaleStatistic;
 import utils.InterfaceName;
 
 /**
@@ -396,7 +401,54 @@ public class ControllerGuiSalesStatistics implements ActionListener {
         }
         if (e.getSource() == guiSalesStatistics.getBtnPrintReport()){
             System.out.println("Boton imprimir oprimido");
+             List<SaleStatistic> listA = new ArrayList();
+             JTable tableFP = guiSalesStatistics.getTableSalesStatisticsWaiter();
+            for (int i = 0; i < guiSalesStatistics.getTableSalesStatisticsWaiter().getRowCount(); i++) {
+                SaleStatistic ss = new SaleStatistic(tableFP.getValueAt(i, 0), 
+                                                    tableFP.getValueAt(i, 1),
+                                                    tableFP.getValueAt(i, 2), 
+                                                    tableFP.getValueAt(i, 3),
+                                                    tableFP.getValueAt(i, 4),
+                                                    tableFP.getValueAt(i, 5),
+                                                    tableFP.getValueAt(i, 6),
+                                                    tableFP.getValueAt(i, 7),
+                                                    tableFP.getValueAt(i, 8),
+                                                    tableFP.getValueAt(i, 9),
+                                                    tableFP.getValueAt(i, 10),
+                                                    tableFP.getValueAt(i, 11));
+                listA.add(ss);
+            }
+            
+             List<SaleStatistic> listB = new ArrayList();
+             JTable tableSSB = guiSalesStatistics.getTableTotalSalesStatistics();
+            for (int i = 0; i < guiSalesStatistics.getTableTotalSalesStatistics().getRowCount(); i++) {
+                SaleStatistic ss = new SaleStatistic(tableSSB.getValueAt(i, 0), 
+                                                    tableSSB.getValueAt(i, 1),
+                                                    tableSSB.getValueAt(i, 2), 
+                                                    tableSSB.getValueAt(i, 3),
+                                                    tableSSB.getValueAt(i, 4),
+                                                    tableSSB.getValueAt(i, 5),
+                                                    tableSSB.getValueAt(i, 6),
+                                                    tableSSB.getValueAt(i, 7),
+                                                    tableSSB.getValueAt(i, 8),
+                                                    tableSSB.getValueAt(i, 9));
+                listB.add(ss);
+            }
+
+            try {
+                Map parameters = new HashMap();
+                parameters.put("datasource",listB);
+                JasperReport reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reports/statisticsSales/ReportStatisticsSales.jasper"));//cargo el reporte
+                JasperPrint jasperPrint;
+
+                jasperPrint = JasperFillManager.fillReport(reporte, parameters, new JRBeanCollectionDataSource(listA));
+                JasperViewer.viewReport(jasperPrint, false);
+            } catch (JRException ex) {
+                Logger.getLogger(ControllerGuiProductList.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         }
+        
         
     }
 

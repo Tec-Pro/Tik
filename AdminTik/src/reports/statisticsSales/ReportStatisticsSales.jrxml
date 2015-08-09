@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3271fc84-78c1-4f36-95de-7f5213d233d0">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="130"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="subreport_datasource" class="net.sf.jasperreports.engine.JREmptyDataSource"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\A\\Desktop\\Tik\\AdminTik\\src\\reports\\statisticsSales\\"]]></defaultValueExpression>
+	</parameter>
+	<field name="waiter" class="java.lang.Object"/>
+	<field name="date" class="java.lang.Object"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="72" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="15" width="100" height="20" uuid="ae89aa99-f94d-463f-9424-1ddf204309d5"/>
+				<text><![CDATA[waiter]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="116" y="15" width="100" height="20" uuid="8ac541dd-0d32-4097-bbed-90d5dcbdfdda"/>
+				<text><![CDATA[date]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="26" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="4" width="100" height="20" uuid="a6b680e7-337b-4dfc-82b4-a704bdecef74"/>
+				<textFieldExpression><![CDATA[""+$F{waiter}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="4" width="100" height="20" uuid="98754de9-58bd-49c3-af31-da7d28087c9a"/>
+				<textFieldExpression><![CDATA[""+$F{date}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="102" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="802" height="100" uuid="473c8ff9-85c6-4e79-b0a2-4e572f6e7dc5"/>
+				<dataSourceExpression><![CDATA[$P{subreport_datasource}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ReportSaleStatisticsResume.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
