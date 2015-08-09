@@ -77,7 +77,7 @@
 				<text><![CDATA[Personas]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="417" y="0" width="68" height="20" backcolor="#CCCCCC" uuid="0b38a130-7dc6-40ef-a1a4-678a8e74ec07"/>
+				<reportElement mode="Opaque" x="417" y="0" width="69" height="20" backcolor="#CCCCCC" uuid="0b38a130-7dc6-40ef-a1a4-678a8e74ec07"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
@@ -91,25 +91,32 @@
 				<text><![CDATA[Prom. mesa]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="563" y="0" width="93" height="20" backcolor="#CCCCCC" uuid="13c5289a-f201-49f9-9537-e50c70022ff7"/>
+				<reportElement mode="Opaque" x="563" y="0" width="68" height="20" backcolor="#CCCCCC" uuid="13c5289a-f201-49f9-9537-e50c70022ff7"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Prom. persona]]></text>
+				<text><![CDATA[Prom. pers.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="656" y="0" width="68" height="20" backcolor="#CCCCCC" uuid="0b23249d-9509-489d-ac20-206b5b084282"/>
+				<reportElement mode="Opaque" x="705" y="0" width="40" height="20" backcolor="#CCCCCC" uuid="0b23249d-9509-489d-ac20-206b5b084282"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Descuentos]]></text>
+				<text><![CDATA[Desc.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="724" y="0" width="78" height="20" backcolor="#CCCCCC" uuid="7206b6ac-b9b3-461d-8b95-a9c38c27785f"/>
+				<reportElement mode="Opaque" x="745" y="0" width="57" height="20" backcolor="#CCCCCC" uuid="7206b6ac-b9b3-461d-8b95-a9c38c27785f"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Excepciones]]></text>
+				<text><![CDATA[Excep.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="631" y="0" width="74" height="20" backcolor="#CCCCCC" uuid="819c917b-2586-4704-bd63-8e8973fdb6d1"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Prom. prod.]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
@@ -117,7 +124,7 @@
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="26" splitType="Stretch">
+		<band height="21" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="1" width="60" height="20" uuid="af87942d-8a0e-441f-b009-a008bffd1466"/>
 				<textFieldExpression><![CDATA[""+$F{mozo}]]></textFieldExpression>
@@ -127,7 +134,7 @@
 				<textFieldExpression><![CDATA[""+$F{fecha}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="656" y="1" width="68" height="20" uuid="61d99caa-7df7-4076-9368-fb60d1036265"/>
+				<reportElement x="705" y="1" width="40" height="20" uuid="61d99caa-7df7-4076-9368-fb60d1036265"/>
 				<textFieldExpression><![CDATA[""+$F{descuento}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -139,15 +146,11 @@
 				<textFieldExpression><![CDATA[""+$F{mesa}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="355" y="1" width="47" height="20" uuid="90027d85-220f-428d-ac82-b73fcb7ef23d"/>
-				<textFieldExpression><![CDATA[""+$F{persona}]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement x="417" y="1" width="53" height="20" uuid="3ca9def5-eb0d-40c8-b315-a0a6fd99a696"/>
 				<textFieldExpression><![CDATA[""+$F{producto}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="562" y="1" width="93" height="20" uuid="8d579c0a-ac4b-48e9-8423-b755b9495edb"/>
+				<reportElement x="563" y="1" width="57" height="20" uuid="8d579c0a-ac4b-48e9-8423-b755b9495edb"/>
 				<textFieldExpression><![CDATA[""+$F{prom_persona}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -155,22 +158,30 @@
 				<textFieldExpression><![CDATA[""+$F{turno}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="724" y="1" width="78" height="20" uuid="fd8afb01-2c75-4475-908a-e6448a49bc9b"/>
+				<reportElement x="745" y="1" width="57" height="20" uuid="fd8afb01-2c75-4475-908a-e6448a49bc9b"/>
 				<textFieldExpression><![CDATA[""+$F{excepcion}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="485" y="1" width="77" height="20" uuid="fdd73fef-fa73-4900-8118-fbfb94a3e58d"/>
+				<reportElement x="486" y="1" width="66" height="20" uuid="fdd73fef-fa73-4900-8118-fbfb94a3e58d"/>
 				<textFieldExpression><![CDATA[""+$F{prom_mesa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="355" y="1" width="47" height="20" uuid="90027d85-220f-428d-ac82-b73fcb7ef23d"/>
+				<textFieldExpression><![CDATA[""+$F{persona}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="631" y="1" width="49" height="20" uuid="d0d5afdf-ce98-431a-92af-4c6a2dbf3322"/>
+				<textFieldExpression><![CDATA[""+$F{prom_producto}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="102" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="42" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</summary>
 </jasperReport>
