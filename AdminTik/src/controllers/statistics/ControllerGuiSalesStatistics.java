@@ -419,10 +419,9 @@ public class ControllerGuiSalesStatistics implements ActionListener {
                 listA.add(ss);
             }
             
-             List<SaleStatistic> listB = new ArrayList();
-             JTable tableSSB = guiSalesStatistics.getTableTotalSalesStatistics();
+            JTable tableSSB = guiSalesStatistics.getTableTotalSalesStatistics();
             for (int i = 0; i < guiSalesStatistics.getTableTotalSalesStatistics().getRowCount(); i++) {
-                SaleStatistic ss = new SaleStatistic(tableSSB.getValueAt(i, 0), 
+                SaleStatistic ss = new SaleStatistic("","TOTAL",tableSSB.getValueAt(i, 9),tableSSB.getValueAt(i, 0), 
                                                     tableSSB.getValueAt(i, 1),
                                                     tableSSB.getValueAt(i, 2), 
                                                     tableSSB.getValueAt(i, 3),
@@ -430,18 +429,16 @@ public class ControllerGuiSalesStatistics implements ActionListener {
                                                     tableSSB.getValueAt(i, 5),
                                                     tableSSB.getValueAt(i, 6),
                                                     tableSSB.getValueAt(i, 7),
-                                                    tableSSB.getValueAt(i, 8),
-                                                    tableSSB.getValueAt(i, 9));
-                listB.add(ss);
+                                                    tableSSB.getValueAt(i, 8)
+                                                   );
+                listA.add(ss);
             }
 
             try {
-                Map parameters = new HashMap();
-                parameters.put("datasource",listB);
                 JasperReport reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reports/statisticsSales/ReportStatisticsSales.jasper"));//cargo el reporte
                 JasperPrint jasperPrint;
 
-                jasperPrint = JasperFillManager.fillReport(reporte, parameters, new JRBeanCollectionDataSource(listA));
+                jasperPrint = JasperFillManager.fillReport(reporte, null, new JRBeanCollectionDataSource(listA));
                 JasperViewer.viewReport(jasperPrint, false);
             } catch (JRException ex) {
                 Logger.getLogger(ControllerGuiProductList.class.getName()).log(Level.SEVERE, null, ex);
