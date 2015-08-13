@@ -246,6 +246,7 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
         jScrollPane2.setViewportView(tableTotalSalesStatistics);
         tableTotalSalesStatistics.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
+        tableSalesStatisticsWaiter.setAutoCreateRowSorter(true);
         tableSalesStatisticsWaiter.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -255,7 +256,7 @@ public class GuiSalesStatistics extends javax.swing.JInternalFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false, false, false, false, false, false, false

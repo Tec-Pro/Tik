@@ -56,18 +56,20 @@ public class ControllerGuiProductList implements ActionListener {
         List<Map<String, Object>> productList = interfaceStatistics.getProductList();
         DefaultTableModel modelTableProductList = guiProductList.getModelTableProductList();
         Object[] row = new Object[8];
-        DecimalFormat df = new DecimalFormat("0.00");
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
         for (Map<String, Object> m : productList) {
-            row[0] = m.get("name");//nombre del producto final
-            row[1] = m.get("category");//categoria
-            row[2] = m.get("subcategory");//subcategoria
-            row[3] = "$" + m.get("elaboration_price");//precio de elaboracion
-            float productionPrice = Float.parseFloat(m.get("elaboration_price").toString());
-            row[4] = "$" + ParserFloat.floatToString(productionPrice + productionPrice * GeneralConfig.percent / 100);//precio sugerido
-            float sellPrice = Float.parseFloat(m.get("sell_price").toString());
-            row[5] = "$" + sellPrice;//precio de venta
-            row[6] = "%" + (df.format(((sellPrice - productionPrice) / productionPrice) * 100).toString());//porcentaje (%) de ganancia
-            row[7] = "$" + (sellPrice - productionPrice);//ganancia (en pesos $)
+            row[0] = m.get("name").toString();//nombre del producto final
+            row[1] = m.get("category").toString();//categoria
+            row[2] = m.get("subcategory").toString();//subcategoria
+            row[3] = m.get("elaboration_price");//precio de elaboracion
+            Float productionPrice = Float.parseFloat(m.get("elaboration_price").toString());
+            row[4] = productionPrice + productionPrice * GeneralConfig.percent / 100;//precio sugerido
+            Float sellPrice = Float.parseFloat(m.get("sell_price").toString());
+            row[5] = sellPrice;//precio de venta
+            Float percentGain = ParserFloat.stringToFloat(df.format(((sellPrice - productionPrice) / productionPrice) * 100));
+            row[6] = percentGain;//porcentaje (%) de ganancia
+            row[7] = (sellPrice - productionPrice);//ganancia (en pesos $)
             modelTableProductList.addRow(row);
         }
     }

@@ -124,6 +124,7 @@ public class GuiProductStatistics extends javax.swing.JInternalFrame {
 
         panelImage1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/fondo gris.png"))); // NOI18N
 
+        tableProductStatistics.setAutoCreateRowSorter(true);
         tableProductStatistics.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -133,7 +134,7 @@ public class GuiProductStatistics extends javax.swing.JInternalFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false
