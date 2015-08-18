@@ -57,12 +57,17 @@
                   </Group>
               </Group>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="btnOpenAfternoon" alignment="0" min="-2" pref="78" max="-2" attributes="0"/>
-                  <Component id="btnCloseAfternoon" alignment="0" min="-2" pref="78" max="-2" attributes="0"/>
-                  <Component id="btnSeeAfternoon" alignment="0" min="-2" pref="78" max="-2" attributes="0"/>
-                  <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="btnOpenAfternoon" alignment="0" min="-2" pref="78" max="-2" attributes="0"/>
+                          <Component id="btnCloseAfternoon" alignment="0" min="-2" pref="78" max="-2" attributes="0"/>
+                          <Component id="btnSeeAfternoon" alignment="0" min="-2" pref="78" max="-2" attributes="0"/>
+                          <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="btnUpdate" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
           </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
@@ -268,8 +273,16 @@
                   </Group>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="btnResume" min="-2" pref="45" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="btnResume" min="-2" pref="45" max="-2" attributes="0"/>
+                      <EmptySpace pref="24" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="btnUpdate" min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
           </Group>
       </Group>
     </DimensionLayout>
@@ -554,6 +567,11 @@
     <Component class="javax.swing.JLabel" name="lblWA4">
       <Properties>
         <Property name="text" type="java.lang.String" value="nombre"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnUpdate">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Actualizar"/>
       </Properties>
     </Component>
   </SubComponents>

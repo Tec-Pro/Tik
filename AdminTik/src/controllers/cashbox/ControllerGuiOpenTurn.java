@@ -313,5 +313,12 @@ public class ControllerGuiOpenTurn implements ActionListener {
                 Logger.getLogger(ControllerGuiOpenTurn.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        if(e.getSource() == guiOpenTurn.getBtnUpdate()){
+            try {
+                turn();
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerGuiOpenTurn.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } 
     }
 }
