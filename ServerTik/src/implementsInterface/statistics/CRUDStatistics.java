@@ -131,9 +131,9 @@ public class CRUDStatistics extends UnicastRemoteObject implements InterfaceStat
         Utils.abrirBase();
         Base.openTransaction();
         Salesstatistic ret = Salesstatistic.createIt("waiter_name", waiterName, "user_id", userId, "sale_amount",
-                String.valueOf(saleAmount), "tables", tables, "customers", customers, "products", products, "average_tables", String.valueOf(avgTables),
-                "average_customers", String.valueOf(avgCustomers), "average_products", String.valueOf(avgProducts), "discounts", String.valueOf(discounts),
-                "exceptions", String.valueOf(exceptions), "turn", turn, "day", day);
+                String.valueOf(saleAmount), "tables", tables, "customers", customers, "products", products, "average_tables", avgTables,
+                "average_customers", avgCustomers, "average_products", avgProducts, "discounts", discounts,
+                "exceptions", exceptions, "turn", turn, "day", day);
         Base.commitTransaction();
         return ret.toMap();
     }

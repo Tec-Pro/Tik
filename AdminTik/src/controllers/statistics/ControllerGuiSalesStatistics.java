@@ -94,10 +94,13 @@ public class ControllerGuiSalesStatistics implements ActionListener {
         List<Map> waiters = interfaceUser.getWaiters();//todos los mozos de la base de datos
         for (Map m : waiters) {
             userId = Integer.parseInt(m.get("id").toString());//id de mozo actual
-            userName = m.get("name").toString();//nombre del mozo actual
-            exceptions = interfaceOrder.getExceptions(userId);//excepciones realizada por el mozo
-            //saco los descuentos realizados por cada mozo
-            List<Map> prods = interfaceOrder.getCurrentDiscounts(userId);
+            List<Map> ordersByUser = interfaceOrder.getOrdersByUser(userId);//los pedidos del mozo actual
+            //Si el mozo tiene pedidos realizo el calculo de sus estadisticas
+            if (ordersByUser != null && !ordersByUser.isEmpty()) {
+                userName = m.get("name").toString();//nombre del mozo actual
+                exceptions = interfaceOrder.getExceptions(userId);//excepciones realizada por el mozo
+                //saco los descuentos realizados por cada mozo
+                List<Map> prods = interfaceOrder.getCurrentDiscounts(userId);
                 List<Map> efec = interfaceOrder.getCurrentDiscountsInEfective(userId);
                 float totalProd = 0;
                 for (Map p : prods) {
@@ -107,47 +110,46 @@ public class ControllerGuiSalesStatistics implements ActionListener {
                 for (Map p : efec) {
                     totalEfec = totalProd + ((float) p.get("discount"));
                 }
-            discounts = totalEfec + totalProd;//descuentos realizadas por el mozo
-            List<Map> ordersByUser = interfaceOrder.getOrdersByUser(userId);//los pedidos del mozo actual
-            //recorro los pedidos del mozo actual
-            for (Map order : ordersByUser) {
-                customers += Integer.parseInt(order.get("persons").toString());//incremento la cantidad de clientes atendidos por el mozo
-                tables++;//incremento en 1 el numero de mesas atendidas
-                int orderId = Integer.parseInt(order.get("id").toString());//id del pedido
-                List<Map> orderProducts = interfaceOrder.getOrderProducts(orderId); //saco todos los productos asociados al pedido
-                products += orderProducts.size();//sumo la cantidad de productos a los vendidos por el mozo
-                //recorro cada producto del pedido
-                for (Map product : orderProducts) {
-                    //saco la fecha 
-                    if (day == null) {
-                        Timestamp timestamp = Timestamp.valueOf((product.get("created_at").toString()));
-                        day = new Date(timestamp.getTime());
+                discounts = totalEfec + totalProd;//descuentos realizadas por el mozo
+                //recorro los pedidos del mozo actual
+                for (Map order : ordersByUser) {
+                    customers += Integer.parseInt(order.get("persons").toString());//incremento la cantidad de clientes atendidos por el mozo
+                    tables++;//incremento en 1 el numero de mesas atendidas
+                    int orderId = Integer.parseInt(order.get("id").toString());//id del pedido
+                    List<Map> orderProducts = interfaceOrder.getOrderProducts(orderId); //saco todos los productos asociados al pedido
+                    products += orderProducts.size();//sumo la cantidad de productos a los vendidos por el mozo
+                    //recorro cada producto del pedido
+                    for (Map product : orderProducts) {
+                        //saco la fecha 
+                        if (day == null) {
+                            Timestamp timestamp = Timestamp.valueOf((product.get("created_at").toString()));
+                            day = new Date(timestamp.getTime());
+                        }
+                        //saco el producto final del orderProduct actual
+                        Map<String, Object> fproduct = interfaceFProduct.getFproduct(Integer.parseInt(product.get("fproduct_id").toString()));
+                        //saco el precio de venta de ese producto
+                        float price = Float.parseFloat(fproduct.get("sell_price").toString());
+                        //incremento el monto total de ventas del mozo
+                        saleAmount += price;
                     }
-                    //saco el producto final del orderProduct actual
-                    Map<String, Object> fproduct = interfaceFProduct.getFproduct(Integer.parseInt(product.get("fproduct_id").toString()));
-                    //saco el precio de venta de ese producto
-                    float price = Float.parseFloat(fproduct.get("sell_price").toString());
-                    //incremento el monto total de ventas del mozo
-                    saleAmount += price;
                 }
+                avgTables = saleAmount / (float) tables;
+                avgProducts = saleAmount / (float) products;
+                avgCustomers = saleAmount / (float) customers;
+                interfaceStatistics.saveSalesStatistics(userName, userId, saleAmount, tables, customers, products, avgTables, avgCustomers, avgProducts, discounts, exceptions, turn, day);
+                //Reinicio todas las variables
+                saleAmount = (float) 0.00;//monto total de las ventas de un mozo
+                tables = 0;//cantidad de mesas atendidas
+                customers = 0;//clientes atendidos por el mozo
+                products = 0;//cantidad de productos vendidos
+                avgTables = (float) -1.00;
+                avgCustomers = (float) -1.00;
+                avgProducts = (float) -1.00;
+                discounts = (float) -1.00;
+                exceptions = (float) -1.00;
+                userId = -1;//id del mozo
+                userName = null;//nombre del mozo
             }
-            avgTables = saleAmount / (float) tables;
-            avgProducts = saleAmount / (float) products;
-            avgCustomers = saleAmount / (float) customers;
-            interfaceStatistics.saveSalesStatistics(userName, userId, saleAmount, tables, customers, products, avgTables, avgCustomers, avgProducts, discounts, exceptions, turn, day);
-            //Reinicio todas las variables
-            saleAmount = (float) 0.00;//monto total de las ventas de un mozo
-            tables = 0;//cantidad de mesas atendidas
-            customers = 0;//clientes atendidos por el mozo
-            products = 0;//cantidad de productos vendidos
-            avgTables = (float) -1.00;
-            avgCustomers = (float) -1.00;
-            avgProducts = (float) -1.00;
-            discounts = (float) -1.00;
-            exceptions = (float) -1.00;
-            userId = -1;//id del mozo
-            userName = null;//nombre del mozo
-
         }
     }
 
@@ -399,38 +401,38 @@ public class ControllerGuiSalesStatistics implements ActionListener {
         if (e.getSource() == guiSalesStatistics.getCheckTurn()) {
             obtainAndLoadSalesStatistics();
         }
-        if (e.getSource() == guiSalesStatistics.getBtnPrintReport()){
+        if (e.getSource() == guiSalesStatistics.getBtnPrintReport()) {
             System.out.println("Boton imprimir oprimido");
-             List<SaleStatistic> listA = new ArrayList();
-             JTable tableFP = guiSalesStatistics.getTableSalesStatisticsWaiter();
+            List<SaleStatistic> listA = new ArrayList();
+            JTable tableFP = guiSalesStatistics.getTableSalesStatisticsWaiter();
             for (int i = 0; i < guiSalesStatistics.getTableSalesStatisticsWaiter().getRowCount(); i++) {
-                SaleStatistic ss = new SaleStatistic(tableFP.getValueAt(i, 0), 
-                                                    tableFP.getValueAt(i, 1),
-                                                    tableFP.getValueAt(i, 2), 
-                                                    tableFP.getValueAt(i, 3),
-                                                    tableFP.getValueAt(i, 4),
-                                                    tableFP.getValueAt(i, 5),
-                                                    tableFP.getValueAt(i, 6),
-                                                    tableFP.getValueAt(i, 7),
-                                                    tableFP.getValueAt(i, 8),
-                                                    tableFP.getValueAt(i, 9),
-                                                    tableFP.getValueAt(i, 10),
-                                                    tableFP.getValueAt(i, 11));
+                SaleStatistic ss = new SaleStatistic(tableFP.getValueAt(i, 0),
+                        tableFP.getValueAt(i, 1),
+                        tableFP.getValueAt(i, 2),
+                        tableFP.getValueAt(i, 3),
+                        tableFP.getValueAt(i, 4),
+                        tableFP.getValueAt(i, 5),
+                        tableFP.getValueAt(i, 6),
+                        tableFP.getValueAt(i, 7),
+                        tableFP.getValueAt(i, 8),
+                        tableFP.getValueAt(i, 9),
+                        tableFP.getValueAt(i, 10),
+                        tableFP.getValueAt(i, 11));
                 listA.add(ss);
             }
-            
+
             JTable tableSSB = guiSalesStatistics.getTableTotalSalesStatistics();
             for (int i = 0; i < guiSalesStatistics.getTableTotalSalesStatistics().getRowCount(); i++) {
-                SaleStatistic ss = new SaleStatistic("","TOTAL",tableSSB.getValueAt(i, 9),tableSSB.getValueAt(i, 0), 
-                                                    tableSSB.getValueAt(i, 1),
-                                                    tableSSB.getValueAt(i, 2), 
-                                                    tableSSB.getValueAt(i, 3),
-                                                    tableSSB.getValueAt(i, 4),
-                                                    tableSSB.getValueAt(i, 5),
-                                                    tableSSB.getValueAt(i, 6),
-                                                    tableSSB.getValueAt(i, 7),
-                                                    tableSSB.getValueAt(i, 8)
-                                                   );
+                SaleStatistic ss = new SaleStatistic("", "TOTAL", tableSSB.getValueAt(i, 9), tableSSB.getValueAt(i, 0),
+                        tableSSB.getValueAt(i, 1),
+                        tableSSB.getValueAt(i, 2),
+                        tableSSB.getValueAt(i, 3),
+                        tableSSB.getValueAt(i, 4),
+                        tableSSB.getValueAt(i, 5),
+                        tableSSB.getValueAt(i, 6),
+                        tableSSB.getValueAt(i, 7),
+                        tableSSB.getValueAt(i, 8)
+                );
                 listA.add(ss);
             }
 
@@ -443,10 +445,9 @@ public class ControllerGuiSalesStatistics implements ActionListener {
             } catch (JRException ex) {
                 Logger.getLogger(ControllerGuiProductList.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         }
-        
-        
+
     }
 
 }

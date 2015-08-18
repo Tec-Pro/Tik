@@ -166,8 +166,8 @@ public class ControllerGuiOpenTurn implements ActionListener {
                     float balance = ParserFloat.stringToFloat(ControllerGUICashbox.gui.getECBalanceField().getText());
                     crudCashbox.create(turn, balance, collect, entryCash, spend, withdrawal, deliveryCash, deliveryWaiter);
                     //estadisticas
-                    //ControllerGuiSalesStatistics.calculateAndSaveStatistics();
-                    //ControllerGuiProductStatistics.calculateAndSaveProductStatistics();
+                    ControllerGuiSalesStatistics.calculateAndSaveStatistics();
+                    ControllerGuiProductStatistics.calculateAndSaveProductStatistics();
 
                     if (crudTurn.changeTurn("N")) {
                         JOptionPane.showMessageDialog(guiMain, "El turno se cerro exitosamente");
@@ -219,7 +219,7 @@ public class ControllerGuiOpenTurn implements ActionListener {
                     crudCashbox.create(turn, balance, collect, entryCash, spend, withdrawal, deliveryCash, deliveryWaiter);
 
                     //estadisticas
-//                    ControllerGuiSalesStatistics.calculateAndSaveStatistics();
+                    ControllerGuiSalesStatistics.calculateAndSaveStatistics();
                     ControllerGuiProductStatistics.calculateAndSaveProductStatistics();
                     if (crudTurn.changeTurn("N")) {
                         JOptionPane.showMessageDialog(guiMain, "El turno se cerro exitosamente");
