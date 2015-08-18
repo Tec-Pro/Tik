@@ -206,7 +206,8 @@ public class ControllerMain implements ActionListener {
         crudDeposit = (InterfaceDeposit) InterfaceName.registry.lookup(InterfaceName.CRUDDeposit);
         crudAdmin = (InterfaceAdmin) InterfaceName.registry.lookup(InterfaceName.CRUDAdmin);
         crudUser = (InterfaceUser) InterfaceName.registry.lookup(InterfaceName.CRUDUser);
-
+        guiOpenTurn.setVisible(true);
+        guiOpenTurn.toFront();
     }
 
     public static void closeSession() {
@@ -230,6 +231,7 @@ public class ControllerMain implements ActionListener {
         guiProductStatistics.dispose();
 //        guiCRUDWithdrawal.dispose();
         guiCashbox.dispose();
+        
     }
 
     public static boolean isAdmin() {

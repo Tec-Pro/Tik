@@ -29,8 +29,15 @@ public class GuiOpenTurn extends javax.swing.JInternalFrame {
         this.btnSeeMorning.addActionListener(lis);
         this.btnCloseMorning.addActionListener(lis);
         this.btnResume.addActionListener(lis);
+        this.btnUpdate.addActionListener(lis);
 
     }
+
+    public JButton getBtnUpdate() {
+        return btnUpdate;
+    }
+    
+    
 
     public JButton getBtnCloseAfternoon() {
         return btnCloseAfternoon;
@@ -467,6 +474,7 @@ public class GuiOpenTurn extends javax.swing.JInternalFrame {
         lblWAGain5 = new javax.swing.JLabel();
         lblWA5 = new javax.swing.JLabel();
         lblWA4 = new javax.swing.JLabel();
+        btnUpdate = new javax.swing.JButton();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -585,6 +593,8 @@ public class GuiOpenTurn extends javax.swing.JInternalFrame {
 
         lblWA4.setText("nombre");
 
+        btnUpdate.setText("Actualizar");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -613,11 +623,14 @@ public class GuiOpenTurn extends javax.swing.JInternalFrame {
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnOpenAfternoon, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCloseAfternoon, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSeeAfternoon, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addGap(38, 38, 38))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnOpenAfternoon, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnCloseAfternoon, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSeeAfternoon, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
+                        .addGap(38, 38, 38))
+                    .addComponent(btnUpdate, javax.swing.GroupLayout.Alignment.TRAILING)))
             .addGroup(layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -795,8 +808,13 @@ public class GuiOpenTurn extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lblWMGain10)))))
                 .addGap(18, 18, 18)
-                .addComponent(btnResume, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnResume, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(24, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnUpdate))))
         );
 
         pack();
@@ -809,6 +827,7 @@ public class GuiOpenTurn extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnResume;
     private javax.swing.JButton btnSeeAfternoon;
     private javax.swing.JButton btnSeeMorning;
+    private javax.swing.JButton btnUpdate;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
