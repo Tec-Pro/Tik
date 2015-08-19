@@ -8,6 +8,7 @@ package gui.statistics;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -26,6 +27,10 @@ public class GuiProductList extends javax.swing.JInternalFrame {
     public JTable getTableProductList() {
         return tableProductList;
     }
+
+    public JTextField getTxtSearchProductList() {
+        return txtSearchProductList;
+    }
     
     public DefaultTableModel getModelTableProductList() {
         return (DefaultTableModel) tableProductList.getModel();
@@ -39,8 +44,18 @@ public class GuiProductList extends javax.swing.JInternalFrame {
         return btnPrintReport;
     }
     
+    //limpia la gui completa y setea valores por defecto
+    public void cleanComponents(){
+        ((DefaultTableModel) tableProductList.getModel()).setRowCount(0);
+    }
+
+    public JButton getBtnRefresh() {
+        return btnRefresh;
+    }
+    
     public void setActionListener(ActionListener al){
         btnPrintReport.addActionListener(al);
+        btnRefresh.addActionListener(al);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -55,6 +70,9 @@ public class GuiProductList extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableProductList = new javax.swing.JTable();
         btnPrintReport = new javax.swing.JButton();
+        txtSearchProductList = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        btnRefresh = new javax.swing.JButton();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
@@ -105,16 +123,28 @@ public class GuiProductList extends javax.swing.JInternalFrame {
 
         btnPrintReport.setText("IMPRIMIR REPORTE");
 
+        txtSearchProductList.setToolTipText("Búsqueda de Productos Finales por su nombre");
+
+        jLabel1.setText("Buscar:");
+
+        btnRefresh.setText("Actualizar Busqueda");
+        btnRefresh.setToolTipText("Actualizar Búsqueda");
+
         javax.swing.GroupLayout panelImage1Layout = new javax.swing.GroupLayout(panelImage1);
         panelImage1.setLayout(panelImage1Layout);
         panelImage1Layout.setHorizontalGroup(
             panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelImage1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1264, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelImage1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1265, Short.MAX_VALUE)
+                    .addGroup(panelImage1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtSearchProductList, javax.swing.GroupLayout.PREFERRED_SIZE, 594, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnRefresh)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnPrintReport, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -122,7 +152,11 @@ public class GuiProductList extends javax.swing.JInternalFrame {
             panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelImage1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnPrintReport)
+                .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnPrintReport)
+                    .addComponent(txtSearchProductList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addComponent(btnRefresh))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 609, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -145,8 +179,11 @@ public class GuiProductList extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnPrintReport;
+    private javax.swing.JButton btnRefresh;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private org.edisoncor.gui.panel.PanelImage panelImage1;
     private javax.swing.JTable tableProductList;
+    private javax.swing.JTextField txtSearchProductList;
     // End of variables declaration//GEN-END:variables
 }
