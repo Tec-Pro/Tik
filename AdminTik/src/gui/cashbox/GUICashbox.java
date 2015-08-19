@@ -43,15 +43,17 @@ public class GUICashbox extends javax.swing.JInternalFrame {
         jPanel4 = new javax.swing.JPanel();
         DCInitialBalanceField = new javax.swing.JFormattedTextField();
         DCCashboxIncomeField = new javax.swing.JFormattedTextField();
-        DCEarningsField = new javax.swing.JFormattedTextField();
+        DCEarningsFieldMorn = new javax.swing.JFormattedTextField();
         DCExpensesField = new javax.swing.JFormattedTextField();
         DCNextTurnField = new javax.swing.JFormattedTextField();
+        DCEarningsFieldAft = new javax.swing.JFormattedTextField();
         jPanel5 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         DCBalanceField = new javax.swing.JFormattedTextField();
@@ -83,6 +85,7 @@ public class GUICashbox extends javax.swing.JInternalFrame {
         jLabel10 = new javax.swing.JLabel();
         expensesTotalField = new javax.swing.JTextField();
         btnNewExpense = new javax.swing.JButton();
+        btnNewPurchase = new javax.swing.JButton();
         waiterDepositsPanel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -128,98 +131,91 @@ public class GUICashbox extends javax.swing.JInternalFrame {
         jLabel1.setText("CAJA DIARIA");
 
         jPanel4.setOpaque(false);
+        jPanel4.setLayout(new java.awt.GridLayout(0, 1, 0, 10));
 
         DCInitialBalanceField.setEditable(false);
         DCInitialBalanceField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        DCInitialBalanceField.setMinimumSize(new java.awt.Dimension(10, 20));
+        DCInitialBalanceField.setPreferredSize(new java.awt.Dimension(10, 25));
+        DCInitialBalanceField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DCInitialBalanceFieldActionPerformed(evt);
+            }
+        });
+        jPanel4.add(DCInitialBalanceField);
 
         DCCashboxIncomeField.setEditable(false);
         DCCashboxIncomeField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        DCCashboxIncomeField.setMinimumSize(new java.awt.Dimension(10, 20));
+        DCCashboxIncomeField.setPreferredSize(new java.awt.Dimension(10, 25));
+        DCCashboxIncomeField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DCCashboxIncomeFieldActionPerformed(evt);
+            }
+        });
+        jPanel4.add(DCCashboxIncomeField);
 
-        DCEarningsField.setEditable(false);
-        DCEarningsField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        DCEarningsFieldMorn.setEditable(false);
+        DCEarningsFieldMorn.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        DCEarningsFieldMorn.setMinimumSize(new java.awt.Dimension(10, 20));
+        DCEarningsFieldMorn.setPreferredSize(new java.awt.Dimension(10, 25));
+        DCEarningsFieldMorn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DCEarningsFieldMornActionPerformed(evt);
+            }
+        });
+        jPanel4.add(DCEarningsFieldMorn);
 
         DCExpensesField.setEditable(false);
         DCExpensesField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        DCExpensesField.setMinimumSize(new java.awt.Dimension(10, 20));
+        DCExpensesField.setPreferredSize(new java.awt.Dimension(10, 25));
+        DCExpensesField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DCExpensesFieldActionPerformed(evt);
+            }
+        });
+        jPanel4.add(DCExpensesField);
 
         DCNextTurnField.setEditable(false);
         DCNextTurnField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        DCNextTurnField.setMinimumSize(new java.awt.Dimension(10, 20));
+        DCNextTurnField.setPreferredSize(new java.awt.Dimension(10, 25));
+        jPanel4.add(DCNextTurnField);
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(DCInitialBalanceField, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
-                    .addComponent(DCEarningsField)
-                    .addComponent(DCCashboxIncomeField)
-                    .addComponent(DCExpensesField)
-                    .addComponent(DCNextTurnField)))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(DCInitialBalanceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, Short.MAX_VALUE)
-                .addComponent(DCCashboxIncomeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, Short.MAX_VALUE)
-                .addComponent(DCEarningsField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, Short.MAX_VALUE)
-                .addComponent(DCExpensesField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, Short.MAX_VALUE)
-                .addComponent(DCNextTurnField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        DCEarningsFieldAft.setEditable(false);
+        DCEarningsFieldAft.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        DCEarningsFieldAft.setMinimumSize(new java.awt.Dimension(10, 20));
+        DCEarningsFieldAft.setPreferredSize(new java.awt.Dimension(10, 25));
+        jPanel4.add(DCEarningsFieldAft);
 
         jPanel5.setOpaque(false);
+        jPanel5.setLayout(new java.awt.GridLayout(0, 1, 0, 10));
 
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
         jLabel13.setText("SALDO INICIAL");
+        jPanel5.add(jLabel13);
 
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
         jLabel14.setText("CAJA ENTRADA");
+        jPanel5.add(jLabel14);
 
         jLabel15.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel15.setText("RECAUDACION");
+        jLabel15.setText("REC. TARDE");
+        jPanel5.add(jLabel15);
 
         jLabel16.setForeground(new java.awt.Color(255, 255, 255));
         jLabel16.setText("GASTOS");
+        jPanel5.add(jLabel16);
 
         jLabel17.setForeground(new java.awt.Color(255, 255, 255));
         jLabel17.setText("T. SIGUIENTE");
         jLabel17.setToolTipText("Turno Siguiente");
+        jPanel5.add(jLabel17);
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 90, Short.MAX_VALUE)
-                .addGap(24, 24, 24))
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel13)
-                .addGap(27, 27, 27)
-                .addComponent(jLabel14)
-                .addGap(33, 33, 33)
-                .addComponent(jLabel15)
-                .addGap(30, 30, 30)
-                .addComponent(jLabel16)
-                .addGap(30, 30, 30)
-                .addComponent(jLabel17)
-                .addGap(11, 11, 11))
-        );
+        jLabel19.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel19.setText("REC. MAÑANA");
+        jPanel5.add(jLabel19);
 
         jPanel6.setBorder(null);
         jPanel6.setOpaque(false);
@@ -259,12 +255,10 @@ public class GUICashbox extends javax.swing.JInternalFrame {
                     .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(dailyCashboxPanelLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(dailyCashboxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(dailyCashboxPanelLayout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(DCBalanceField))
+                    .addComponent(DCBalanceField, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -281,7 +275,7 @@ public class GUICashbox extends javax.swing.JInternalFrame {
                 .addGroup(dailyCashboxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(DCBalanceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(10, 10, 10))
         );
 
         existantInCashboxPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -298,126 +292,75 @@ public class GUICashbox extends javax.swing.JInternalFrame {
 
         jPanel1.setBorder(null);
         jPanel1.setOpaque(false);
+        jPanel1.setLayout(new java.awt.GridLayout(0, 1, 0, 10));
 
         ECInitialBalanceField.setEditable(false);
         ECInitialBalanceField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
         ECInitialBalanceField.setText("0,00");
+        jPanel1.add(ECInitialBalanceField);
 
         ECCashboxIncomeField.setEditable(false);
         ECCashboxIncomeField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
         ECCashboxIncomeField.setText("0,00");
+        jPanel1.add(ECCashboxIncomeField);
 
         ECWaiterDepositsField.setEditable(false);
         ECWaiterDepositsField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
         ECWaiterDepositsField.setText("0,00");
+        jPanel1.add(ECWaiterDepositsField);
 
         ECAdminDepositsField.setEditable(false);
         ECAdminDepositsField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
         ECAdminDepositsField.setText("0,00");
+        jPanel1.add(ECAdminDepositsField);
 
         ECWithdrawalsField.setEditable(false);
         ECWithdrawalsField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
         ECWithdrawalsField.setText("0,00");
+        jPanel1.add(ECWithdrawalsField);
 
         ECCashboxExpensesField.setEditable(false);
         ECCashboxExpensesField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
         ECCashboxExpensesField.setText("0,00");
+        jPanel1.add(ECCashboxExpensesField);
 
         ECNextTurnField.setEditable(false);
         ECNextTurnField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
         ECNextTurnField.setText("0,00");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(ECCashboxIncomeField)
-            .addComponent(ECWaiterDepositsField, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addComponent(ECAdminDepositsField, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addComponent(ECWithdrawalsField)
-            .addComponent(ECInitialBalanceField)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(ECNextTurnField, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(ECCashboxExpensesField, javax.swing.GroupLayout.Alignment.TRAILING)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(ECInitialBalanceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(ECCashboxIncomeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(ECWaiterDepositsField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(ECAdminDepositsField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(ECWithdrawalsField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(ECCashboxExpensesField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(ECNextTurnField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+        jPanel1.add(ECNextTurnField);
 
         jPanel2.setBorder(null);
         jPanel2.setOpaque(false);
+        jPanel2.setLayout(new java.awt.GridLayout(0, 1, 0, 10));
 
         jLabel11.setForeground(java.awt.Color.white);
         jLabel11.setText("SALDO INICIAL");
+        jPanel2.add(jLabel11);
 
         cashboxIncomeLabel.setForeground(java.awt.Color.white);
         cashboxIncomeLabel.setText("CAJA ENTRADA");
         cashboxIncomeLabel.setToolTipText("doble click aquí para cargar una entrada");
+        jPanel2.add(cashboxIncomeLabel);
 
         jLabel20.setForeground(java.awt.Color.white);
         jLabel20.setText("ENTREGAS MOZO");
+        jPanel2.add(jLabel20);
 
         jLabel21.setForeground(java.awt.Color.white);
         jLabel21.setText("ENTREGAS CAJA");
+        jPanel2.add(jLabel21);
 
         jLabel22.setForeground(java.awt.Color.white);
         jLabel22.setText("RETIROS");
+        jPanel2.add(jLabel22);
 
         jLabel23.setForeground(java.awt.Color.white);
         jLabel23.setText("GASTOS CAJA");
+        jPanel2.add(jLabel23);
 
         jLabel24.setForeground(java.awt.Color.white);
         jLabel24.setText("T. SIGUIENTE");
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel11)
-                    .addComponent(cashboxIncomeLabel)
-                    .addComponent(jLabel20)
-                    .addComponent(jLabel21)
-                    .addComponent(jLabel22)
-                    .addComponent(jLabel23)
-                    .addComponent(jLabel24))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(9, 9, 9)
-                .addComponent(jLabel11)
-                .addGap(15, 15, 15)
-                .addComponent(cashboxIncomeLabel)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel20)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel21)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel22)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel23)
-                .addGap(21, 21, 21)
-                .addComponent(jLabel24))
-        );
+        jPanel2.add(jLabel24);
 
         jPanel3.setBorder(null);
         jPanel3.setOpaque(false);
@@ -436,8 +379,8 @@ public class GUICashbox extends javax.swing.JInternalFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel18)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(ECBalanceField, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(93, 93, 93)
+                .addComponent(ECBalanceField))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -455,13 +398,15 @@ public class GUICashbox extends javax.swing.JInternalFrame {
             .addGroup(existantInCashboxPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(existantInCashboxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, existantInCashboxPanelLayout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(existantInCashboxPanelLayout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(existantInCashboxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(existantInCashboxPanelLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel2))
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         existantInCashboxPanelLayout.setVerticalGroup(
@@ -471,13 +416,11 @@ public class GUICashbox extends javax.swing.JInternalFrame {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(existantInCashboxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(existantInCashboxPanelLayout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(4, 4, 4))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(10, 10, 10))
         );
 
         expensesDetailPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -514,6 +457,8 @@ public class GUICashbox extends javax.swing.JInternalFrame {
 
         btnNewExpense.setText("NUEVO GASTO");
 
+        btnNewPurchase.setText("NUEVA COMPRA");
+
         javax.swing.GroupLayout expensesDetailPanelLayout = new javax.swing.GroupLayout(expensesDetailPanel);
         expensesDetailPanel.setLayout(expensesDetailPanelLayout);
         expensesDetailPanelLayout.setHorizontalGroup(
@@ -530,7 +475,10 @@ public class GUICashbox extends javax.swing.JInternalFrame {
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(expensesTotalField))
-                    .addComponent(btnNewExpense, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, expensesDetailPanelLayout.createSequentialGroup()
+                        .addComponent(btnNewPurchase, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnNewExpense, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         expensesDetailPanelLayout.setVerticalGroup(
@@ -539,13 +487,15 @@ public class GUICashbox extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(expensesDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
                     .addComponent(expensesTotalField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnNewExpense)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(expensesDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnNewExpense)
+                    .addComponent(btnNewPurchase))
                 .addContainerGap())
         );
 
@@ -592,9 +542,9 @@ public class GUICashbox extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(waiterDepositsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, waiterDepositsPanelLayout.createSequentialGroup()
-                        .addGap(0, 55, Short.MAX_VALUE)
+                        .addGap(0, 49, Short.MAX_VALUE)
                         .addComponent(jLabel3)
-                        .addGap(0, 56, Short.MAX_VALUE))
+                        .addGap(0, 50, Short.MAX_VALUE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(waiterDepositsPanelLayout.createSequentialGroup()
                         .addComponent(jLabel7)
@@ -610,13 +560,13 @@ public class GUICashbox extends javax.swing.JInternalFrame {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(5, 5, 5)
                 .addGroup(waiterDepositsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(waiterDepositsTotalField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(newWaiterDepositButton)
-                .addContainerGap())
+                .addGap(14, 14, 14))
         );
 
         adminDepositsPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -667,9 +617,9 @@ public class GUICashbox extends javax.swing.JInternalFrame {
                         .addComponent(adminDepositsTotalField))
                     .addComponent(newAdminDepositButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(adminDepositsPanelLayout.createSequentialGroup()
-                        .addGap(0, 57, Short.MAX_VALUE)
+                        .addGap(0, 51, Short.MAX_VALUE)
                         .addComponent(jLabel4)
-                        .addGap(0, 58, Short.MAX_VALUE)))
+                        .addGap(0, 52, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         adminDepositsPanelLayout.setVerticalGroup(
@@ -788,7 +738,7 @@ public class GUICashbox extends javax.swing.JInternalFrame {
                             .addGroup(panelImage1Layout.createSequentialGroup()
                                 .addComponent(dailyCashboxPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(existantInCashboxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 414, Short.MAX_VALUE))
+                                .addComponent(existantInCashboxPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE))
                             .addGroup(panelImage1Layout.createSequentialGroup()
                                 .addComponent(waiterDepositsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -808,16 +758,16 @@ public class GUICashbox extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelImage1Layout.createSequentialGroup()
+                        .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(dailyCashboxPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE)
+                            .addComponent(existantInCashboxPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE))
+                        .addGap(0, 0, 0)
                         .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(existantInCashboxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 321, Short.MAX_VALUE)
-                            .addComponent(dailyCashboxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 321, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(adminDepositsPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
-                            .addComponent(withdrawalsPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
-                            .addComponent(waiterDepositsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)))
-                    .addComponent(expensesDetailPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE))
-                .addGap(1, 1, 1))
+                            .addComponent(adminDepositsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
+                            .addComponent(waiterDepositsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
+                            .addComponent(withdrawalsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)))
+                    .addComponent(expensesDetailPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 607, Short.MAX_VALUE))
+                .addGap(10, 10, 10))
         );
 
         jScrollPane3.setViewportView(panelImage1);
@@ -826,23 +776,40 @@ public class GUICashbox extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1237, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane3)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 624, Short.MAX_VALUE)
                 .addGap(0, 0, 0))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void DCEarningsFieldMornActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DCEarningsFieldMornActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DCEarningsFieldMornActionPerformed
+
+    private void DCExpensesFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DCExpensesFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DCExpensesFieldActionPerformed
+
+    private void DCCashboxIncomeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DCCashboxIncomeFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DCCashboxIncomeFieldActionPerformed
+
+    private void DCInitialBalanceFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DCInitialBalanceFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DCInitialBalanceFieldActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFormattedTextField DCBalanceField;
     private javax.swing.JFormattedTextField DCCashboxIncomeField;
-    private javax.swing.JFormattedTextField DCEarningsField;
+    private javax.swing.JFormattedTextField DCEarningsFieldAft;
+    private javax.swing.JFormattedTextField DCEarningsFieldMorn;
     private javax.swing.JFormattedTextField DCExpensesField;
     private javax.swing.JFormattedTextField DCInitialBalanceField;
     private javax.swing.JFormattedTextField DCNextTurnField;
@@ -858,6 +825,7 @@ public class GUICashbox extends javax.swing.JInternalFrame {
     private javax.swing.JTable adminDepositsTable;
     private javax.swing.JTextField adminDepositsTotalField;
     private javax.swing.JButton btnNewExpense;
+    private javax.swing.JButton btnNewPurchase;
     private javax.swing.JLabel cashboxIncomeLabel;
     private javax.swing.JPanel dailyCashboxPanel;
     private javax.swing.JPanel existantInCashboxPanel;
@@ -874,6 +842,7 @@ public class GUICashbox extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
@@ -918,9 +887,15 @@ public class GUICashbox extends javax.swing.JInternalFrame {
         this.getNewWithdrawalButton().addActionListener(lis);
         this.getNewAdminDepositButton().addActionListener(lis);
         this.btnNewExpense.addActionListener(lis);
+        this.btnNewPurchase.addActionListener(lis);
 
     }
 
+    public JButton getBtnNewPurchase() {
+        return btnNewPurchase;
+    }
+
+    
     /**
      * @return the DCCashboxIncomeField
      */
@@ -931,8 +906,12 @@ public class GUICashbox extends javax.swing.JInternalFrame {
     /**
      * @return the DCEarningsField
      */
-    public javax.swing.JTextField getDCEarningsField() {
-        return DCEarningsField;
+    public javax.swing.JTextField getDCEarningsFieldMorn() {
+        return DCEarningsFieldMorn;
+    }
+    
+        public javax.swing.JTextField getDCEarningsFieldAft() {
+        return DCEarningsFieldAft;
     }
 
     /**

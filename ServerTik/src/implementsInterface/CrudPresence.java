@@ -46,14 +46,15 @@ public class CrudPresence extends UnicastRemoteObject implements InterfacePresen
     @Override
     public Map<String, Object> logout(int userId) throws RemoteException {
         Utils.abrirBase();
-        Base.openTransaction();
         Date now = new Date(System.currentTimeMillis());
         SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
         List<Presence> listP = Presence.where("user_id = ? and departure_time = '00:00:00'", userId).orderBy("id desc");
         if (listP != null) {
+            Base.openTransaction();
             SimpleDateFormat hour = new SimpleDateFormat("HH:mm:ss");
             Presence p = listP.get(0);
             p.set("departure_time", hour.format(now));
+            p.set("departure_day", date.format(now));
             p.saveIt();
             Base.commitTransaction();
             return p.toMap();
