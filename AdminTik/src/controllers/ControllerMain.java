@@ -188,7 +188,7 @@ public class ControllerMain implements ActionListener {
         controllerGuiMenu = new ControllerGuiMenu(guiMenu, guiMain);
         controllerGuiPurchase = new ControllerGuiPurchase(guiPurchase);
 //        controllerGuiCRUDWithdrawal = new ControllerGUICRUDWithdrawal(guiCRUDWithdrawal);
-        controllerGuiCashbox = new ControllerGUICashbox(guiCashbox);
+        controllerGuiCashbox = new ControllerGUICashbox(guiCashbox,guiPurchase);
         controllerGuiSalesStatistics = new ControllerGuiSalesStatistics(guiSalesStatistics);
         controllerGuiProductList = new ControllerGuiProductList(guiProductList);
         controllerGuiProductStatistics = new ControllerGuiProductStatistics(guiProductStatistics);

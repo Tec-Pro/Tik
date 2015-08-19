@@ -99,7 +99,7 @@ public class ControllerGuiOpenTurn implements ActionListener {
                 guiOpenTurn.getBtnCloseMorning().setEnabled(true);
                 guiOpenTurn.getLblMGain().setText(ParserFloat.floatToString(collect));
                 guiOpenTurn.getLblBalance().setText(ParserFloat.floatToString(balance));
-                guiOpenTurn.getLblAGain().setText(ParserFloat.floatToString(lastCollect));
+                guiOpenTurn.getLblAGain().setText(ParserFloat.floatToString((float)0));
             } else {
                 guiOpenTurn.getBtnOpenAfternoon().setEnabled(false);
                 guiOpenTurn.getBtnOpenMorning().setEnabled(false);
@@ -114,7 +114,7 @@ public class ControllerGuiOpenTurn implements ActionListener {
             }
             online = new HashSet<>();
             online.addAll(crudPresence.getWaiters());
-            online.addAll(crudPresence.getWaitersWereOnline());
+            //online.addAll(crudPresence.getWaitersWereOnline());
             int i = 1;
             for (Map m : online) {
                 String name = m.get("name") + " " + m.get("surname") + ":";
@@ -163,7 +163,8 @@ public class ControllerGuiOpenTurn implements ActionListener {
                     float entryCash = ParserFloat.stringToFloat(ControllerGUICashbox.gui.getECCashboxIncomeField().getText());
                     float deliveryCash = ParserFloat.stringToFloat(ControllerGUICashbox.gui.getECAdminDepositsField().getText());
                     float deliveryWaiter = ParserFloat.stringToFloat(ControllerGUICashbox.gui.getECWaiterDepositsField().getText());
-                    float balance = ParserFloat.stringToFloat(ControllerGUICashbox.gui.getECBalanceField().getText());
+                    System.out.println(ControllerGUICashbox.gui.getECBalanceField().getText());
+                    float balance = collect+entryCash-spend-withdrawal+deliveryCash+ParserFloat.stringToFloat(ControllerGUICashbox.gui.getDCInitialBalanceField().getText());
                     crudCashbox.create(turn, balance, collect, entryCash, spend, withdrawal, deliveryCash, deliveryWaiter);
                     //estadisticas
                     //ControllerGuiSalesStatistics.calculateAndSaveStatistics();
@@ -189,7 +190,7 @@ public class ControllerGuiOpenTurn implements ActionListener {
                     ControllerGUICashbox.reloadWaiterDeposits();
                     ControllerGUICashbox.reloadWithdrawals();
                     ControllerGUICashbox.reloadDialyCashbox();
-                    float balance = ParserFloat.stringToFloat(ControllerGUICashbox.gui.getECBalanceField().getText());
+                    float balance =  ControllerGUICashbox.ECLoadBalance();
                     GUICloseTurnTarde guiCloseTurnTarde = new GUICloseTurnTarde(guiMain, true, crudAdmin.getAdmins(), balance);
                     guiCloseTurnTarde.setLocationRelativeTo(guiMain);
                     guiCloseTurnTarde.setVisible(true);
@@ -213,7 +214,7 @@ public class ControllerGuiOpenTurn implements ActionListener {
                     float entryCash = ParserFloat.stringToFloat(ControllerGUICashbox.gui.getECCashboxIncomeField().getText())-(float)lastTurn.get("entry_cash");
                     float deliveryCash = ParserFloat.stringToFloat(ControllerGUICashbox.gui.getECAdminDepositsField().getText())-(float)lastTurn.get("delivery_cash");
                     float deliveryWaiter = ParserFloat.stringToFloat(ControllerGUICashbox.gui.getECWaiterDepositsField().getText())-(float)lastTurn.get("delivery_waiter");
-                    balance = ParserFloat.stringToFloat(ControllerGUICashbox.gui.getECBalanceField().getText());
+                    balance = collect+entryCash-spend-withdrawal+deliveryCash+ParserFloat.stringToFloat(ControllerGUICashbox.gui.getDCInitialBalanceField().getText());
                     
                     
                     crudCashbox.create(turn, balance, collect, entryCash, spend, withdrawal, deliveryCash, deliveryWaiter);
