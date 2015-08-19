@@ -130,7 +130,7 @@ public class ControllerGuiSalesStatistics implements ActionListener {
                         //saco el precio de venta de ese producto
                         float price = Float.parseFloat(fproduct.get("sell_price").toString());
                         //incremento el monto total de ventas del mozo
-                        saleAmount += price;
+                        saleAmount += (price * Float.parseFloat(product.get("quantity").toString()));
                     }
                 }
                 avgTables = saleAmount / (float) tables;
