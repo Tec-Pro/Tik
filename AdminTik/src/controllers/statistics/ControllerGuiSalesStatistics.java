@@ -135,7 +135,10 @@ public class ControllerGuiSalesStatistics implements ActionListener {
                 }
                 avgTables = saleAmount / (float) tables;
                 avgProducts = saleAmount / (float) products;
-                avgCustomers = saleAmount / (float) customers;
+                if(customers==0)
+                    avgCustomers=0;
+                else
+                    avgCustomers = saleAmount / (float) customers;
                 interfaceStatistics.saveSalesStatistics(userName, userId, saleAmount, tables, customers, products, avgTables, avgCustomers, avgProducts, discounts, exceptions, turn, day);
                 //Reinicio todas las variables
                 saleAmount = (float) 0.00;//monto total de las ventas de un mozo

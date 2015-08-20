@@ -12,6 +12,7 @@ import gui.cashbox.GUICashbox;
 import gui.cashbox.GUICloseTurnTarde;
 import gui.cashbox.GuiOpenTurn;
 import gui.cashbox.GuiSummaryCashbox;
+import gui.logout.GuiLogout;
 import interfaces.InterfaceAdmin;
 import interfaces.InterfaceOrder;
 import interfaces.InterfacePresence;
@@ -44,6 +45,7 @@ public class ControllerGuiOpenTurn implements ActionListener {
     GuiSummaryCashbox guiSummaryCashbox;
     ControllerGuiSummaryCashbox controllerGuiSummaryCashbox;
     GUICashbox guiCashbox;
+    private  GuiLogout guiLogout;
     private InterfaceTurn crudTurn;
     private InterfaceCashbox crudCashbox;
     private InterfaceWithdrawal crudWithdrawal;
@@ -54,9 +56,10 @@ public class ControllerGuiOpenTurn implements ActionListener {
     private InterfaceAdmin crudAdmin;
     private Set<Map> online;
 
-    public ControllerGuiOpenTurn(GuiOpenTurn guiOpenTurn, GUICashbox guiCashbox) throws RemoteException, NotBoundException {
+    public ControllerGuiOpenTurn(GuiOpenTurn guiOpenTurn, GUICashbox guiCashbox, GuiLogout guiLogout) throws RemoteException, NotBoundException {
         this.guiOpenTurn = guiOpenTurn;
         this.guiCashbox = guiCashbox;
+        this.guiLogout= guiLogout;
         crudExpenses = (InterfaceExpenses) InterfaceName.registry.lookup(InterfaceName.CRUDExpenses);
         crudTurn = (InterfaceTurn) InterfaceName.registry.lookup(InterfaceName.CRUDTurn);
         crudCashbox = (InterfaceCashbox) InterfaceName.registry.lookup(InterfaceName.CRUDCashbox);
@@ -99,7 +102,7 @@ public class ControllerGuiOpenTurn implements ActionListener {
                 guiOpenTurn.getBtnCloseMorning().setEnabled(true);
                 guiOpenTurn.getLblMGain().setText(ParserFloat.floatToString(collect));
                 guiOpenTurn.getLblBalance().setText(ParserFloat.floatToString(balance));
-                guiOpenTurn.getLblAGain().setText(ParserFloat.floatToString((float)0));
+                guiOpenTurn.getLblAGain().setText(ParserFloat.floatToString((float) 0));
             } else {
                 guiOpenTurn.getBtnOpenAfternoon().setEnabled(false);
                 guiOpenTurn.getBtnOpenMorning().setEnabled(false);
@@ -164,7 +167,7 @@ public class ControllerGuiOpenTurn implements ActionListener {
                     float deliveryCash = ParserFloat.stringToFloat(ControllerGUICashbox.gui.getECAdminDepositsField().getText());
                     float deliveryWaiter = ParserFloat.stringToFloat(ControllerGUICashbox.gui.getECWaiterDepositsField().getText());
                     System.out.println(ControllerGUICashbox.gui.getECBalanceField().getText());
-                    float balance = collect+entryCash-spend-withdrawal+deliveryCash+ParserFloat.stringToFloat(ControllerGUICashbox.gui.getDCInitialBalanceField().getText());
+                    float balance = collect + entryCash - spend - withdrawal + deliveryCash + ParserFloat.stringToFloat(ControllerGUICashbox.gui.getDCInitialBalanceField().getText());
                     crudCashbox.create(turn, balance, collect, entryCash, spend, withdrawal, deliveryCash, deliveryWaiter);
                     //estadisticas
                     ControllerGuiSalesStatistics.calculateAndSaveStatistics();
@@ -190,7 +193,7 @@ public class ControllerGuiOpenTurn implements ActionListener {
                     ControllerGUICashbox.reloadWaiterDeposits();
                     ControllerGUICashbox.reloadWithdrawals();
                     ControllerGUICashbox.reloadDialyCashbox();
-                    float balance =  ControllerGUICashbox.ECLoadBalance();
+                    float balance = ControllerGUICashbox.ECLoadBalance();
                     GUICloseTurnTarde guiCloseTurnTarde = new GUICloseTurnTarde(guiMain, true, crudAdmin.getAdmins(), balance);
                     guiCloseTurnTarde.setLocationRelativeTo(guiMain);
                     guiCloseTurnTarde.setVisible(true);
@@ -208,16 +211,26 @@ public class ControllerGuiOpenTurn implements ActionListener {
                     ControllerGUICashbox.reloadDialyCashbox();
                     float collect = crudOrder.totalEarn() + crudOrder.getAllExceptions();
                     String turn = crudTurn.getTurn();
-                    Map lastTurn = crudCashbox.getLast("M"); //obtengo el turno mañana para restarle todo eso
-                    float withdrawal = ParserFloat.stringToFloat(ControllerGUICashbox.gui.getECWithdrawalsField().getText())-(float)lastTurn.get("withdrawal");
-                    float spend = ParserFloat.stringToFloat(ControllerGUICashbox.gui.getECCashboxExpensesField().getText())-(float)lastTurn.get("spend");
-                    float entryCash = ParserFloat.stringToFloat(ControllerGUICashbox.gui.getECCashboxIncomeField().getText())-(float)lastTurn.get("entry_cash");
-                    float deliveryCash = ParserFloat.stringToFloat(ControllerGUICashbox.gui.getECAdminDepositsField().getText())-(float)lastTurn.get("delivery_cash");
-                    float deliveryWaiter = ParserFloat.stringToFloat(ControllerGUICashbox.gui.getECWaiterDepositsField().getText())-(float)lastTurn.get("delivery_waiter");
-                    balance = collect+entryCash-spend-withdrawal+deliveryCash+ParserFloat.stringToFloat(ControllerGUICashbox.gui.getDCInitialBalanceField().getText());
-                    
-                    
-                    crudCashbox.create(turn, balance, collect, entryCash, spend, withdrawal, deliveryCash, deliveryWaiter);
+                    if (crudCashbox.getLast().get("turn").equals("M")) {
+                        Map lastTurn = crudCashbox.getLast("M"); //obtengo el turno mañana para restarle todo eso
+                        float withdrawal = ParserFloat.stringToFloat(ControllerGUICashbox.gui.getECWithdrawalsField().getText()) - (float) lastTurn.get("withdrawal");
+                        float spend = ParserFloat.stringToFloat(ControllerGUICashbox.gui.getECCashboxExpensesField().getText()) - (float) lastTurn.get("spend");
+                        float entryCash = ParserFloat.stringToFloat(ControllerGUICashbox.gui.getECCashboxIncomeField().getText()) - (float) lastTurn.get("entry_cash");
+                        float deliveryCash = ParserFloat.stringToFloat(ControllerGUICashbox.gui.getECAdminDepositsField().getText()) - (float) lastTurn.get("delivery_cash");
+                        float deliveryWaiter = ParserFloat.stringToFloat(ControllerGUICashbox.gui.getECWaiterDepositsField().getText()) - (float) lastTurn.get("delivery_waiter");
+                        balance = collect + entryCash - spend - withdrawal + deliveryCash + (float) lastTurn.get("balance");
+                        crudCashbox.create(turn, balance, collect, entryCash, spend, withdrawal, deliveryCash, deliveryWaiter);
+
+                    } else {
+                        float withdrawal = ParserFloat.stringToFloat(ControllerGUICashbox.gui.getECWithdrawalsField().getText());
+                        float spend = ParserFloat.stringToFloat(ControllerGUICashbox.gui.getECCashboxExpensesField().getText());
+                        float entryCash = ParserFloat.stringToFloat(ControllerGUICashbox.gui.getECCashboxIncomeField().getText());
+                        float deliveryCash = ParserFloat.stringToFloat(ControllerGUICashbox.gui.getECAdminDepositsField().getText());
+                        float deliveryWaiter = ParserFloat.stringToFloat(ControllerGUICashbox.gui.getECWaiterDepositsField().getText());
+                        balance = collect + entryCash - spend - withdrawal + deliveryCash + ParserFloat.stringToFloat(ControllerGUICashbox.gui.getDCInitialBalanceField().getText());
+                        crudCashbox.create(turn, balance, collect, entryCash, spend, withdrawal, deliveryCash, deliveryWaiter);
+
+                    }
 
                     //estadisticas
                     ControllerGuiSalesStatistics.calculateAndSaveStatistics();
@@ -253,6 +266,15 @@ public class ControllerGuiOpenTurn implements ActionListener {
                 if (crudTurn.changeTurn("T")) {
                     JOptionPane.showMessageDialog(guiMain, "Turno tarde abierto");
                     crudOrder.deleteAll();
+                    //Reviso si el ultimo turno abierto fue el turno tarde, en caso
+                    // de serlo debo borrar todo de la base
+                    if (crudCashbox.getLast().get("turn").equals("T")) {
+                        crudExpenses.removeAllExpenses();
+                        crudWithdrawal.eraseWithdrawals();
+                        crudDeposit.deleteWaiterDeposits();
+                        crudDeposit.deleteAdminDeposits();
+                        crudDeposit.deleteIncomes();
+                    }
                     turn();
                 }
             } catch (RemoteException ex) {
@@ -314,12 +336,16 @@ public class ControllerGuiOpenTurn implements ActionListener {
                 Logger.getLogger(ControllerGuiOpenTurn.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        if(e.getSource() == guiOpenTurn.getBtnUpdate()){
+        if (e.getSource() == guiOpenTurn.getBtnUpdate()) {
             try {
                 turn();
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiOpenTurn.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } 
+        }
+        if (e.getSource() == guiOpenTurn.getBtnCloseSession()) {
+            guiLogout.setVisible(true);
+            guiLogout.toFront();
+        }
     }
 }

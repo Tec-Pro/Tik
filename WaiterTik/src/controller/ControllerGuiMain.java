@@ -26,6 +26,8 @@ import utils.InterfaceName;
 import interfaces.InterfaceOrder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -303,7 +305,7 @@ public class ControllerGuiMain implements ActionListener {
         newOrder.getLblDone().addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                int r = JOptionPane.showConfirmDialog(null, "Desea cerrar el pedido?");
+                int r = JOptionPane.showConfirmDialog(null, "Desea cerrar el pedido? \n \n DEBE COBRARLE: $"+guiOrder.getLblTotalPrice().getText());
                 if (r == JOptionPane.YES_OPTION) {
                     try {
                         r = JOptionPane.showConfirmDialog(null, "Desea imprimir un comprobante?");
@@ -367,36 +369,47 @@ public class ControllerGuiMain implements ActionListener {
         if ((boolean) ord.get("closed")) { //si la orden esta cerrada
             status = 4;
         }
+        String time;
+        if(products.size()>0){
+            time = products.get(0).get("created_at").toString();
+            time=(time.split(" "))[1].subSequence(0, 5).toString();
+        }
+        else{
+            Date now = new Date(System.currentTimeMillis());
+            SimpleDateFormat hour = new SimpleDateFormat("HH:mm:ss");
+            time= hour.format(now);
+        }
+                
         switch (status) {
             case 0:
                 newOrder.setColor(0);
-                newOrder.setOrder(ord, details);
+                newOrder.setOrder(ord, details, time);
                 guiMain.addActiveOrder(newOrder);
                 break;
 
             case 3:
                 //poner el pedido en rojo, ningun producto esta listo
                 newOrder.setColor(3);
-                newOrder.setOrder(ord, details);
+                newOrder.setOrder(ord, details,time);
                 guiMain.addActiveOrder(newOrder);
                 break;
 
             case 2:
                 //poner el pedido en amarillo , hay producto listos pero no todos
                 newOrder.setColor(2);
-                newOrder.setOrder(ord, details);
+                newOrder.setOrder(ord, details,time);
                 guiMain.addActiveOrder(newOrder);
                 break;
             case 1:
                 //poner pedido en verde , todos los productos estan listos
                 newOrder.setColor(1);
-                newOrder.setOrder(ord, details);
+                newOrder.setOrder(ord, details,time);
                 guiMain.addActiveOrder(newOrder);
                 break;
             case 4:
                 //poner pedido en invisible , la ordene sta cerrada
                 newOrder.setColor(4);
-                newOrder.setOrder(ord, details);
+                newOrder.setOrder(ord, details,time);
                 guiMain.addActiveOrder(newOrder);
                 break;
         }

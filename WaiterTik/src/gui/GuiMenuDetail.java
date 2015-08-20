@@ -61,11 +61,12 @@ public class GuiMenuDetail extends javax.swing.JPanel {
         }
     }
 
-    public void setOrder(Map order, String detail) {
+    public void setOrder(Map order, String detail, String time) {
         lblId.setText("N° " + order.get("order_number").toString());
         txtDetail.setText(detail);
         idOrder = (int) order.get("id");
         idWaiter = (int) order.get("user_id");
+        lblTime.setText(time);
         setBelated(false);
     }
     

@@ -457,14 +457,20 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
         guiOrder.getjTextDescription().setText(currentOrder.get("description").toString());
         Integer persons = (Integer) currentOrder.get("persons");
         if (persons == null) {
-            persons = 0;
+            persons = 1;
         }
         guiOrder.getjSpinnerPersons().setValue(persons);
         float aux=0;
         if(currentOrder.get("discount")!=null)
             aux=(float)currentOrder.get("discount");
-        guiOrder.getLblTotalPrice().setText(ParserFloat.floatToString(totalPrice-aux));
-        guiOrder.getLblDiscount().setText(ParserFloat.floatToString(aux));
+        if(totalPrice>aux){// me fijo que lo que haya que cobrar sea mayor que el descuento
+            guiOrder.getLblTotalPrice().setText(ParserFloat.floatToString(totalPrice-aux));
+            guiOrder.getLblDiscount().setText(ParserFloat.floatToString(aux));
+        }else{
+            guiOrder.getLblTotalPrice().setText(ParserFloat.floatToString(totalPrice));
+            guiOrder.getLblDiscount().setText(ParserFloat.floatToString((float)0));
+        }
+
     }
 
     @Override
@@ -586,7 +592,8 @@ public class ControllerGuiOrder extends DefaultTreeCellRenderer implements Actio
         }
 
         if (e.getSource().equals(guiOrder.getBtnClose())) { //cierra el pedido
-            int r = JOptionPane.showConfirmDialog(null, "Desea cerrar el pedido");
+            
+            int r = JOptionPane.showConfirmDialog(null, "Desea cerrar el pedido? \n \n DEBE COBRARLE: $"+guiOrder.getLblTotalPrice().getText());
             if (r != 0) {
                 return;
             }

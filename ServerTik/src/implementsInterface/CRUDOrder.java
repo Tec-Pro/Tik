@@ -154,7 +154,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         openBase();
         List<Map> ret = new LinkedList<>();
         try {
-            sql = "SELECT fp.name,ofp.quantity,ofp.done,ofp.issued,ofp.commited,ofp.paid "
+            sql = "SELECT fp.name,ofp.quantity,ofp.done,ofp.issued,ofp.commited,ofp.paid, ofp.created_at "
                     + " FROM tik.orders_fproducts ofp INNER JOIN fproducts fp ON fp.id= ofp.fproduct_id WHERE ofp.order_id = '" + orderId + "';";
             Statement stmt = conn.createStatement();
             java.sql.ResultSet rs = stmt.executeQuery(sql);
@@ -167,6 +167,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
                 m.put("commited", rs.getObject("commited"));
                 m.put("issued", rs.getObject("issued"));
                 m.put("paid", rs.getObject("paid"));
+                m.put("created_at", rs.getObject("created_at"));
                 ret.add(m);
             }
             rs.close();
@@ -754,7 +755,8 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         LazyList<Order> lo = Order.findAll();
         float total = 0;
         for (Order o : lo) {
-            LazyList<OrdersFproducts> lof = OrdersFproducts.where("order_id = ?", o.getId());
+            LazyList<OrdersFproducts> lof = OrdersFproducts.where("order_id = ? and discount = 0", o.getId());
+            total= total- o.getFloat("discount");
             for (OrdersFproducts of : lof) {
                 float quantity = of.getFloat("quantity");
                 float price = Fproduct.findById(of.getString("fproduct_id")).getFloat("sell_price");
@@ -770,7 +772,8 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
         LazyList<Order> lo = Order.where("user_id = ?", userId);
         float total = 0;
         for (Order o : lo) {
-            LazyList<OrdersFproducts> lof = OrdersFproducts.where("order_id = ?", o.getId());
+            total= total- o.getFloat("discount");
+            LazyList<OrdersFproducts> lof = OrdersFproducts.where("order_id = ? and discount = 0", o.getId());
             for (OrdersFproducts of : lof) {
                 float quantity = of.getFloat("quantity");
                 float price = Fproduct.findById(of.getString("fproduct_id")).getFloat("sell_price");
@@ -1051,7 +1054,7 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             openBase();
             Map m = new HashMap();
             LinkedList<Map> ret = new LinkedList<>();
-            sql = "SELECT f.sell_price, f.name, ord.order_number, ordf.quantity FROM tik.orders_fproducts as ordf INNER JOIN tik.fproducts as f ON f.id= ordf.fproduct_id, tik.orders as ord where ordf.discount = 1 AND ord.user_id= '" + user_id + "';";
+            sql = "Select o.order_number, fpFinal.sell_price, fpFinal.name, fpFinal.quantity , fpFinal.created_at from (Select * from (SELECT ordf.fproduct_id, ordf.quantity, ordf.order_id, ordf.created_at from orders_fproducts as ordf where ordf.discount=1) as opf INNER JOIN tik.fproducts as f ON f.id= opf.fproduct_id) as fpFinal INNER JOIN tik.orders as o ON o.id= fpFinal.order_id where o.user_id= '" + user_id + "';";
             Statement stmt = conn.createStatement();
             java.sql.ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
@@ -1060,6 +1063,8 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
                 m.put("name", rs.getString("name"));
                 m.put("order_number", rs.getFloat("order_number"));
                 m.put("quantity", rs.getFloat("quantity"));
+                m.put("created_at", rs.getString("created_at"));
+
                 ret.add(m);
             }
             rs.close();
@@ -1078,13 +1083,14 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             openBase();
             Map m = new HashMap();
             LinkedList<Map> ret = new LinkedList<>();
-            sql = "SELECT discount, order_number FROM tik.orders where user_id= '" + user_id + "';";
+            sql = "SELECT discount, order_number FROM tik.orders where discount>0 and user_id= '" + user_id + "';";
             Statement stmt = conn.createStatement();
             java.sql.ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 m = new HashMap();
                 m.put("discount", rs.getFloat("discount"));
                 m.put("order_number", rs.getFloat("order_number"));
+                ret.add(m);
 
             }
             rs.close();

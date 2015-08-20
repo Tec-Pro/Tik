@@ -540,15 +540,24 @@ public class ControllerGUICashbox implements ActionListener {
                 gui.getDCExpensesField().setText(ParserFloat.floatToString(((float) m.get("spend"))));
             }
             if (m.get("turn").equals("T")) {
+                if(cashbox.getPenultimoTurno().get("turn").equals("M")){
                 mm = cashbox.getLast("M");
-                gui.getDCCashboxIncomeField().setText(ParserFloat.floatToString((float) m.get("entry_cash") - (float) mm.get("entry_cash")));
+                gui.getDCCashboxIncomeField().setText(ParserFloat.floatToString((float) m.get("entry_cash") + (float) mm.get("entry_cash")));
                 gui.getDCEarningsFieldAft().setText(ParserFloat.floatToString((float) m.get("collect") ));
                 gui.getDCEarningsFieldMorn().setText(ParserFloat.floatToString((float) mm.get("collect") ));
 
                 
                 gui.getDCExpensesField().setText(ParserFloat.floatToString(((float) m.get("spend") + (float) mm.get("spend"))));
+                }
+                else{
+                gui.getDCCashboxIncomeField().setText(ParserFloat.floatToString((float) m.get("entry_cash")));
+                gui.getDCEarningsFieldAft().setText(ParserFloat.floatToString((float) m.get("collect") ));
+                gui.getDCEarningsFieldMorn().setText(ParserFloat.floatToString((float) mm.get("collect") ));
+                gui.getDCExpensesField().setText(ParserFloat.floatToString(((float) m.get("spend"))));  
+                }
             }
         }
+        
         float incomes = ParserFloat.stringToFloat(gui.getDCCashboxIncomeField().getText());
         float earningMorn = ParserFloat.stringToFloat(gui.getDCEarningsFieldMorn().getText());
         float earningAft = ParserFloat.stringToFloat(gui.getDCEarningsFieldAft().getText());

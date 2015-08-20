@@ -40,7 +40,7 @@ public class GUIUserDiscounts extends javax.swing.JDialog {
         float totalEfec = 0;
         for (Map p : efec) {
             Object[] row = new Object[2];
-            row[0] = (int) p.get("order_number");
+            row[0] = (float) p.get("order_number");
             row[1] = ParserFloat.floatToString((float) p.get("discount"));
             totalEfec = totalProd + ((float) p.get("discount"));
             dftlEfec.addRow(row);
