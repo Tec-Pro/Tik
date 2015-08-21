@@ -59,7 +59,8 @@ public class ControllerGuiCRUDProviders implements ActionListener {
 
         this.guiCRUDProviders = guiCProv;
         iDCurrentlySelectedProvider = -1;
-        this.guiCRUDProviders.setActionListener(this);
+        if(ControllerMain.isAdmin())
+            this.guiCRUDProviders.setActionListener(this);
 
         //Cargo la tabla de categorías.
         loadProviderCategories();

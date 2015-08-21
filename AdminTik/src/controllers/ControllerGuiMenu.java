@@ -79,11 +79,14 @@ public class ControllerGuiMenu extends DefaultTreeCellRenderer implements Action
         crudEproduct = (InterfaceEproduct) InterfaceName.registry.lookup(InterfaceName.CRUDEproduct);
         guiAddUpdateProductCategory = new GuiAddUpdateProductCategory(gm, true);
         guiAddUpdateProductCategory.setLocationRelativeTo(guiMenu);
-        guiAddUpdateProductCategory.setActionListener(this);
+        if(ControllerMain.isAdmin())
+            guiAddUpdateProductCategory.setActionListener(this);
         guiAddUpdateProductSubcategory = new GuiAddUpdateProductSubcategory(gm, true);
         guiAddUpdateProductSubcategory.setLocationRelativeTo(guiMenu);
-        guiAddUpdateProductSubcategory.setActionListener(this);
-        guiMenu.setActionListener(this);
+        if(ControllerMain.isAdmin())
+            guiAddUpdateProductSubcategory.setActionListener(this);
+        if(ControllerMain.isAdmin())
+            guiMenu.setActionListener(this);
         guiCRUDFProduct = new GuiCRUDFProduct();
         controllerGuiCRUDFproduct = new ControllerGuiCRUDFproduct(guiCRUDFProduct);
         gm.getDesktop().add(guiCRUDFProduct);

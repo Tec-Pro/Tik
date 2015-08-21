@@ -72,7 +72,7 @@ import utils.InterfaceName;
 public class ControllerMain implements ActionListener {
 
     public static GuiMain guiMain; //interfaz principal con el desktop, publico para los Dialog.
-    private static Map<String, Object> userLogged; //usuario logeado
+    public static Map<String, Object> userLogged; //usuario logeado
     //interface configuracion de propiedades en el servidor
     private static InterfaceGeneralConfig generalConfig;
     //guis

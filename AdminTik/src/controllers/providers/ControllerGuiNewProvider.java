@@ -5,6 +5,7 @@
  */
 package controllers.providers;
 
+import controllers.ControllerMain;
 import gui.providers.*;
 import interfaces.providers.InterfaceProvider;
 import interfaces.providers.InterfaceProviderCategory;
@@ -60,8 +61,8 @@ public class ControllerGuiNewProvider implements ActionListener {
         //Busco los métodos de CRUD Provider y CRUD Provider Category en el server.
         this.provider = (InterfaceProvider) InterfaceName.registry.lookup(InterfaceName.CRUDProvider);
         this.providerCategory = (InterfaceProviderCategory) InterfaceName.registry.lookup(InterfaceName.CRUDProviderCategory);
-
-        this.guiNewProvider.setActionListener(this);
+        if(ControllerMain.isAdmin())
+            this.guiNewProvider.setActionListener(this);
 
         //Listas utilizadas en el caso de la modificación, representan las categorías para agregar y las categorías para eliminar.
         this.categoriesToAdd = new LinkedList();

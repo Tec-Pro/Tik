@@ -36,7 +36,8 @@ public class ControllerGuiProductCategory implements ActionListener {
     public ControllerGuiProductCategory(GuiCRUDProductCategory gui) throws NotBoundException, MalformedURLException, RemoteException {
         crudProductCategory = (InterfaceCategory) InterfaceName.registry.lookup(InterfaceName.CRUDCategory);
         guiProductCategory = gui;
-        guiProductCategory.setActionListener(this);
+        if(ControllerMain.isAdmin())
+            guiProductCategory.setActionListener(this);
         refreshListCategory();
         guiProductCategory.getTableCategory().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override

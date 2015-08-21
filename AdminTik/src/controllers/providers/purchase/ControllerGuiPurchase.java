@@ -142,7 +142,8 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
             }
         });
         this.guiPurchase.clickCancel();
-        this.guiPurchase.setActionListener(this);
+        if(ControllerMain.isAdmin())
+            this.guiPurchase.setActionListener(this);
     }
 
     private void tblProviderMouseClicked(MouseEvent evt) {

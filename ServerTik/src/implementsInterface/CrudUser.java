@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import javax.imageio.ImageIO;
+import models.Admin;
 import models.User;
 import org.javalite.activejdbc.Base;
 import utils.Encryption;
@@ -128,7 +129,7 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
         if (user != null) {
             user.setString("name", name);
             user.setString("surname", surname);
-            user.setString("pass", passEncrypted);
+            user.set("pass", passEncrypted);
             user.setDate("date_hired", hiredDate);
             user.setDate("date_discharged", dischargedDate);
             user.setString("turn", turn);
@@ -194,8 +195,14 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
 
     public boolean validatePass(int id, String pass) throws java.rmi.RemoteException {
         Utils.abrirBase();
-        User user = User.findById(id);
-        return (user.get("pass").equals(pass));
+        
+        byte[] passEncrypted = {0};
+        try {
+            passEncrypted = Encryption.encrypt(pass);
+        } catch (Exception ex) {
+            Logger.getLogger(CrudUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return User.first("id = ? and pass = ?", id, passEncrypted) != null;
     }
 
     public SerializableBufferedImage getPhoto(int idUser) throws java.rmi.RemoteException {

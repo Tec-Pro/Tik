@@ -44,6 +44,8 @@ import utils.ImageFilter;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import utils.InterfaceName;
@@ -108,7 +110,8 @@ public class ControllerGuiCRUDUser implements ActionListener {
         dtmUsers = guiUser.getDtmUsers();
         presencesTbl= guiUser.getPresencesTbl();
         updateDtmUsers();
-        guiUser.setActionListener(this);
+        if(ControllerMain.isAdmin())
+            guiUser.setActionListener(this);
         guiUser.initialMode(true);
         guiUser.getDateFrom().addPropertyChangeListener(new PropertyChangeListener() {
             @Override
@@ -208,13 +211,14 @@ public class ControllerGuiCRUDUser implements ActionListener {
         presencesTbl.setRowCount(0);
         while (it.hasNext()) {
             Map<String, Object> presence = it.next();
-            Object rowDtm[] = new Object[5];
+            Object rowDtm[] = new Object[6];
             rowDtm[0] = presence.get("id");
             rowDtm[1] = utils.Dates.dateToMySQLDate((Date) presence.get("day"), true);
             rowDtm[2] = presence.get("entry_time");
             if (!presence.get("departure_time").toString().equals("00:00:00")) {
-                rowDtm[3] = presence.get("departure_day");
+                rowDtm[3] = utils.Dates.dateToMySQLDate((Date) presence.get("departure_day"), true);
                 rowDtm[4] = presence.get("departure_time");
+                rowDtm[5]=diferenciaFechas(presence.get("day")+" "+presence.get("entry_time"), presence.get("departure_day")+" "+presence.get("departure_time"));
             } else {
                 rowDtm[3] = "";
                 rowDtm[4] = "";
@@ -409,5 +413,63 @@ public class ControllerGuiCRUDUser implements ActionListener {
         if (e.getSource().equals(guiUser.getBtnDeletePhoto())) {
             guiUser.setPictureDefault();
         }
+    }
+    
+     public String diferenciaFechas(String inicio, String llegada){
+
+        Date fechaInicio = null;
+        Date fechaLlegada = null;
+
+        // configuramos el formato en el que esta guardada la fecha en 
+        //  los strings que nos pasan
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        try {
+            // aca realizamos el parse, para obtener objetos de tipo Date de 
+            // las Strings
+            fechaInicio = formato.parse(inicio);
+            fechaLlegada = formato.parse(llegada);
+
+        } catch (ParseException e) {
+           // Log.e(TAG, "Funcion diferenciaFechas: Error Parse " + e);
+        } catch (Exception e){
+            // Log.e(TAG, "Funcion diferenciaFechas: Error " + e);
+        }
+
+        // tomamos la instancia del tipo de calendario
+        Calendar calendarInicio = Calendar.getInstance();
+        Calendar calendarFinal = Calendar.getInstance();
+
+        // Configramos la fecha del calendatio, tomando los valores del date que 
+        // generamos en el parse
+        calendarInicio.setTime(fechaInicio);
+        calendarFinal.setTime(fechaLlegada);
+
+        // obtenemos el valor de las fechas en milisegundos
+        long milisegundos1 = calendarInicio.getTimeInMillis();
+        long milisegundos2 = calendarFinal.getTimeInMillis();
+
+        // tomamos la diferencia
+        long diferenciaMilisegundos = milisegundos2 - milisegundos1;
+
+        // Despues va a depender en que formato queremos  mostrar esa 
+        // diferencia, minutos, segundo horas, dias, etc, aca van algunos 
+        // ejemplos de conversion
+
+        // calcular la diferencia en segundos
+        long diffSegundos =  Math.abs (diferenciaMilisegundos / 1000);
+
+        // calcular la diferencia en minutos
+        long diffMinutos =  Math.abs (diferenciaMilisegundos / (60 * 1000));
+        long restominutos = diffMinutos%60;
+
+        // calcular la diferencia en horas
+        long diffHoras =   (diferenciaMilisegundos / (60 * 60 * 1000));
+
+        // calcular la diferencia en dias
+        long diffdias = Math.abs ( diferenciaMilisegundos / (24 * 60 * 60 * 1000) );
+
+        // devolvemos el resultado en un string
+        return String.valueOf(diffHoras + " hs " + restominutos + " min");
     }
 }

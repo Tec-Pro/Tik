@@ -59,7 +59,8 @@ public class ControllerGuiCRUDEproduct implements ActionListener {
      */
     public ControllerGuiCRUDEproduct(GuiCRUDEProduct guiCRUDEProduct) throws NotBoundException, MalformedURLException, RemoteException {
         this.guiCRUDEProduct = guiCRUDEProduct;
-        guiCRUDEProduct.setActionListener(this);
+        if(ControllerMain.isAdmin())
+            guiCRUDEProduct.setActionListener(this);
         tableProducts = guiCRUDEProduct.getTableProducts();
         tableReciper = guiCRUDEProduct.getTableReciper();
         tableProductsDefault = guiCRUDEProduct.getTableProductsDefault();

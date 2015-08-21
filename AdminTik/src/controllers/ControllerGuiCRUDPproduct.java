@@ -57,9 +57,11 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
      */
     public ControllerGuiCRUDPproduct(GuiCRUDPProduct guiCRUDPProduct, GuiLoadPurchase guiLoadPurchase) throws NotBoundException, MalformedURLException, RemoteException {
         this.guiCRUDPProduct = guiCRUDPProduct;
-        this.guiCRUDPProduct.setActionListener(this);
+        if(ControllerMain.isAdmin())
+            this.guiCRUDPProduct.setActionListener(this);
         this.guiLoadPurchase = guiLoadPurchase;
-        this.guiLoadPurchase.setActionListener(this);
+        if(ControllerMain.isAdmin())
+            this.guiLoadPurchase.setActionListener(this);
         tableProducts = guiCRUDPProduct.getTableProducts();
         this.guiCRUDPProduct.getTxtSearch().addKeyListener(new java.awt.event.KeyAdapter() {
             @Override

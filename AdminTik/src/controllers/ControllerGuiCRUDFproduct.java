@@ -113,7 +113,8 @@ public class ControllerGuiCRUDFproduct implements ActionListener, CellEditorList
             }
         });
         guiCRUDFProduct.loadCategorySearch();
-        guiCRUDFProduct.setActionListener(this);
+        if(ControllerMain.isAdmin())
+            guiCRUDFProduct.setActionListener(this);
     }
 
     /**
