@@ -38,6 +38,9 @@ public class ImplementsDataSourcePayment implements JRDataSource {
             case "excepcion":
                 valor = payment.get(index).getExceptions();
                 break;
+            case "descuento":
+                valor = payment.get(index).getDiscount();
+                break;            
             case "precio":
                 valor = payment.get(index).getPrice();
                 break;

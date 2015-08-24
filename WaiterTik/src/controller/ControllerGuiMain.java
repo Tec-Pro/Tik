@@ -312,7 +312,7 @@ public class ControllerGuiMain implements ActionListener {
                         if (r == JOptionPane.OK_OPTION) {
                             List<Map> ord = crudOrder.getDataPrinterOrd(newOrder.getIdOrder());
                             for (Map m : ord) {
-                                Payment p = new Payment((String) m.get("name"), (float) m.get("quantity"), (float) m.get("sell_price"), (float) m.get("paid_exceptions"));
+                                Payment p = new Payment((String) m.get("name"), (float) m.get("quantity"), (float) m.get("sell_price"), (float) m.get("paid_exceptions"),(float) m.get("discount"));
                                 datasource.addPayment(p);
                             }
                             try {

@@ -137,29 +137,32 @@ public class ControllerGuiSummaryCashbox implements ActionListener {
         totalW = 0;
         total = 0;
         for (Map r : listResume) {
-            Object[] rr = new Object[5];
-            rr[0] = dateToMySQLDate((Date) r.get("resume_date"), true);
-            rr[1] = r.get("income");
-            rr[2] = r.get("earning");
-            rr[3] = r.get("expenses");
-            rr[4] = r.get("final_balance");
-            guiSummaryCashboxForDate.getTableResumeDefault().addRow(rr);
-            List<Map> listAdminResume = resume.getAdminResume((int) r.get("id"));
+            if (r.get("resume_date") != null) {
+                Object[] rr = new Object[5];
+                rr[0] = dateToMySQLDate((Date) r.get("resume_date"), true);
+                rr[1] = r.get("income");
+                rr[2] = r.get("earning");
+                rr[3] = r.get("expenses");
+                rr[4] = r.get("final_balance");
+                guiSummaryCashboxForDate.getTableResumeDefault().addRow(rr);
+                List<Map> listAdminResume = resume.getAdminResume((int) r.get("id"));
 
-            for (Map m : listAdminResume) {
-                Object[] ra = new Object[5];
-                ra[0] = dateToMySQLDate((Date) r.get("resume_date"), true);
-                ra[1] = m.get("admin");
-                float d = (float) m.get("deposit");
-                totalD = totalD + d;
-                ra[2] = d;
-                float w = (float) m.get("withdrawal");
-                totalW = totalW + w;
-                total = total + (d - w);
-                ra[3] = w;
-                ra[4] = d - w;
-                guiSummaryCashboxForDate.getTableResumeForAdminDefault().addRow(ra);
+                for (Map m : listAdminResume) {
+                    Object[] ra = new Object[5];
+                    ra[0] = dateToMySQLDate((Date) r.get("resume_date"), true);
+                    ra[1] = m.get("admin");
+                    float d = (float) m.get("deposit");
+                    totalD = totalD + d;
+                    ra[2] = d;
+                    float w = (float) m.get("withdrawal");
+                    totalW = totalW + w;
+                    total = total + (d - w);
+                    ra[3] = w;
+                    ra[4] = d - w;
+                    guiSummaryCashboxForDate.getTableResumeForAdminDefault().addRow(ra);
+                }
             }
+
         }
         Object[] ra = new Object[5];
         ra[1] = "Total";
@@ -187,10 +190,10 @@ public class ControllerGuiSummaryCashbox implements ActionListener {
 
     private static Float loadInitialBalance() throws RemoteException {
         Float initialBalance;
-        if(cashbox.getLast().get("turn").equals("T")){//si es domingo y ya cerré el turno, tengo que traer el turno del sabado
-            initialBalance = (float)cashbox.getLast("TT").get("balance"); // obtengo el balance del ultimo turno abierto
-        }else{
-            initialBalance = (float)cashbox.getLast("T").get("balance");
+        if (cashbox.getLast().get("turn").equals("T")) {//si es domingo y ya cerré el turno, tengo que traer el turno del sabado
+            initialBalance = (float) cashbox.getLast("TT").get("balance"); // obtengo el balance del ultimo turno abierto
+        } else {
+            initialBalance = (float) cashbox.getLast("T").get("balance");
         }
         guiSummaryCashbox.getTxtInitialBalance().setText(ParserFloat.floatToString(initialBalance));
         return initialBalance;

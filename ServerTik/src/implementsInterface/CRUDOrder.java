@@ -865,15 +865,22 @@ public class CRUDOrder extends UnicastRemoteObject implements interfaces.Interfa
             openBase();
             Map m = new HashMap();
             LinkedList<Map> ret = new LinkedList<>();
-            sql = "SELECT ord.quantity, pr.name, pr.sell_price, orden.paid_exceptions FROM tik.orders_fproducts ord INNER JOIN tik.fproducts pr ON ord.fproduct_id = pr.id, tik.orders as orden WHERE ord.order_id = '" + id + "' and ord.paid =0 AND orden.id= ord.order_id AND ord.discount = 0 ;";
+            sql = "SELECT ord.quantity, pr.name, pr.sell_price, orden.paid_exceptions, orden.discount, ord.discount as disc FROM tik.orders_fproducts ord INNER JOIN tik.fproducts pr ON ord.fproduct_id = pr.id, tik.orders as orden WHERE ord.order_id = '" + id + "' and ord.paid =0 AND orden.id= ord.order_id  ;";
             Statement stmt = conn.createStatement();
             java.sql.ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 m = new HashMap();
                 m.put("quantity", rs.getFloat("quantity"));
-                m.put("name", rs.getString("name"));
-                m.put("sell_price", rs.getFloat("sell_price"));
+                if (rs.getBoolean("disc")==true){
+                    m.put("sell_price", rs.getFloat("sell_price")*-1);
+                    m.put("name", rs.getString("name")+" (Desc.)");
+
+                }else{
+                    m.put("sell_price", rs.getFloat("sell_price"));
+                    m.put("name", rs.getString("name"));
+                }
                 m.put("paid_exceptions", rs.getFloat("paid_exceptions"));
+                m.put("discount", rs.getFloat("discount"));
                 ret.add(m);
             }
             rs.close();
