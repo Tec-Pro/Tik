@@ -65,12 +65,33 @@ public class ControllerGuiSummaryCashbox implements ActionListener {
         resume = (InterfaceResume) InterfaceName.registry.lookup(InterfaceName.CRUDResume);
         guiSummaryCashbox.setActionListner(this);
         guiSummaryCashboxForDate = new GuiSummaryCashboxForDate(ControllerMain.guiMain, true);
+        guiSummaryCashboxForDate.setActionListener(this);
 
         guiSummaryCashboxForDate.getDateSince().addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 try {
-                    loadResumeForDate();
+                    if (guiSummaryCashboxForDate.getDateUntil().getDate() != null) {
+                        if (guiSummaryCashboxForDate.getCheckDaily().isSelected()) {
+                            loadResumeForDate(resume.getResumeDaily(dateToMySQLDate(guiSummaryCashboxForDate.getDateSince().getCalendar().getTime(), false),
+                                    dateToMySQLDate(guiSummaryCashboxForDate.getDateUntil().getCalendar().getTime(), false)));
+                        } else {
+                            if (guiSummaryCashboxForDate.getCheckMonthly().isSelected()) {
+                                loadResumeForDate(resume.getResumeMonthly(dateToMySQLDate(guiSummaryCashboxForDate.getDateSince().getCalendar().getTime(), false),
+                                        dateToMySQLDate(guiSummaryCashboxForDate.getDateUntil().getCalendar().getTime(), false)));
+                            } else {
+                                if (guiSummaryCashboxForDate.getCheckAnnual().isSelected()) {
+                                    loadResumeForDate(resume.getResumeAnnual(dateToMySQLDate(guiSummaryCashboxForDate.getDateSince().getCalendar().getTime(), false),
+                                            dateToMySQLDate(guiSummaryCashboxForDate.getDateUntil().getCalendar().getTime(), false)));
+                                } else {
+                                    if (guiSummaryCashboxForDate.getCheckAll().isSelected()) {
+                                        loadResumeForDate(resume.getResumeAll(dateToMySQLDate(guiSummaryCashboxForDate.getDateSince().getCalendar().getTime(), false),
+                                                dateToMySQLDate(guiSummaryCashboxForDate.getDateUntil().getCalendar().getTime(), false)));
+                                    }
+                                }
+                            }
+                        }
+                    }
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiSummaryCashbox.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -81,7 +102,27 @@ public class ControllerGuiSummaryCashbox implements ActionListener {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 try {
-                    loadResumeForDate();
+                    if (guiSummaryCashboxForDate.getDateUntil().getDate() != null) {
+                        if (guiSummaryCashboxForDate.getCheckDaily().isSelected()) {
+                            loadResumeForDate(resume.getResumeDaily(dateToMySQLDate(guiSummaryCashboxForDate.getDateSince().getCalendar().getTime(), false),
+                                    dateToMySQLDate(guiSummaryCashboxForDate.getDateUntil().getCalendar().getTime(), false)));
+                        } else {
+                            if (guiSummaryCashboxForDate.getCheckMonthly().isSelected()) {
+                                loadResumeForDate(resume.getResumeMonthly(dateToMySQLDate(guiSummaryCashboxForDate.getDateSince().getCalendar().getTime(), false),
+                                        dateToMySQLDate(guiSummaryCashboxForDate.getDateUntil().getCalendar().getTime(), false)));
+                            } else {
+                                if (guiSummaryCashboxForDate.getCheckAnnual().isSelected()) {
+                                    loadResumeForDate(resume.getResumeAnnual(dateToMySQLDate(guiSummaryCashboxForDate.getDateSince().getCalendar().getTime(), false),
+                                            dateToMySQLDate(guiSummaryCashboxForDate.getDateUntil().getCalendar().getTime(), false)));
+                                } else {
+                                    if (guiSummaryCashboxForDate.getCheckAll().isSelected()) {
+                                        loadResumeForDate(resume.getResumeAll(dateToMySQLDate(guiSummaryCashboxForDate.getDateSince().getCalendar().getTime(), false),
+                                                dateToMySQLDate(guiSummaryCashboxForDate.getDateUntil().getCalendar().getTime(), false)));
+                                    }
+                                }
+                            }
+                        }
+                    }
                 } catch (RemoteException ex) {
                     Logger.getLogger(ControllerGuiSummaryCashbox.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -89,30 +130,19 @@ public class ControllerGuiSummaryCashbox implements ActionListener {
         });
     }
 
-    public void loadResumeForDate() throws RemoteException {
-        List<Map> listResume = resume.getResume(dateToMySQLDate(guiSummaryCashboxForDate.getDateSince().getCalendar().getTime(), false), dateToMySQLDate(guiSummaryCashboxForDate.getDateUntil().getCalendar().getTime(), false));
+    public void loadResumeForDate(List<Map> listResume) throws RemoteException {
         guiSummaryCashboxForDate.getTableResumeDefault().setRowCount(0);
         guiSummaryCashboxForDate.getTableResumeForAdminDefault().setRowCount(0);
         totalD = 0;
         totalW = 0;
         total = 0;
         for (Map r : listResume) {
-            Object[] rr = new Object[3];
+            Object[] rr = new Object[5];
             rr[0] = dateToMySQLDate((Date) r.get("resume_date"), true);
-            rr[1] = "Caja entrada";
-            rr[2] = r.get("income");
-            guiSummaryCashboxForDate.getTableResumeDefault().addRow(rr);
-            rr[0] = dateToMySQLDate((Date) r.get("resume_date"), true);
-            rr[1] = "Recaudacion";
+            rr[1] = r.get("income");
             rr[2] = r.get("earning");
-            guiSummaryCashboxForDate.getTableResumeDefault().addRow(rr);
-            rr[0] = dateToMySQLDate((Date) r.get("resume_date"), true);
-            rr[1] = "Gastos";
-            rr[2] = r.get("expenses");
-            guiSummaryCashboxForDate.getTableResumeDefault().addRow(rr);
-            rr[0] = dateToMySQLDate((Date) r.get("resume_date"), true);
-            rr[1] = "Saldo final";
-            rr[2] = r.get("final_balance");
+            rr[3] = r.get("expenses");
+            rr[4] = r.get("final_balance");
             guiSummaryCashboxForDate.getTableResumeDefault().addRow(rr);
             List<Map> listAdminResume = resume.getAdminResume((int) r.get("id"));
 
@@ -287,6 +317,63 @@ public class ControllerGuiSummaryCashbox implements ActionListener {
             guiSummaryCashboxForDate.getDateUntil().setDate(Calendar.getInstance().getTime());
             guiSummaryCashboxForDate.setVisible(true);
             guiSummaryCashboxForDate.setLocationRelativeTo(null);
+        }
+        if (ae.getSource().equals(guiSummaryCashboxForDate.getCheckDaily())) {
+            guiSummaryCashboxForDate.getCheckMonthly().setSelected(false);
+            guiSummaryCashboxForDate.getCheckAnnual().setSelected(false);
+            guiSummaryCashboxForDate.getCheckAll().setSelected(false);
+            try {
+                if (guiSummaryCashboxForDate.getDateUntil().getDate() != null
+                        && guiSummaryCashboxForDate.getDateSince().getDate() != null) {
+                    loadResumeForDate(resume.getResumeDaily(dateToMySQLDate(guiSummaryCashboxForDate.getDateSince().getCalendar().getTime(), false),
+                            dateToMySQLDate(guiSummaryCashboxForDate.getDateUntil().getCalendar().getTime(), false)));
+                }
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerGuiSummaryCashbox.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (ae.getSource().equals(guiSummaryCashboxForDate.getCheckMonthly())) {
+            guiSummaryCashboxForDate.getCheckDaily().setSelected(false);
+            guiSummaryCashboxForDate.getCheckAnnual().setSelected(false);
+            guiSummaryCashboxForDate.getCheckAll().setSelected(false);
+            try {
+                if (guiSummaryCashboxForDate.getDateUntil().getDate() != null
+                        && guiSummaryCashboxForDate.getDateSince().getDate() != null) {
+                    loadResumeForDate(resume.getResumeMonthly(dateToMySQLDate(guiSummaryCashboxForDate.getDateSince().getCalendar().getTime(), false),
+                            dateToMySQLDate(guiSummaryCashboxForDate.getDateUntil().getCalendar().getTime(), false)));
+                }
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerGuiSummaryCashbox.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (ae.getSource().equals(guiSummaryCashboxForDate.getCheckAnnual())) {
+            guiSummaryCashboxForDate.getCheckDaily().setSelected(false);
+            guiSummaryCashboxForDate.getCheckMonthly().setSelected(false);
+            guiSummaryCashboxForDate.getCheckAll().setSelected(false);
+            try {
+                if (guiSummaryCashboxForDate.getDateUntil().getDate() != null
+                        && guiSummaryCashboxForDate.getDateSince().getDate() != null) {
+                    loadResumeForDate(resume.getResumeAnnual(dateToMySQLDate(guiSummaryCashboxForDate.getDateSince().getCalendar().getTime(), false),
+                            dateToMySQLDate(guiSummaryCashboxForDate.getDateUntil().getCalendar().getTime(), false)));
+                }
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerGuiSummaryCashbox.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+        if (ae.getSource().equals(guiSummaryCashboxForDate.getCheckAll())) {
+            guiSummaryCashboxForDate.getCheckDaily().setSelected(false);
+            guiSummaryCashboxForDate.getCheckMonthly().setSelected(false);
+            guiSummaryCashboxForDate.getCheckAnnual().setSelected(false);
+            try {
+                if (guiSummaryCashboxForDate.getDateUntil().getDate() != null
+                        && guiSummaryCashboxForDate.getDateSince().getDate() != null) {
+                    loadResumeForDate(resume.getResumeAll(dateToMySQLDate(guiSummaryCashboxForDate.getDateSince().getCalendar().getTime(), false),
+                            dateToMySQLDate(guiSummaryCashboxForDate.getDateUntil().getCalendar().getTime(), false)));
+                }
+            } catch (RemoteException ex) {
+                Logger.getLogger(ControllerGuiSummaryCashbox.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 

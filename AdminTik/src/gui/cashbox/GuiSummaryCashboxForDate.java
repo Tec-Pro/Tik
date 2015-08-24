@@ -6,7 +6,9 @@
 package gui.cashbox;
 
 import com.toedter.calendar.JDateChooser;
+import java.awt.event.ActionListener;
 import java.util.Calendar;
+import javax.swing.JCheckBox;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -61,6 +63,42 @@ public class GuiSummaryCashboxForDate extends javax.swing.JDialog {
         return tableResumeForAdmin;
     }
 
+    public JCheckBox getCheckAll() {
+        return checkAll;
+    }
+
+    public JCheckBox getCheckAnnual() {
+        return checkAnnual;
+    }
+
+    public JCheckBox getCheckDaily() {
+        return checkDaily;
+    }
+
+    public JCheckBox getCheckMonthly() {
+        return checkMonthly;
+    }
+
+    //limpia la gui completa y setea valores por defecto
+    public void cleanComponents() {
+        ((DefaultTableModel) tableResume.getModel()).setRowCount(0);
+        ((DefaultTableModel) tableResumeForAdmin.getModel()).setRowCount(0);
+        checkAnnual.setSelected(false);
+        checkMonthly.setSelected(false);
+        checkDaily.setSelected(false);
+        checkAll.setSelected(false);
+    }
+    /**
+     *
+     * @param lis
+     */
+    public void setActionListener(ActionListener lis) {
+        this.checkAnnual.addActionListener(lis);
+        this.checkDaily.addActionListener(lis);
+        this.checkMonthly.addActionListener(lis);
+        this.checkAll.addActionListener(lis);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -75,6 +113,14 @@ public class GuiSummaryCashboxForDate extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         dateSince = new com.toedter.calendar.JDateChooser();
         dateUntil = new com.toedter.calendar.JDateChooser();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        checkDaily = new javax.swing.JCheckBox();
+        jLabel3 = new javax.swing.JLabel();
+        checkMonthly = new javax.swing.JCheckBox();
+        checkAnnual = new javax.swing.JCheckBox();
+        checkAll = new javax.swing.JCheckBox();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableResumeForAdmin = new javax.swing.JTable();
@@ -90,6 +136,38 @@ public class GuiSummaryCashboxForDate extends javax.swing.JDialog {
 
         jLabel2.setText("Hasta");
 
+        jLabel6.setText("Todo");
+
+        jLabel7.setText("Anual");
+
+        jLabel8.setText("Mensual");
+
+        checkDaily.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkDailyActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Diario");
+
+        checkMonthly.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkMonthlyActionPerformed(evt);
+            }
+        });
+
+        checkAnnual.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkAnnualActionPerformed(evt);
+            }
+        });
+
+        checkAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkAllActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -103,18 +181,42 @@ public class GuiSummaryCashboxForDate extends javax.swing.JDialog {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(dateUntil, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(532, Short.MAX_VALUE))
+                .addGap(32, 32, 32)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(checkDaily)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(checkMonthly)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(checkAnnual)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(checkAll)
+                .addContainerGap(154, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(13, 13, 13)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(checkAll)
                     .addComponent(dateUntil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(dateSince, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
-                        .addComponent(jLabel2)))
+                        .addComponent(jLabel2))
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel3)
+                    .addComponent(checkDaily)
+                    .addComponent(checkMonthly)
+                    .addComponent(checkAnnual)
+                    .addComponent(jLabel6))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
@@ -163,18 +265,25 @@ public class GuiSummaryCashboxForDate extends javax.swing.JDialog {
         tableResume.setAutoCreateRowSorter(true);
         tableResume.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Fecha", "Concepto", "Total"
+                "Fecha", "Caja Entrada", "Recaudacion", "Gastos", "Saldo Final"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -227,6 +336,22 @@ public class GuiSummaryCashboxForDate extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void checkDailyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkDailyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_checkDailyActionPerformed
+
+    private void checkMonthlyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkMonthlyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_checkMonthlyActionPerformed
+
+    private void checkAnnualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkAnnualActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_checkAnnualActionPerformed
+
+    private void checkAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkAllActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_checkAllActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -270,10 +395,18 @@ public class GuiSummaryCashboxForDate extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox checkAll;
+    private javax.swing.JCheckBox checkAnnual;
+    private javax.swing.JCheckBox checkDaily;
+    private javax.swing.JCheckBox checkMonthly;
     private com.toedter.calendar.JDateChooser dateSince;
     private com.toedter.calendar.JDateChooser dateUntil;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
