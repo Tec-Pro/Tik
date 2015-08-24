@@ -537,6 +537,7 @@ public class ControllerGUICashbox implements ActionListener {
             if (m.get("turn").equals("M")) {
                 gui.getDCCashboxIncomeField().setText(ParserFloat.floatToString(((float) m.get("entry_cash"))));
                 gui.getDCEarningsFieldMorn().setText(ParserFloat.floatToString((float) m.get("collect")));
+                gui.getDCEarningsFieldAft().setText(ParserFloat.floatToString((float) 0 ));
                 gui.getDCExpensesField().setText(ParserFloat.floatToString(((float) m.get("spend"))));
             }
             if (m.get("turn").equals("T")) {

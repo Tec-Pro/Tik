@@ -186,20 +186,25 @@ public class ControllerGuiSummaryCashbox implements ActionListener {
      */
 
     private static Float loadInitialBalance() throws RemoteException {
-        Float initialBalance = cashbox.getPastBalance();
+        Float initialBalance;
+        if(cashbox.getLast().get("turn").equals("T")){//si es domingo y ya cerré el turno, tengo que traer el turno del sabado
+            initialBalance = (float)cashbox.getLast("TT").get("balance"); // obtengo el balance del ultimo turno abierto
+        }else{
+            initialBalance = (float)cashbox.getLast("T").get("balance");
+        }
         guiSummaryCashbox.getTxtInitialBalance().setText(ParserFloat.floatToString(initialBalance));
         return initialBalance;
     }
 
     private static Float loadExpenses() throws RemoteException {
-        Float exp = expenses.getSumExpenses("M") + expenses.getSumExpenses("T");
+        Float exp = expenses.getSumExpenses("N"); // con N traigo todos los gastos
         guiSummaryCashbox.getTxtExpenses().setText(ParserFloat.floatToString(exp));
         return exp;
     }
 
     private static Float loadCashboxIncome() throws RemoteException {
         String date = new java.sql.Date(System.currentTimeMillis()).toString();
-        Float incomes = deposit.getIncomesTotal(date, "M") + deposit.getIncomesTotal(date, "T");
+        Float incomes = deposit.getIncomesTotal(date, "N");
         guiSummaryCashbox.getTxtCashboxIncome().setText(ParserFloat.floatToString(incomes));
         return incomes;
     }
@@ -217,7 +222,7 @@ public class ControllerGuiSummaryCashbox implements ActionListener {
 
     private static Float loadAdminDeposits() throws RemoteException {
         String date = new java.sql.Date(System.currentTimeMillis()).toString();
-        Float adminDeposits = deposit.getAdminsDepositsTotal(date, "M") + deposit.getAdminsDepositsTotal(date, "T");
+        Float adminDeposits = deposit.getAdminsDepositsTotal();
         return adminDeposits;
     }
 
@@ -225,8 +230,7 @@ public class ControllerGuiSummaryCashbox implements ActionListener {
      Método que carga las entregas de mozo en la caja existente.
      */
     private static Float loadWaiterMorningDeposits() throws RemoteException {
-        String date = new java.sql.Date(System.currentTimeMillis()).toString();
-        Float waiterDeposits = deposit.getWaitersDepositsTotal(date, "M");
+        Float waiterDeposits = deposit.getWaitersDepositsTotalOnTurn("M");
         guiSummaryCashbox.getTxtEarningsMorning().setText(ParserFloat.floatToString(waiterDeposits));
         return waiterDeposits;
     }
@@ -235,8 +239,7 @@ public class ControllerGuiSummaryCashbox implements ActionListener {
      Método que carga las entregas de mozo en la caja existente.
      */
     private static Float loadWaiterAfternoonDeposits() throws RemoteException {
-        String date = new java.sql.Date(System.currentTimeMillis()).toString();
-        Float waiterDeposits = deposit.getWaitersDepositsTotal(date, "T");
+        Float waiterDeposits = deposit.getWaitersDepositsTotalOnTurn("T");
         guiSummaryCashbox.getTxtEarningAfternoon().setText(ParserFloat.floatToString(waiterDeposits));
         return waiterDeposits;
     }
@@ -245,8 +248,7 @@ public class ControllerGuiSummaryCashbox implements ActionListener {
      Método que carga las entregas de mozo en la caja existente.
      */
     private static Float loadWaiterTotalDeposits() throws RemoteException {
-        String date = new java.sql.Date(System.currentTimeMillis()).toString();
-        Float waiterDeposits = deposit.getWaitersDepositsTotal(date, "M") + deposit.getWaitersDepositsTotal(date, "T");
+        Float waiterDeposits = deposit.getWaitersDepositsTotalOnTurn("M") + deposit.getWaitersDepositsTotalOnTurn("T");
         guiSummaryCashbox.getTxtEarnings().setText(ParserFloat.floatToString(waiterDeposits));
         return waiterDeposits;
     }
@@ -256,7 +258,7 @@ public class ControllerGuiSummaryCashbox implements ActionListener {
 
     private static Float loadWithdrawals() throws RemoteException {
         String date = new java.sql.Date(System.currentTimeMillis()).toString();
-        Float withdrawals = withdrawal.getWithdrawalsTotal(date, "M") + withdrawal.getWithdrawalsTotal(date, "T");
+        Float withdrawals = withdrawal.getWithdrawalsTotalOnTurn("M") + withdrawal.getWithdrawalsTotalOnTurn("T");
         return withdrawals;
     }
 
