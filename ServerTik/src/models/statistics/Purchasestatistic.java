@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package models;
+package models.statistics;
 
 import org.javalite.activejdbc.Model;
 
@@ -11,6 +11,6 @@ import org.javalite.activejdbc.Model;
  *
  * @author eze
  */
-public class Salesstatistic extends Model {
+public class Purchasestatistic extends Model {
     
 }

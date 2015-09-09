@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package models;
+package interfaces.statistics;
 
-import org.javalite.activejdbc.Model;
+import java.rmi.Remote;
 
 /**
  *
  * @author eze
  */
-public class Productstatistic extends Model {
+public interface InterfacePurchaseStatistics extends Remote {
     
 }

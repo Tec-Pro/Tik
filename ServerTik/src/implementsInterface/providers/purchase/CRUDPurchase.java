@@ -4,6 +4,7 @@
  */
 package implementsInterface.providers.purchase;
 
+import implementsInterface.statistics.CRUDPurchaseStatistics;
 import interfaces.providers.purchases.InterfacePurchase;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import models.Pproduct;
+import models.Pproductcategory;
 import models.providers.purchase.PproductsPurchases;
 import models.providers.purchase.Purchase;
 import org.javalite.activejdbc.Base;
@@ -71,6 +73,10 @@ public class CRUDPurchase extends UnicastRemoteObject implements InterfacePurcha
                     pproduct.setFloat("unit_price", unitPrice);
                     pproduct.setInteger("provider_id", providerId);
                     pproduct.saveIt();
+                    //calculo las estadisticas de compras de productos primarios
+                    CRUDPurchaseStatistics.savePurchaseStatistics(pproduct.getInteger("pproductsubcategory_id"),date,pproduct.getInteger("id"), pproduct.getString("name"),
+                            pproduct.get("measure_unit").toString(), Float.parseFloat(pair.second().first().toString()),(Float.parseFloat(pair.second().first().toString()) * Float.parseFloat(pair.second().second().toString())), providerId, unitPrice);
+            
                 }
             }
         }

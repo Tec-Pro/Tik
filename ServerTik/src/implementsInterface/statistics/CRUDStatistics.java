@@ -14,16 +14,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import models.Productstatistic;
-import models.Salesstatistic;
+import models.statistics.Productstatistic;
+import models.statistics.Salesstatistic;
 import org.javalite.activejdbc.Base;
 import utils.Utils;
 
