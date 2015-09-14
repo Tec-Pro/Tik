@@ -136,15 +136,26 @@
             <Property name="text" type="java.lang.String" value="Estad&#xed;sticas"/>
           </Properties>
           <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="btnPurchaseStatistics">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Estad&#xed;sticas de Compras"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPurchaseStatisticsActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="btnSalesStatistics">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Estadisticas de Ventas"/>
+                <Property name="text" type="java.lang.String" value="Estad&#xed;sticas de Ventas"/>
                 <Property name="actionCommand" type="java.lang.String" value="CAJA"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSalesStatisticsActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="btnProductStatistics">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Estadisticas de Productos"/>
+                <Property name="text" type="java.lang.String" value="Estad&#xed;sticas de Productos"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="btnProductList">
@@ -157,7 +168,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="btnDiscounts">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Articulos descontados"/>
+                <Property name="text" type="java.lang.String" value="Art&#xed;culos descontados"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDiscountsActionPerformed"/>

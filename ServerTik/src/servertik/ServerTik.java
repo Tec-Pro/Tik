@@ -25,7 +25,7 @@ import implementsInterface.cashbox.CRUDCashbox;
 import implementsInterface.deposits.CRUDDeposit;
 import implementsInterface.providers.payments.CRUDPayments;
 import implementsInterface.providers.purchase.CRUDPurchase;
-import implementsInterface.statistics.CRUDStatistics;
+import implementsInterface.statistics.*;
 import implementsInterface.withdrawal.CRUDWithdrawal;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -99,6 +99,7 @@ public class ServerTik {
         CRUDCashbox CRUDCashbox = new CRUDCashbox();
         CrudDiscounts CRUDdiscounts = new CrudDiscounts();
         CRUDResume CRUDResume = new CRUDResume();
+        CRUDPurchaseStatistics CRUDPurchaseStatistics = new CRUDPurchaseStatistics();
         //Cargo las configuraciones generales
         generalConfig.loadProperties();
 
@@ -127,6 +128,7 @@ public class ServerTik {
         Naming.rebind(InterfaceName.CRUDCashbox, CRUDCashbox);
         Naming.rebind(InterfaceName.CRUDDiscounts, CRUDdiscounts);
         Naming.rebind(InterfaceName.CRUDResume, CRUDResume);
+        Naming.rebind(InterfaceName.CRUDPurchaseStatistics, CRUDPurchaseStatistics);
     }
 
 }

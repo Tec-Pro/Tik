@@ -74,8 +74,22 @@ public class CRUDPurchase extends UnicastRemoteObject implements InterfacePurcha
                     pproduct.setInteger("provider_id", providerId);
                     pproduct.saveIt();
                     //calculo las estadisticas de compras de productos primarios
-                    CRUDPurchaseStatistics.savePurchaseStatistics(pproduct.getInteger("pproductsubcategory_id"),date,pproduct.getInteger("id"), pproduct.getString("name"),
-                            pproduct.get("measure_unit").toString(), Float.parseFloat(pair.second().first().toString()),(Float.parseFloat(pair.second().first().toString()) * Float.parseFloat(pair.second().second().toString())), providerId, unitPrice);
+                    String measureUnit = ""; //Paso la unidad de medida a Litro o Kg segun corresponda
+                    if (pproduct.getString("measure_unit").equals("gr")){
+                        measureUnit = "Kg";
+                    }else{
+                        if (pproduct.getString("measure_unit").equals("ml")){
+                            measureUnit = "L";
+                        }
+                    }
+                    int pproductSubcategoryId = pproduct.getInteger("pproductsubcategory_id");//id de la subcategoria a la que corresponde el pproduct
+                    int pproductId = pair.first(); //id del pproduct
+                    String pproductName = pproduct.getString("name"); //nombre del pproduct
+                    float quantity = pair.second().first(); //cantidad de pproduct que se compró
+                    float price = pair.second().second(); //precio del pproduct por Litro, Kg o Unidad
+                    float totalPrice = quantity * price; //precio total de la cantidad por el precio unitario de cada pproduct
+                    CRUDPurchaseStatistics.savePurchaseStatistics(pproductSubcategoryId,date,pproductId, pproductName,
+                            measureUnit, quantity,totalPrice, providerId, price);
             
                 }
             }

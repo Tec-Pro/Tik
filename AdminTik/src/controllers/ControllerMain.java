@@ -10,9 +10,7 @@ import controllers.cashbox.ControllerGuiOpenTurn;
 import controllers.logout.ControllerGuiLogout;
 import controllers.providers.ControllerGuiCRUDProviders;
 import controllers.providers.purchase.ControllerGuiPurchase;
-import controllers.statistics.ControllerGuiProductList;
-import controllers.statistics.ControllerGuiProductStatistics;
-import controllers.statistics.ControllerGuiSalesStatistics;
+import controllers.statistics.*;
 import controllers.waiter.ControllerGuiMain;
 //import controllers.withdrawals.ControllerGUICRUDWithdrawal;
 import gui.GuiAdminLogin;
@@ -32,9 +30,7 @@ import gui.main.GuiConfig;
 import gui.main.GuiMain;
 import gui.providers.GuiCRUDProviders;
 import gui.providers.purchases.GuiPurchase;
-import gui.statistics.GuiProductList;
-import gui.statistics.GuiProductStatistics;
-import gui.statistics.GuiSalesStatistics;
+import gui.statistics.*;
 import interfaces.InterfaceAdmin;
 //import gui.withdrawal.GUICRUDWithdrawal;
 import interfaces.InterfaceGeneralConfig;
@@ -92,6 +88,7 @@ public class ControllerMain implements ActionListener {
     private static GuiSalesStatistics guiSalesStatistics;
     private static GuiProductList guiProductList;
     private static GuiProductStatistics guiProductStatistics;
+    private static GuiPurchaseStatistics guiPurchaseStatistics;
     private static GuiLogout guiLogout;
     private static GuiOpenTurn guiOpenTurn;
     //controladores
@@ -108,6 +105,7 @@ public class ControllerMain implements ActionListener {
     private ControllerGuiProductList controllerGuiProductList;
     private ControllerGuiProductStatistics controllerGuiProductStatistics;
     private ControllerGuiSalesStatistics controllerGuiSalesStatistics;
+    private ControllerGuiPurchaseStatistics controllerGuiPurchaseStatistics;
     private ControllerGuiLogout controllerGuiLogout;
     private ControllerGuiOpenTurn controllerGuiOpenTurn;
 //    private ControllerGUICRUDWithdrawal controllerGuiCRUDWithdrawal;
@@ -149,6 +147,7 @@ public class ControllerMain implements ActionListener {
         guiSalesStatistics = new GuiSalesStatistics();
         guiProductList = new GuiProductList();
         guiProductStatistics = new GuiProductStatistics();
+        guiPurchaseStatistics = new GuiPurchaseStatistics();
         guiLogout = new GuiLogout();
         guiOpenTurn = new GuiOpenTurn();
 //        guiCRUDWithdrawal = new GUICRUDWithdrawal();
@@ -169,6 +168,7 @@ public class ControllerMain implements ActionListener {
         guiMain.getDesktop().add(guiProductList);
         guiMain.getDesktop().add(guiProductStatistics);
         guiMain.getDesktop().add(guiSalesStatistics);
+        guiMain.getDesktop().add(guiPurchaseStatistics);
         guiMain.getDesktop().add(guiLogout);
         guiMain.getDesktop().add(guiOpenTurn);
 
@@ -191,6 +191,7 @@ public class ControllerMain implements ActionListener {
         controllerGuiCashbox = new ControllerGUICashbox(guiCashbox,guiPurchase);
         controllerGuiSalesStatistics = new ControllerGuiSalesStatistics(guiSalesStatistics);
         controllerGuiProductList = new ControllerGuiProductList(guiProductList);
+        controllerGuiPurchaseStatistics = new ControllerGuiPurchaseStatistics(guiPurchaseStatistics);
         controllerGuiProductStatistics = new ControllerGuiProductStatistics(guiProductStatistics);
         controllerGuiLogout = new ControllerGuiLogout(guiLogout);
         controllerGuiOpenTurn = new ControllerGuiOpenTurn(guiOpenTurn, guiCashbox,guiLogout);
@@ -467,6 +468,16 @@ public class ControllerMain implements ActionListener {
                 Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
             }
           } */
+        //botones estadísticas
+        if (ae.getSource() == guiMain.getBtnPurchaseStatistics()) {
+            try {
+                guiPurchaseStatistics.setMaximum(true);
+                guiPurchaseStatistics.setVisible(true);
+                guiPurchaseStatistics.toFront();
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         if (ae.getSource() == guiMain.getBtnProductList()) {
             try {
                 guiProductList.setMaximum(true);

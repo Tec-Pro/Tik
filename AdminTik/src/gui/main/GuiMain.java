@@ -42,6 +42,7 @@ public class GuiMain extends javax.swing.JFrame {
         this.btnDailyCashbox.addActionListener(lis);
         this.btnSalesStatistics.addActionListener(lis);
         this.btnProductStatistics.addActionListener(lis);
+        this.btnPurchaseStatistics.addActionListener(lis);
         this.btnProductList.addActionListener(lis);
         this.btnLogout.addActionListener(lis);
         this.btnViewOrders.addActionListener(lis);
@@ -120,6 +121,10 @@ public class GuiMain extends javax.swing.JFrame {
         return btnSalesStatistics;
     }
 
+    public JMenuItem getBtnPurchaseStatistics() {
+        return btnPurchaseStatistics;
+    }
+    
     public JMenuItem getBtnViewOrders() {
         return btnViewOrders;
     }
@@ -158,6 +163,7 @@ public class GuiMain extends javax.swing.JFrame {
         jMenu7 = new javax.swing.JMenu();
         btnDailyCashbox = new javax.swing.JMenuItem();
         jMenu8 = new javax.swing.JMenu();
+        btnPurchaseStatistics = new javax.swing.JMenuItem();
         btnSalesStatistics = new javax.swing.JMenuItem();
         btnProductStatistics = new javax.swing.JMenuItem();
         btnProductList = new javax.swing.JMenuItem();
@@ -254,11 +260,24 @@ public class GuiMain extends javax.swing.JFrame {
 
         jMenu8.setText("Estadísticas");
 
-        btnSalesStatistics.setText("Estadisticas de Ventas");
+        btnPurchaseStatistics.setText("Estadísticas de Compras");
+        btnPurchaseStatistics.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPurchaseStatisticsActionPerformed(evt);
+            }
+        });
+        jMenu8.add(btnPurchaseStatistics);
+
+        btnSalesStatistics.setText("Estadísticas de Ventas");
         btnSalesStatistics.setActionCommand("CAJA");
+        btnSalesStatistics.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalesStatisticsActionPerformed(evt);
+            }
+        });
         jMenu8.add(btnSalesStatistics);
 
-        btnProductStatistics.setText("Estadisticas de Productos");
+        btnProductStatistics.setText("Estadísticas de Productos");
         jMenu8.add(btnProductStatistics);
 
         btnProductList.setText("Listado de Productos");
@@ -269,7 +288,7 @@ public class GuiMain extends javax.swing.JFrame {
         });
         jMenu8.add(btnProductList);
 
-        btnDiscounts.setText("Articulos descontados");
+        btnDiscounts.setText("Artículos descontados");
         btnDiscounts.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDiscountsActionPerformed(evt);
@@ -342,6 +361,14 @@ public class GuiMain extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnDiscountsActionPerformed
 
+    private void btnPurchaseStatisticsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPurchaseStatisticsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnPurchaseStatisticsActionPerformed
+
+    private void btnSalesStatisticsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalesStatisticsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSalesStatisticsActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnAbout;
     private javax.swing.JMenuItem btnAdmins;
@@ -361,6 +388,7 @@ public class GuiMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem btnProductStatistics;
     private javax.swing.JMenuItem btnProviders;
     private javax.swing.JMenuItem btnPurchase;
+    private javax.swing.JMenuItem btnPurchaseStatistics;
     private javax.swing.JMenuItem btnSalesStatistics;
     private javax.swing.JMenuItem btnViewOrders;
     private javax.swing.JMenu empleado;

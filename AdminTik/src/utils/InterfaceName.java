@@ -33,12 +33,10 @@ public class InterfaceName {
     public static Registry registry;
     public static final String GeneralConfig = "GeneralConfig";
     public static final String CRUDStatistics = "CRUDStatistics";
+    public static final String CRUDPurchaseStatistics = "CRUDPurchaseStatistics";
     public static final String CRUDpayments = "CRUDPayments";
     public static final String CRUDExpenses = "CRUDExpenses";
     public static final String CRUDCashbox = "CRUDCashbox";
-
-    public static final String CRUDResume = "CRUDResume";
-
     public static final String CRUDDiscounts = "CRUDDiscounts";
-
+    public static final String CRUDResume = "CRUDResume";
 }
