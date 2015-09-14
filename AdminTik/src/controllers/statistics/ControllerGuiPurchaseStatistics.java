@@ -67,18 +67,18 @@ public class ControllerGuiPurchaseStatistics implements ActionListener {
         Object[] row = new Object[9];
         for (Map m : productStatistics) {
             //Si el nombre contiene la subcadena 's'
-            /*if (m.get("name").toString().toLowerCase().contains(s.toLowerCase())) {
-                row[0] = m.get("name");
-                row[1] = m.get("quantity");
-                row[2] = m.get("turn");
-                row[3] = m.get("turn");
-                row[4] = m.get("turn");
-                row[5] = m.get("turn");
-                row[6] = m.get("turn");
-                row[7] = m.get("turn");
+            if (m.get("pproduct_name").toString().toLowerCase().contains(s.toLowerCase())) {
+                row[0] = m.get("pproduct_name");
+                row[1] = m.get("measure_unit");
+                row[2] = m.get("quantity");
+                row[3] = m.get("pproductcategory_name");
+                row[4] = m.get("pproductsubcategory_name");
+                row[5] = m.get("provider_name");
+                row[6] = m.get("unit_price");
+                row[7] = m.get("total_price");
                 row[8] = "Día: " + m.get("day");
                 modelTablePurchaseStatistics.addRow(row);
-            }*/
+            }
         }
     }
 
@@ -90,15 +90,19 @@ public class ControllerGuiPurchaseStatistics implements ActionListener {
         DefaultTableModel modelTablePurchaseStatistics = guiPurchaseStatistics.getModelTablePurchaseStatistics();
         Object[] row = new Object[9];
         for (Map m : productStatistics) {
-            //Si el nombre contiene la subcadena 's'
-            /*if (m.get("name").toString().toLowerCase().contains(s.toLowerCase())) {
-                row[0] = m.get("name");
-                row[1] = m.get("quantity");
-                row[2] = m.get("turn");
+            if (m.get("pproduct_name").toString().toLowerCase().contains(s.toLowerCase())) {
+                row[0] = m.get("pproduct_name");
+                row[1] = m.get("measure_unit");
+                row[2] = m.get("quantity");
+                row[3] = m.get("pproductcategory_name");
+                row[4] = m.get("pproductsubcategory_name");
+                row[5] = m.get("provider_name");
+                row[6] = m.get("unit_price");
+                row[7] = m.get("total_price");
                 Date date = Date.valueOf(m.get("day").toString());
-                row[3] = "Mes: " + (date.getMonth() + 1) + " Año: " + (date.getYear() + 1900);
+                row[8] = "Mes: " + (date.getMonth() + 1) + " Año: " + (date.getYear() + 1900);
                 modelTablePurchaseStatistics.addRow(row);
-            }*/
+            }
         }
     }
 
@@ -111,14 +115,19 @@ public class ControllerGuiPurchaseStatistics implements ActionListener {
         Object[] row = new Object[9];
         for (Map m : productStatistics) {
             //Si el nombre contiene la subcadena 's'
-            /*if (m.get("name").toString().toLowerCase().contains(s.toLowerCase())) {
-                row[0] = m.get("name");
-                row[1] = m.get("quantity");
-                row[2] = m.get("turn");
+            if (m.get("pproduct_name").toString().toLowerCase().contains(s.toLowerCase())) {
+                row[0] = m.get("pproduct_name");
+                row[1] = m.get("measure_unit");
+                row[2] = m.get("quantity");
+                row[3] = m.get("pproductcategory_name");
+                row[4] = m.get("pproductsubcategory_name");
+                row[5] = m.get("provider_name");
+                row[6] = m.get("unit_price");
+                row[7] = m.get("total_price");
                 Date date = Date.valueOf(m.get("day").toString());
-                row[3] = "Año: " + (date.getYear() + 1900);
+                row[8] = "Año: " + (date.getYear() + 1900);
                 modelTablePurchaseStatistics.addRow(row);
-            }*/
+            }
         }
     }
     /*
@@ -131,15 +140,20 @@ public class ControllerGuiPurchaseStatistics implements ActionListener {
         Object[] row = new Object[9];
         for (Map m : productStatistics) {
             //Si el nombre contiene la subcadena 's'
-            /*if (m.get("name").toString().toLowerCase().contains(s.toLowerCase())) {
-                row[0] = m.get("name");
-                row[1] = m.get("quantity");
-                row[2] = m.get("turn");
+            if (m.get("pproduct_name").toString().toLowerCase().contains(s.toLowerCase())) {
+                row[0] = m.get("pproduct_name");
+                row[1] = m.get("measure_unit");
+                row[2] = m.get("quantity");
+                row[3] = m.get("pproductcategory_name");
+                row[4] = m.get("pproductsubcategory_name");
+                row[5] = m.get("provider_name");
+                row[6] = m.get("unit_price");
+                row[7] = m.get("total_price");
                 Date date = Date.valueOf(m.get("day").toString());
-                row[3] = "Entre: " + (new Date(guiPurchaseStatistics.getDateSince().getDate().getTime())).toString()
+                row[8] = "Entre: " + (new Date(guiPurchaseStatistics.getDateSince().getDate().getTime())).toString()
                         + " - " + (new Date(guiPurchaseStatistics.getDateUntil().getDate().getTime())).toString();
                 modelTablePurchaseStatistics.addRow(row);
-            }*/
+            }
         }
     }
 

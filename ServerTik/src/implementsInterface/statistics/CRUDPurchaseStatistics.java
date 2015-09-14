@@ -5,19 +5,28 @@
  */
 package implementsInterface.statistics;
 
+import implementsInterface.CRUDPproduct;
 import interfaces.statistics.InterfacePurchaseStatistics;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import models.Pproductcategory;
 import models.Pproductsubcategory;
 import models.Provider;
 import models.statistics.Purchasestatistic;
 import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.Model;
+import static utils.InterfaceName.CRUDPproduct;
 import utils.Utils;
 
 /**
@@ -26,10 +35,29 @@ import utils.Utils;
  */
 public class CRUDPurchaseStatistics extends UnicastRemoteObject implements InterfacePurchaseStatistics {
 
+    private Connection conn;
+    
     public CRUDPurchaseStatistics() throws RemoteException {
         super();
+        openBase();
     }
 
+    private void openBase() {
+        try {
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(CRUDStatistics.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (conn == null || conn.isClosed()) {
+                conn = DriverManager.getConnection("jdbc:mysql://localhost/tik", "root", "root");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDStatistics.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
     public static Purchasestatistic savePurchaseStatistics(int pproductsubcategory_id, String day, int pproduct_id, String ppname,
             String measure_unit, float quantity, float total_price, int provider_id,
             float unit_price) {
@@ -57,26 +85,135 @@ public class CRUDPurchaseStatistics extends UnicastRemoteObject implements Inter
 
     @Override
     public List<Map> findPurchaseStatisticsBetweenDays(Date since, Date until) throws RemoteException {
-        System.out.println("Las estadisticas de compra diaria no andan viejita!");
-        return new LinkedList<>();
+        openBase();
+        List<Map> ret = new LinkedList<>();
+        try {
+            String sql = "SELECT DISTINCT id, pproduct_name, SUM(quantity) AS quantity, measure_unit, SUM(total_price) AS total_price, "
+                    + "provider_name, unit_price, pproductcategory_name, pproductsubcategory_name, day  "
+                    + "FROM purchasestatistics "
+                    + "WHERE day >= '" + since.toString() + "' AND day <= '" + until.toString() + "' "
+                    + "GROUP BY day, pproduct_id";
+            try (Statement stmt = conn.createStatement();
+                   java.sql.ResultSet rs = stmt.executeQuery(sql)) {
+                while (rs.next()) {
+                    Map m = new HashMap();
+                    m.put("id", rs.getObject("id"));
+                    m.put("pproduct_name", rs.getObject("pproduct_name"));
+                    m.put("measure_unit", rs.getObject("measure_unit"));
+                    m.put("total_price", rs.getObject("total_price"));
+                    m.put("provider_name", rs.getObject("provider_name"));
+                    m.put("unit_price", rs.getObject("unit_price"));
+                    m.put("pproductcategory_name", rs.getObject("pproductcategory_name"));
+                    m.put("pproductsubcategory_name", rs.getObject("pproductsubcategory_name"));
+                    m.put("quantity", rs.getObject("quantity"));
+                    m.put("day", rs.getObject("day"));
+                    ret.add(m);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDStatistics.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
     }
 
     @Override
     public List<Map> findPurchaseStatisticsBetweenMonths(Date since, Date until) throws RemoteException {
-        System.out.println("Las estadisticas de compra mensual no andan viejita!");
-        return new LinkedList<>();
+        openBase();
+        List<Map> ret = new LinkedList<>();
+        try {
+            String sql = "SELECT DISTINCT id, pproduct_name, SUM(quantity) AS quantity, measure_unit, SUM(total_price) AS total_price, "
+                    + "provider_name, unit_price, pproductcategory_name, pproductsubcategory_name, day  "
+                    + "FROM purchasestatistics "
+                    + "WHERE day >= '" + since.toString() + "' AND day <= '" + until.toString() + "' "
+                    + "GROUP BY year(day), month(day), pproduct_id";
+            try (Statement stmt = conn.createStatement();
+                   java.sql.ResultSet rs = stmt.executeQuery(sql)) {
+                while (rs.next()) {
+                    Map m = new HashMap();
+                    m.put("id", rs.getObject("id"));
+                    m.put("pproduct_name", rs.getObject("pproduct_name"));
+                    m.put("measure_unit", rs.getObject("measure_unit"));
+                    m.put("total_price", rs.getObject("total_price"));
+                    m.put("provider_name", rs.getObject("provider_name"));
+                    m.put("unit_price", rs.getObject("unit_price"));
+                    m.put("pproductcategory_name", rs.getObject("pproductcategory_name"));
+                    m.put("pproductsubcategory_name", rs.getObject("pproductsubcategory_name"));
+                    m.put("quantity", rs.getObject("quantity"));
+                    m.put("day", rs.getObject("day"));
+                    ret.add(m);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDStatistics.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
     }
 
     @Override
     public List<Map> findPurchaseStatisticsBetweenYears(Date since, Date until) throws RemoteException {
-        System.out.println("Las estadisticas de compra anual no andan viejita!");
-        return new LinkedList<>();
+        openBase();
+        List<Map> ret = new LinkedList<>();
+        try {
+            String sql = "SELECT DISTINCT id, pproduct_name, SUM(quantity) AS quantity, measure_unit, SUM(total_price) AS total_price, "
+                    + "provider_name, unit_price, pproductcategory_name, pproductsubcategory_name, day  "
+                    + "FROM purchasestatistics "
+                    + "WHERE day >= '" + since.toString() + "' AND day <= '" + until.toString() + "' "
+                    + "GROUP BY year(day), pproduct_id";
+            try (Statement stmt = conn.createStatement();
+                   java.sql.ResultSet rs = stmt.executeQuery(sql)) {
+                while (rs.next()) {
+                    Map m = new HashMap();
+                    m.put("id", rs.getObject("id"));
+                    m.put("pproduct_name", rs.getObject("pproduct_name"));
+                    m.put("measure_unit", rs.getObject("measure_unit"));
+                    m.put("total_price", rs.getObject("total_price"));
+                    m.put("provider_name", rs.getObject("provider_name"));
+                    m.put("unit_price", rs.getObject("unit_price"));
+                    m.put("pproductcategory_name", rs.getObject("pproductcategory_name"));
+                    m.put("pproductsubcategory_name", rs.getObject("pproductsubcategory_name"));
+                    m.put("quantity", rs.getObject("quantity"));
+                    m.put("day", rs.getObject("day"));
+                    ret.add(m);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDStatistics.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
     }
 
     @Override
     public List<Map> findAllPurchaseStatisticsBetweenDates(Date since, Date until) throws RemoteException {
-        System.out.println("Las estadisticas de compra entre fechas no andan viejita!");
-        return new LinkedList<>();
+        openBase();
+        List<Map> ret = new LinkedList<>();
+        try {
+            String sql = "SELECT DISTINCT id, pproduct_name, SUM(quantity) AS quantity, measure_unit, SUM(total_price) AS total_price, "
+                    + "provider_name, unit_price, pproductcategory_name, pproductsubcategory_name, day  "
+                    + "FROM purchasestatistics "
+                    + "WHERE day >= '" + since.toString() + "' AND day <= '" + until.toString() + "' "
+                    + "GROUP BY pproduct_id";
+            try (Statement stmt = conn.createStatement();
+                   java.sql.ResultSet rs = stmt.executeQuery(sql)) {
+                while (rs.next()) {
+                    Map m = new HashMap();
+                    m.put("id", rs.getObject("id"));
+                    m.put("pproduct_name", rs.getObject("pproduct_name"));
+                    m.put("measure_unit", rs.getObject("measure_unit"));
+                    m.put("total_price", rs.getObject("total_price"));
+                    m.put("provider_name", rs.getObject("provider_name"));
+                    m.put("unit_price", rs.getObject("unit_price"));
+                    m.put("pproductcategory_name", rs.getObject("pproductcategory_name"));
+                    m.put("pproductsubcategory_name", rs.getObject("pproductsubcategory_name"));
+                    m.put("quantity", rs.getObject("quantity"));
+                    m.put("day", rs.getObject("day"));
+                    ret.add(m);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDStatistics.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
     }
-
+    
+    
 }
