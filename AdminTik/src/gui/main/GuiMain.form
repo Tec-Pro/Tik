@@ -71,7 +71,12 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="btnProductCategory">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Categorias de los productos"/>
+                <Property name="text" type="java.lang.String" value="Categorias de productos finales"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="btnPproductsCategory">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Categorias de productos primarios"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="btnMenu">

@@ -18,6 +18,7 @@ import gui.GuiCRUDAdmin;
 import gui.GuiCRUDEProduct;
 import gui.GuiCRUDFProduct;
 import gui.GuiCRUDPProduct;
+import gui.GuiCRUDPproductCategory;
 import gui.GuiCRUDProductCategory;
 import gui.GuiCRUDUser;
 import gui.GuiMenu;
@@ -78,6 +79,7 @@ public class ControllerMain implements ActionListener {
     private static GuiCRUDPProduct guiCRUDPProduct; //gui productos primarios
     private static GuiCRUDFProduct guiCRUDFProduct; //gui productos finales
     private static GuiCRUDProductCategory guiCRUDProductCategory; //gui categoria productos
+    private static GuiCRUDPproductCategory guiCRUDPproductCategory; //gui categoria productos
     private static GuiCRUDProviders guiCRUDProviders;
     private static GuiCRUDUser guiCRUDUser; //gui usuarios
     private static GuiLoadPurchase guiLoadPurchase;
@@ -97,6 +99,7 @@ public class ControllerMain implements ActionListener {
     private ControllerGuiCRUDPproduct controllerCRUDPProduct; //controlador productos primarios
     private ControllerGuiCRUDFproduct controllerCRUDFProduct; //controlador productos finales
     private ControllerGuiProductCategory controllerCRUDProductCategory; //controlador categorias de productos
+    private ControllerGuiPproductCategory controllerCRUDPproductCategory;
     private ControllerGuiCRUDProviders controllerCRUDProviders;
     private ControllerGuiCRUDUser controllerCRUDUser;
     private ControllerGuiMenu controllerGuiMenu;
@@ -138,6 +141,7 @@ public class ControllerMain implements ActionListener {
         guiCRUDFProduct = new GuiCRUDFProduct();
         guiCRUDPProduct = new GuiCRUDPProduct();
         guiCRUDProductCategory = new GuiCRUDProductCategory();
+        guiCRUDPproductCategory = new GuiCRUDPproductCategory();
         guiCRUDProviders = new GuiCRUDProviders();
         guiCRUDUser = new GuiCRUDUser();
         guiLoadPurchase = new GuiLoadPurchase();
@@ -158,6 +162,7 @@ public class ControllerMain implements ActionListener {
         guiMain.getDesktop().add(guiCRUDFProduct);
         guiMain.getDesktop().add(guiCRUDPProduct);
         guiMain.getDesktop().add(guiCRUDProductCategory);
+        guiMain.getDesktop().add(guiCRUDPproductCategory);
         guiMain.getDesktop().add(guiCRUDProviders);
         guiMain.getDesktop().add(guiCRUDUser);
         guiMain.getDesktop().add(guiLoadPurchase);
@@ -182,6 +187,7 @@ public class ControllerMain implements ActionListener {
         controllerCRUDEProduct = new ControllerGuiCRUDEproduct(guiCRUDEProduct);
         controllerCRUDFProduct = new ControllerGuiCRUDFproduct(guiCRUDFProduct);
         controllerCRUDProductCategory = new ControllerGuiProductCategory(guiCRUDProductCategory);
+        controllerCRUDPproductCategory = new ControllerGuiPproductCategory(guiCRUDPproductCategory);
         controllerCRUDProviders = new ControllerGuiCRUDProviders(guiCRUDProviders);
         controllerCRUDUser = new ControllerGuiCRUDUser(guiCRUDUser);
         controllerCRUDPProduct = new ControllerGuiCRUDPproduct(guiCRUDPProduct, guiLoadPurchase);
@@ -223,6 +229,7 @@ public class ControllerMain implements ActionListener {
         guiCRUDFProduct.dispose();
         guiCRUDPProduct.dispose();
         guiCRUDProductCategory.dispose();
+        guiCRUDPproductCategory.dispose();
         guiCRUDProviders.dispose();
         guiCRUDUser.dispose();
         guiLoadPurchase.dispose();
@@ -298,6 +305,15 @@ public class ControllerMain implements ActionListener {
             }
             guiCRUDProductCategory.setVisible(true);
             guiCRUDProductCategory.toFront();
+        }
+        if (ae.getSource() == guiMain.getBtnPproductsCategory()) {
+            try {
+                guiCRUDPproductCategory.setMaximum(true);
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(ControllerMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            guiCRUDPproductCategory.setVisible(true);
+            guiCRUDPproductCategory.toFront();
         }
         //boton proveedores
         if (ae.getSource() == guiMain.getBtnProviders()) {

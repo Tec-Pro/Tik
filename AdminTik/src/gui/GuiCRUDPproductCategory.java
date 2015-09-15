@@ -16,14 +16,14 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Alan Gonzalez
  */
-public class GuiCRUDProductCategory extends javax.swing.JInternalFrame {
+public class GuiCRUDPproductCategory extends javax.swing.JInternalFrame {
 
     private DefaultTableModel tableCategoryDefault;
     private DefaultTableModel tableSubCategoryDefault;
     private boolean btnUpdateCategorySelected;
     private boolean btnUpdateSubCategorySelected;
     
-    public GuiCRUDProductCategory() {
+    public GuiCRUDPproductCategory() {
         initComponents();
         btnUpdateCategorySelected = false;
         tableCategoryDefault = (DefaultTableModel) tableCategory.getModel();
@@ -263,7 +263,7 @@ public class GuiCRUDProductCategory extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
-        setTitle("Gestion de categorias y subcategorias de productos finales");
+        setTitle("Gestion de categorias y subcategorias de productos primarios");
 
         jScrollPane3.setPreferredSize(new java.awt.Dimension(400, 400));
 

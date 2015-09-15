@@ -47,6 +47,7 @@ public class GuiMain extends javax.swing.JFrame {
         this.btnLogout.addActionListener(lis);
         this.btnViewOrders.addActionListener(lis);
         this.btnDiscounts.addActionListener(lis);
+        this.btnPproductsCategory.addActionListener(lis);
     }
 
     public JMenuItem getBtnLogout() {
@@ -63,6 +64,10 @@ public class GuiMain extends javax.swing.JFrame {
 
     public JMenuItem getBtnProviders() {
         return btnProviders;
+    }
+
+    public JMenuItem getBtnPproductsCategory() {
+        return btnPproductsCategory;
     }
 
     public JMenuItem getBtnEmployes() {
@@ -153,6 +158,7 @@ public class GuiMain extends javax.swing.JFrame {
         btnFProduct = new javax.swing.JMenuItem();
         btnPProduct = new javax.swing.JMenuItem();
         btnProductCategory = new javax.swing.JMenuItem();
+        btnPproductsCategory = new javax.swing.JMenuItem();
         btnMenu = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         btnProviders = new javax.swing.JMenuItem();
@@ -217,8 +223,11 @@ public class GuiMain extends javax.swing.JFrame {
         btnPProduct.setText("Productos primarios");
         jMenu3.add(btnPProduct);
 
-        btnProductCategory.setText("Categorias de los productos");
+        btnProductCategory.setText("Categorias de productos finales");
         jMenu3.add(btnProductCategory);
+
+        btnPproductsCategory.setText("Categorias de productos primarios");
+        jMenu3.add(btnPproductsCategory);
 
         btnMenu.setText("Menu");
         btnMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -383,6 +392,7 @@ public class GuiMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem btnLogout;
     private javax.swing.JMenuItem btnMenu;
     private javax.swing.JMenuItem btnPProduct;
+    private javax.swing.JMenuItem btnPproductsCategory;
     private javax.swing.JMenuItem btnProductCategory;
     private javax.swing.JMenuItem btnProductList;
     private javax.swing.JMenuItem btnProductStatistics;
