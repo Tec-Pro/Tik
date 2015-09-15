@@ -138,12 +138,14 @@ public class ControllerGuiSummaryCashbox implements ActionListener {
         total = 0;
         for (Map r : listResume) {
             if (r.get("resume_date") != null) {
-                Object[] rr = new Object[5];
+                Object[] rr = new Object[7];
                 rr[0] = dateToMySQLDate((Date) r.get("resume_date"), true);
                 rr[1] = r.get("income");
-                rr[2] = r.get("earning");
-                rr[3] = r.get("expenses");
-                rr[4] = r.get("final_balance");
+                rr[2] = r.get("earning_m");
+                rr[3] = r.get("earning_a");
+                rr[4] = r.get("earning");
+                rr[5] = r.get("expenses");
+                rr[6] = r.get("final_balance");
                 guiSummaryCashboxForDate.getTableResumeDefault().addRow(rr);
                 List<Map> listAdminResume = resume.getAdminResume((int) r.get("id"));
 
@@ -312,7 +314,7 @@ public class ControllerGuiSummaryCashbox implements ActionListener {
             float w = withdrawal.getAdminWithdrawalsTotal((int) a.get("id"));
             admins.add(new Triple(n, d, w));
         }
-        resume.create(loadCashboxIncome(), loadWaiterTotalDeposits(), loadExpenses(), loadBalance(), Calendar.getInstance().getTime(), admins);
+        resume.create(loadCashboxIncome(), loadWaiterTotalDeposits(), loadExpenses(), loadBalance(), Calendar.getInstance().getTime(), admins, deposit.getWaitersDepositsTotalOnTurn("M"), deposit.getWaitersDepositsTotalOnTurn("T"));
     }
 
     @Override

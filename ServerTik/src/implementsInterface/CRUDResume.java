@@ -62,10 +62,10 @@ public class CRUDResume extends UnicastRemoteObject implements InterfaceResume{
     }
     
     @Override
-    public Map<String, Object> create(Float income, Float earning, Float expenses, Float final_balance, Date resume_date, List<Triple> listAdmin) throws RemoteException {
+    public Map<String, Object> create(Float income, Float earning, Float expenses, Float final_balance, Date resume_date, List<Triple> listAdmin, Float earning_m, Float earning_a) throws RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
-        Resume r = Resume.createIt("income", income, "earning", earning, "expenses", expenses, "final_balance", final_balance,"resume_date", resume_date);
+        Resume r = Resume.createIt("income", income, "earning", earning, "expenses", expenses, "final_balance", final_balance,"resume_date", resume_date, "earning_m", earning_m, "earning_a", earning_a);
         r.saveIt();
         for(Triple t : listAdmin){
             Adminresume ar = Adminresume.createIt("resume_id",r.getId(),"admin",t.getName(),"deposit",t.getDeposit(),"withdrawal",t.getWithdrawal());

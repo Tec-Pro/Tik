@@ -174,4 +174,49 @@ public interface InterfaceCategory extends Remote {
     public List<Map> searchCategories(String txt) throws java.rmi.RemoteException;
 
     public List<Map> searchSubcategories(String txt) throws java.rmi.RemoteException;
+    
+    /*
+    *
+    * Categorias y subcategorias de productos primarios
+    *
+    */
+    
+    public boolean pProductCategoryExists(String name) throws java.rmi.RemoteException;
+    
+    public boolean pProductSubCategoryExists(String name) throws java.rmi.RemoteException;
+    
+    public Map<String, Object> createPproductCategory(String name) throws java.rmi.RemoteException ;
+    
+    public Map<String, Object> modifyPproductCategory(int id, String name) throws java.rmi.RemoteException;
+
+    public boolean deletePproductCategory(int id) throws java.rmi.RemoteException;
+    
+    public List<Map> getPproductCategories() throws java.rmi.RemoteException ;
+    
+    public Map<String, Object> getPproductCategory(int id) throws java.rmi.RemoteException;
+     
+    public Map<String, Object> getPproductCategoryByName(String name) throws java.rmi.RemoteException ;
+    
+    public Map<String, Object> addPproductSubcategory(int id, String name) throws java.rmi.RemoteException ;
+    
+    public boolean deletePproductSubcategory(int id) throws java.rmi.RemoteException ;
+    
+    public Map<String, Object> modifyPproductSubcategory(int id, String name) throws java.rmi.RemoteException ;
+    
+    public List<Map> getPproducSubcategoriesCategory(int id) throws java.rmi.RemoteException ;
+    
+    public List<Map> getPproducSubcategories() throws java.rmi.RemoteException ;
+    
+    public Map<String, Object> getPproductSubcategory(int id) throws java.rmi.RemoteException ;
+    
+    public Map<String, Object> getPproductSubcategoryByName(String name) throws java.rmi.RemoteException ;
+    
+    public List<Map> getPProductsSubcategory(int id) throws RemoteException ;
+     
+    public Map<String, Object> getCategoryOfPproductSubcategory(int id) throws java.rmi.RemoteException ;
+     
+    public List<Map> searchPproductCategories(String txt) throws java.rmi.RemoteException ;
+     
+    public List<Map> searchPproductSubcategories(String txt) throws java.rmi.RemoteException ;
+    
 }

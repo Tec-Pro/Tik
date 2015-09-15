@@ -13,6 +13,9 @@ import java.util.Map;
 import models.Subcategory;
 import models.Category;
 import models.Fproduct;
+import models.Pproduct;
+import models.Pproductcategory;
+import models.Pproductsubcategory;
 import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.LazyList;
 import utils.Utils;
@@ -244,6 +247,230 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
     public List<Map> searchSubcategories(String txt) throws java.rmi.RemoteException {
         Utils.abrirBase();
         return Subcategory.where("name like ?", "%" + txt + "%").toMaps();
+    }
+    
+    
+    /*
+    *
+    * Categorias y subcategorias de productos primarios
+    *
+    */
+    
+    @Override
+    public boolean pProductCategoryExists(String name) throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        boolean res = false;
+        Pproductcategory c = Pproductcategory.first("name = ?", name);
+        if (c != null) {
+            res = true;
+        }
+
+        return res;
+    }
+     @Override
+    public boolean pProductSubCategoryExists(String name) throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        boolean res = false;
+        Pproductsubcategory c = Pproductsubcategory.first("name = ?", name);
+        if (c != null) {
+            res = true;
+        }
+
+        return res;
+    }
+
+    @Override
+    public Map<String, Object> createPproductCategory(String name) throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        Base.openTransaction();
+        Map<String, Object> res = null;
+        if (!pProductCategoryExists(name)) {
+            res = Pproductcategory.createIt("name", name).toMap();
+        }
+        Base.commitTransaction();
+
+        return res;
+    }
+
+    @Override
+    public Map<String, Object> modifyPproductCategory(int id, String name) throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        Pproductcategory category = Pproductcategory.findById(id);
+        if (category != null) {
+            category.setString("name", name);
+            Base.openTransaction();
+            category.saveIt();
+            Base.commitTransaction();
+
+        }
+        return category.toMap();
+    }
+
+    @Override
+    public boolean deletePproductCategory(int id) throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        Pproductcategory category = Pproductcategory.findById(id);
+        Pproductsubcategory subcategoryDefault = Pproductsubcategory.findById(1);
+        boolean res = true;
+        if (category != null) {
+            Base.openTransaction();
+            for (Pproductsubcategory s : category.getAll(Pproductsubcategory.class)) {
+                LazyList<Pproduct> fproducts = s.getAll(Pproduct.class);
+                for (Pproduct fp : fproducts) {
+                    subcategoryDefault.add(fp);
+                }
+                res = res && s.delete();
+            }
+            res = res && category.delete();
+            Base.commitTransaction();
+        }
+        return res;
+    }
+
+    @Override
+    public List<Map> getPproductCategories() throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        List<Map> ret = Pproductcategory.findAll().toMaps();
+
+        return ret;
+    }
+
+    @Override
+    public Map<String, Object> getPproductCategory(int id) throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        Map<String, Object> ret = Pproductcategory.findById(id).toMap();
+
+        return ret;
+    }
+
+    @Override
+    public Map<String, Object> getPproductCategoryByName(String name) throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        Map<String, Object> ret = Pproductcategory.first("name = ?", name).toMap();
+
+        return ret;
+    }
+
+    @Override
+    public Map<String, Object> addPproductSubcategory(int id, String name) throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        Base.openTransaction();
+        Pproductcategory category = Pproductcategory.findById(id);
+        Map<String, Object> ret = null;
+        if (category != null && !pProductSubCategoryExists(name)) {
+            Pproductsubcategory subcategory = Pproductsubcategory.createIt("name", name);
+            category.add(subcategory);
+            ret = subcategory.toMap();
+        }
+        Base.commitTransaction();
+
+        return ret;
+    }
+
+    @Override
+    public boolean deletePproductSubcategory(int id) throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        Base.openTransaction();
+        boolean ret = false;
+        Pproductsubcategory subcategory = Pproductsubcategory.findById(id);
+        Pproductsubcategory subcategoryDefault = Pproductsubcategory.findById(1);
+        if (subcategory != null) {
+            LazyList<Pproduct> pproducts = subcategory.getAll(Pproduct.class);
+            for (Pproduct fp : pproducts) {
+                subcategoryDefault.add(fp);
+            }
+            ret = subcategory.delete();
+        }
+        Base.commitTransaction();
+
+        return ret;
+    }
+
+    @Override
+    public Map<String, Object> modifyPproductSubcategory(int id, String name) throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        Base.openTransaction();
+        Map<String, Object> ret = null;
+        Pproductsubcategory subcategory = Pproductsubcategory.findById(id);
+        if (subcategory != null) {
+            subcategory.setString("name", name);
+            subcategory.saveIt();
+            ret = subcategory.toMap();
+        }
+        Base.commitTransaction();
+
+        return ret;
+    }
+
+    @Override
+    public List<Map> getPproducSubcategoriesCategory(int id) throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        Pproductcategory category = Pproductcategory.findById(id);
+        List<Map> ret = new LinkedList<>();
+        if (category != null) {
+            ret = category.getAll(Pproductsubcategory.class).toMaps();
+        }
+
+        return ret;
+    }
+
+    @Override
+    public List<Map> getPproducSubcategories() throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        List<Map> ret = Pproductsubcategory.findAll().toMaps();
+
+        return ret;
+    }
+
+    @Override
+    public Map<String, Object> getPproductSubcategory(int id) throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        Pproductsubcategory subcategory = Pproductsubcategory.findById(id);
+        Map<String, Object> ret = null;
+        if (subcategory != null) {
+            ret = subcategory.toMap();
+        }
+
+        return ret;
+    }
+
+    @Override
+    public Map<String, Object> getPproductSubcategoryByName(String name) throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        Map<String, Object> ret = Pproductsubcategory.findFirst("name = ?", name).toMap();
+
+        return ret;
+    }
+
+    @Override
+    public List<Map> getPProductsSubcategory(int id) throws RemoteException {
+        Utils.abrirBase();
+        Pproductsubcategory subcategory = Pproductsubcategory.findById(id);
+        List<Map> ret = subcategory.getAll(Pproduct.class).toMaps();
+        return ret;
+    }
+
+    @Override
+    public Map<String, Object> getCategoryOfPproductSubcategory(int id) throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        Pproductsubcategory subcategory = Pproductsubcategory.findById(id);
+        Map<String, Object> ret = null;
+        if (subcategory != null) {
+            ret = subcategory.parent(Pproductcategory.class).toMap();
+        }
+        return ret;
+    }
+
+    @Override
+    public List<Map> searchPproductCategories(String txt) throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        return Pproductcategory.where("name like ?", "%" + txt + "%").toMaps();
+    }
+
+    @Override
+    public List<Map> searchPproductSubcategories(String txt) throws java.rmi.RemoteException {
+        Utils.abrirBase();
+        return Pproductsubcategory.where("name like ?", "%" + txt + "%").toMaps();
     }
 
 }
