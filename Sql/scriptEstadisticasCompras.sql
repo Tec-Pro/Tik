@@ -4,9 +4,9 @@ CREATE TABLE `tik`.`pproductcategories` (
   PRIMARY KEY (`id`));
 
 CREATE TABLE `tik`.`pproductsubcategories` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
-  `pproductcategory_id` INT NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) DEFAULT NULL,
+  `pproductcategory_id` int(11) DEFAULT '-1',
   PRIMARY KEY (`id`));
 
 ALTER TABLE `tik`.`pproducts` 

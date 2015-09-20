@@ -353,16 +353,13 @@ public class CRUDCategory extends UnicastRemoteObject implements interfaces.Inte
 
     @Override
     public Map<String, Object> addPproductSubcategory(int id, String name) throws java.rmi.RemoteException {
-        System.out.println("hola");
         Utils.abrirBase();
         Base.openTransaction();
         Pproductcategory category = Pproductcategory.findById(id);
         Map<String, Object> ret = null;
         if (category != null && !pProductSubCategoryExists(name)) {
             Pproductsubcategory subcategory = Pproductsubcategory.createIt("name", name);
-            System.out.println("hola");
             category.add(subcategory);
-            System.out.println("chau");
             ret = subcategory.toMap();
         }
         Base.commitTransaction();
