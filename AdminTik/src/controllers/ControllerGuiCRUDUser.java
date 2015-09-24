@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import controllers.statistics.ControllerGuiProductList;
 import gui.GuiCRUDUser;
 import interfaces.InterfacePresence;
 import interfaces.InterfaceUser;
@@ -46,8 +47,19 @@ import java.nio.file.StandardCopyOption;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
+import reports.purchaseStatistics.PproductStatistic;
+import reports.userReport.UserData;
 import utils.InterfaceName;
 import utils.SerializableBufferedImage;
 
@@ -77,12 +89,14 @@ public class ControllerGuiCRUDUser implements ActionListener {
                 if (guiUser.getTableUsers().getSelectedRow() != -1) {
                     try {
                         tableUserMouseClicked(null);
+                        guiUser.getBtnPrintReport().setEnabled(true);
                     } catch (RemoteException ex) {
                         Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (Exception ex) {
                         Logger.getLogger(ControllerGuiCRUDUser.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 } else {
+                    guiUser.getBtnPrintReport().setEnabled(false);
                     if (createMode) {
                         //doNothing();
                     } else { //selectionMode or modifyMode
@@ -412,6 +426,29 @@ public class ControllerGuiCRUDUser implements ActionListener {
         }
         if (e.getSource().equals(guiUser.getBtnDeletePhoto())) {
             guiUser.setPictureDefault();
+        }
+        if (e.getSource().equals(guiUser.getBtnPrintReport())) {
+            List<UserData> listA = new ArrayList();
+            for (int i = 0; i < guiUser.getTableEmployeeSchedule().getRowCount(); i++) {
+                UserData pp = new UserData(guiUser.getTableEmployeeSchedule().getValueAt(i, 1).toString(),
+                        guiUser.getTableEmployeeSchedule().getValueAt(i, 2).toString(),
+                        guiUser.getTableEmployeeSchedule().getValueAt(i, 3).toString(),
+                guiUser.getTableEmployeeSchedule().getValueAt(i, 4).toString(),
+                guiUser.getTableEmployeeSchedule().getValueAt(i, 5).toString());
+                listA.add(pp);
+            }
+
+            try {
+                JasperReport reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reports/userReport/userReport.jasper"));//cargo el reporte
+                JasperPrint jasperPrint;
+                Map<String, Object> parametros = new HashMap<String, Object>();
+                parametros.put("nombre", guiUser.getTxtName().getText()+" "+guiUser.getTxtSurname().getText());
+                jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JRBeanCollectionDataSource(listA));
+                JasperViewer.viewReport(jasperPrint, false);
+            } catch (JRException ex) {
+                Logger.getLogger(ControllerGuiProductList.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         }
     }
     

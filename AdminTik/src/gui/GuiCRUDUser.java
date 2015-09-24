@@ -200,6 +200,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         checkBoxDischarged.addActionListener(ac);
         this.btnAddPhoto.addActionListener(ac);
         this.btnDeletePhoto.addActionListener(ac);
+        btnPrintReport.addActionListener(ac);
     }
 
     private void enableFields(boolean b) {
@@ -300,6 +301,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         dateTo = new com.toedter.calendar.JDateChooser();
         jLabel2 = new javax.swing.JLabel();
+        btnPrintReport = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         btnCreate = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
@@ -317,7 +319,6 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         setResizable(true);
         setTitle("Empleados");
         setMinimumSize(new java.awt.Dimension(1300, 700));
-        setPreferredSize(new java.awt.Dimension(1300, 700));
 
         tableUsers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -447,7 +448,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
         panelFieldsLayout.setHorizontalGroup(
             panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelFieldsLayout.createSequentialGroup()
-                .addContainerGap(43, Short.MAX_VALUE)
+                .addContainerGap(44, Short.MAX_VALUE)
                 .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelFieldsLayout.createSequentialGroup()
                         .addGroup(panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -519,7 +520,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
                             .addComponent(txtMobilePhone, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(15, 15, 15)
                         .addComponent(checkBoxDischarged)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(7, Short.MAX_VALUE))
         );
         panelFieldsLayout.setVerticalGroup(
             panelFieldsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -636,36 +637,49 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Hasta");
 
+        btnPrintReport.setText("Imprimir");
+        btnPrintReport.setEnabled(false);
+        btnPrintReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrintReportActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelEmployeeScheduleLayout = new javax.swing.GroupLayout(panelEmployeeSchedule);
         panelEmployeeSchedule.setLayout(panelEmployeeScheduleLayout);
         panelEmployeeScheduleLayout.setHorizontalGroup(
             panelEmployeeScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelEmployeeScheduleLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(panelEmployeeScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(scrollEmployeeSchedule, javax.swing.GroupLayout.DEFAULT_SIZE, 539, Short.MAX_VALUE)
                     .addGroup(panelEmployeeScheduleLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(scrollEmployeeSchedule, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE))
-                    .addGroup(panelEmployeeScheduleLayout.createSequentialGroup()
-                        .addGap(26, 26, 26)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(dateFrom, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(40, 40, 40)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dateTo, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(dateTo, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnPrintReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         panelEmployeeScheduleLayout.setVerticalGroup(
             panelEmployeeScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEmployeeScheduleLayout.createSequentialGroup()
-                .addGroup(panelEmployeeScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(dateFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addComponent(dateTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addGap(10, 10, 10)
-                .addComponent(scrollEmployeeSchedule, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addGroup(panelEmployeeScheduleLayout.createSequentialGroup()
+                .addGroup(panelEmployeeScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelEmployeeScheduleLayout.createSequentialGroup()
+                        .addGroup(panelEmployeeScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(dateFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)
+                            .addComponent(dateTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addGap(10, 10, 10)
+                        .addComponent(scrollEmployeeSchedule, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addGroup(panelEmployeeScheduleLayout.createSequentialGroup()
+                        .addComponent(btnPrintReport)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -762,7 +776,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
                         .addGap(10, 10, 10))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -821,6 +835,10 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_pnlImageUserMouseClicked
 
+    private void btnPrintReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintReportActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnPrintReportActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox boxBloodType;
@@ -833,6 +851,7 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnDeletePhoto;
     private javax.swing.JButton btnModify;
+    private javax.swing.JButton btnPrintReport;
     private javax.swing.JButton btnSave;
     private javax.swing.JCheckBox checkBoxDischarged;
     private com.toedter.calendar.JDateChooser dateBirthDate;
@@ -1052,6 +1071,10 @@ public class GuiCRUDUser extends javax.swing.JInternalFrame {
      */
     public javax.swing.JPanel getPanelPhoto() {
         return jPanel2;
+    }
+
+    public JButton getBtnPrintReport() {
+        return btnPrintReport;
     }
 
     /**
