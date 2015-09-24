@@ -13,11 +13,20 @@ import java.beans.PropertyChangeEvent;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
+import reports.purchaseStatistics.PproductStatistic;
 import utils.InterfaceName;
 
 /**
@@ -248,7 +257,29 @@ public class ControllerGuiPurchaseStatistics implements ActionListener {
             obtainAndLoadPurchaseStatistics();
         }
         if (e.getSource() == guiPurchaseStatistics.getBtnPrintReport()) {
-            System.out.println("El reporte no anda Vieja!");
+            List<PproductStatistic> listA = new ArrayList();
+            for (int i = 0; i < guiPurchaseStatistics.getTablePurchaseStatistics().getRowCount(); i++) {
+                PproductStatistic pp = new PproductStatistic(guiPurchaseStatistics.getTablePurchaseStatistics().getValueAt(i, 0).toString(),
+                        guiPurchaseStatistics.getTablePurchaseStatistics().getValueAt(i, 1).toString(),
+                        (int) guiPurchaseStatistics.getTablePurchaseStatistics().getValueAt(i, 2),
+                guiPurchaseStatistics.getTablePurchaseStatistics().getValueAt(i, 3).toString(),
+                guiPurchaseStatistics.getTablePurchaseStatistics().getValueAt(i, 4).toString(),
+                guiPurchaseStatistics.getTablePurchaseStatistics().getValueAt(i, 5).toString(),
+                (float)guiPurchaseStatistics.getTablePurchaseStatistics().getValueAt(i, 6),
+                (float)guiPurchaseStatistics.getTablePurchaseStatistics().getValueAt(i, 7),
+                guiPurchaseStatistics.getTablePurchaseStatistics().getValueAt(i, 8).toString());
+                listA.add(pp);
+            }
+
+            try {
+                JasperReport reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reports/purchaseStatistics/purchaseStatisticsReport.jasper"));//cargo el reporte
+                JasperPrint jasperPrint;
+                jasperPrint = JasperFillManager.fillReport(reporte, null, new JRBeanCollectionDataSource(listA));
+                JasperViewer.viewReport(jasperPrint, false);
+            } catch (JRException ex) {
+                Logger.getLogger(ControllerGuiProductList.class.getName()).log(Level.SEVERE, null, ex);
+            }
+         
         }
     }
 

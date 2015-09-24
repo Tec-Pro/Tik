@@ -161,6 +161,7 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
             product = pproduct.getPproduct(Integer.parseInt((String) tableProducts.getValueAt(tableProducts.getSelectedRow(), 0)));
             guiCRUDPProduct.loadProviders(provider.getProviders());
             guiCRUDPProduct.loadProduct(product);
+            
         } else {
             guiCRUDPProduct.clear();
             guiCRUDPProduct.clicSaveProduct();

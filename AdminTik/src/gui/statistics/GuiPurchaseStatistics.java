@@ -126,7 +126,9 @@ public class GuiPurchaseStatistics extends javax.swing.JInternalFrame {
         tablePurchaseStatistics.setAutoCreateRowSorter(true);
         tablePurchaseStatistics.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
                 "Producto", "U. M.", "Cant.", "Categoría", "Subcategoría", "Proveedor", "Unitario $", "Total $", "Fecha"

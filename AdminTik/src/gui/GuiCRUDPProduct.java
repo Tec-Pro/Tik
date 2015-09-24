@@ -62,6 +62,8 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         lblStockUnity.setText("");
         proveedores.removeAllItems();
         proveedores.addItem("Seleccione un proveedor");
+        boxCategory.setSelectedIndex(0);
+        boxSubcategory.setSelectedIndex(0);
     }
 
     /**
@@ -82,6 +84,8 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         btnModify.setEnabled(false);
         cboxMeasureUnit.setEnabled(true);
         proveedores.setEnabled(true);
+        boxCategory.setEnabled(true);
+        boxSubcategory.setEnabled(true);
     }
 
     /**
@@ -101,7 +105,8 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         btnNew.setEnabled(true);
         cboxMeasureUnit.setEnabled(false);
         proveedores.setEnabled(false);
-
+        boxCategory.setEnabled(false);
+        boxSubcategory.setEnabled(false);
     }
 
     /**
@@ -136,7 +141,8 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         btnNew.setEnabled(true);
         cboxMeasureUnit.setEnabled(false);
         proveedores.setEnabled(false);
-
+        boxCategory.setEnabled(false);
+        boxSubcategory.setEnabled(false);
     }
 
     /**
@@ -157,7 +163,8 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         btnNew.setEnabled(false);
         cboxMeasureUnit.setEditable(true);
         proveedores.setEnabled(true);
-
+        boxCategory.setEnabled(true);
+        boxSubcategory.setEnabled(true);
     }
 
     /**
@@ -371,6 +378,10 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         lblStockUnity = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         proveedores = new javax.swing.JComboBox();
+        jLabel1 = new javax.swing.JLabel();
+        boxCategory = new javax.swing.JComboBox();
+        jLabel3 = new javax.swing.JLabel();
+        boxSubcategory = new javax.swing.JComboBox();
         jScrollPane4 = new javax.swing.JScrollPane();
         tableProducts = new javax.swing.JTable();
         txtSearch = new javax.swing.JTextField();
@@ -501,6 +512,16 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
 
         proveedores.setEnabled(false);
 
+        jLabel1.setText("Categoria");
+
+        boxCategory.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        boxCategory.setEnabled(false);
+
+        jLabel3.setText("Subcategoria");
+
+        boxSubcategory.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        boxSubcategory.setEnabled(false);
+
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
@@ -528,7 +549,7 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(proveedores, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(83, 83, 83)
+                        .addGap(81, 81, 81)
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblStockUnity, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -538,7 +559,16 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                 .addGap(180, 180, 180)
                 .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(288, Short.MAX_VALUE))
+                .addContainerGap(414, Short.MAX_VALUE))
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(boxCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(boxSubcategory, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -570,7 +600,13 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblPriceUnity, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(boxCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(boxSubcategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -626,10 +662,10 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
                 .addGap(10, 10, 10)
                 .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE)
-                .addGap(0, 0, 0)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
 
         jScrollPane1.setViewportView(jPanel1);
@@ -638,11 +674,13 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1229, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 667, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -686,6 +724,8 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_cboxMeasureUnitActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox boxCategory;
+    private javax.swing.JComboBox boxSubcategory;
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnModify;
@@ -693,8 +733,10 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnPurchase;
     private javax.swing.JButton btnSave;
     private javax.swing.JComboBox cboxMeasureUnit;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
