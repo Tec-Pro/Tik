@@ -87,7 +87,8 @@ public class CRUDResume extends UnicastRemoteObject implements InterfaceResume{
         List<Map> ret = new LinkedList<>();
         try {
             String sql = "SELECT DISTINCT id, SUM(income) AS income, SUM(earning) AS earning, SUM(expenses) AS expenses, "
-                    + "SUM(final_balance) AS final_balance, resume_date  FROM resumes "
+                    + "SUM(final_balance) AS final_balance, resume_date, SUM(earning_m) AS earning_m, SUM(earning_a) AS earning_a "
+                    + "FROM resumes "
                     + "WHERE resume_date >= '" + since + "' and resume_date <= '" + until + "' "
                     + "GROUP BY year(resume_date), month(resume_date)";
             try (Statement stmt = conn.createStatement();
@@ -97,6 +98,8 @@ public class CRUDResume extends UnicastRemoteObject implements InterfaceResume{
                     m.put("id", rs.getObject("id"));
                     m.put("income", rs.getObject("income"));
                     m.put("earning", rs.getObject("earning"));
+                    m.put("earning_m", rs.getObject("earning_m"));
+                    m.put("earning_a", rs.getObject("earning_a"));
                     m.put("expenses", rs.getObject("expenses"));
                     m.put("final_balance", rs.getObject("final_balance"));
                     m.put("resume_date", rs.getObject("resume_date"));
@@ -115,7 +118,8 @@ public class CRUDResume extends UnicastRemoteObject implements InterfaceResume{
         List<Map> ret = new LinkedList<>();
         try {
             String sql = "SELECT DISTINCT id, SUM(income) AS income, SUM(earning) AS earning, SUM(expenses) AS expenses, "
-                    + "SUM(final_balance) AS final_balance, resume_date  FROM resumes "
+                    + "SUM(final_balance) AS final_balance, resume_date, SUM(earning_m) AS earning_m, SUM(earning_a) AS earning_a "
+                    + "FROM resumes "
                     + "WHERE resume_date >= '" + since + "' and resume_date <= '" + until + "' "
                     + "GROUP BY year(resume_date)";
             try (Statement stmt = conn.createStatement();
@@ -125,6 +129,8 @@ public class CRUDResume extends UnicastRemoteObject implements InterfaceResume{
                     m.put("id", rs.getObject("id"));
                     m.put("income", rs.getObject("income"));
                     m.put("earning", rs.getObject("earning"));
+                    m.put("earning_m", rs.getObject("earning_m"));
+                    m.put("earning_a", rs.getObject("earning_a"));
                     m.put("expenses", rs.getObject("expenses"));
                     m.put("final_balance", rs.getObject("final_balance"));
                     m.put("resume_date", rs.getObject("resume_date"));
@@ -143,7 +149,8 @@ public class CRUDResume extends UnicastRemoteObject implements InterfaceResume{
         List<Map> ret = new LinkedList<>();
         try {
             String sql = "SELECT DISTINCT id, SUM(income) AS income, SUM(earning) AS earning, SUM(expenses) AS expenses, "
-                    + "SUM(final_balance) AS final_balance, resume_date  FROM resumes "
+                    + "SUM(final_balance) AS final_balance, resume_date, SUM(earning_m) AS earning_m, SUM(earning_a) AS earning_a "
+                    + "FROM resumes "
                     + "WHERE resume_date >= '" + since + "' and resume_date <= '" + until + "'";
             try (Statement stmt = conn.createStatement();
                     java.sql.ResultSet rs = stmt.executeQuery(sql)) {
@@ -152,6 +159,8 @@ public class CRUDResume extends UnicastRemoteObject implements InterfaceResume{
                     m.put("id", rs.getObject("id"));
                     m.put("income", rs.getObject("income"));
                     m.put("earning", rs.getObject("earning"));
+                    m.put("earning_m", rs.getObject("earning_m"));
+                    m.put("earning_a", rs.getObject("earning_a"));
                     m.put("expenses", rs.getObject("expenses"));
                     m.put("final_balance", rs.getObject("final_balance"));
                     m.put("resume_date", rs.getObject("resume_date"));
