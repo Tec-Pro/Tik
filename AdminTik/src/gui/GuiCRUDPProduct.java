@@ -5,11 +5,14 @@
  */
 package gui;
 
+import interfaces.InterfaceCategory;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -26,7 +29,8 @@ import utils.ParserFloat;
 public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
 
     private DefaultTableModel tableProductsDefault; //Tabla Default para tener las opciones de insertar y eliminar filas
-
+    private InterfaceCategory CRUDCategory;
+    
     /**
      * Creates new form GuiCRUDProductCategory
      */
@@ -35,6 +39,15 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         tableProductsDefault = (DefaultTableModel) tableProducts.getModel(); //convierto la tabla
     }
 
+    /**
+     * setea el CRUDCategoria
+     *
+     * @param CRUDCategory
+     */
+    public void setCRUDCategory(InterfaceCategory CRUDCategory) {
+        this.CRUDCategory = CRUDCategory;
+    }
+    
     /**
      *
      * @param lis
@@ -62,8 +75,8 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         lblStockUnity.setText("");
         proveedores.removeAllItems();
         proveedores.addItem("Seleccione un proveedor");
-        boxCategory.setSelectedIndex(0);
-        boxSubcategory.setSelectedIndex(0);
+        boxCategory.setSelectedIndex(-1);
+        boxSubcategory.setSelectedIndex(-1);
     }
 
     /**
@@ -74,6 +87,7 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
      */
     public void clicNewProduct() throws RemoteException {
         clear();
+        loadCategory();
         txtPrice.setEnabled(true);
         txtName.setEnabled(true);
         txtStock.setEnabled(true);
@@ -183,6 +197,14 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         return btnDelete;
     }
 
+    public JComboBox getBoxCategory() {
+        return boxCategory;
+    }
+
+    public JComboBox getBoxSubcategory() {
+        return boxSubcategory;
+    }
+
     /**
      *
      * @return
@@ -284,6 +306,14 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         txtName.setText(prod.get("name").toString());
         cboxMeasureUnit.setSelectedItem(prod.get("measure_unit").toString());
         setProviderBox((Integer)prod.get("provider_id"));
+        boxCategory.setSelectedIndex(-1);
+        boxCategory.removeAllItems();
+        loadCategory();
+        Map<String, Object> cat = CRUDCategory.getCategoryOfPproductSubcategory(Integer.parseInt(prod.get("pproductsubcategory_id").toString()));
+        Map<String, Object> subC = CRUDCategory.getPproductSubcategory(Integer.parseInt(prod.get("pproductsubcategory_id").toString()));
+        boxCategory.setSelectedItem(cat.get("name").toString()); //CATEGORIA
+        loadSubCategory(cat.get("name").toString());
+        boxSubcategory.setSelectedItem(subC.get("name").toString()); //SubCATEGORIA  
     }
 
     public void loadProviders(List<Map> providers) {
@@ -322,6 +352,31 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         return 0;
     }
 
+    /**
+     * carga las categorias en el select category
+     */
+    public void loadCategory() throws RemoteException {
+        boxCategory.setSelectedIndex(-1);
+        boxCategory.removeAllItems();
+        for (Map cat : CRUDCategory.getPproductCategories()) {
+            boxCategory.addItem(cat.get("name"));
+        }
+    }
+
+    /**
+     * carga las subcategorias en el select
+     */
+    public void loadSubCategory(String name) throws RemoteException {
+        boxSubcategory.setSelectedIndex(-1);
+        boxSubcategory.removeAllItems();
+        Map cat = CRUDCategory.getPproductCategoryByName(name);
+        for (Iterator<Map> it = CRUDCategory.getPproducSubcategoriesCategory(Integer.parseInt(cat.get("id").toString())).iterator(); it.hasNext();) {
+            Map subC = it.next();
+            boxSubcategory.addItem(subC.get("name"));
+        }
+    }
+    
+    
     /**
      * chequea que los campos no esten vacios
      */
@@ -516,6 +571,11 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
 
         boxCategory.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         boxCategory.setEnabled(false);
+        boxCategory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                boxCategoryActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Subcategoria");
 
@@ -723,6 +783,17 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
 
         }
     }//GEN-LAST:event_cboxMeasureUnitActionPerformed
+
+    private void boxCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxCategoryActionPerformed
+        try {
+            if (boxCategory.getSelectedIndex() != -1) {
+                loadSubCategory(boxCategory.getItemAt(boxCategory.getSelectedIndex()).toString());
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(GuiCRUDFProduct.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_boxCategoryActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox boxCategory;
     private javax.swing.JComboBox boxSubcategory;

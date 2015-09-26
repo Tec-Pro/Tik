@@ -84,10 +84,12 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
                 }
             }
         });
-
+        
         tableProductsDefault = guiCRUDPProduct.getTableProductsDefault();
         pproduct = (InterfacePproduct) InterfaceName.registry.lookup(InterfaceName.CRUDPproduct);
         this.provider = (InterfaceProvider) InterfaceName.registry.lookup(InterfaceName.CRUDProvider);
+        category = (InterfaceCategory) InterfaceName.registry.lookup(InterfaceName.CRUDCategory);
+        guiCRUDPProduct.setCRUDCategory(category);
         productList = pproduct.getPproducts();
         refreshList();
     }
@@ -218,11 +220,19 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
                 float stock = ParserFloat.stringToFloat(guiCRUDPProduct.getTxtStock().getText());
                 float unitPrice = ParserFloat.stringToFloat(guiCRUDPProduct.getTxtPrice().getText());
                 String measureUnit = "";
+                Map subC;
+                int idSubcategory = -1;
+                try {
+                    subC = category.getPproductSubcategoryByName(guiCRUDPProduct.getBoxSubcategory().getSelectedItem().toString());
+                    idSubcategory = Integer.parseInt(subC.get("id").toString());//obtener categoria
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 if (guiCRUDPProduct.getCboxMeasureUnit().getSelectedIndex() != -1) {
                     measureUnit = guiCRUDPProduct.getCboxMeasureUnit().getSelectedItem().toString();
                 }
                 try {
-                    pproduct.create(name, stock, measureUnit, unitPrice, guiCRUDPProduct.getIdProviderSelected());
+                    pproduct.create(name, stock, measureUnit, unitPrice, guiCRUDPProduct.getIdProviderSelected(),idSubcategory);
                     JOptionPane.showMessageDialog(guiCRUDPProduct, "¡Producto creado exitosamente!");
                     guiCRUDPProduct.clicSaveProduct();
                     productList = pproduct.getPproducts();
@@ -239,8 +249,16 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
                 float unitPrice = ParserFloat.stringToFloat(guiCRUDPProduct.getTxtPrice().getText());
                 String measureUnit = guiCRUDPProduct.getCboxMeasureUnit().getSelectedItem().toString();
                 int id = Integer.parseInt(guiCRUDPProduct.getTxtId().getText());
+                Map subC;
+                int idSubcategory = -1;
                 try {
-                    pproduct.modify(id, name, stock, measureUnit, unitPrice, guiCRUDPProduct.getIdProviderSelected());
+                    subC = category.getPproductSubcategoryByName(guiCRUDPProduct.getBoxSubcategory().getSelectedItem().toString());
+                    idSubcategory = Integer.parseInt(subC.get("id").toString());//obtener categoria
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                try {
+                    pproduct.modify(id, name, stock, measureUnit, unitPrice, guiCRUDPProduct.getIdProviderSelected(),idSubcategory);
                     JOptionPane.showMessageDialog(guiCRUDPProduct, "¡Producto modificado exitosamente!");
                     guiCRUDPProduct.clicSaveProduct();
                     productList = pproduct.getPproducts();
