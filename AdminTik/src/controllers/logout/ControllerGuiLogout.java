@@ -76,8 +76,8 @@ public class ControllerGuiLogout implements ActionListener {
         float e = ParserFloat.stringToFloat(guiLogout.getLblEarn().getText());
         float ex = ParserFloat.stringToFloat(guiLogout.getLblException().getText());
         float desc = ParserFloat.stringToFloat(guiLogout.getLblDiscount().getText());
-        guiLogout.getLblDif().setText(ParserFloat.floatToString(pd + d  - e - ex));
-        guiLogout.getLblUndelivered().setText(ParserFloat.floatToString(e + ex  - pd));
+        guiLogout.getLblDif().setText(ParserFloat.floatToString(pd + d - e - ex));
+        guiLogout.getLblUndelivered().setText(ParserFloat.floatToString(e + ex - pd));
     }
 
     /**
@@ -143,19 +143,25 @@ public class ControllerGuiLogout implements ActionListener {
         if (ae.getSource() == guiLogout.getBtnClose()) {
             try {
                 if (userId > -1) {
-                    if(ParserFloat.stringToFloat(guiLogout.getTxtDelivery().getText())>0){
-                        String name = (String) guiLogout.getcBoxEmployers().getSelectedItem();
-                        String split[] = name.split("-");
-                        userId = Integer.parseInt(split[0]);
-                        String pos = split[2];
-                        if (pos.equals("Mozo")) {
-                            crudDeposit.createWaiterDeposit(userId, ParserFloat.stringToFloat(guiLogout.getTxtDelivery().getText()));
-                        }
+                    String name = (String) guiLogout.getcBoxEmployers().getSelectedItem();
+                    String split[] = name.split("-");
+                    userId = Integer.parseInt(split[0]);
+                    String pos = split[2];
+                    if (ParserFloat.stringToFloat(guiLogout.getLblUndelivered().getText()) == 0) {
                         crudPresence.logout(userId);
                         updateOnline();
                         guiLogout.clear();
-                    }else{
-                        JOptionPane.showMessageDialog(guiLogout, "Debe ingresar un valor en la entrega", "La entrega no puede ser 0 ni negativo", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        if (ParserFloat.stringToFloat(guiLogout.getTxtDelivery().getText()) > 0) {
+                            if (pos.equals("Mozo")) {
+                                crudDeposit.createWaiterDeposit(userId, ParserFloat.stringToFloat(guiLogout.getTxtDelivery().getText()));
+                            }
+                            crudPresence.logout(userId);
+                            updateOnline();
+                            guiLogout.clear();
+                        } else {
+                            JOptionPane.showMessageDialog(guiLogout, "Debe ingresar un valor en la entrega", "La entrega no puede ser 0 ni negativo", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                 }
             } catch (RemoteException ex) {

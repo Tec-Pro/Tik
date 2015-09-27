@@ -434,6 +434,7 @@ public class ControllerGuiKitchenMain implements ActionListener {
                     guiLogin = new GuiLogin(guiKitchenMain, true);
                     Set<Map> offline = new HashSet<>();
                     offline.addAll(crudUser.getCooks());
+                    offline.addAll(crudUser.getWaiters());
                     offline.removeAll(online);
                     if (offline.isEmpty()) {
                         JOptionPane.showMessageDialog(guiKitchenMain, "Ocurrió un error, ya estan todos los usuarios logueados", "Error!", JOptionPane.ERROR_MESSAGE);
