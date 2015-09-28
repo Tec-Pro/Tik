@@ -7,6 +7,7 @@ package controllers.cashbox;
 
 import controllers.deposits.ControllerGUINewDeposit;
 import controllers.ControllerMain;
+import controllers.statistics.ControllerGuiProductList;
 import controllers.withdrawals.ControllerGUINewWithdrawal;
 import gui.cashbox.GUICashbox;
 import gui.cashbox.GuiPayProvider;
@@ -32,11 +33,20 @@ import java.beans.PropertyVetoException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import utils.Dates;
 import utils.InterfaceName;
 import utils.ParserFloat;
@@ -222,6 +232,33 @@ public class ControllerGUICashbox implements ActionListener {
             reloadDialyCashbox();
         } catch (RemoteException ex) {
             Logger.getLogger(ControllerGUICashbox.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (e.getSource() == gui.getBtnPrintReport()){
+            try {
+                JasperReport reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reports/cashboxReport/cashboxReport.jasper"));//cargo el reporte
+                JasperPrint jasperPrint;
+                Map<String, Object> parametros = new HashMap<String, Object>();
+                parametros.put("saldoInicial", gui.getDCInitialBalanceField().getText());
+                parametros.put("entrada", gui.getDCCashboxIncomeField().getText());
+                parametros.put("recM", gui.getDCEarningsFieldMorn().getText());
+                parametros.put("recT", gui.getDCEarningsFieldAft().getText());
+                parametros.put("gastos", gui.getDCExpensesField().getText());
+                parametros.put("sig", gui.getDCNextTurnField().getText());
+                parametros.put("saldo", gui.getDCBalanceField().getText());
+                
+                parametros.put("esaldoInicial", gui.getECInitialBalanceField().getText());
+                parametros.put("eentrada", gui.getECCashboxIncomeField().getText());
+                parametros.put("eentregaMozo", gui.getECWaiterDepositsField().getText());
+                parametros.put("eentregaCaja", gui.getECAdminDepositsField().getText());
+                parametros.put("eretiros", gui.getECWithdrawalsField().getText());
+                parametros.put("egastos", gui.getECCashboxExpensesField().getText());
+                parametros.put("esig", gui.getECNextTurnField().getText());
+                parametros.put("esaldo", gui.getECBalanceField().getText());
+                jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JREmptyDataSource());
+                JasperViewer.viewReport(jasperPrint, false);
+            } catch (JRException ex) {
+                Logger.getLogger(ControllerGuiProductList.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
