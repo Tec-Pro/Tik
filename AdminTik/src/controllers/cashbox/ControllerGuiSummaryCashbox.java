@@ -7,6 +7,7 @@ package controllers.cashbox;
 
 import controllers.ControllerMain;
 import static controllers.cashbox.ControllerGUICashbox.gui;
+import controllers.statistics.ControllerGuiProductList;
 import gui.cashbox.GuiSummaryCashbox;
 import gui.cashbox.GuiSummaryCashboxForDate;
 import interfaces.InterfaceAdmin;
@@ -22,14 +23,27 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRPrintPage;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import org.apache.poi.hpsf.SummaryInformation;
+import reports.purchaseStatistics.PproductStatistic;
+import reports.resumeReport.AdminResume;
+import reports.resumeReport.Resume;
 import utils.InterfaceName;
 import utils.ParserFloat;
 import utils.Triple;
@@ -380,6 +394,56 @@ public class ControllerGuiSummaryCashbox implements ActionListener {
                 }
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiSummaryCashbox.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (ae.getSource().equals(guiSummaryCashboxForDate.getBtnPrintReport())) {
+            List<Resume> listResume = new ArrayList();
+            List<AdminResume> listAdminResume = new ArrayList();
+            for (int i = 0; i < guiSummaryCashboxForDate.getTableResumeDefault().getRowCount(); i++) {
+                Resume pp = new Resume(guiSummaryCashboxForDate.getTableResumeDefault().getValueAt(i, 0).toString(),
+                        (float) guiSummaryCashboxForDate.getTableResumeDefault().getValueAt(i, 1),
+                        (float) guiSummaryCashboxForDate.getTableResumeDefault().getValueAt(i, 2),
+                        (float) guiSummaryCashboxForDate.getTableResumeDefault().getValueAt(i, 3),
+                        (float) guiSummaryCashboxForDate.getTableResumeDefault().getValueAt(i, 4),
+                        (float) guiSummaryCashboxForDate.getTableResumeDefault().getValueAt(i, 5),
+                        (float) guiSummaryCashboxForDate.getTableResumeDefault().getValueAt(i, 6));
+                listResume.add(pp);
+            }
+
+            for (int i = 0; i < guiSummaryCashboxForDate.getTableResumeForAdminDefault().getRowCount()-1; i++) {
+                AdminResume ar = new AdminResume(guiSummaryCashboxForDate.getTableResumeForAdminDefault().getValueAt(i, 0).toString(),
+                        guiSummaryCashboxForDate.getTableResumeForAdminDefault().getValueAt(i, 1).toString(),
+                        (float) guiSummaryCashboxForDate.getTableResumeForAdminDefault().getValueAt(i, 2),
+                        (float) guiSummaryCashboxForDate.getTableResumeForAdminDefault().getValueAt(i, 3),
+                        (float) guiSummaryCashboxForDate.getTableResumeForAdminDefault().getValueAt(i, 4));
+                listAdminResume.add(ar);
+            }
+            int i = guiSummaryCashboxForDate.getTableResumeForAdminDefault().getRowCount()-1;
+            AdminResume ar = new AdminResume(" ",
+                        guiSummaryCashboxForDate.getTableResumeForAdminDefault().getValueAt(i, 1).toString(),
+                        (float) guiSummaryCashboxForDate.getTableResumeForAdminDefault().getValueAt(i, 2),
+                        (float) guiSummaryCashboxForDate.getTableResumeForAdminDefault().getValueAt(i, 3),
+                        (float) guiSummaryCashboxForDate.getTableResumeForAdminDefault().getValueAt(i, 4));
+            listAdminResume.add(ar);
+
+            try {
+                JasperReport reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/reports/resumeReport/resumeReport.jasper"));//cargo el reporte
+                JasperPrint jasperPrint;
+                jasperPrint = JasperFillManager.fillReport(reporte, null, new JRBeanCollectionDataSource(listResume));
+                
+                JasperReport reporteAdmin = (JasperReport) JRLoader.loadObject(getClass().getResource("/reports/resumeReport/adminReport.jasper"));//cargo el reporte
+                JasperPrint jasperPrint2;
+                jasperPrint2 = JasperFillManager.fillReport(reporteAdmin, null, new JRBeanCollectionDataSource(listAdminResume));
+                
+                List pages = jasperPrint2.getPages();
+                for (int j = 0; j < pages.size(); j++) {
+                    JRPrintPage object = (JRPrintPage) pages.get(j);
+                    jasperPrint.addPage(object);
+
+                }
+                JasperViewer.viewReport(jasperPrint, false);
+            } catch (JRException ex) {
+                Logger.getLogger(ControllerGuiProductList.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

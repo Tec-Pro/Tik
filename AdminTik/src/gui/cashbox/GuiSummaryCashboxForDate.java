@@ -8,6 +8,7 @@ package gui.cashbox;
 import com.toedter.calendar.JDateChooser;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -63,6 +64,10 @@ public class GuiSummaryCashboxForDate extends javax.swing.JDialog {
         return tableResumeForAdmin;
     }
 
+    public JButton getBtnPrintReport() {
+        return btnPrintReport;
+    }
+
     public JCheckBox getCheckAll() {
         return checkAll;
     }
@@ -97,6 +102,7 @@ public class GuiSummaryCashboxForDate extends javax.swing.JDialog {
         this.checkDaily.addActionListener(lis);
         this.checkMonthly.addActionListener(lis);
         this.checkAll.addActionListener(lis);
+        this.btnPrintReport.addActionListener(lis);
     }
     
     /**
@@ -121,6 +127,7 @@ public class GuiSummaryCashboxForDate extends javax.swing.JDialog {
         checkMonthly = new javax.swing.JCheckBox();
         checkAnnual = new javax.swing.JCheckBox();
         checkAll = new javax.swing.JCheckBox();
+        btnPrintReport = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableResumeForAdmin = new javax.swing.JTable();
@@ -168,6 +175,8 @@ public class GuiSummaryCashboxForDate extends javax.swing.JDialog {
             }
         });
 
+        btnPrintReport.setText("Imprimir");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -197,27 +206,34 @@ public class GuiSummaryCashboxForDate extends javax.swing.JDialog {
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(checkAll)
-                .addContainerGap(297, Short.MAX_VALUE))
+                .addGap(38, 38, 38)
+                .addComponent(btnPrintReport, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(13, 13, 13)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(checkAll)
-                    .addComponent(dateUntil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dateSince, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1)
-                        .addComponent(jLabel2))
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel3)
-                    .addComponent(checkDaily)
-                    .addComponent(checkMonthly)
-                    .addComponent(checkAnnual)
-                    .addComponent(jLabel6))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(checkAll)
+                            .addComponent(dateUntil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(dateSince, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel1)
+                                .addComponent(jLabel2))
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel3)
+                            .addComponent(checkDaily)
+                            .addComponent(checkMonthly)
+                            .addComponent(checkAnnual)
+                            .addComponent(jLabel6)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(btnPrintReport)))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -297,7 +313,7 @@ public class GuiSummaryCashboxForDate extends javax.swing.JDialog {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -395,6 +411,7 @@ public class GuiSummaryCashboxForDate extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnPrintReport;
     private javax.swing.JCheckBox checkAll;
     private javax.swing.JCheckBox checkAnnual;
     private javax.swing.JCheckBox checkDaily;
