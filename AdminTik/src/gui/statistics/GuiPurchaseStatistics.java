@@ -204,6 +204,7 @@ public class GuiPurchaseStatistics extends javax.swing.JInternalFrame {
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Todo");
 
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Buscar:");
 
         txtSearchPurchaseStatistics.setToolTipText("Búsqueda de Productos Finales por su nombre");

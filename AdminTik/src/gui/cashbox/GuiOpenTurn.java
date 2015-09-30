@@ -423,320 +423,370 @@ public class GuiOpenTurn extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnOpenMorning = new javax.swing.JButton();
-        btnSeeAfternoon = new javax.swing.JButton();
-        btnResume = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        lblBalance = new javax.swing.JLabel();
-        lblMGain = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        lblAGain = new javax.swing.JLabel();
-        btnCloseMorning = new javax.swing.JButton();
-        btnSeeMorning = new javax.swing.JButton();
-        btnOpenAfternoon = new javax.swing.JButton();
-        btnCloseAfternoon = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        lblWM1 = new javax.swing.JLabel();
-        lblWMGain1 = new javax.swing.JLabel();
-        lblWM2 = new javax.swing.JLabel();
-        lblWMGain2 = new javax.swing.JLabel();
-        lblWMGain3 = new javax.swing.JLabel();
-        lblWM3 = new javax.swing.JLabel();
-        lblWMGain7 = new javax.swing.JLabel();
-        lblWM6 = new javax.swing.JLabel();
-        lblWM7 = new javax.swing.JLabel();
-        lblWMGain6 = new javax.swing.JLabel();
-        lblWM4 = new javax.swing.JLabel();
-        lblWMGain4 = new javax.swing.JLabel();
-        lblWMGain5 = new javax.swing.JLabel();
-        lblWM5 = new javax.swing.JLabel();
-        lblWM8 = new javax.swing.JLabel();
-        lblWMGain8 = new javax.swing.JLabel();
-        lblWMGain9 = new javax.swing.JLabel();
+        panelImage1 = new org.edisoncor.gui.panel.PanelImage();
         lblWM9 = new javax.swing.JLabel();
-        lblWM10 = new javax.swing.JLabel();
-        lblWMGain10 = new javax.swing.JLabel();
-        lblWAGain2 = new javax.swing.JLabel();
-        lblWA2 = new javax.swing.JLabel();
-        lblWAGain1 = new javax.swing.JLabel();
-        lblWA1 = new javax.swing.JLabel();
-        lblWA9 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        lblWAGain7 = new javax.swing.JLabel();
+        lblWA3 = new javax.swing.JLabel();
+        lblWMGain5 = new javax.swing.JLabel();
+        btnCloseAfternoon = new javax.swing.JButton();
+        lblWMGain8 = new javax.swing.JLabel();
         lblWAGain10 = new javax.swing.JLabel();
-        lblWA10 = new javax.swing.JLabel();
-        lblWAGain9 = new javax.swing.JLabel();
-        lblWAGain6 = new javax.swing.JLabel();
+        lblWA9 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        lblWM7 = new javax.swing.JLabel();
+        btnCloseSession = new javax.swing.JButton();
+        lblWAGain1 = new javax.swing.JLabel();
+        lblWM1 = new javax.swing.JLabel();
+        btnOpenMorning = new javax.swing.JButton();
+        lblWM6 = new javax.swing.JLabel();
+        lblWMGain6 = new javax.swing.JLabel();
+        btnOpenAfternoon = new javax.swing.JButton();
+        btnSeeMorning = new javax.swing.JButton();
+        lblMGain = new javax.swing.JLabel();
         lblWAGain8 = new javax.swing.JLabel();
         lblWA7 = new javax.swing.JLabel();
+        lblWA10 = new javax.swing.JLabel();
+        btnCloseMorning = new javax.swing.JButton();
+        lblWMGain1 = new javax.swing.JLabel();
+        btnSeeAfternoon = new javax.swing.JButton();
+        lblWMGain4 = new javax.swing.JLabel();
+        lblWM10 = new javax.swing.JLabel();
+        lblAGain = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        lblWAGain6 = new javax.swing.JLabel();
+        lblWM2 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        lblWM3 = new javax.swing.JLabel();
+        lblWMGain3 = new javax.swing.JLabel();
+        lblWMGain9 = new javax.swing.JLabel();
+        btnResume = new javax.swing.JButton();
+        lblBalance = new javax.swing.JLabel();
+        lblWM5 = new javax.swing.JLabel();
         lblWA8 = new javax.swing.JLabel();
-        lblWA3 = new javax.swing.JLabel();
-        lblWAGain3 = new javax.swing.JLabel();
-        lblWA6 = new javax.swing.JLabel();
-        lblWAGain7 = new javax.swing.JLabel();
-        lblWAGain4 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         lblWAGain5 = new javax.swing.JLabel();
-        lblWA5 = new javax.swing.JLabel();
-        lblWA4 = new javax.swing.JLabel();
         btnUpdate = new javax.swing.JButton();
-        btnCloseSession = new javax.swing.JButton();
+        lblWA4 = new javax.swing.JLabel();
+        lblWAGain2 = new javax.swing.JLabel();
+        lblWMGain2 = new javax.swing.JLabel();
+        lblWM8 = new javax.swing.JLabel();
+        lblWAGain9 = new javax.swing.JLabel();
+        lblWA6 = new javax.swing.JLabel();
+        lblWA5 = new javax.swing.JLabel();
+        lblWMGain7 = new javax.swing.JLabel();
+        lblWA1 = new javax.swing.JLabel();
+        lblWAGain4 = new javax.swing.JLabel();
+        lblWMGain10 = new javax.swing.JLabel();
+        lblWAGain3 = new javax.swing.JLabel();
+        lblWM4 = new javax.swing.JLabel();
+        lblWA2 = new javax.swing.JLabel();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setTitle("Caja");
         setToolTipText("");
 
-        btnOpenMorning.setText("Abrir");
+        panelImage1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/fondo gris.png"))); // NOI18N
 
-        btnSeeAfternoon.setText("Ver");
+        lblWM9.setForeground(new java.awt.Color(255, 255, 255));
+        lblWM9.setText("nombre");
 
-        btnResume.setText("Resumen");
-
-        jLabel1.setText("Recaudado:");
-
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Saldo:");
 
-        lblBalance.setText("20000");
+        lblWAGain7.setForeground(new java.awt.Color(255, 255, 255));
+        lblWAGain7.setText("20000");
 
-        lblMGain.setText("20000");
+        lblWA3.setForeground(new java.awt.Color(255, 255, 255));
+        lblWA3.setText("nombre");
 
-        jLabel7.setText("Recaudado:");
-
-        lblAGain.setText("20000");
-
-        btnCloseMorning.setText("Cerrar");
-
-        btnSeeMorning.setText("Ver");
-
-        btnOpenAfternoon.setText("Abrir");
+        lblWMGain5.setForeground(new java.awt.Color(255, 255, 255));
+        lblWMGain5.setText("20000");
 
         btnCloseAfternoon.setText("Cerrar");
 
-        jLabel3.setFont(new java.awt.Font("Cantarell", 0, 36)); // NOI18N
-        jLabel3.setText("Mañana");
-
-        jLabel4.setFont(new java.awt.Font("Cantarell", 0, 36)); // NOI18N
-        jLabel4.setText("Tarde");
-
-        lblWM1.setText("nombre");
-
-        lblWMGain1.setText("20000");
-
-        lblWM2.setText("nombre");
-
-        lblWMGain2.setText("20000");
-
-        lblWMGain3.setText("20000");
-
-        lblWM3.setText("nombre");
-
-        lblWMGain7.setText("20000");
-
-        lblWM6.setText("nombre");
-
-        lblWM7.setText("nombre:");
-
-        lblWMGain6.setText("20000");
-
-        lblWM4.setText("nombre");
-
-        lblWMGain4.setText("20000");
-
-        lblWMGain5.setText("20000");
-
-        lblWM5.setText("nombre");
-
-        lblWM8.setText("nombre");
-
+        lblWMGain8.setForeground(new java.awt.Color(255, 255, 255));
         lblWMGain8.setText("20000");
 
-        lblWMGain9.setText("20000");
-
-        lblWM9.setText("nombre");
-
-        lblWM10.setText("nombre");
-
-        lblWMGain10.setText("20000");
-
-        lblWAGain2.setText("20000");
-
-        lblWA2.setText("nombre");
-
-        lblWAGain1.setText("20000");
-
-        lblWA1.setText("nombre");
-
-        lblWA9.setText("nombre");
-
+        lblWAGain10.setForeground(new java.awt.Color(255, 255, 255));
         lblWAGain10.setText("20000");
 
-        lblWA10.setText("nombre");
+        lblWA9.setForeground(new java.awt.Color(255, 255, 255));
+        lblWA9.setText("nombre");
 
-        lblWAGain9.setText("20000");
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Recaudado:");
 
-        lblWAGain6.setText("20000");
-
-        lblWAGain8.setText("20000");
-
-        lblWA7.setText("nombre");
-
-        lblWA8.setText("nombre");
-
-        lblWA3.setText("nombre");
-
-        lblWAGain3.setText("20000");
-
-        lblWA6.setText("nombre");
-
-        lblWAGain7.setText("20000");
-
-        lblWAGain4.setText("20000");
-
-        lblWAGain5.setText("20000");
-
-        lblWA5.setText("nombre");
-
-        lblWA4.setText("nombre");
-
-        btnUpdate.setText("Actualizar");
+        lblWM7.setForeground(new java.awt.Color(255, 255, 255));
+        lblWM7.setText("nombre:");
 
         btnCloseSession.setText("Cerrar empleados");
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(124, 124, 124)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap(89, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        lblWAGain1.setForeground(new java.awt.Color(255, 255, 255));
+        lblWAGain1.setText("20000");
+
+        lblWM1.setForeground(new java.awt.Color(255, 255, 255));
+        lblWM1.setText("nombre");
+
+        btnOpenMorning.setText("Abrir");
+
+        lblWM6.setForeground(new java.awt.Color(255, 255, 255));
+        lblWM6.setText("nombre");
+
+        lblWMGain6.setForeground(new java.awt.Color(255, 255, 255));
+        lblWMGain6.setText("20000");
+
+        btnOpenAfternoon.setText("Abrir");
+
+        btnSeeMorning.setText("Ver");
+
+        lblMGain.setForeground(new java.awt.Color(255, 255, 255));
+        lblMGain.setText("20000");
+
+        lblWAGain8.setForeground(new java.awt.Color(255, 255, 255));
+        lblWAGain8.setText("20000");
+
+        lblWA7.setForeground(new java.awt.Color(255, 255, 255));
+        lblWA7.setText("nombre");
+
+        lblWA10.setForeground(new java.awt.Color(255, 255, 255));
+        lblWA10.setText("nombre");
+
+        btnCloseMorning.setText("Cerrar");
+
+        lblWMGain1.setForeground(new java.awt.Color(255, 255, 255));
+        lblWMGain1.setText("20000");
+
+        btnSeeAfternoon.setText("Ver");
+
+        lblWMGain4.setForeground(new java.awt.Color(255, 255, 255));
+        lblWMGain4.setText("20000");
+
+        lblWM10.setForeground(new java.awt.Color(255, 255, 255));
+        lblWM10.setText("nombre");
+
+        lblAGain.setForeground(new java.awt.Color(255, 255, 255));
+        lblAGain.setText("20000");
+
+        jLabel4.setFont(new java.awt.Font("Cantarell", 0, 36)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Tarde");
+
+        lblWAGain6.setForeground(new java.awt.Color(255, 255, 255));
+        lblWAGain6.setText("20000");
+
+        lblWM2.setForeground(new java.awt.Color(255, 255, 255));
+        lblWM2.setText("nombre");
+
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("Recaudado:");
+
+        lblWM3.setForeground(new java.awt.Color(255, 255, 255));
+        lblWM3.setText("nombre");
+
+        lblWMGain3.setForeground(new java.awt.Color(255, 255, 255));
+        lblWMGain3.setText("20000");
+
+        lblWMGain9.setForeground(new java.awt.Color(255, 255, 255));
+        lblWMGain9.setText("20000");
+
+        btnResume.setText("Resumen");
+
+        lblBalance.setForeground(new java.awt.Color(255, 255, 255));
+        lblBalance.setText("20000");
+
+        lblWM5.setForeground(new java.awt.Color(255, 255, 255));
+        lblWM5.setText("nombre");
+
+        lblWA8.setForeground(new java.awt.Color(255, 255, 255));
+        lblWA8.setText("nombre");
+
+        jLabel3.setFont(new java.awt.Font("Cantarell", 0, 36)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Mañana");
+
+        lblWAGain5.setForeground(new java.awt.Color(255, 255, 255));
+        lblWAGain5.setText("20000");
+
+        btnUpdate.setText("Actualizar");
+
+        lblWA4.setForeground(new java.awt.Color(255, 255, 255));
+        lblWA4.setText("nombre");
+
+        lblWAGain2.setForeground(new java.awt.Color(255, 255, 255));
+        lblWAGain2.setText("20000");
+
+        lblWMGain2.setForeground(new java.awt.Color(255, 255, 255));
+        lblWMGain2.setText("20000");
+
+        lblWM8.setForeground(new java.awt.Color(255, 255, 255));
+        lblWM8.setText("nombre");
+
+        lblWAGain9.setForeground(new java.awt.Color(255, 255, 255));
+        lblWAGain9.setText("20000");
+
+        lblWA6.setForeground(new java.awt.Color(255, 255, 255));
+        lblWA6.setText("nombre");
+
+        lblWA5.setForeground(new java.awt.Color(255, 255, 255));
+        lblWA5.setText("nombre");
+
+        lblWMGain7.setForeground(new java.awt.Color(255, 255, 255));
+        lblWMGain7.setText("20000");
+
+        lblWA1.setForeground(new java.awt.Color(255, 255, 255));
+        lblWA1.setText("nombre");
+
+        lblWAGain4.setForeground(new java.awt.Color(255, 255, 255));
+        lblWAGain4.setText("20000");
+
+        lblWMGain10.setForeground(new java.awt.Color(255, 255, 255));
+        lblWMGain10.setText("20000");
+
+        lblWAGain3.setForeground(new java.awt.Color(255, 255, 255));
+        lblWAGain3.setText("20000");
+
+        lblWM4.setForeground(new java.awt.Color(255, 255, 255));
+        lblWM4.setText("nombre");
+
+        lblWA2.setForeground(new java.awt.Color(255, 255, 255));
+        lblWA2.setText("nombre");
+
+        javax.swing.GroupLayout panelImage1Layout = new javax.swing.GroupLayout(panelImage1);
+        panelImage1.setLayout(panelImage1Layout);
+        panelImage1Layout.setHorizontalGroup(
+            panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelImage1Layout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelImage1Layout.createSequentialGroup()
+                        .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelImage1Layout.createSequentialGroup()
+                                .addComponent(btnCloseSession, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelImage1Layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(btnOpenMorning, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnSeeMorning, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(btnCloseMorning, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel2)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(lblBalance))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(8, 8, 8)
-                                                .addComponent(btnResume))))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnCloseSession, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(18, 18, 18)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnOpenAfternoon, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnCloseAfternoon, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnSeeAfternoon, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
-                        .addGap(38, 38, 38))
-                    .addComponent(btnUpdate, javax.swing.GroupLayout.Alignment.TRAILING)))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblWM1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblWM2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblWM3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblWM4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblWM5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblWM6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblWM7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblWM8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblWM9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblWM10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblMGain)
-                    .addComponent(lblWMGain4)
-                    .addComponent(lblWMGain3)
-                    .addComponent(lblWMGain2)
-                    .addComponent(lblWMGain1)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(lblWMGain7)
-                        .addComponent(lblWMGain6)
-                        .addComponent(lblWMGain5)
-                        .addComponent(lblWMGain8)
-                        .addComponent(lblWMGain9)
-                        .addComponent(lblWMGain10)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblWA1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblWA2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblWA3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblWA4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblWA5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblWA6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblWA7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblWA8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblWA9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblWA10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(lblWAGain1, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblWAGain3)
-                            .addComponent(lblWAGain2))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblWAGain5)
-                            .addComponent(lblWAGain4))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblWAGain7)
-                            .addComponent(lblWAGain6))
-                        .addComponent(lblWAGain8, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblWAGain10)
-                            .addComponent(lblWAGain9)))
-                    .addComponent(lblAGain))
-                .addGap(25, 25, 25))
+                                    .addComponent(btnCloseMorning, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(panelImage1Layout.createSequentialGroup()
+                                        .addGap(0, 74, Short.MAX_VALUE)
+                                        .addComponent(btnResume))
+                                    .addGroup(panelImage1Layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(lblBalance)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                        .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelImage1Layout.createSequentialGroup()
+                                .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnOpenAfternoon, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnCloseAfternoon, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnSeeAfternoon, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(64, 64, 64))
+                            .addComponent(btnUpdate, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addGroup(panelImage1Layout.createSequentialGroup()
+                        .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblWM1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblWM2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblWM3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblWM4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblWM5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblWM6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblWM7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblWM8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblWM9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblWM10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblMGain)
+                            .addComponent(lblWMGain4)
+                            .addComponent(lblWMGain3)
+                            .addComponent(lblWMGain2)
+                            .addComponent(lblWMGain1)
+                            .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblWMGain7)
+                                .addComponent(lblWMGain6)
+                                .addComponent(lblWMGain5)
+                                .addComponent(lblWMGain8)
+                                .addComponent(lblWMGain9)
+                                .addComponent(lblWMGain10)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblWA1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblWA2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblWA3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblWA4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblWA5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblWA6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblWA7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblWA8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblWA9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblWA10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblWAGain1, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblWAGain3)
+                                    .addComponent(lblWAGain2))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblWAGain5)
+                                    .addComponent(lblWAGain4))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblWAGain7)
+                                    .addComponent(lblWAGain6))
+                                .addComponent(lblWAGain8, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblWAGain10)
+                                    .addComponent(lblWAGain9)))
+                            .addComponent(lblAGain))
+                        .addGap(25, 25, 25))
+                    .addGroup(panelImage1Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel4)
+                        .addGap(54, 54, 54))))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+        panelImage1Layout.setVerticalGroup(
+            panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelImage1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelImage1Layout.createSequentialGroup()
                         .addComponent(btnOpenMorning)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCloseMorning))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelImage1Layout.createSequentialGroup()
                         .addComponent(btnOpenAfternoon)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCloseAfternoon))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel2)
                         .addComponent(lblBalance)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSeeAfternoon)
                     .addComponent(btnSeeMorning))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(lblMGain)
                     .addComponent(jLabel7)
                     .addComponent(lblAGain))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelImage1Layout.createSequentialGroup()
                         .addComponent(lblWM1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblWM2)
@@ -756,7 +806,7 @@ public class GuiOpenTurn extends javax.swing.JInternalFrame {
                         .addComponent(lblWM9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblWM10))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(panelImage1Layout.createSequentialGroup()
                         .addComponent(lblWAGain1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblWAGain2)
@@ -776,7 +826,7 @@ public class GuiOpenTurn extends javax.swing.JInternalFrame {
                         .addComponent(lblWAGain9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblWAGain10))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(panelImage1Layout.createSequentialGroup()
                         .addComponent(lblWA1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblWA2)
@@ -796,19 +846,19 @@ public class GuiOpenTurn extends javax.swing.JInternalFrame {
                         .addComponent(lblWA9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblWA10))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(panelImage1Layout.createSequentialGroup()
                         .addComponent(lblWMGain1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblWMGain2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblWMGain3, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
+                        .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelImage1Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lblWMGain4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lblWMGain5))
-                            .addGroup(layout.createSequentialGroup()
+                            .addGroup(panelImage1Layout.createSequentialGroup()
                                 .addGap(50, 50, 50)
                                 .addComponent(lblWMGain6)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -820,15 +870,26 @@ public class GuiOpenTurn extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lblWMGain10)))))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelImage1Layout.createSequentialGroup()
                         .addComponent(btnResume, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(27, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(33, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelImage1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnUpdate)
                             .addComponent(btnCloseSession)))))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panelImage1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panelImage1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -892,5 +953,6 @@ public class GuiOpenTurn extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lblWMGain7;
     private javax.swing.JLabel lblWMGain8;
     private javax.swing.JLabel lblWMGain9;
+    private org.edisoncor.gui.panel.PanelImage panelImage1;
     // End of variables declaration//GEN-END:variables
 }

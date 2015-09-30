@@ -48,7 +48,7 @@ public class GuiAddUpdateProductSubcategory extends javax.swing.JDialog {
     }
 
     public JPanel getPanelSubcategory() {
-        return panelCategory;
+        return panelSubCategory;
     }
 
     public JTextField getTxtSubcategory() {
@@ -66,66 +66,65 @@ public class GuiAddUpdateProductSubcategory extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panelCategory = new javax.swing.JPanel();
-        txtSubcategory = new javax.swing.JTextField();
+        panelSubCategory = new org.edisoncor.gui.panel.PanelImage();
         jLabel1 = new javax.swing.JLabel();
         btnSave = new javax.swing.JButton();
+        txtSubcategory = new javax.swing.JTextField();
         btnCancel = new javax.swing.JButton();
 
         setTitle("Subcategoria");
 
-        panelCategory.setBorder(javax.swing.BorderFactory.createTitledBorder("Subcategoria"));
+        panelSubCategory.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/fondo gris.png"))); // NOI18N
 
-        jLabel1.setText("Subcategoria:");
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Subcategoría:");
 
         btnSave.setText("Guardar");
 
         btnCancel.setText("Cancelar");
 
-        javax.swing.GroupLayout panelCategoryLayout = new javax.swing.GroupLayout(panelCategory);
-        panelCategory.setLayout(panelCategoryLayout);
-        panelCategoryLayout.setHorizontalGroup(
-            panelCategoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelCategoryLayout.createSequentialGroup()
+        javax.swing.GroupLayout panelSubCategoryLayout = new javax.swing.GroupLayout(panelSubCategory);
+        panelSubCategory.setLayout(panelSubCategoryLayout);
+        panelSubCategoryLayout.setHorizontalGroup(
+            panelSubCategoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSubCategoryLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelCategoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelCategoryLayout.createSequentialGroup()
-                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtSubcategory, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                .addGroup(panelSubCategoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtSubcategory)
+                    .addGroup(panelSubCategoryLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(0, 291, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(panelSubCategoryLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        panelCategoryLayout.setVerticalGroup(
-            panelCategoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelCategoryLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
+        panelSubCategoryLayout.setVerticalGroup(
+            panelSubCategoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSubCategoryLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtSubcategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(panelCategoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelSubCategoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSave)
                     .addComponent(btnCancel))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(panelCategory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(panelSubCategory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(panelCategory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(panelSubCategory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -180,7 +179,7 @@ public class GuiAddUpdateProductSubcategory extends javax.swing.JDialog {
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnSave;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel panelCategory;
+    private org.edisoncor.gui.panel.PanelImage panelSubCategory;
     private javax.swing.JTextField txtSubcategory;
     // End of variables declaration//GEN-END:variables
 }

@@ -125,6 +125,7 @@ public class GuiProductList extends javax.swing.JInternalFrame {
 
         txtSearchProductList.setToolTipText("Búsqueda de Productos Finales por su nombre");
 
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Buscar:");
 
         btnRefresh.setText("Actualizar Busqueda");
