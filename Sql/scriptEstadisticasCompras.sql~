@@ -4,13 +4,17 @@ CREATE TABLE `tik`.`pproductcategories` (
   PRIMARY KEY (`id`));
 
 CREATE TABLE `tik`.`pproductsubcategories` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
-  `pproductcategory_id` INT NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) DEFAULT NULL,
+  `pproductcategory_id` int(11) DEFAULT '-1',
   PRIMARY KEY (`id`));
 
 ALTER TABLE `tik`.`pproducts` 
 ADD COLUMN `pproductsubcategory_id` INT NOT NULL AFTER `provider_id`;
+
+
+INSERT INTO `pproductcategories` (`id`,`name`) VALUES (1,'CATEGORIA POR DEFECTO');
+INSERT INTO `pproductsubcategories` (`id`,`name`,`category_id`) VALUES (1,'SUBCATEGORIA POR DEFECTO',1);
 
 CREATE TABLE `tik`.`purchasestatistics` (
   `id` INT NOT NULL AUTO_INCREMENT,
@@ -26,7 +30,6 @@ CREATE TABLE `tik`.`purchasestatistics` (
   `total_price` FLOAT NOT NULL,
   `provider_id` INT NULL,
   `provider_name` VARCHAR(45) NULL,
-  
   `day` DATE NOT NULL,
   PRIMARY KEY (`id`));
 

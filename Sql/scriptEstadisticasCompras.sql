@@ -12,6 +12,10 @@ CREATE TABLE `tik`.`pproductsubcategories` (
 ALTER TABLE `tik`.`pproducts` 
 ADD COLUMN `pproductsubcategory_id` INT NOT NULL AFTER `provider_id`;
 
+
+INSERT INTO `pproductcategories` (`id`,`name`) VALUES (1,'CATEGORIA POR DEFECTO');
+INSERT INTO `pproductsubcategories` (`id`,`name`,`category_id`) VALUES (1,'SUBCATEGORIA POR DEFECTO',1);
+
 CREATE TABLE `tik`.`purchasestatistics` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `pproductcategory_id` INT NOT NULL,
@@ -34,4 +38,8 @@ CHANGE COLUMN `pproduct_id` `pproduct_id` INT NOT NULL ,
 CHANGE COLUMN `purchase_id` `purchase_id` INT NOT NULL ,
 CHANGE COLUMN `amount` `amount` FLOAT NOT NULL ,
 CHANGE COLUMN `final_price` `final_price` FLOAT NOT NULL ;
+
+ALTER TABLE `tik`.`resumes` 
+ADD COLUMN `earning_m` float DEFAULT '0' AFTER `resume_date`,
+ADD COLUMN `earning_a` float DEFAULT '0' AFTER `earning_m`;
 
