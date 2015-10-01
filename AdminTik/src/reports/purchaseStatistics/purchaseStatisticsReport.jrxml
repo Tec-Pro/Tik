@@ -3,15 +3,15 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<field name="producto" class="java.lang.String"/>
-	<field name="unidad" class="java.lang.String"/>
-	<field name="cant" class="java.lang.Integer"/>
-	<field name="cat" class="java.lang.String"/>
-	<field name="subcat" class="java.lang.String"/>
-	<field name="prov" class="java.lang.String"/>
-	<field name="unit" class="java.lang.Float"/>
-	<field name="total" class="java.lang.Float"/>
-	<field name="fecha" class="java.lang.String"/>
+	<field name="producto" class="java.lang.Object"/>
+	<field name="unidad" class="java.lang.Object"/>
+	<field name="cant" class="java.lang.Object"/>
+	<field name="cat" class="java.lang.Object"/>
+	<field name="subcat" class="java.lang.Object"/>
+	<field name="prov" class="java.lang.Object"/>
+	<field name="unit" class="java.lang.Object"/>
+	<field name="total" class="java.lang.Object"/>
+	<field name="fecha" class="java.lang.Object"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -20,7 +20,7 @@
 			<staticText>
 				<reportElement x="0" y="0" width="337" height="32" uuid="42018837-b86e-49f7-acfc-aec466b353a5"/>
 				<textElement>
-					<font fontName="Arial" size="24"/>
+					<font fontName="SansSerif" size="24"/>
 				</textElement>
 				<text><![CDATA[Estadisticas de compras]]></text>
 			</staticText>
@@ -34,63 +34,63 @@
 			<staticText>
 				<reportElement mode="Opaque" x="0" y="14" width="100" height="20" backcolor="#999999" uuid="f747c5c5-f510-4ac4-8d2f-1520c21f4283"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Producto]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="100" y="14" width="45" height="20" backcolor="#999999" uuid="02ff250b-2fe9-42a1-80c6-cca53c4c9dd9"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[U.M.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="145" y="14" width="34" height="20" backcolor="#999999" uuid="acd758ff-a391-43e3-a015-b470a9ed54f0"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Cant.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="179" y="14" width="61" height="20" backcolor="#999999" uuid="4756ce35-7d2c-4f7f-873d-20307c696065"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Categoria]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="240" y="14" width="69" height="20" backcolor="#999999" uuid="337fd87f-bb38-435f-9881-564a349be715"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[SubCat.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="309" y="14" width="77" height="20" backcolor="#999999" uuid="397f9b79-b1f4-44cf-823d-eb99dc1d2b1e"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Proveedor]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="386" y="14" width="39" height="20" backcolor="#999999" uuid="7f36abf3-9a1c-4ee6-9562-6d90ff82bedc"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[$ unit]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="425" y="14" width="58" height="20" backcolor="#999999" uuid="5cddeead-ae3f-4446-ae8f-ff9e07df4231"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Total]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="483" y="14" width="72" height="20" backcolor="#999999" uuid="2f2af5a8-719a-45ae-9c9f-1f1cf0a5d912"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
@@ -98,66 +98,66 @@
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="100" height="20" uuid="9a39fa2c-dc41-4e5e-b3dc-0ee54b4d0b7d"/>
 				<textElement>
-					<font fontName="Arial"/>
+					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[""+$F{producto}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="100" y="0" width="45" height="20" uuid="16870dc0-5037-4523-85ea-bd61d067eb28"/>
 				<textElement>
-					<font fontName="Arial"/>
+					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[""+$F{unidad}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="145" y="0" width="34" height="20" uuid="be072789-a069-49b5-8e03-971ae6a857eb"/>
 				<textElement>
-					<font fontName="Arial"/>
+					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[""+$F{cant}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="179" y="0" width="61" height="20" uuid="812cdd6b-eaf0-4e7e-a00f-03c680d6e76f"/>
 				<textElement>
-					<font fontName="Arial"/>
+					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[""+$F{cat}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="237" y="0" width="72" height="20" uuid="ec0a7e0c-0412-4581-aca6-591ba728cd9b"/>
 				<textElement>
-					<font fontName="Arial"/>
+					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[""+$F{subcat}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="309" y="0" width="77" height="20" uuid="e7e7ee8a-60f5-477f-b94f-a6c0fad2614b"/>
 				<textElement>
-					<font fontName="Arial"/>
+					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[""+$F{prov}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="386" y="0" width="39" height="20" uuid="b6245bcb-5a2a-43fc-a846-13cf2228eda9"/>
 				<textElement>
-					<font fontName="Arial"/>
+					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[""+$F{unit}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="425" y="0" width="58" height="20" uuid="8cf6a83e-b6e7-4e32-b945-a0a76c68a596"/>
 				<textElement>
-					<font fontName="Arial"/>
+					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[""+$F{total}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="483" y="0" width="72" height="20" uuid="0efd8ab6-c97e-4892-9624-23b6f0a74723"/>
 				<textElement>
-					<font fontName="Arial"/>
+					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[""+$F{fecha}]]></textFieldExpression>
 			</textField>

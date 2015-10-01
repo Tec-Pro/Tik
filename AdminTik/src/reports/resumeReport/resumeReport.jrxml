@@ -7,13 +7,13 @@
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["/Users/alangonzalez/TecPro/Tik/Tik/AdminTik/src/reports/resumeReport/"]]></defaultValueExpression>
 	</parameter>
-	<field name="fecha" class="java.lang.String"/>
-	<field name="entrada" class="java.lang.Float"/>
-	<field name="recM" class="java.lang.Float"/>
-	<field name="recT" class="java.lang.Float"/>
-	<field name="rec" class="java.lang.Float"/>
-	<field name="gasto" class="java.lang.Float"/>
-	<field name="saldo" class="java.lang.Float"/>
+	<field name="fecha" class="java.lang.Object"/>
+	<field name="entrada" class="java.lang.Object"/>
+	<field name="recM" class="java.lang.Object"/>
+	<field name="recT" class="java.lang.Object"/>
+	<field name="rec" class="java.lang.Object"/>
+	<field name="gasto" class="java.lang.Object"/>
+	<field name="saldo" class="java.lang.Object"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -22,7 +22,7 @@
 			<staticText>
 				<reportElement x="219" y="1" width="109" height="29" uuid="d74a8545-91f6-46b3-af95-8fbe67fbb7ce"/>
 				<textElement>
-					<font fontName="Arial" size="22" isBold="true"/>
+					<font fontName="SansSerif" size="22" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Resumen]]></text>
 			</staticText>
@@ -33,7 +33,7 @@
 			<staticText>
 				<reportElement x="0" y="0" width="151" height="20" uuid="f3b482d1-83c7-496f-871d-5afc49f726c1"/>
 				<textElement>
-					<font fontName="Arial" size="15"/>
+					<font fontName="SansSerif" size="15"/>
 				</textElement>
 				<text><![CDATA[Resumen de caja]]></text>
 			</staticText>
@@ -44,49 +44,49 @@
 			<staticText>
 				<reportElement mode="Opaque" x="0" y="9" width="100" height="20" backcolor="#999999" uuid="45ab322e-f067-4f34-a1b1-9265d57cbb5d"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="100" y="9" width="82" height="20" backcolor="#999999" uuid="6ff2ae65-1019-42b5-9bc9-fa5d8ae7d67e"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Caja entrada]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="182" y="9" width="83" height="20" backcolor="#999999" uuid="7c72d689-e7ee-4c44-86d9-0fc7be189c0c"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Rec. mañana]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="265" y="9" width="77" height="20" backcolor="#999999" uuid="808edac6-985b-4bc5-bdfd-e1ba9a1b03db"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Rec. tarde]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="342" y="9" width="73" height="20" backcolor="#999999" uuid="77baa28f-bf18-4e4f-977c-8ee15f2cbc58"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Rec. total]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="415" y="9" width="75" height="20" backcolor="#999999" uuid="648dbf4c-a0d1-4255-9ca4-d3a66772e9de"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Gastos]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="490" y="9" width="65" height="20" backcolor="#999999" uuid="25f35c6d-0a92-4657-bdcb-4e9fa4fabf54"/>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Saldo]]></text>
 			</staticText>
@@ -94,50 +94,53 @@
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="100" height="20" uuid="ca53e29b-b885-4087-9b4d-57e0c49fc97b"/>
 				<textElement>
-					<font fontName="Arial"/>
+					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="182" y="0" width="83" height="20" uuid="7890f398-2f06-40ae-a020-e40c06ed3cb9"/>
 				<textElement>
-					<font fontName="Arial"/>
+					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{recM}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="265" y="0" width="77" height="20" uuid="7fbbe191-d757-4ab7-a748-5685fce56a22"/>
 				<textElement>
-					<font fontName="Arial"/>
+					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{recT}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="342" y="0" width="73" height="20" uuid="057d1c28-f662-4654-900c-126fb370e516"/>
 				<textElement>
-					<font fontName="Arial"/>
+					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{rec}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="415" y="0" width="75" height="20" uuid="c4ec3bc8-0e5b-4abb-9ba0-f0ef24497cb4"/>
 				<textElement>
-					<font fontName="Arial"/>
+					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{gasto}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="490" y="0" width="65" height="20" uuid="8a78d42f-ec80-473a-ab60-16bce5a56ea4"/>
 				<textElement>
-					<font fontName="Arial"/>
+					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{saldo}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="100" y="0" width="82" height="20" uuid="99874687-7fd5-491f-88d9-f72aecaa7f2e"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{entrada}]]></textFieldExpression>
 			</textField>
 		</band>

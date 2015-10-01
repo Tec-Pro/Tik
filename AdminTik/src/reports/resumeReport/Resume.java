@@ -17,15 +17,15 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
  */
 public class Resume {
     
-    String fecha;
-    float entrada;
-    float recM;
-    float recT;
-    float rec;
-    float gasto;
-    float saldo;
+    Object fecha;
+    Object entrada;
+    Object recM;
+    Object recT;
+    Object rec;
+    Object gasto;
+    Object saldo;
     
-    public Resume(String fecha, float cajaEntrada, float recM, float recT, float rec, float gasto, float saldo) {
+    public Resume(Object fecha, Object cajaEntrada, Object recM, Object recT, Object rec, Object gasto, Object saldo) {
         this.fecha = fecha;
         this.entrada = cajaEntrada;
         this.recM = recM;
@@ -36,31 +36,31 @@ public class Resume {
     }
 
     
-    public String getFecha() {
+    public Object getFecha() {
         return fecha;
     }
 
-    public float getEntrada() {
+    public Object getEntrada() {
         return entrada;
     }
 
-    public float getRecM() {
+    public Object getRecM() {
         return recM;
     }
 
-    public float getRecT() {
+    public Object getRecT() {
         return recT;
     }
 
-    public float getRec() {
+    public Object getRec() {
         return rec;
     }
 
-    public float getGasto() {
+    public Object getGasto() {
         return gasto;
     }
 
-    public float getSaldo() {
+    public Object getSaldo() {
         return saldo;
     }
     

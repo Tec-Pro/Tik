@@ -3,7 +3,6 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="total" class="java.lang.String"/>
 	<field name="persona" class="java.lang.String"/>
 	<field name="turno" class="java.lang.String"/>
 	<field name="hora" class="java.lang.String"/>
@@ -59,38 +58,26 @@
 	</columnHeader>
 	<detail>
 		<band height="21" splitType="Stretch">
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="218" height="20" uuid="30268867-a91d-4f03-acca-d29a797113c7"/>
 				<textFieldExpression><![CDATA[$F{persona}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="218" y="0" width="110" height="20" uuid="19bc2371-c32b-4bf3-bec4-27ede1db6f11"/>
 				<textFieldExpression><![CDATA[$F{turno}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="328" y="0" width="127" height="20" uuid="628b3b84-6c69-4456-91e9-fdd36d92de46"/>
 				<textFieldExpression><![CDATA[$F{hora}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="455" y="0" width="100" height="20" uuid="3f00a5eb-9619-41be-bd1b-723dd61d827c"/>
 				<textFieldExpression><![CDATA[$F{monto}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="45" splitType="Stretch">
-			<staticText>
-				<reportElement x="410" y="0" width="45" height="20" uuid="a46148b5-2e30-426c-b062-1b131f4659e0"/>
-				<textElement>
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[TOTAL]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="455" y="0" width="87" height="21" uuid="340efae9-190a-4247-a68d-6330bcc29914"/>
-				<textFieldExpression><![CDATA[$P{total}]]></textFieldExpression>
-			</textField>
-		</band>
+		<band height="45" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
 		<band splitType="Stretch"/>

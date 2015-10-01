@@ -400,30 +400,30 @@ public class ControllerGuiSummaryCashbox implements ActionListener {
             List<Resume> listResume = new ArrayList();
             List<AdminResume> listAdminResume = new ArrayList();
             for (int i = 0; i < guiSummaryCashboxForDate.getTableResumeDefault().getRowCount(); i++) {
-                Resume pp = new Resume(guiSummaryCashboxForDate.getTableResumeDefault().getValueAt(i, 0).toString(),
-                        (float) guiSummaryCashboxForDate.getTableResumeDefault().getValueAt(i, 1),
-                        (float) guiSummaryCashboxForDate.getTableResumeDefault().getValueAt(i, 2),
-                        (float) guiSummaryCashboxForDate.getTableResumeDefault().getValueAt(i, 3),
-                        (float) guiSummaryCashboxForDate.getTableResumeDefault().getValueAt(i, 4),
-                        (float) guiSummaryCashboxForDate.getTableResumeDefault().getValueAt(i, 5),
-                        (float) guiSummaryCashboxForDate.getTableResumeDefault().getValueAt(i, 6));
+                Resume pp = new Resume(guiSummaryCashboxForDate.getTableResumeDefault().getValueAt(i, 0),
+                        guiSummaryCashboxForDate.getTableResumeDefault().getValueAt(i, 1),
+                         guiSummaryCashboxForDate.getTableResumeDefault().getValueAt(i, 2),
+                         guiSummaryCashboxForDate.getTableResumeDefault().getValueAt(i, 3),
+                         guiSummaryCashboxForDate.getTableResumeDefault().getValueAt(i, 4),
+                         guiSummaryCashboxForDate.getTableResumeDefault().getValueAt(i, 5),
+                         guiSummaryCashboxForDate.getTableResumeDefault().getValueAt(i, 6));
                 listResume.add(pp);
             }
 
             for (int i = 0; i < guiSummaryCashboxForDate.getTableResumeForAdminDefault().getRowCount()-1; i++) {
-                AdminResume ar = new AdminResume(guiSummaryCashboxForDate.getTableResumeForAdminDefault().getValueAt(i, 0).toString(),
-                        guiSummaryCashboxForDate.getTableResumeForAdminDefault().getValueAt(i, 1).toString(),
-                        (float) guiSummaryCashboxForDate.getTableResumeForAdminDefault().getValueAt(i, 2),
-                        (float) guiSummaryCashboxForDate.getTableResumeForAdminDefault().getValueAt(i, 3),
-                        (float) guiSummaryCashboxForDate.getTableResumeForAdminDefault().getValueAt(i, 4));
+                AdminResume ar = new AdminResume(guiSummaryCashboxForDate.getTableResumeForAdminDefault().getValueAt(i, 0),
+                        guiSummaryCashboxForDate.getTableResumeForAdminDefault().getValueAt(i, 1),
+                         guiSummaryCashboxForDate.getTableResumeForAdminDefault().getValueAt(i, 2),
+                         guiSummaryCashboxForDate.getTableResumeForAdminDefault().getValueAt(i, 3),
+                         guiSummaryCashboxForDate.getTableResumeForAdminDefault().getValueAt(i, 4));
                 listAdminResume.add(ar);
             }
             int i = guiSummaryCashboxForDate.getTableResumeForAdminDefault().getRowCount()-1;
             AdminResume ar = new AdminResume(" ",
-                        guiSummaryCashboxForDate.getTableResumeForAdminDefault().getValueAt(i, 1).toString(),
-                        (float) guiSummaryCashboxForDate.getTableResumeForAdminDefault().getValueAt(i, 2),
-                        (float) guiSummaryCashboxForDate.getTableResumeForAdminDefault().getValueAt(i, 3),
-                        (float) guiSummaryCashboxForDate.getTableResumeForAdminDefault().getValueAt(i, 4));
+                        guiSummaryCashboxForDate.getTableResumeForAdminDefault().getValueAt(i, 1),
+                        guiSummaryCashboxForDate.getTableResumeForAdminDefault().getValueAt(i, 2),
+                        guiSummaryCashboxForDate.getTableResumeForAdminDefault().getValueAt(i, 3),
+                        guiSummaryCashboxForDate.getTableResumeForAdminDefault().getValueAt(i, 4));
             listAdminResume.add(ar);
 
             try {

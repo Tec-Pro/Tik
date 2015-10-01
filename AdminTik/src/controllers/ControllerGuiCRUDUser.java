@@ -430,11 +430,11 @@ public class ControllerGuiCRUDUser implements ActionListener {
         if (e.getSource().equals(guiUser.getBtnPrintReport())) {
             List<UserData> listA = new ArrayList();
             for (int i = 0; i < guiUser.getTableEmployeeSchedule().getRowCount(); i++) {
-                UserData pp = new UserData(guiUser.getTableEmployeeSchedule().getValueAt(i, 1).toString(),
-                        guiUser.getTableEmployeeSchedule().getValueAt(i, 2).toString(),
-                        guiUser.getTableEmployeeSchedule().getValueAt(i, 3).toString(),
-                guiUser.getTableEmployeeSchedule().getValueAt(i, 4).toString(),
-                guiUser.getTableEmployeeSchedule().getValueAt(i, 5).toString());
+                UserData pp = new UserData(guiUser.getTableEmployeeSchedule().getValueAt(i, 1),
+                        guiUser.getTableEmployeeSchedule().getValueAt(i, 2),
+                        guiUser.getTableEmployeeSchedule().getValueAt(i, 3),
+                guiUser.getTableEmployeeSchedule().getValueAt(i, 4),
+                guiUser.getTableEmployeeSchedule().getValueAt(i, 5));
                 listA.add(pp);
             }
 

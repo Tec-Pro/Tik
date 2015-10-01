@@ -11,17 +11,17 @@ package reports.purchaseStatistics;
  */
 public class PproductStatistic {
     
-    String producto;
-    String unidad;
+    Object producto;
+    Object unidad;
     int cant;
-    String cat;
-    String subcat;
-    String prov;
-    float unit;
-    float total;
-    String fecha;
+    Object cat;
+    Object subcat;
+    Object prov;
+    Object unit;
+    Object total;
+    Object fecha;
 
-    public PproductStatistic(String producto, String unidad, int cant, String cat, String subcat, String prov, float unit, float total, String fecha) {
+    public PproductStatistic(Object producto, Object unidad, int cant, Object cat, Object subcat, Object prov, Object unit, Object total, Object fecha) {
         this.producto = producto;
         this.unidad = unidad;
         this.cant = cant;
@@ -33,19 +33,19 @@ public class PproductStatistic {
         this.fecha = fecha;
     }
 
-    public String getProducto() {
+    public Object getProducto() {
         return producto;
     }
 
-    public void setProducto(String producto) {
+    public void setProducto(Object producto) {
         this.producto = producto;
     }
 
-    public String getUnidad() {
+    public Object getUnidad() {
         return unidad;
     }
 
-    public void setUnidad(String unidad) {
+    public void setUnidad(Object unidad) {
         this.unidad = unidad;
     }
 
@@ -57,51 +57,51 @@ public class PproductStatistic {
         this.cant = cant;
     }
 
-    public String getCat() {
+    public Object getCat() {
         return cat;
     }
 
-    public void setCat(String cat) {
+    public void setCat(Object cat) {
         this.cat = cat;
     }
 
-    public String getSubcat() {
+    public Object getSubcat() {
         return subcat;
     }
 
-    public void setSubcat(String subcat) {
+    public void setSubcat(Object subcat) {
         this.subcat = subcat;
     }
 
-    public String getProv() {
+    public Object getProv() {
         return prov;
     }
 
-    public void setProv(String prov) {
+    public void setProv(Object prov) {
         this.prov = prov;
     }
 
-    public float getUnit() {
+    public Object getUnit() {
         return unit;
     }
 
-    public void setUnit(float unit) {
+    public void setUnit(Object unit) {
         this.unit = unit;
     }
 
-    public float getTotal() {
+    public Object getTotal() {
         return total;
     }
 
-    public void setTotal(float total) {
+    public void setTotal(Object total) {
         this.total = total;
     }
 
-    public String getFecha() {
+    public Object getFecha() {
         return fecha;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(Object fecha) {
         this.fecha = fecha;
     }
 

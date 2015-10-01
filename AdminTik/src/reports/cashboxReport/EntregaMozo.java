@@ -10,31 +10,31 @@ package reports.cashboxReport;
  * @author alangonzalez
  */
 public class EntregaMozo {
-    String mozo;
-    String turno;
-    String hora;
-    float monto;
+    Object mozo;
+    Object turno;
+    Object hora;
+    Object monto;
 
-    public EntregaMozo(String mozo, String turno, String hora, float monto) {
+    public EntregaMozo(Object mozo, Object turno, Object hora, Object monto) {
         this.mozo = mozo;
         this.turno = turno;
         this.hora = hora;
         this.monto = monto;
     }
 
-    public String getMozo() {
+    public Object getMozo() {
         return mozo;
     }
 
-    public String getTurno() {
+    public Object getTurno() {
         return turno;
     }
 
-    public String getHora() {
+    public Object getHora() {
         return hora;
     }
 
-    public float getMonto() {
+    public Object getMonto() {
         return monto;
     }
     

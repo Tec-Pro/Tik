@@ -11,31 +11,31 @@ package reports.cashboxReport;
  */
 public class Detalle {
     
-    String id;
-    String tipo;
-    String detalle;
-    String monto;
+    Object id;
+    Object tipo;
+    Object detalle;
+    Object monto;
 
-    public Detalle(String id, String tipo, String detalle, String monto) {
+    public Detalle(Object id, Object tipo, Object detalle, Object monto) {
         this.id = id;
         this.tipo = tipo;
         this.detalle = detalle;
         this.monto = monto;
     }
 
-    public String getId() {
+    public Object getId() {
         return id;
     }
 
-    public String getTipo() {
+    public Object getTipo() {
         return tipo;
     }
 
-    public String getDetalle() {
+    public Object getDetalle() {
         return detalle;
     }
 
-    public String getMonto() {
+    public Object getMonto() {
         return monto;
     }
     

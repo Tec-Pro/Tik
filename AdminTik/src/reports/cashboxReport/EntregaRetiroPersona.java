@@ -11,31 +11,31 @@ package reports.cashboxReport;
  */
 public class EntregaRetiroPersona {
     
-    String persona;
-    String turno;
-    String hora;
-    String monto;
+    Object persona;
+    Object turno;
+    Object hora;
+    Object monto;
 
-    public EntregaRetiroPersona(String persona, String turno, String hora, String monto) {
+    public EntregaRetiroPersona(Object persona, Object turno, Object hora, Object monto) {
         this.persona = persona;
         this.turno = turno;
         this.hora = hora;
         this.monto = monto;
     }
 
-    public String getPersona() {
+    public Object getPersona() {
         return persona;
     }
 
-    public String getTurno() {
+    public Object getTurno() {
         return turno;
     }
 
-    public String getHora() {
+    public Object getHora() {
         return hora;
     }
 
-    public String getMonto() {
+    public Object getMonto() {
         return monto;
     }
     

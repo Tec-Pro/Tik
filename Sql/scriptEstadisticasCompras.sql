@@ -14,7 +14,7 @@ ADD COLUMN `pproductsubcategory_id` INT NOT NULL AFTER `provider_id`;
 
 
 INSERT INTO `pproductcategories` (`id`,`name`) VALUES (1,'CATEGORIA POR DEFECTO');
-INSERT INTO `pproductsubcategories` (`id`,`name`,`category_id`) VALUES (1,'SUBCATEGORIA POR DEFECTO',1);
+INSERT INTO `pproductsubcategories` (`id`,`name`,`pproductcategory_id`) VALUES (1,'SUBCATEGORIA POR DEFECTO',1);
 
 CREATE TABLE `tik`.`purchasestatistics` (
   `id` INT NOT NULL AUTO_INCREMENT,

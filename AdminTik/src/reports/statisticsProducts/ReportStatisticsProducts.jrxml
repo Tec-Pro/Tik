@@ -3,7 +3,7 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<field name="product" class="java.lang.String"/>
+	<field name="product" class="java.lang.Object"/>
 	<field name="amount" class="java.lang.Object"/>
 	<field name="turn" class="java.lang.Object"/>
 	<field name="date" class="java.lang.Object"/>
@@ -55,19 +55,19 @@
 	</pageHeader>
 	<columnHeader>
 		<band height="20" splitType="Stretch">
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="209" height="20" uuid="693cc0fb-7e8f-4d6f-a8fd-c4e0c3dd287b"/>
 				<textFieldExpression><![CDATA[$F{product}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="209" y="0" width="62" height="20" uuid="a3bbe35c-f89b-4006-9d6f-88f99becfb81"/>
 				<textFieldExpression><![CDATA[""+$F{amount}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="294" y="0" width="79" height="20" uuid="5d9994ce-c525-438a-8f28-e9c381296b9f"/>
 				<textFieldExpression><![CDATA[""+$F{turn}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="373" y="0" width="182" height="20" uuid="65987dc9-9d7c-42d6-8262-d3ce85e53a5e"/>
 				<textFieldExpression><![CDATA[""+$F{date}]]></textFieldExpression>
 			</textField>

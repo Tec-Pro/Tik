@@ -1,29 +1,220 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
-
-<jasperReport name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-    <background>
-        <band/>
-    </background>
-    <title>
-        <band height="79"/>
-    </title>
-    <pageHeader>
-        <band height="35"/>
-    </pageHeader>
-    <columnHeader>
-        <band height="61"/>
-    </columnHeader>
-    <detail>
-        <band height="125"/>
-    </detail>
-    <columnFooter>
-        <band height="45"/>
-    </columnFooter>
-    <pageFooter>
-        <band height="54"/>
-    </pageFooter>
-    <summary>
-        <band height="42"/>
-    </summary>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8e5058bb-ef2f-4798-aaec-f042ed49ff8e">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="saldoInicial" class="java.lang.Object"/>
+	<parameter name="cajaEntrada" class="java.lang.Object"/>
+	<parameter name="recM" class="java.lang.Object"/>
+	<parameter name="recT" class="java.lang.Object"/>
+	<parameter name="gastos" class="java.lang.Object"/>
+	<parameter name="sig" class="java.lang.Object"/>
+	<parameter name="saldo" class="java.lang.Object"/>
+	<parameter name="esaldoInicial" class="java.lang.Object"/>
+	<parameter name="eentrada" class="java.lang.Object"/>
+	<parameter name="eentregaMozo" class="java.lang.Object"/>
+	<parameter name="eentregaCaja" class="java.lang.Object"/>
+	<parameter name="eretiros" class="java.lang.Object"/>
+	<parameter name="egastos" class="java.lang.Object"/>
+	<parameter name="esig" class="java.lang.Object"/>
+	<parameter name="esaldo" class="java.lang.Object"/>
+	<field name="mozo" class="java.lang.Object"/>
+	<field name="turno" class="java.lang.Object"/>
+	<field name="hora" class="java.lang.Object"/>
+	<field name="monto" class="java.lang.Object"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="39" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="114" height="39" uuid="33d38627-0851-4bc6-97e2-5cc0c34a55be"/>
+				<textElement>
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Caja]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="183" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="b6335c23-8d02-4f9c-a383-48e4196a2939"/>
+				<text><![CDATA[Caja diaria]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="294" y="0" width="100" height="20" uuid="17b81026-bf31-4ac7-be6e-647bb29bca23"/>
+				<text><![CDATA[Existente en caja]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="33" y="20" width="100" height="20" uuid="1d8ec576-8b9b-44e4-8459-06d94ac40855"/>
+				<text><![CDATA[Saldo inicial]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="33" y="40" width="100" height="20" uuid="e003d36e-9fb9-4c57-8556-3fb720e36ff7"/>
+				<text><![CDATA[Caja entrada]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="33" y="60" width="100" height="20" uuid="be77699f-705f-41e1-be81-c00c92a66710"/>
+				<text><![CDATA[Rec. mañana]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="33" y="80" width="100" height="20" uuid="9658b26b-74e1-4af2-9f46-26572950cd12"/>
+				<text><![CDATA[Rec. tarde]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="33" y="100" width="100" height="20" uuid="b7ad3867-172b-4475-a556-f050a92a8706"/>
+				<text><![CDATA[Gastos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="33" y="120" width="100" height="20" uuid="5d9b6c55-be7a-46b3-b598-ca414b2a23a7"/>
+				<text><![CDATA[Turno siguiente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="33" y="140" width="100" height="20" uuid="599bcfaf-086e-4aa8-a23e-e464a76ca252"/>
+				<text><![CDATA[Saldo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="80" width="100" height="20" uuid="28197e3d-d416-4284-8d75-7593120f2e42"/>
+				<text><![CDATA[Entregas caja]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="20" width="100" height="20" uuid="0b786b58-ee44-408e-bdcf-f3bd16657a38"/>
+				<text><![CDATA[Saldo inicial]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="40" width="100" height="20" uuid="d08c3c2b-c59c-41d4-a802-c2b04c00b9ee"/>
+				<text><![CDATA[Caja entrada]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="100" width="100" height="20" uuid="e32f65e4-89c7-4238-a16c-1141bd5492c9"/>
+				<text><![CDATA[Retiros]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="140" width="100" height="20" uuid="d40024d6-39ef-4990-8bc4-1070d0420f33"/>
+				<text><![CDATA[Turno siguiente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="120" width="100" height="20" uuid="5186a11f-d896-48b0-81b3-12ee3b945619"/>
+				<text><![CDATA[Gastos caja]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="60" width="100" height="20" uuid="6293b410-2412-4d1f-9939-1367255acb17"/>
+				<text><![CDATA[Entregas mozo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="160" width="100" height="20" uuid="6151b197-4c21-489a-bd57-57e777664183"/>
+				<text><![CDATA[Saldo]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="133" y="20" width="100" height="20" uuid="829b1dca-9e75-470f-96e0-abaebdb3912a"/>
+				<textFieldExpression><![CDATA[""+$P{saldoInicial}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="133" y="40" width="100" height="20" uuid="d6964ab0-77e1-4f73-888e-3ad5c6336494"/>
+				<textFieldExpression><![CDATA[""+$P{cajaEntrada}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="133" y="60" width="100" height="20" uuid="464ba173-23ec-48d4-9297-8527a6979ecc"/>
+				<textFieldExpression><![CDATA[""+$P{recM}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="133" y="80" width="100" height="20" uuid="d9c1ee34-b704-4736-8be6-c94d39324a9d"/>
+				<textFieldExpression><![CDATA[""+$P{recT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="133" y="100" width="100" height="20" uuid="db14396b-a377-4293-87fd-9a7efb04adf0"/>
+				<textFieldExpression><![CDATA[""+$P{gastos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="133" y="120" width="100" height="20" uuid="e0572095-6ec2-418e-bf92-9ef3a8a39d8b"/>
+				<textFieldExpression><![CDATA[""+$P{sig}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="133" y="140" width="100" height="20" uuid="08056bf6-259b-47d8-ad76-57116b517513"/>
+				<textFieldExpression><![CDATA[""+$P{saldo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="430" y="20" width="100" height="20" uuid="d5cd97a9-e860-4988-871d-7f970b7bc58d"/>
+				<textFieldExpression><![CDATA[""+$P{esaldoInicial}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="430" y="40" width="100" height="20" uuid="264f34eb-5352-472d-8f2f-aa605dca3dee"/>
+				<textFieldExpression><![CDATA[""+$P{eentrada}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="430" y="60" width="100" height="20" uuid="3eba12fd-4ab1-48ab-bec3-e83111d30ada"/>
+				<textFieldExpression><![CDATA[""+$P{eentregaMozo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="430" y="80" width="100" height="20" uuid="31fb2717-4cca-4bbe-949a-f0c3176ed668"/>
+				<textFieldExpression><![CDATA[""+$P{eentregaCaja}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="430" y="100" width="100" height="20" uuid="359c0ea9-6a3c-49e4-8855-2c02b75795d9"/>
+				<textFieldExpression><![CDATA[""+$P{eretiros}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="430" y="120" width="100" height="20" uuid="5b833b34-0d90-46fa-b684-652a57b3114d"/>
+				<textFieldExpression><![CDATA[""+$P{egastos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="430" y="140" width="100" height="20" uuid="270097e8-c12e-4b41-b390-0422a90e9d73"/>
+				<textFieldExpression><![CDATA[""+$P{esig}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="430" y="160" width="100" height="20" uuid="4d39e810-72ea-498d-869f-83b426ce8ca0"/>
+				<textFieldExpression><![CDATA[""+$P{esaldo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="4662b36f-516d-4b61-9863-c6fef0c8fecc"/>
+				<text><![CDATA[mozo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="1" width="100" height="20" uuid="c78b40aa-43b4-425d-b0a5-ddcb44cd92fa"/>
+				<text><![CDATA[turno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="1" width="100" height="20" uuid="f32f1d09-b086-4857-87aa-1dacbd278628"/>
+				<text><![CDATA[hora]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="1" width="100" height="20" uuid="4c9cba01-e14e-4bc9-b51a-08bc6711c9a8"/>
+				<text><![CDATA[monto]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="100" height="20" uuid="60d516a7-dff1-4b1c-9763-088a8c4fc821"/>
+				<textFieldExpression><![CDATA[""+$F{mozo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="100" y="0" width="100" height="20" uuid="d15a7dad-0266-4e43-8567-7328c1c32915"/>
+				<textFieldExpression><![CDATA[""+$F{turno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="200" y="0" width="100" height="20" uuid="32523f4b-aeeb-4c51-9adf-78fa225eb9f1"/>
+				<textFieldExpression><![CDATA[""+$F{hora}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="300" y="0" width="100" height="20" uuid="b77fbe3d-6d56-40c2-b041-ecf5974e8b23"/>
+				<textFieldExpression><![CDATA[""+$F{monto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
 </jasperReport>

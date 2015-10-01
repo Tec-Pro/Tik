@@ -3,7 +3,6 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="total" class="java.lang.String"/>
 	<field name="id" class="java.lang.String"/>
 	<field name="tipo" class="java.lang.String"/>
 	<field name="detalle" class="java.lang.String"/>
@@ -66,19 +65,19 @@
 	</columnHeader>
 	<detail>
 		<band height="21" splitType="Stretch">
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="66" height="20" uuid="26fec4ea-bd8e-499d-9776-c7419293f9ac"/>
 				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="66" y="0" width="193" height="20" uuid="38fde008-6b46-4442-8ac0-2c05c22168a7"/>
 				<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="259" y="0" width="220" height="20" uuid="2b045252-a705-4a69-9497-c3a65a7cb1e4"/>
 				<textFieldExpression><![CDATA[$F{detalle}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="479" y="0" width="76" height="20" uuid="c2af16a3-6db1-4325-813a-c0a851b41f59"/>
 				<textFieldExpression><![CDATA[$F{monto}]]></textFieldExpression>
 			</textField>
@@ -88,19 +87,7 @@
 		<band splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="34" splitType="Stretch">
-			<staticText>
-				<reportElement x="422" y="0" width="54" height="20" uuid="ad9e2ce4-8069-4b9b-8fe8-dbe88082b3cb"/>
-				<textElement>
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[TOTAL]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="479" y="0" width="76" height="20" uuid="c75c8c19-cfff-4229-994f-51a73f953e6b"/>
-				<textFieldExpression><![CDATA[$P{total}]]></textFieldExpression>
-			</textField>
-		</band>
+		<band height="34" splitType="Stretch"/>
 	</pageFooter>
 	<summary>
 		<band splitType="Stretch"/>

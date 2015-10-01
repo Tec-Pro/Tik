@@ -1,29 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
-
-<jasperReport name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-    <background>
-        <band/>
-    </background>
-    <title>
-        <band height="79"/>
-    </title>
-    <pageHeader>
-        <band height="35"/>
-    </pageHeader>
-    <columnHeader>
-        <band height="61"/>
-    </columnHeader>
-    <detail>
-        <band height="125"/>
-    </detail>
-    <columnFooter>
-        <band height="45"/>
-    </columnFooter>
-    <pageFooter>
-        <band height="54"/>
-    </pageFooter>
-    <summary>
-        <band height="42"/>
-    </summary>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b82b010c-69f1-4fab-832a-61e7c135000a">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="nombre" class="java.lang.String"/>
+	<field name="diaEntrada" class="java.lang.Object"/>
+	<field name="horaEntrada" class="java.lang.Object"/>
+	<field name="diaSale" class="java.lang.Object"/>
+	<field name="horaSale" class="java.lang.Object"/>
+	<field name="horas" class="java.lang.Object"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="208" height="42" uuid="06290ba1-b0cd-4679-9590-15d989a97836"/>
+				<textElement>
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Empleado]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="24" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="54" height="20" uuid="ebca7556-fe7c-486e-9558-1d67ddc57019"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="54" y="0" width="213" height="20" uuid="887ab0e2-9b06-4e76-a1e7-d5b9c1fa9889"/>
+				<textFieldExpression><![CDATA[$P{nombre}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="36" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="16" width="134" height="20" backcolor="#CCCCCC" uuid="1c7bbbb9-6c31-46d5-8cc4-43f9d5ee0931"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dia entrada]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="134" y="16" width="100" height="20" backcolor="#CCCCCC" uuid="426176d7-5117-43ff-b581-d5d240bd2210"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Hora entrada]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="234" y="16" width="121" height="20" backcolor="#CCCCCC" uuid="55011ffe-eb0b-47b7-a65f-1521be069889"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dia salida]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="355" y="16" width="100" height="20" backcolor="#CCCCCC" uuid="8191de60-cd18-49c9-a349-294e3305aa8e"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Hora salida]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="455" y="16" width="100" height="20" backcolor="#CCCCCC" uuid="c34f2e67-d390-4299-817a-47df4091a1b9"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Horas]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="134" height="20" uuid="89057bec-2054-4647-8c96-dc22e0da0191"/>
+				<textFieldExpression><![CDATA[""+$F{diaEntrada}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="134" y="0" width="100" height="20" uuid="09f67f52-41aa-4375-9482-f250ef19cb9e"/>
+				<textFieldExpression><![CDATA[""+$F{horaEntrada}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="234" y="0" width="121" height="20" uuid="541d66af-9293-4e75-a2fa-295b39a4a903"/>
+				<textFieldExpression><![CDATA[""+$F{diaSale}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="355" y="0" width="100" height="20" uuid="52c86488-858e-4f06-aaa2-e9c9344a4ac0"/>
+				<textFieldExpression><![CDATA[""+$F{horaSale}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="455" y="0" width="100" height="20" uuid="c1c84f0a-34b7-4372-8689-2935b82625e1"/>
+				<textFieldExpression><![CDATA[""+$F{horas}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="1" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
 </jasperReport>

@@ -11,13 +11,13 @@ package reports.resumeReport;
  */
 public class AdminResume {
     
-    String fecha;
-    String admin;
-    float entrega;
-    float retiro;
-    float total;
+    Object fecha;
+    Object admin;
+    Object entrega;
+    Object retiro;
+    Object total;
 
-    public AdminResume(String fecha, String admin, float entrega, float retiro, float total) {
+    public AdminResume(Object fecha, Object admin, Object entrega, Object retiro, Object total) {
         this.fecha = fecha;
         this.admin = admin;
         this.entrega = entrega;
@@ -25,23 +25,23 @@ public class AdminResume {
         this.total = total;
     }
 
-    public String getFecha() {
+    public Object getFecha() {
         return fecha;
     }
 
-    public String getAdmin() {
+    public Object getAdmin() {
         return admin;
     }
 
-    public float getEntrega() {
+    public Object getEntrega() {
         return entrega;
     }
 
-    public float getRetiro() {
+    public Object getRetiro() {
         return retiro;
     }
 
-    public float getTotal() {
+    public Object getTotal() {
         return total;
     }
     

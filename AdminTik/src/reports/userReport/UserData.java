@@ -11,13 +11,13 @@ package reports.userReport;
  */
 public class UserData {
     
-    String diaEntra;
-    String horaEntra;
-    String diaSale;
-    String horaSale;
-    String horas;
+    Object diaEntra;
+    Object horaEntra;
+    Object diaSale;
+    Object horaSale;
+    Object horas;
 
-    public UserData(String diaEntra, String horaEntra, String diaSale, String horaSale, String horas) {
+    public UserData(Object diaEntra, Object horaEntra, Object diaSale, Object horaSale, Object horas) {
         this.diaEntra = diaEntra;
         this.horaEntra = horaEntra;
         this.diaSale = diaSale;
@@ -25,43 +25,43 @@ public class UserData {
         this.horas = horas;
     }
 
-    public String getDiaEntra() {
+    public Object getDiaEntra() {
         return diaEntra;
     }
 
-    public void setDiaEntra(String diaEntra) {
+    public void setDiaEntra(Object diaEntra) {
         this.diaEntra = diaEntra;
     }
 
-    public String getHoraEntra() {
+    public Object getHoraEntra() {
         return horaEntra;
     }
 
-    public void setHoraEntra(String horaEntra) {
+    public void setHoraEntra(Object horaEntra) {
         this.horaEntra = horaEntra;
     }
 
-    public String getDiaSale() {
+    public Object getDiaSale() {
         return diaSale;
     }
 
-    public void setDiaSale(String diaSale) {
+    public void setDiaSale(Object diaSale) {
         this.diaSale = diaSale;
     }
 
-    public String getHoraSale() {
+    public Object getHoraSale() {
         return horaSale;
     }
 
-    public void setHoraSale(String horaSale) {
+    public void setHoraSale(Object horaSale) {
         this.horaSale = horaSale;
     }
 
-    public String getHoras() {
+    public Object getHoras() {
         return horas;
     }
 
-    public void setHoras(String horas) {
+    public void setHoras(Object horas) {
         this.horas = horas;
     }
     
