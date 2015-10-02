@@ -269,7 +269,7 @@ public class ControllerGUICashbox implements ActionListener {
                                 gui.getWaiterDepositsTable().getValueAt(i, 3));
                         entregas.add(em);
                     }
-                    EntregaMozo em = new EntregaMozo(null,null,"TOTAL: ",gui.getWaiterDepositsTotalField().getText());
+                    EntregaMozo em = new EntregaMozo(" "," ","TOTAL: ",gui.getWaiterDepositsTotalField().getText());
                     entregas.add(em);
                     
                     jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JRBeanCollectionDataSource(entregas));

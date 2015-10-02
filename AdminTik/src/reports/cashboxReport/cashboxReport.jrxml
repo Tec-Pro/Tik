@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8e5058bb-ef2f-4798-aaec-f042ed49ff8e">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="15"/>
+	<property name="ireport.y" value="14"/>
 	<parameter name="saldoInicial" class="java.lang.Object"/>
 	<parameter name="cajaEntrada" class="java.lang.Object"/>
 	<parameter name="recM" class="java.lang.Object"/>
@@ -157,63 +157,63 @@
 				</textElement>
 				<text><![CDATA[Saldo]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="133" y="20" width="100" height="20" uuid="829b1dca-9e75-470f-96e0-abaebdb3912a"/>
 				<textFieldExpression><![CDATA[""+$P{saldoInicial}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="133" y="40" width="100" height="20" uuid="d6964ab0-77e1-4f73-888e-3ad5c6336494"/>
 				<textFieldExpression><![CDATA[""+$P{cajaEntrada}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="133" y="60" width="100" height="20" uuid="464ba173-23ec-48d4-9297-8527a6979ecc"/>
 				<textFieldExpression><![CDATA[""+$P{recM}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="133" y="80" width="100" height="20" uuid="d9c1ee34-b704-4736-8be6-c94d39324a9d"/>
 				<textFieldExpression><![CDATA[""+$P{recT}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="133" y="100" width="100" height="20" uuid="db14396b-a377-4293-87fd-9a7efb04adf0"/>
 				<textFieldExpression><![CDATA[""+$P{gastos}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="133" y="120" width="100" height="20" uuid="e0572095-6ec2-418e-bf92-9ef3a8a39d8b"/>
 				<textFieldExpression><![CDATA[""+$P{sig}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="133" y="140" width="100" height="20" uuid="08056bf6-259b-47d8-ad76-57116b517513"/>
 				<textFieldExpression><![CDATA[""+$P{saldo}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="430" y="20" width="100" height="20" uuid="d5cd97a9-e860-4988-871d-7f970b7bc58d"/>
 				<textFieldExpression><![CDATA[""+$P{esaldoInicial}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="430" y="40" width="100" height="20" uuid="264f34eb-5352-472d-8f2f-aa605dca3dee"/>
 				<textFieldExpression><![CDATA[""+$P{eentrada}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="430" y="60" width="100" height="20" uuid="3eba12fd-4ab1-48ab-bec3-e83111d30ada"/>
 				<textFieldExpression><![CDATA[""+$P{eentregaMozo}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="430" y="80" width="100" height="20" uuid="31fb2717-4cca-4bbe-949a-f0c3176ed668"/>
 				<textFieldExpression><![CDATA[""+$P{eentregaCaja}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="430" y="100" width="100" height="20" uuid="359c0ea9-6a3c-49e4-8855-2c02b75795d9"/>
 				<textFieldExpression><![CDATA[""+$P{eretiros}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="430" y="120" width="100" height="20" uuid="5b833b34-0d90-46fa-b684-652a57b3114d"/>
 				<textFieldExpression><![CDATA[""+$P{egastos}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="430" y="140" width="100" height="20" uuid="270097e8-c12e-4b41-b390-0422a90e9d73"/>
 				<textFieldExpression><![CDATA[""+$P{esig}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="430" y="160" width="100" height="20" uuid="4d39e810-72ea-498d-869f-83b426ce8ca0"/>
 				<textFieldExpression><![CDATA[""+$P{esaldo}]]></textFieldExpression>
 			</textField>
