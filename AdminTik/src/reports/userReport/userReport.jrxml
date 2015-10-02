@@ -4,12 +4,13 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="nombre" class="java.lang.String"/>
-	<field name="diaEntrada" class="java.lang.Object"/>
-	<field name="horaEntrada" class="java.lang.Object"/>
+	<field name="diaEntra" class="java.lang.Object"/>
+	<field name="horaEntra" class="java.lang.Object"/>
 	<field name="diaSale" class="java.lang.Object"/>
 	<field name="horaSale" class="java.lang.Object"/>
 	<field name="horas" class="java.lang.Object"/>
 	<background>
+            
 		<band splitType="Stretch"/>
 	</background>
 	<title>
@@ -32,7 +33,7 @@
 				</textElement>
 				<text><![CDATA[Nombre:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="54" y="0" width="213" height="20" uuid="887ab0e2-9b06-4e76-a1e7-d5b9c1fa9889"/>
 				<textFieldExpression><![CDATA[$P{nombre}]]></textFieldExpression>
 			</textField>
@@ -81,11 +82,11 @@
 		<band height="21" splitType="Stretch">
 			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="134" height="20" uuid="89057bec-2054-4647-8c96-dc22e0da0191"/>
-				<textFieldExpression><![CDATA[""+$F{diaEntrada}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""+$F{diaEntra}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="134" y="0" width="100" height="20" uuid="09f67f52-41aa-4375-9482-f250ef19cb9e"/>
-				<textFieldExpression><![CDATA[""+$F{horaEntrada}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""+$F{horaEntra}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="234" y="0" width="121" height="20" uuid="541d66af-9293-4e75-a2fa-295b39a4a903"/>
