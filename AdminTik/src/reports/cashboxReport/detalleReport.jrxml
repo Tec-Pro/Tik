@@ -3,10 +3,10 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<field name="id" class="java.lang.String"/>
-	<field name="tipo" class="java.lang.String"/>
-	<field name="detalle" class="java.lang.String"/>
-	<field name="monto" class="java.lang.String"/>
+	<field name="id" class="java.lang.Object"/>
+	<field name="tipo" class="java.lang.Object"/>
+	<field name="detalle" class="java.lang.Object"/>
+	<field name="monto" class="java.lang.Object"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
