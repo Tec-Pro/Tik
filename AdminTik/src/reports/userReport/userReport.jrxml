@@ -10,7 +10,6 @@
 	<field name="horaSale" class="java.lang.Object"/>
 	<field name="horas" class="java.lang.Object"/>
 	<background>
-            
 		<band splitType="Stretch"/>
 	</background>
 	<title>
