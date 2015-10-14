@@ -240,16 +240,12 @@ public class GuiPurchase extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        panelImage1 = new org.edisoncor.gui.panel.PanelImage();
         jScrollPane1 = new javax.swing.JScrollPane();
-        fondoImagen = new javax.swing.JPanel();
+        panelImage2 = new org.edisoncor.gui.panel.PanelImage();
         jSplitPane1 = new javax.swing.JSplitPane();
-        jPanel2 = new javax.swing.JPanel();
-        panelControlFactura = new javax.swing.JPanel();
-        btnNew = new javax.swing.JButton();
-        btnPurchase = new javax.swing.JButton();
-        btnCancel = new javax.swing.JButton();
-        panelCompra = new javax.swing.JPanel();
+        panelImage3 = new org.edisoncor.gui.panel.PanelImage();
+        panelImage4 = new org.edisoncor.gui.panel.PanelImage();
         labelCliente = new javax.swing.JLabel();
         jScrollPane8 = new javax.swing.JScrollPane();
         tblPurchase = new javax.swing.JTable();
@@ -261,14 +257,18 @@ public class GuiPurchase extends javax.swing.JInternalFrame {
         lblProvider = new javax.swing.JLabel();
         lblIdProvider = new javax.swing.JLabel();
         txtCost = new javax.swing.JFormattedTextField();
-        panelClientesAarticulos = new javax.swing.JPanel();
+        panelImage5 = new org.edisoncor.gui.panel.PanelImage();
+        btnNew = new javax.swing.JButton();
+        btnPurchase = new javax.swing.JButton();
+        btnCancel = new javax.swing.JButton();
+        panelImage6 = new org.edisoncor.gui.panel.PanelImage();
         jSplitPane2 = new javax.swing.JSplitPane();
-        panelArticulos = new javax.swing.JPanel();
+        panelImage7 = new org.edisoncor.gui.panel.PanelImage();
         jScrollPane6 = new javax.swing.JScrollPane();
         tblProduct = new javax.swing.JTable();
         labelNombre1 = new javax.swing.JLabel();
         txtSearchProduct = new javax.swing.JTextField();
-        panelProveedores = new javax.swing.JPanel();
+        panelImage8 = new org.edisoncor.gui.panel.PanelImage();
         txtSearchProvider = new javax.swing.JTextField();
         labelNombre = new javax.swing.JLabel();
         jScrollPane7 = new javax.swing.JScrollPane();
@@ -282,30 +282,20 @@ public class GuiPurchase extends javax.swing.JInternalFrame {
         setTitle("Registrar Compra");
         setPreferredSize(new java.awt.Dimension(836, 478));
 
-        jPanel1.setPreferredSize(new java.awt.Dimension(825, 448));
+        panelImage1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/fondo gris.png"))); // NOI18N
 
         jScrollPane1.setPreferredSize(new java.awt.Dimension(822, 448));
 
-        fondoImagen.setPreferredSize(new java.awt.Dimension(820, 400));
+        panelImage2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/fondo gris.png"))); // NOI18N
 
         jSplitPane1.setDividerSize(10);
 
-        panelControlFactura.setLayout(new java.awt.GridLayout(1, 0));
+        panelImage3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/fondo gris.png"))); // NOI18N
 
-        btnNew.setText("COMPRA NUEVA");
-        btnNew.setToolTipText("Realizar una nueva compra");
-        panelControlFactura.add(btnNew);
+        panelImage4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Compra", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 3, 15), new java.awt.Color(255, 255, 255))); // NOI18N
+        panelImage4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/fondo gris.png"))); // NOI18N
 
-        btnPurchase.setText("REALIZAR COMPRA");
-        btnPurchase.setToolTipText("Registrar la compra");
-        panelControlFactura.add(btnPurchase);
-
-        btnCancel.setText("CANCELAR");
-        panelControlFactura.add(btnCancel);
-
-        panelCompra.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Compra", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Schoolbook L", 3, 18))); // NOI18N
-
-        labelCliente.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
+        labelCliente.setForeground(new java.awt.Color(255, 255, 255));
         labelCliente.setText("Proveedor");
 
         tblPurchase.setModel(new javax.swing.table.DefaultTableModel(
@@ -334,22 +324,14 @@ public class GuiPurchase extends javax.swing.JInternalFrame {
         tblPurchase.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tblPurchase.getTableHeader().setReorderingAllowed(false);
         jScrollPane8.setViewportView(tblPurchase);
-        if (tblPurchase.getColumnModel().getColumnCount() > 0) {
-            tblPurchase.getColumnModel().getColumn(0).setResizable(false);
-            tblPurchase.getColumnModel().getColumn(0).setPreferredWidth(15);
-            tblPurchase.getColumnModel().getColumn(5).setResizable(false);
-            tblPurchase.getColumnModel().getColumn(5).setPreferredWidth(30);
-        }
 
-        labelTotal.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
+        labelTotal.setForeground(new java.awt.Color(255, 255, 255));
         labelTotal.setText("Total");
 
-        jLabel3.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Fecha");
 
-        datePurchase.setDateFormatString("dd/MM/yyyy");
-
-        jLabel5.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Abona");
 
         boxPay.addActionListener(new java.awt.event.ActionListener() {
@@ -358,15 +340,19 @@ public class GuiPurchase extends javax.swing.JInternalFrame {
             }
         });
 
+        lblProvider.setForeground(new java.awt.Color(255, 255, 255));
+
+        lblIdProvider.setForeground(new java.awt.Color(255, 255, 255));
+
         txtCost.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
         txtCost.setEnabled(false);
 
-        javax.swing.GroupLayout panelCompraLayout = new javax.swing.GroupLayout(panelCompra);
-        panelCompra.setLayout(panelCompraLayout);
-        panelCompraLayout.setHorizontalGroup(
-            panelCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout panelImage4Layout = new javax.swing.GroupLayout(panelImage4);
+        panelImage4.setLayout(panelImage4Layout);
+        panelImage4Layout.setHorizontalGroup(
+            panelImage4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane8, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(panelCompraLayout.createSequentialGroup()
+            .addGroup(panelImage4Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -375,7 +361,7 @@ public class GuiPurchase extends javax.swing.JInternalFrame {
                 .addComponent(labelTotal)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtCost, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCompraLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelImage4Layout.createSequentialGroup()
                 .addComponent(labelCliente)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblProvider, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -386,54 +372,65 @@ public class GuiPurchase extends javax.swing.JInternalFrame {
                 .addGap(4, 4, 4)
                 .addComponent(datePurchase, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
-        panelCompraLayout.setVerticalGroup(
-            panelCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelCompraLayout.createSequentialGroup()
-                .addGroup(panelCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        panelImage4Layout.setVerticalGroup(
+            panelImage4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelImage4Layout.createSequentialGroup()
+                .addGroup(panelImage4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addComponent(datePurchase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblIdProvider, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblProvider, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(5, 5, 5)
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panelCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(panelImage4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelImage4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(jLabel5)
                         .addComponent(boxPay))
                     .addComponent(txtCost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelTotal)))
         );
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelCompra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelControlFactura, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 0, 0))
+        panelImage5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/fondo gris.png"))); // NOI18N
+        panelImage5.setLayout(new java.awt.GridLayout(1, 0));
+
+        btnNew.setText("COMPRA NUEVA");
+        btnNew.setToolTipText("Realizar una nueva compra");
+        panelImage5.add(btnNew);
+
+        btnPurchase.setText("REALIZAR COMPRA");
+        btnPurchase.setToolTipText("Registrar la compra");
+        panelImage5.add(btnPurchase);
+
+        btnCancel.setText("CANCELAR");
+        panelImage5.add(btnCancel);
+
+        javax.swing.GroupLayout panelImage3Layout = new javax.swing.GroupLayout(panelImage3);
+        panelImage3.setLayout(panelImage3Layout);
+        panelImage3Layout.setHorizontalGroup(
+            panelImage3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panelImage4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelImage5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(panelCompra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        panelImage3Layout.setVerticalGroup(
+            panelImage3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelImage3Layout.createSequentialGroup()
+                .addComponent(panelImage4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelControlFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+                .addComponent(panelImage5, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jSplitPane1.setLeftComponent(jPanel2);
+        jSplitPane1.setLeftComponent(panelImage3);
+
+        panelImage6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/fondo gris.png"))); // NOI18N
 
         jSplitPane2.setDividerLocation(200);
         jSplitPane2.setDividerSize(10);
         jSplitPane2.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
-        panelArticulos.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Productos primarios", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Schoolbook L", 3, 18))); // NOI18N
+        panelImage7.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Productos Primarios", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 3, 14), new java.awt.Color(255, 255, 255))); // NOI18N
+        panelImage7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/fondo gris.png"))); // NOI18N
 
         tblProduct.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -462,43 +459,40 @@ public class GuiPurchase extends javax.swing.JInternalFrame {
         tblProduct.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tblProduct.getTableHeader().setReorderingAllowed(false);
         jScrollPane6.setViewportView(tblProduct);
-        if (tblProduct.getColumnModel().getColumnCount() > 0) {
-            tblProduct.getColumnModel().getColumn(0).setResizable(false);
-            tblProduct.getColumnModel().getColumn(0).setPreferredWidth(15);
-        }
 
-        labelNombre1.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
+        labelNombre1.setForeground(new java.awt.Color(255, 255, 255));
         labelNombre1.setText("Codigo");
 
         txtSearchProduct.setToolTipText("Filtrar busqueda por codigo");
 
-        javax.swing.GroupLayout panelArticulosLayout = new javax.swing.GroupLayout(panelArticulos);
-        panelArticulos.setLayout(panelArticulosLayout);
-        panelArticulosLayout.setHorizontalGroup(
-            panelArticulosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-            .addGroup(panelArticulosLayout.createSequentialGroup()
+        javax.swing.GroupLayout panelImage7Layout = new javax.swing.GroupLayout(panelImage7);
+        panelImage7.setLayout(panelImage7Layout);
+        panelImage7Layout.setHorizontalGroup(
+            panelImage7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
+            .addGroup(panelImage7Layout.createSequentialGroup()
                 .addComponent(labelNombre1)
                 .addGap(17, 17, 17)
                 .addComponent(txtSearchProduct))
         );
-        panelArticulosLayout.setVerticalGroup(
-            panelArticulosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelArticulosLayout.createSequentialGroup()
-                .addGroup(panelArticulosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+        panelImage7Layout.setVerticalGroup(
+            panelImage7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelImage7Layout.createSequentialGroup()
+                .addGroup(panelImage7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtSearchProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelNombre1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE))
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE))
         );
 
-        jSplitPane2.setLeftComponent(panelArticulos);
+        jSplitPane2.setLeftComponent(panelImage7);
 
-        panelProveedores.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Proveedores", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Century Schoolbook L", 3, 18))); // NOI18N
+        panelImage8.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Proveedores", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 3, 14), new java.awt.Color(255, 255, 255))); // NOI18N
+        panelImage8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/fondo gris.png"))); // NOI18N
 
         txtSearchProvider.setToolTipText("Filtrar busqueda por ID");
 
-        labelNombre.setFont(new java.awt.Font("Century Schoolbook L", 0, 14)); // NOI18N
+        labelNombre.setForeground(new java.awt.Color(255, 255, 255));
         labelNombre.setText("Nombre");
 
         tblProvider.setModel(new javax.swing.table.DefaultTableModel(
@@ -528,78 +522,74 @@ public class GuiPurchase extends javax.swing.JInternalFrame {
         tblProvider.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tblProvider.getTableHeader().setReorderingAllowed(false);
         jScrollPane7.setViewportView(tblProvider);
-        if (tblProvider.getColumnModel().getColumnCount() > 0) {
-            tblProvider.getColumnModel().getColumn(0).setResizable(false);
-            tblProvider.getColumnModel().getColumn(0).setPreferredWidth(15);
-        }
 
-        javax.swing.GroupLayout panelProveedoresLayout = new javax.swing.GroupLayout(panelProveedores);
-        panelProveedores.setLayout(panelProveedoresLayout);
-        panelProveedoresLayout.setHorizontalGroup(
-            panelProveedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelProveedoresLayout.createSequentialGroup()
+        javax.swing.GroupLayout panelImage8Layout = new javax.swing.GroupLayout(panelImage8);
+        panelImage8.setLayout(panelImage8Layout);
+        panelImage8Layout.setHorizontalGroup(
+            panelImage8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelImage8Layout.createSequentialGroup()
                 .addComponent(labelNombre)
                 .addGap(17, 17, 17)
-                .addComponent(txtSearchProvider, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE))
+                .addComponent(txtSearchProvider))
             .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
-        panelProveedoresLayout.setVerticalGroup(
-            panelProveedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelProveedoresLayout.createSequentialGroup()
-                .addGroup(panelProveedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+        panelImage8Layout.setVerticalGroup(
+            panelImage8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelImage8Layout.createSequentialGroup()
+                .addGroup(panelImage8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtSearchProvider, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelNombre))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE))
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE))
         );
 
-        jSplitPane2.setRightComponent(panelProveedores);
+        jSplitPane2.setRightComponent(panelImage8);
 
-        javax.swing.GroupLayout panelClientesAarticulosLayout = new javax.swing.GroupLayout(panelClientesAarticulos);
-        panelClientesAarticulos.setLayout(panelClientesAarticulosLayout);
-        panelClientesAarticulosLayout.setHorizontalGroup(
-            panelClientesAarticulosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout panelImage6Layout = new javax.swing.GroupLayout(panelImage6);
+        panelImage6.setLayout(panelImage6Layout);
+        panelImage6Layout.setHorizontalGroup(
+            panelImage6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jSplitPane2, javax.swing.GroupLayout.Alignment.TRAILING)
         );
-        panelClientesAarticulosLayout.setVerticalGroup(
-            panelClientesAarticulosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+        panelImage6Layout.setVerticalGroup(
+            panelImage6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 448, Short.MAX_VALUE)
         );
 
-        jSplitPane1.setRightComponent(panelClientesAarticulos);
+        jSplitPane1.setRightComponent(panelImage6);
 
-        javax.swing.GroupLayout fondoImagenLayout = new javax.swing.GroupLayout(fondoImagen);
-        fondoImagen.setLayout(fondoImagenLayout);
-        fondoImagenLayout.setHorizontalGroup(
-            fondoImagenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(fondoImagenLayout.createSequentialGroup()
+        javax.swing.GroupLayout panelImage2Layout = new javax.swing.GroupLayout(panelImage2);
+        panelImage2.setLayout(panelImage2Layout);
+        panelImage2Layout.setHorizontalGroup(
+            panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelImage2Layout.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addComponent(jSplitPane1)
                 .addGap(0, 0, 0))
         );
-        fondoImagenLayout.setVerticalGroup(
-            fondoImagenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(fondoImagenLayout.createSequentialGroup()
+        panelImage2Layout.setVerticalGroup(
+            panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelImage2Layout.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addComponent(jSplitPane1))
         );
 
-        jScrollPane1.setViewportView(fondoImagen);
+        jScrollPane1.setViewportView(panelImage2);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelImage1Layout = new javax.swing.GroupLayout(panelImage1);
+        panelImage1.setLayout(panelImage1Layout);
+        panelImage1Layout.setHorizontalGroup(
+            panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelImage1Layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(3, 3, 3))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        panelImage1Layout.setVerticalGroup(
+            panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
+        getContentPane().add(panelImage1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -614,11 +604,8 @@ public class GuiPurchase extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnNew;
     private javax.swing.JButton btnPurchase;
     private com.toedter.calendar.JDateChooser datePurchase;
-    private javax.swing.JPanel fondoImagen;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
@@ -631,11 +618,14 @@ public class GuiPurchase extends javax.swing.JInternalFrame {
     private javax.swing.JLabel labelTotal;
     private javax.swing.JLabel lblIdProvider;
     private javax.swing.JLabel lblProvider;
-    private javax.swing.JPanel panelArticulos;
-    private javax.swing.JPanel panelClientesAarticulos;
-    private javax.swing.JPanel panelCompra;
-    private javax.swing.JPanel panelControlFactura;
-    private javax.swing.JPanel panelProveedores;
+    private org.edisoncor.gui.panel.PanelImage panelImage1;
+    private org.edisoncor.gui.panel.PanelImage panelImage2;
+    private org.edisoncor.gui.panel.PanelImage panelImage3;
+    private org.edisoncor.gui.panel.PanelImage panelImage4;
+    private org.edisoncor.gui.panel.PanelImage panelImage5;
+    private org.edisoncor.gui.panel.PanelImage panelImage6;
+    private org.edisoncor.gui.panel.PanelImage panelImage7;
+    private org.edisoncor.gui.panel.PanelImage panelImage8;
     private javax.swing.JTable tblProduct;
     private javax.swing.JTable tblProvider;
     private javax.swing.JTable tblPurchase;
