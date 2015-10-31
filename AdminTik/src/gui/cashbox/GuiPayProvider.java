@@ -256,13 +256,14 @@ public class GuiPayProvider extends javax.swing.JDialog {
         panelImage2Layout.setHorizontalGroup(
             panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelImage2Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(chkBox)
                     .addGroup(panelImage2Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtPayBox, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)))
+                        .addContainerGap()
+                        .addComponent(chkBox))
+                    .addGroup(panelImage2Layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtPayBox, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         panelImage2Layout.setVerticalGroup(
@@ -371,10 +372,10 @@ public class GuiPayProvider extends javax.swing.JDialog {
                 System.out.println(getPayBox()+"s"+getPayAdmin());
                 doClose(RET_OK);
             } else {
-                JOptionPane.showConfirmDialog(this, "Ingrese un valor valido", "aviso", JOptionPane.OK_OPTION);
+                JOptionPane.showMessageDialog(this, "Ingrese un valor valido", "aviso", JOptionPane.OK_OPTION);
             }
         } else {
-            JOptionPane.showConfirmDialog(this, "Seleccione un administrador", "aviso", JOptionPane.OK_OPTION);
+            JOptionPane.showMessageDialog(this, "Seleccione un administrador", "aviso", JOptionPane.OK_OPTION);
         }
     }//GEN-LAST:event_btnPayActionPerformed
 
