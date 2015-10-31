@@ -69,7 +69,7 @@ public class ControllerGUICashbox implements ActionListener {
     private static InterfaceAdmin admin;
     private static InterfaceUser user;
     private static InterfaceCashbox cashbox;
-    private final InterfaceProvider interfaceProvider;
+    private static InterfaceProvider interfaceProvider;
     private final InterfacePayments interfacePayments;
     private final InterfaceExpenses interfaceExpenses;
     private final InterfaceAdmin interfaceAdmin;
@@ -168,6 +168,7 @@ public class ControllerGUICashbox implements ActionListener {
                 break;
             }
         }
+        /*Botón de nuevo gasto*/
         if (e.getSource() == gui.getBtnNewExpense()) {
             try {
                 List<Map> providers;
@@ -186,7 +187,7 @@ public class ControllerGUICashbox implements ActionListener {
                         int idProvider = guiPay.getProvider();
                         String datePaid = Dates.dateToMySQLDate(Calendar.getInstance().getTime(), false);
                         interfacePayments.createPayment(idProvider, detail, payAdmin + payBox, -1, datePaid, nameAdmin);
-                        int auxType;
+                        int auxType; //Indica el tipo de gasto que fue cargado. Si no tiene proveedor, es otro gasto.
                         if (idProvider == -1) {
                             auxType = 3;
                         } else {
@@ -206,7 +207,7 @@ public class ControllerGUICashbox implements ActionListener {
                             Iterator<Map> it = admins.iterator();
                             while (it.hasNext() && idAdmin == -1) {
                                 Map a = it.next();
-                                if (((String) a.get("name")) == nameAdmin) {
+                                if (((String) a.get("name")).equals(nameAdmin)) {
                                     idAdmin = (Integer) a.get("id");
                                 }
                             }
@@ -261,88 +262,87 @@ public class ControllerGUICashbox implements ActionListener {
                 parametros.put("esig", gui.getECNextTurnField().getText());
                 parametros.put("esaldo", gui.getECBalanceField().getText());
                 List<EntregaMozo> entregas = new ArrayList();
-                
-                    for (int i = 0; i < gui.getWaiterDepositsTable().getRowCount(); i++) {
-                        EntregaMozo em = new EntregaMozo(gui.getWaiterDepositsTable().getValueAt(i, 0),
-                                gui.getWaiterDepositsTable().getValueAt(i, 1),
-                                gui.getWaiterDepositsTable().getValueAt(i, 2),
-                                gui.getWaiterDepositsTable().getValueAt(i, 3));
-                        entregas.add(em);
-                    }
-                    EntregaMozo em = new EntregaMozo(" "," ","TOTAL: ",gui.getWaiterDepositsTotalField().getText());
+
+                for (int i = 0; i < gui.getWaiterDepositsTable().getRowCount(); i++) {
+                    EntregaMozo em = new EntregaMozo(gui.getWaiterDepositsTable().getValueAt(i, 0),
+                            gui.getWaiterDepositsTable().getValueAt(i, 1),
+                            gui.getWaiterDepositsTable().getValueAt(i, 2),
+                            gui.getWaiterDepositsTable().getValueAt(i, 3));
                     entregas.add(em);
-                    
-                    jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JRBeanCollectionDataSource(entregas));
-                    ////////////////
-                    List<EntregaRetiroPersona> entregasPersona = new ArrayList();
-                    if (gui.getAdminDepositsTable().getRowCount() > 0) {
-                        for (int i = 0; i < gui.getAdminDepositsTable().getRowCount(); i++) {
-                            EntregaRetiroPersona ep = new EntregaRetiroPersona(gui.getAdminDepositsTable().getValueAt(i, 0),
-                                    gui.getAdminDepositsTable().getValueAt(i, 1),
-                                    gui.getAdminDepositsTable().getValueAt(i, 2),
-                                    gui.getAdminDepositsTable().getValueAt(i, 3));
-                            entregasPersona.add(ep);
-                        }
-                        EntregaRetiroPersona ep = new EntregaRetiroPersona(null,null,"TOTAL: ",gui.getAdminDepositsTotalField().getText());
+                }
+                EntregaMozo em = new EntregaMozo(" ", " ", "TOTAL: ", gui.getWaiterDepositsTotalField().getText());
+                entregas.add(em);
+
+                jasperPrint = JasperFillManager.fillReport(reporte, parametros, new JRBeanCollectionDataSource(entregas));
+                ////////////////
+                List<EntregaRetiroPersona> entregasPersona = new ArrayList();
+                if (gui.getAdminDepositsTable().getRowCount() > 0) {
+                    for (int i = 0; i < gui.getAdminDepositsTable().getRowCount(); i++) {
+                        EntregaRetiroPersona ep = new EntregaRetiroPersona(gui.getAdminDepositsTable().getValueAt(i, 0),
+                                gui.getAdminDepositsTable().getValueAt(i, 1),
+                                gui.getAdminDepositsTable().getValueAt(i, 2),
+                                gui.getAdminDepositsTable().getValueAt(i, 3));
                         entregasPersona.add(ep);
-                        JasperReport reportePersona = (JasperReport) JRLoader.loadObject(getClass().getResource("/reports/cashboxReport/entregasCajaReport.jasper"));//cargo el reporte
-                        JasperPrint jasperPrint2;
-                        jasperPrint2 = JasperFillManager.fillReport(reportePersona, null, new JRBeanCollectionDataSource(entregasPersona));
-
-                        List pages = jasperPrint2.getPages();
-                        for (int j = 0; j < pages.size(); j++) {
-                            JRPrintPage object = (JRPrintPage) pages.get(j);
-                            jasperPrint.addPage(object);
-                        }
                     }
-                    
-                    List<EntregaRetiroPersona> retirosPersona = new ArrayList();
-                    if (gui.getWithdrawalsTable().getRowCount() > 0) {
-                        for (int i = 0; i < gui.getWithdrawalsTable().getRowCount(); i++) {
-                            EntregaRetiroPersona ep = new EntregaRetiroPersona(gui.getWithdrawalsTable().getValueAt(i, 0),
-                                    gui.getWithdrawalsTable().getValueAt(i, 1),
-                                    gui.getWithdrawalsTable().getValueAt(i, 2),
-                                    gui.getWithdrawalsTable().getValueAt(i, 3));
-                            retirosPersona.add(ep);
-                        }
-                        EntregaRetiroPersona ep = new EntregaRetiroPersona(null,null,"TOTAL: ",gui.getWithdrawalTotalField().getText());
+                    EntregaRetiroPersona ep = new EntregaRetiroPersona(null, null, "TOTAL: ", gui.getAdminDepositsTotalField().getText());
+                    entregasPersona.add(ep);
+                    JasperReport reportePersona = (JasperReport) JRLoader.loadObject(getClass().getResource("/reports/cashboxReport/entregasCajaReport.jasper"));//cargo el reporte
+                    JasperPrint jasperPrint2;
+                    jasperPrint2 = JasperFillManager.fillReport(reportePersona, null, new JRBeanCollectionDataSource(entregasPersona));
+
+                    List pages = jasperPrint2.getPages();
+                    for (int j = 0; j < pages.size(); j++) {
+                        JRPrintPage object = (JRPrintPage) pages.get(j);
+                        jasperPrint.addPage(object);
+                    }
+                }
+
+                List<EntregaRetiroPersona> retirosPersona = new ArrayList();
+                if (gui.getWithdrawalsTable().getRowCount() > 0) {
+                    for (int i = 0; i < gui.getWithdrawalsTable().getRowCount(); i++) {
+                        EntregaRetiroPersona ep = new EntregaRetiroPersona(gui.getWithdrawalsTable().getValueAt(i, 0),
+                                gui.getWithdrawalsTable().getValueAt(i, 1),
+                                gui.getWithdrawalsTable().getValueAt(i, 2),
+                                gui.getWithdrawalsTable().getValueAt(i, 3));
                         retirosPersona.add(ep);
-                        JasperReport reporteRetiroPersona = (JasperReport) JRLoader.loadObject(getClass().getResource("/reports/cashboxReport/retirosReport.jasper"));//cargo el reporte
-                        JasperPrint jasperPrint3;
-                        jasperPrint3 = JasperFillManager.fillReport(reporteRetiroPersona, null, new JRBeanCollectionDataSource(retirosPersona));
-
-                        List pages = jasperPrint3.getPages();
-                        for (int j = 0; j < pages.size(); j++) {
-                            JRPrintPage object = (JRPrintPage) pages.get(j);
-                            jasperPrint.addPage(object);
-                        }
                     }
-                    
-                    List<Detalle> detalles = new ArrayList();
-                    if (gui.getExpensesDetailTable().getRowCount() > 0) {
-                        for (int i = 0; i < gui.getExpensesDetailTable().getRowCount(); i++) {
-                            Detalle ep = new Detalle(gui.getExpensesDetailTable().getValueAt(i, 0),
-                                    gui.getExpensesDetailTable().getValueAt(i, 1),
-                                    gui.getExpensesDetailTable().getValueAt(i, 2),
-                                    gui.getExpensesDetailTable().getValueAt(i, 3));
-                            detalles.add(ep);
-                        }
-                        Detalle ep = new Detalle(null,null,"TOTAL: ",gui.getExpensesTotalField().getText());
+                    EntregaRetiroPersona ep = new EntregaRetiroPersona(null, null, "TOTAL: ", gui.getWithdrawalTotalField().getText());
+                    retirosPersona.add(ep);
+                    JasperReport reporteRetiroPersona = (JasperReport) JRLoader.loadObject(getClass().getResource("/reports/cashboxReport/retirosReport.jasper"));//cargo el reporte
+                    JasperPrint jasperPrint3;
+                    jasperPrint3 = JasperFillManager.fillReport(reporteRetiroPersona, null, new JRBeanCollectionDataSource(retirosPersona));
+
+                    List pages = jasperPrint3.getPages();
+                    for (int j = 0; j < pages.size(); j++) {
+                        JRPrintPage object = (JRPrintPage) pages.get(j);
+                        jasperPrint.addPage(object);
+                    }
+                }
+
+                List<Detalle> detalles = new ArrayList();
+                if (gui.getExpensesDetailTable().getRowCount() > 0) {
+                    for (int i = 0; i < gui.getExpensesDetailTable().getRowCount(); i++) {
+                        Detalle ep = new Detalle(gui.getExpensesDetailTable().getValueAt(i, 0),
+                                gui.getExpensesDetailTable().getValueAt(i, 1),
+                                gui.getExpensesDetailTable().getValueAt(i, 2),
+                                gui.getExpensesDetailTable().getValueAt(i, 3));
                         detalles.add(ep);
-                        JasperReport reporteDetalle = (JasperReport) JRLoader.loadObject(getClass().getResource("/reports/cashboxReport/detalleReport.jasper"));//cargo el reporte
-                        JasperPrint jasperPrint4;
-                        jasperPrint4 = JasperFillManager.fillReport(reporteDetalle, null, new JRBeanCollectionDataSource(detalles));
-
-                        List pages = jasperPrint4.getPages();
-                        for (int j = 0; j < pages.size(); j++) {
-                            JRPrintPage object = (JRPrintPage) pages.get(j);
-                            jasperPrint.addPage(object);
-                        }
                     }
-                    
-                    ////////////
-                    JasperViewer.viewReport(jasperPrint, false);
-                
+                    Detalle ep = new Detalle(null, null, "TOTAL: ", gui.getExpensesTotalField().getText());
+                    detalles.add(ep);
+                    JasperReport reporteDetalle = (JasperReport) JRLoader.loadObject(getClass().getResource("/reports/cashboxReport/detalleReport.jasper"));//cargo el reporte
+                    JasperPrint jasperPrint4;
+                    jasperPrint4 = JasperFillManager.fillReport(reporteDetalle, null, new JRBeanCollectionDataSource(detalles));
+
+                    List pages = jasperPrint4.getPages();
+                    for (int j = 0; j < pages.size(); j++) {
+                        JRPrintPage object = (JRPrintPage) pages.get(j);
+                        jasperPrint.addPage(object);
+                    }
+                }
+
+                ////////////
+                JasperViewer.viewReport(jasperPrint, false);
 
             } catch (JRException ex) {
                 Logger.getLogger(ControllerGuiProductList.class.getName()).log(Level.SEVERE, null, ex);
@@ -469,7 +469,18 @@ public class ControllerGUICashbox implements ActionListener {
         for (Map e : exp) {
             o[0] = e.get("id");
             o[1] = e.get("type");
-            o[2] = e.get("detail");
+            Object provider_id = e.get("provider_id");
+            Object purchase_id = e.get("purchase_id");
+            String detail = (String) e.get("detail");
+            if (provider_id != null) {
+                Map<String, Object> provider = interfaceProvider.getProvider((int) provider_id);
+                if (purchase_id != null) {
+                    detail += "- Compra realizada a: " + provider.get("name");
+                } else {
+                    detail += "- Pago realizado a: "+provider.get("name");
+                }
+            }
+            o[2] = detail;
             o[3] = ParserFloat.floatToString((Float) e.get("amount"));
             total = total + (Float) e.get("amount");
             gui.getExpensesTableModel().addRow(o);
