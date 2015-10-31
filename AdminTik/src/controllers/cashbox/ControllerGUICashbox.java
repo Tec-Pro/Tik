@@ -7,16 +7,19 @@ package controllers.cashbox;
 
 import controllers.deposits.ControllerGUINewDeposit;
 import controllers.ControllerMain;
+import controllers.providers.ControllerGuiTicketsPaid;
 import controllers.statistics.ControllerGuiProductList;
 import controllers.withdrawals.ControllerGUINewWithdrawal;
 import gui.cashbox.GUICashbox;
 import gui.cashbox.GuiPayProvider;
 import gui.deposit.GUINewDeposit;
+import gui.providers.GuiTicketDetails;
 import gui.providers.purchases.GuiPayPurchase;
 import gui.providers.purchases.GuiPurchase;
 import gui.withdrawal.GUINewWithdrawal;
 import interfaces.InterfaceAdmin;
 import interfaces.InterfaceOrder;
+import interfaces.InterfacePproduct;
 import interfaces.InterfaceTurn;
 import interfaces.InterfaceUser;
 import interfaces.cashbox.InterfaceCashbox;
@@ -24,6 +27,7 @@ import interfaces.cashbox.expenses.InterfaceExpenses;
 import interfaces.deposits.InterfaceDeposit;
 import interfaces.providers.InterfaceProvider;
 import interfaces.providers.payments.InterfacePayments;
+import interfaces.providers.purchases.InterfacePurchase;
 import interfaces.withdrawals.InterfaceWithdrawal;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -40,6 +44,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRPrintPage;
@@ -55,6 +61,7 @@ import reports.cashboxReport.EntregaRetiroPersona;
 import reports.userReport.UserData;
 import utils.Dates;
 import utils.InterfaceName;
+import utils.Pair;
 import utils.ParserFloat;
 
 /**
@@ -78,6 +85,8 @@ public class ControllerGUICashbox implements ActionListener {
     private static InterfaceExpenses expenses;
     private static InterfaceOrder crudOrder;
     private static GuiPurchase guiPurchase;
+    private final InterfacePproduct interfacePProduct;
+    private final InterfacePurchase interfacePurchase;
 
     public ControllerGUICashbox(GUICashbox guiCashbox, GuiPurchase guiPurchase) throws RemoteException, NotBoundException {
         gui = guiCashbox;
@@ -95,6 +104,8 @@ public class ControllerGUICashbox implements ActionListener {
         this.interfaceExpenses = (InterfaceExpenses) InterfaceName.registry.lookup(InterfaceName.CRUDExpenses);
         this.interfaceAdmin = (InterfaceAdmin) InterfaceName.registry.lookup(InterfaceName.CRUDAdmin);
         this.interfaceTurn = (InterfaceTurn) InterfaceName.registry.lookup(InterfaceName.CRUDTurn);
+        this.interfacePProduct = (InterfacePproduct) InterfaceName.registry.lookup(InterfaceName.CRUDPproduct);
+        this.interfacePurchase = (InterfacePurchase) InterfaceName.registry.lookup(InterfaceName.CRUDPurchase);
         gui.setActionListener(this);
         gui.getCashboxIncomeLabel().addMouseListener(new MouseAdapter() {
             @Override
@@ -119,6 +130,31 @@ public class ControllerGUICashbox implements ActionListener {
         loadExpenses();
         loadExistantCashbox();
         reloadDialyCashbox();
+        gui.getExpensesDetailTable().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    JTable target = (JTable) e.getSource();
+                    int row = target.getSelectedRow();
+                    if (row != -1) {
+                        //Muestro los detalles de la compra en un JDialog.
+                        GuiTicketDetails guiDetails = new GuiTicketDetails(ControllerMain.guiMain, true);
+                        try {
+                            //Cargo los detalles de la compra.
+                            //JOAKOOOOOOOO ACÁ VA TU PARTE
+                            //REEMPLAZAR EL 7 POR LA COLUMNA DONDE ESTÁ EL ID DE LA COMPRA, ASEGURATE QUE SEA STRING LA COLUMNA
+                            // Y PONELE "" SI NO ES UN PAGO A UNA FACTURA
+                            String idPurchase = (String) target.getValueAt(row, 7);
+                            if (!idPurchase.isEmpty()) {
+                                loadTicketDetails(Integer.valueOf(idPurchase), guiDetails);
+                            }
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(ControllerGuiTicketsPaid.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -477,7 +513,7 @@ public class ControllerGUICashbox implements ActionListener {
                 if (purchase_id != null) {
                     detail += "- Compra realizada a: " + provider.get("name");
                 } else {
-                    detail += "- Pago realizado a: "+provider.get("name");
+                    detail += "- Pago realizado a: " + provider.get("name");
                 }
             }
             o[2] = detail;
@@ -715,4 +751,38 @@ public class ControllerGUICashbox implements ActionListener {
             gui.getNewAdminDepositButton().setEnabled(false);
         }
     }
+
+    /**
+     * Función que carga los detalles de una compra en un JDialog nuevo.
+     *
+     * @param ticket_id id de la compra de la que se quiere saber los detalles.
+     * @param gui JDialog que contiene los detalles de la compra.
+     * @throws RemoteException
+     */
+    private void loadTicketDetails(int ticket_id, GuiTicketDetails gui) throws RemoteException {
+        Pair<Map<String, Object>, List<Map>> purchase = interfacePurchase.getPurchase(ticket_id);
+        gui.getTxtDate().setText(purchase.first().get("date").toString());
+        gui.getTxtTotal().setText(purchase.first().get("cost").toString());
+        gui.getTicketId().setText(purchase.first().get("id").toString());
+        DefaultTableModel dtmTableDetails = (DefaultTableModel) gui.getTableTicketDetails().getModel();
+        dtmTableDetails.setRowCount(0);
+        Object[] row = new Object[6];
+        for (Map<String, Object> product : purchase.second()) {
+            Map<String, Object> p = interfacePProduct.getPproduct((Integer.parseInt(product.get("pproduct_id").toString())));
+            row[0] = product.get("pproduct_id");
+            row[1] = p.get("name");
+            row[2] = product.get("amount");
+            row[3] = p.get("measure_unit");
+            if (p.get("measure_unit").equals("gr")) {
+                row[4] = (float) p.get("unit_price") * 100;
+            } else if (p.get("measure_unit").equals("ml")) {
+                row[4] = (float) p.get("unit_price") * 1000;
+            } else {
+                row[4] = p.get("unit_price");
+            }
+            row[5] = product.get("final_price");
+            dtmTableDetails.addRow(row);
+        }
+    }
+
 }

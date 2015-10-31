@@ -60,7 +60,7 @@ public class GuiPurchase extends javax.swing.JInternalFrame {
         tblDefaultProduct.setRowCount(0);
         tblDefaultProvider.setRowCount(0);
         lblIdProvider.setText("");
-        boxPay.setSelected(false);
+        boxPay.setSelected(true);
         
     }
     
@@ -334,6 +334,7 @@ public class GuiPurchase extends javax.swing.JInternalFrame {
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Abona");
 
+        boxPay.setSelected(true);
         boxPay.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 boxPayActionPerformed(evt);
@@ -346,6 +347,21 @@ public class GuiPurchase extends javax.swing.JInternalFrame {
 
         txtCost.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
         txtCost.setEnabled(false);
+        txtCost.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCostFocusLost(evt);
+            }
+        });
+        txtCost.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtCostMouseClicked(evt);
+            }
+        });
+        txtCost.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCostActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelImage4Layout = new javax.swing.GroupLayout(panelImage4);
         panelImage4.setLayout(panelImage4Layout);
@@ -597,6 +613,20 @@ public class GuiPurchase extends javax.swing.JInternalFrame {
     private void boxPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxPayActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_boxPayActionPerformed
+
+    private void txtCostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCostActionPerformed
+       
+    }//GEN-LAST:event_txtCostActionPerformed
+
+    private void txtCostMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtCostMouseClicked
+        if(evt.getClickCount() == 2 && btnCancel.isEnabled()){//si hizo dos click y esta comprando, lo habilito
+            txtCost.setEnabled(true); //habilito para que lo modifique
+        }
+    }//GEN-LAST:event_txtCostMouseClicked
+
+    private void txtCostFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCostFocusLost
+        txtCost.setEnabled(false);
+    }//GEN-LAST:event_txtCostFocusLost
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox boxPay;

@@ -70,5 +70,20 @@ public interface InterfacePurchase extends Remote {
      * @throws RemoteException
      */
     public List<Pair<SortedMap<String, Object>, List<Map>>> getProviderPurchasesBetweenDates(Integer idProvider, String from, String until) throws java.rmi.RemoteException;
+    
+    
+    /**
+     * modifica una compra, restaurando el stock, la estadisticas 
+     * @param cost
+     * @param paid
+     * @param date
+     * @param providerId
+     * @param datePaid
+     * @param products
+     * @param idPurchase
+     * @return
+     * @throws java.rmi.RemoteException 
+     */
+    public Integer modify(Float cost, Float paid, String date, Integer providerId, String datePaid, LinkedList<Pair<Integer, Pair<Float, Float>>> products, Integer idPurchase) throws java.rmi.RemoteException;
 
 }

@@ -169,7 +169,7 @@ public class ControllerGuiTicketsPaid {
         dtmTableDetails.setRowCount(0);
         Object[] row = new Object[6];
         for (Map<String, Object> product : purchase.second()) {
-            Map<String, Object> p = interfacePProduct.getPproduct((Integer.parseInt((String) product.get("pproduct_id"))));
+            Map<String, Object> p = interfacePProduct.getPproduct((Integer.parseInt( product.get("pproduct_id").toString())));
             row[0] = product.get("pproduct_id");
             row[1] = p.get("name");
             row[2] = product.get("amount");

@@ -301,7 +301,8 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
             GuiPayPurchase guiPayPurchase = new GuiPayPurchase(ControllerMain.guiMain, true, cost, admins);
             guiPayPurchase.setLocationRelativeTo(guiPurchase);
             guiPayPurchase.setVisible(true);
-            if (guiPayPurchase.getReturnStatus() == GuiPayPurchase.RET_OK) {
+            Integer returnGuiPay = guiPayPurchase.getReturnStatus();
+            if ( returnGuiPay== GuiPayPurchase.RET_OK) {
                 totalPaid = guiPayPurchase.getPayAdmin() + guiPayPurchase.getPayBox();
                 if (totalPaid <= cost) {
                     paid = totalPaid;
@@ -327,6 +328,8 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
                     deposit.createAdminDeposit(idAdmin, guiPayPurchase.getPayAdmin());
                     controllers.cashbox.ControllerGUICashbox.reloadAdminDeposits();
                 }
+            }else{// si cerro la gui de completar lo del pago, salgo de una
+                return -1;
             }
         }
         int idPurchase = interfacePurchase.create(cost, paid, datePurchase, providerId, datePaid, products);
@@ -363,7 +366,8 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
         if (ae.getSource().equals(guiPurchase.getBtnPurchase())) {
             if (!guiPurchase.getLblIdProvider().getText().equals("")) {
                 try {
-                    if (makePurchase() != null) {
+                    Integer idPurchase = makePurchase();
+                    if ( idPurchase!= null && idPurchase!=-1) { //si el idPurchase es -1 quiere decir que lo cancelo
                         JOptionPane.showMessageDialog(guiPurchase, "Se ha cargado la compra correctamente", "¡exito!", JOptionPane.INFORMATION_MESSAGE);
                         guiPurchase.clickCancel();
                     } else {

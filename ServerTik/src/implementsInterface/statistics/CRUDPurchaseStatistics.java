@@ -60,7 +60,7 @@ public class CRUDPurchaseStatistics extends UnicastRemoteObject implements Inter
     
     public static Purchasestatistic savePurchaseStatistics(int pproductsubcategory_id, String day, int pproduct_id, String ppname,
             String measure_unit, float quantity, float total_price, int provider_id,
-            float unit_price) {
+            float unit_price, int id_purchase) {
         Utils.abrirBase();
         Base.openTransaction();
         Pproductsubcategory pproductsubcategory = Pproductsubcategory.findById(pproductsubcategory_id);
@@ -78,7 +78,8 @@ public class CRUDPurchaseStatistics extends UnicastRemoteObject implements Inter
                 "provider_name", (Provider.findById(provider_id)).getString("name"),
                 "unit_price", unit_price,
                 "pproductcategory_name", pproductcategory.getString("name"),
-                "pproductsubcategory_name", pproductsubcategory.getString("name"));
+                "pproductsubcategory_name", pproductsubcategory.getString("name"),
+                "purchase_id", id_purchase);
         Base.commitTransaction();
         return purchasestatistic;
     }
