@@ -45,7 +45,7 @@ public class ControllerGuiOpenTurn implements ActionListener {
     GuiSummaryCashbox guiSummaryCashbox;
     ControllerGuiSummaryCashbox controllerGuiSummaryCashbox;
     GUICashbox guiCashbox;
-    private  GuiLogout guiLogout;
+    private GuiLogout guiLogout;
     private InterfaceTurn crudTurn;
     private InterfaceCashbox crudCashbox;
     private InterfaceWithdrawal crudWithdrawal;
@@ -59,7 +59,7 @@ public class ControllerGuiOpenTurn implements ActionListener {
     public ControllerGuiOpenTurn(GuiOpenTurn guiOpenTurn, GUICashbox guiCashbox, GuiLogout guiLogout) throws RemoteException, NotBoundException {
         this.guiOpenTurn = guiOpenTurn;
         this.guiCashbox = guiCashbox;
-        this.guiLogout= guiLogout;
+        this.guiLogout = guiLogout;
         crudExpenses = (InterfaceExpenses) InterfaceName.registry.lookup(InterfaceName.CRUDExpenses);
         crudTurn = (InterfaceTurn) InterfaceName.registry.lookup(InterfaceName.CRUDTurn);
         crudCashbox = (InterfaceCashbox) InterfaceName.registry.lookup(InterfaceName.CRUDCashbox);
@@ -153,6 +153,9 @@ public class ControllerGuiOpenTurn implements ActionListener {
             try {
                 if (crudPresence.isSomeoneLogin()) {
                     JOptionPane.showMessageDialog(guiMain, "Aun hay empleados logeados, por favor deslogee todos los empleados antes de cerrar la caja");
+                }
+                if (ControllerGUICashbox.ECLoadBalance() < 0f) {
+                    JOptionPane.showMessageDialog(guiMain, "Error: El saldo de la caja no puede ser negativo");
                 } else {
                     ControllerGUICashbox.reloadAdminDeposits();
                     ControllerGUICashbox.reloadExistantCashbox();
@@ -187,6 +190,9 @@ public class ControllerGuiOpenTurn implements ActionListener {
             try {
                 if (crudPresence.isSomeoneLogin()) {
                     JOptionPane.showMessageDialog(guiOpenTurn, "Aun hay empleados logeados, por favor deslogee todos los empleados antes de cerrar la caja");
+                }
+                if (ControllerGUICashbox.ECLoadBalance() < 0f) {
+                    JOptionPane.showMessageDialog(guiMain, "Error: El saldo de la caja no puede ser negativo");
                 } else {
                     ControllerGUICashbox.reloadAdminDeposits();
                     ControllerGUICashbox.reloadExistantCashbox();
