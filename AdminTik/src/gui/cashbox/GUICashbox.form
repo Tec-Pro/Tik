@@ -746,8 +746,9 @@
                     <Component class="javax.swing.JTable" name="expensesDetailTable">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="4" rowCount="0">
+                          <Table columnCount="5" rowCount="0">
                             <Column editable="false" title="ID" type="java.lang.Object"/>
+                            <Column editable="false" title="ID COMPRA" type="java.lang.String"/>
                             <Column editable="false" title="TIPO" type="java.lang.Object"/>
                             <Column editable="false" title="DETALLE" type="java.lang.Object"/>
                             <Column editable="false" title="MONTO" type="java.lang.Object"/>
@@ -755,7 +756,12 @@
                         </Property>
                         <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                           <TableColumnModel selectionModel="0">
-                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="30" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="35" resizable="true">
                               <Title/>
                               <Editor/>
                               <Renderer/>

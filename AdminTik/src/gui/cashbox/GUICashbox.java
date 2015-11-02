@@ -429,18 +429,29 @@ public class GUICashbox extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "ID", "TIPO", "DETALLE", "MONTO"
+                "ID", "ID COMPRA", "TIPO", "DETALLE", "MONTO"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
         jScrollPane5.setViewportView(expensesDetailTable);
+        if (expensesDetailTable.getColumnModel().getColumnCount() > 0) {
+            expensesDetailTable.getColumnModel().getColumn(0).setPreferredWidth(30);
+            expensesDetailTable.getColumnModel().getColumn(1).setPreferredWidth(35);
+        }
 
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("TOTAL");

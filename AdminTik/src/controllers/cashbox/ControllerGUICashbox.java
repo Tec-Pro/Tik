@@ -133,7 +133,7 @@ public class ControllerGUICashbox implements ActionListener {
         gui.getExpensesDetailTable().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
+                if (e.getClickCount() == 2  && e.getButton() == MouseEvent.BUTTON1) {
                     JTable target = (JTable) e.getSource();
                     int row = target.getSelectedRow();
                     if (row != -1) {
@@ -144,7 +144,7 @@ public class ControllerGUICashbox implements ActionListener {
                             //JOAKOOOOOOOO ACÁ VA TU PARTE
                             //REEMPLAZAR EL 7 POR LA COLUMNA DONDE ESTÁ EL ID DE LA COMPRA, ASEGURATE QUE SEA STRING LA COLUMNA
                             // Y PONELE "" SI NO ES UN PAGO A UNA FACTURA
-                            String idPurchase = (String) target.getValueAt(row, 7);
+                            String idPurchase = (String) target.getValueAt(row, 1);
                             if (!idPurchase.isEmpty()) {
                                 loadTicketDetails(Integer.valueOf(idPurchase), guiDetails);
                             }
@@ -500,24 +500,26 @@ public class ControllerGUICashbox implements ActionListener {
     private static void loadExpenses() throws RemoteException {
         List<Map> exp = expenses.getExpenses("N");
         gui.getExpensesTableModel().setRowCount(0);
-        Object[] o = new Object[4];
+        Object[] o = new Object[5];
         Float total = 0.0f;
         for (Map e : exp) {
             o[0] = e.get("id");
-            o[1] = e.get("type");
+            o[1] = "";
+            o[2] = e.get("type");
             Object provider_id = e.get("provider_id");
             Object purchase_id = e.get("purchase_id");
             String detail = (String) e.get("detail");
             if (provider_id != null) {
                 Map<String, Object> provider = interfaceProvider.getProvider((int) provider_id);
                 if (purchase_id != null) {
+                    o[1] = purchase_id;
                     detail += "- Compra realizada a: " + provider.get("name");
                 } else {
                     detail += "- Pago realizado a: " + provider.get("name");
                 }
             }
-            o[2] = detail;
-            o[3] = ParserFloat.floatToString((Float) e.get("amount"));
+            o[3] = detail;
+            o[4] = ParserFloat.floatToString((Float) e.get("amount"));
             total = total + (Float) e.get("amount");
             gui.getExpensesTableModel().addRow(o);
         }
