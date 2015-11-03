@@ -284,7 +284,7 @@ public class ControllerGUICashbox implements ActionListener {
                 JasperPrint jasperPrint;
                 Map<String, Object> parametros = new HashMap<String, Object>();
                 parametros.put("saldoInicial", gui.getDCInitialBalanceField().getText());
-                parametros.put("entrada", gui.getDCCashboxIncomeField().getText());
+                parametros.put("cajaEntrada", gui.getDCCashboxIncomeField().getText());
                 parametros.put("recM", gui.getDCEarningsFieldMorn().getText());
                 parametros.put("recT", gui.getDCEarningsFieldAft().getText());
                 parametros.put("gastos", gui.getDCExpensesField().getText());
