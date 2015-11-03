@@ -7,12 +7,19 @@ package implementsInterface;
 import interfaces.InterfacePresence;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import models.Presence;
 import models.User;
 import org.javalite.activejdbc.Base;
@@ -24,8 +31,27 @@ import utils.Utils;
  */
 public class CrudPresence extends UnicastRemoteObject implements InterfacePresence {
 
+    private Connection conn;
+    private String sql = "";
+
     public CrudPresence() throws RemoteException {
         super();
+    }
+
+    private void openBase() {
+        try {
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (conn == null || conn.isClosed()) {
+                conn = DriverManager.getConnection("jdbc:mysql://localhost/tik", "root", "root");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     @Override
@@ -35,7 +61,6 @@ public class CrudPresence extends UnicastRemoteObject implements InterfacePresen
         Date now = new Date(System.currentTimeMillis());
         SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat hour = new SimpleDateFormat("HH:mm:ss");
-
 
         Presence p = Presence.createIt("day", date.format(now), "entry_time", hour.format(now), "user_id", userId);
         User.findById(userId).set("order_count", 0);
@@ -64,30 +89,90 @@ public class CrudPresence extends UnicastRemoteObject implements InterfacePresen
 
     @Override
     public List<Map> getWaiters() throws RemoteException {
-        Utils.abrirBase();
-        List<Map> listP = new LinkedList<Map>();
-        for (Map m : Presence.where("departure_time = ?", "00:00:00").toMaps()) {
-            if (User.findById(m.get("user_id")).getString("position").equals("Mozo")) {
-                if (!listP.contains(User.findById(m.get("user_id")).toMap())) {
-                    listP.add(User.findById(m.get("user_id")).toMap());
-                }
+       openBase();
+        List<Map> ret = new LinkedList<>();
+        try {
+            sql = "SELECT * FROM tik.presences inner join tik.users where departure_time ='00:00:00' and position = 'Mozo' group by user_id ; ";
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                Map m = new HashMap();
+
+                m.put("id", rs.getObject("user_id"));
+                m.put("name", rs.getObject("name"));
+                m.put("surname", rs.getObject("surname"));
+                m.put("pass", rs.getObject("pass"));
+                m.put("date_hired", rs.getObject("date_hired"));
+                m.put("date_discharged", rs.getObject("date_discharged"));
+                m.put("turn", rs.getObject("turn"));
+                m.put("date_of_birth", rs.getObject("date_of_birth"));
+                m.put("place_of_birth", rs.getObject("place_of_birth"));
+                m.put("id_type", rs.getObject("id_type"));
+                m.put("id_number", rs.getObject("id_number"));
+                m.put("address", rs.getObject("address"));
+                m.put("home_phone", rs.getObject("home_phone"));
+                m.put("emergency_phone", rs.getObject("emergency_phone"));
+                m.put("mobile_phone", rs.getObject("mobile_phone"));
+                m.put("marital_status", rs.getObject("marital_status"));
+                m.put("blood_type", rs.getObject("blood_type"));
+                m.put("position", rs.getObject("position"));
+                m.put("order_count", rs.getObject("order_count"));
+                ret.add(m);
             }
+            rs.close();
+            stmt.close();
+            conn.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return listP;
+
+        return ret;
     }
 
     @Override
     public List<Map> getCooks() throws RemoteException {
-        Utils.abrirBase();
-        List<Map> listP = new LinkedList<Map>();
-        for (Map m : Presence.where("departure_time = ?", "00:00:00").toMaps()) {
-            if (User.findById(m.get("user_id")).getString("position").equals("Cocinero")) {
-                if (!listP.contains(User.findById(m.get("user_id")).toMap())) {
-                    listP.add(User.findById(m.get("user_id")).toMap());
-                }
+openBase();
+        List<Map> ret = new LinkedList<>();
+        try {
+            sql = "SELECT * FROM tik.presences inner join tik.users where departure_time ='00:00:00' and position = 'Cocinero' group by user_id ; ";
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                Map m = new HashMap();
+
+                m.put("id", rs.getObject("user_id"));
+                m.put("name", rs.getObject("name"));
+                m.put("surname", rs.getObject("surname"));
+                m.put("pass", rs.getObject("pass"));
+                m.put("date_hired", rs.getObject("date_hired"));
+                m.put("date_discharged", rs.getObject("date_discharged"));
+                m.put("turn", rs.getObject("turn"));
+                m.put("date_of_birth", rs.getObject("date_of_birth"));
+                m.put("place_of_birth", rs.getObject("place_of_birth"));
+                m.put("id_type", rs.getObject("id_type"));
+                m.put("id_number", rs.getObject("id_number"));
+                m.put("address", rs.getObject("address"));
+                m.put("home_phone", rs.getObject("home_phone"));
+                m.put("emergency_phone", rs.getObject("emergency_phone"));
+                m.put("mobile_phone", rs.getObject("mobile_phone"));
+                m.put("marital_status", rs.getObject("marital_status"));
+                m.put("blood_type", rs.getObject("blood_type"));
+                m.put("position", rs.getObject("position"));
+                m.put("order_count", rs.getObject("order_count"));
+                ret.add(m);
             }
+            rs.close();
+            stmt.close();
+            conn.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return listP;
+
+        return ret;
     }
 
     @Override
@@ -166,6 +251,27 @@ public class CrudPresence extends UnicastRemoteObject implements InterfacePresen
                 return false;
             }
         }
+    }
+
+    @Override
+    public boolean userIsLogin(int idUser) throws RemoteException {
+        openBase();
+        boolean ret = false;
+        try {
+            sql = "SELECT * from presences WHERE departure_time = '00:00:00' and user_id ='" + idUser + "';";
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next() && ret == false) {
+                ret = true;
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
     }
 
     @Override

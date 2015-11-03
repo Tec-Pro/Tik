@@ -8,6 +8,7 @@ import implementsInterface.statistics.CRUDPurchaseStatistics;
 import interfaces.providers.purchases.InterfacePurchase;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,7 +35,7 @@ public class CRUDPurchase extends UnicastRemoteObject implements InterfacePurcha
     }
 
     @Override
-    public Integer create(Float cost, Float paid, String date, Integer providerId, String datePaid, LinkedList<Pair<Integer, Pair<Float, Float>>> products) {
+    public Integer create(Float cost, Float paid, String date, Integer providerId, String datePaid, LinkedList<Pair<Integer, Pair<Float, Float>>> products, HashMap<Integer, Float> ivaProducts) {
         Utils.abrirBase();
         Base.openTransaction();
         Purchase purchase = Purchase.createIt(
@@ -53,7 +54,8 @@ public class CRUDPurchase extends UnicastRemoteObject implements InterfacePurcha
                         "pproduct_id", pair.first(),
                         "purchase_id", purchase.getId(),
                         "amount", pair.second().first(),
-                        "final_price", pair.second().second()
+                        "final_price", pair.second().second(),
+                        "iva", 21
                 );
                 if (pproductPurchase != null) {
                     Pproduct pproduct = Pproduct.findById(pair.first());
@@ -76,10 +78,10 @@ public class CRUDPurchase extends UnicastRemoteObject implements InterfacePurcha
                     pproduct.saveIt();
                     //calculo las estadisticas de compras de productos primarios
                     String measureUnit = ""; //Paso la unidad de medida a Litro o Kg segun corresponda
-                    if (pproduct.getString("measure_unit").equals("gr")){
+                    if (pproduct.getString("measure_unit").equals("gr")) {
                         measureUnit = "Kg";
-                    }else{
-                        if (pproduct.getString("measure_unit").equals("ml")){
+                    } else {
+                        if (pproduct.getString("measure_unit").equals("ml")) {
                             measureUnit = "L";
                         }
                     }
@@ -89,9 +91,9 @@ public class CRUDPurchase extends UnicastRemoteObject implements InterfacePurcha
                     float quantity = pair.second().first(); //cantidad de pproduct que se compró
                     float price = pair.second().second(); //precio del pproduct por Litro, Kg o Unidad
                     float totalPrice = quantity * price; //precio total de la cantidad por el precio unitario de cada pproduct
-                    CRUDPurchaseStatistics.savePurchaseStatistics(pproductSubcategoryId,date,pproductId, pproductName,
-                            measureUnit, quantity,totalPrice, providerId, price,idPurchase);
-            
+                    CRUDPurchaseStatistics.savePurchaseStatistics(pproductSubcategoryId, date, pproductId, pproductName,
+                            measureUnit, quantity, totalPrice, providerId, price, idPurchase);
+
                 }
             }
         }
@@ -154,9 +156,9 @@ public class CRUDPurchase extends UnicastRemoteObject implements InterfacePurcha
         }
         return result;
     }
-    
+
     @Override
-    public Integer modify(Float cost, Float paid, String date, Integer providerId, String datePaid, LinkedList<Pair<Integer, Pair<Float, Float>>> products, Integer idPurchase) throws RemoteException {
+    public Integer modify(Float cost, Float paid, String date, Integer providerId, String datePaid, LinkedList<Pair<Integer, Pair<Float, Float>>> products, Integer idPurchase, HashMap<Integer, Float> ivaProducts) throws RemoteException {
         Utils.abrirBase();
         Base.openTransaction();
         Purchase purchase = Purchase.findById(idPurchase);
@@ -169,17 +171,17 @@ public class CRUDPurchase extends UnicastRemoteObject implements InterfacePurcha
         );
         purchase.saveIt();
         if (purchase.saveIt()) {
-            LazyList<PproductsPurchases> restoreStock= PproductsPurchases.find("purchase_id = ?", idPurchase);
-            Iterator<PproductsPurchases> itRestore= restoreStock.iterator();
-            while(itRestore.hasNext()){
-                PproductsPurchases p= itRestore.next();
+            LazyList<PproductsPurchases> restoreStock = PproductsPurchases.find("purchase_id = ?", idPurchase);
+            Iterator<PproductsPurchases> itRestore = restoreStock.iterator();
+            while (itRestore.hasNext()) {
+                PproductsPurchases p = itRestore.next();
                 Pproduct pproduct = Pproduct.findById(p.get("pproduct_id"));
-                pproduct.set("stock", pproduct.getFloat("stock")+p.getFloat("amount")); //restauro el stock
+                pproduct.set("stock", pproduct.getFloat("stock") + p.getFloat("amount")); //restauro el stock
                 pproduct.saveIt();
             }
             //remuevo las estadisticas de compra
             Purchasestatistic.delete("purchase_id = ?", idPurchase);
-            
+
             //ahora que restaure el stock elimino todas las relaciones y las vuelvo a crear más abajo
             PproductsPurchases.delete("purchase_id = ?", idPurchase);
 
@@ -190,7 +192,8 @@ public class CRUDPurchase extends UnicastRemoteObject implements InterfacePurcha
                         "pproduct_id", pair.first(),
                         "purchase_id", purchase.getId(),
                         "amount", pair.second().first(),
-                        "final_price", pair.second().second()
+                        "final_price", pair.second().second(),
+                        "iva",21
                 );
                 if (pproductPurchase != null) {
                     Pproduct pproduct = Pproduct.findById(pair.first());
@@ -213,10 +216,10 @@ public class CRUDPurchase extends UnicastRemoteObject implements InterfacePurcha
                     pproduct.saveIt();
                     //calculo las estadisticas de compras de productos primarios
                     String measureUnit = ""; //Paso la unidad de medida a Litro o Kg segun corresponda
-                    if (pproduct.getString("measure_unit").equals("gr")){
+                    if (pproduct.getString("measure_unit").equals("gr")) {
                         measureUnit = "Kg";
-                    }else{
-                        if (pproduct.getString("measure_unit").equals("ml")){
+                    } else {
+                        if (pproduct.getString("measure_unit").equals("ml")) {
                             measureUnit = "L";
                         }
                     }
@@ -226,9 +229,9 @@ public class CRUDPurchase extends UnicastRemoteObject implements InterfacePurcha
                     float quantity = pair.second().first(); //cantidad de pproduct que se compró
                     float price = pair.second().second(); //precio del pproduct por Litro, Kg o Unidad
                     float totalPrice = quantity * price; //precio total de la cantidad por el precio unitario de cada pproduct
-                    CRUDPurchaseStatistics.savePurchaseStatistics(pproductSubcategoryId,date,pproductId, pproductName,
-                            measureUnit, quantity,totalPrice, providerId, price,idPurchase);
-            
+                    CRUDPurchaseStatistics.savePurchaseStatistics(pproductSubcategoryId, date, pproductId, pproductName,
+                            measureUnit, quantity, totalPrice, providerId, price, idPurchase);
+
                 }
             }
         }

@@ -69,14 +69,17 @@ public class ControllerGuiLoginGrid implements ActionListener {
      */
     public void addMyComponent(String user) {
         //instancia nueva a componente
-        ComponentUserLoginBtn cULBtn = new ComponentUserLoginBtn(user);
-        cULBtn.btn.addActionListener(this);//escucha eventos
-        cULBtn.setSize(guiLoginGrid.getBtnLogin().getSize());
-        guiLoginGrid.getPanelLogin().add(cULBtn);//se añade al jpanel 
-        guiLoginGrid.getPanelLogin().revalidate();
-        cULBtn.setVisible(true);
-        //se añade al MAP
-        this.buttons.put(user, cULBtn);
+        if (!buttons.containsKey(user)) {
+            ComponentUserLoginBtn cULBtn = new ComponentUserLoginBtn(user);
+            cULBtn.btn.addActionListener(this);//escucha eventos
+            cULBtn.setSize(guiLoginGrid.getBtnLogin().getSize());
+            guiLoginGrid.getPanelLogin().add(cULBtn);//se añade al jpanel 
+            guiLoginGrid.getPanelLogin().revalidate();
+            cULBtn.setVisible(true);
+            //se añade al MAP
+            this.buttons.put(user, cULBtn);
+        }
+
     }
 
     @Override
@@ -153,12 +156,18 @@ public class ControllerGuiLoginGrid implements ActionListener {
                                     Logger.getLogger(ControllerGuiLoginGrid.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                             } else {
-                                try {
+                                if (crudPresence.userIsLogin(userId)) {
+                                    try {
+                                        guiLogin.setVisible(false);
+                                        guiLoginGrid.setVisible(false);
+                                        controllerGuiMain.waiterInit(userId);
+                                    } catch (RemoteException ex) {
+                                        Logger.getLogger(ControllerGuiLoginGrid.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                } else {//no esta loggeado
                                     guiLogin.setVisible(false);
-                                    guiLoginGrid.setVisible(false);
-                                    controllerGuiMain.waiterInit(userId);
-                                } catch (RemoteException ex) {
-                                    Logger.getLogger(ControllerGuiLoginGrid.class.getName()).log(Level.SEVERE, null, ex);
+                                    JOptionPane.showMessageDialog(guiLoginGrid, "Se le ha cerrado la sesión", "Error!", JOptionPane.ERROR_MESSAGE);
+                                    repaintUsers();
                                 }
                             }
                         } else {
@@ -174,17 +183,7 @@ public class ControllerGuiLoginGrid implements ActionListener {
                 }
             } else {
                 JOptionPane.showMessageDialog(guiLoginGrid, "Ocurrió un error, no hay ningun turno abierto", "Error!", JOptionPane.ERROR_MESSAGE);
-                for (int i = 1; i < guiLoginGrid.getPanelLogin().getComponents().length; i++) {
-                    guiLoginGrid.getPanelLogin().remove(i);
-                }
-                guiLoginGrid.getPanelLogin().revalidate();
-                guiLoginGrid.getPanelLogin().repaint();
-                for (Map m : crudPresence.getWaiters()) {
-                    online.add(m);
-                    String usr = (int) m.get("id") + "-" + (String) m.get("name") + " " + (String) m.get("surname");
-                    addMyComponent(usr);
-                }
-                newLog = false;
+                repaintUsers();
 
             }
         } catch (RemoteException ex) {
@@ -192,4 +191,20 @@ public class ControllerGuiLoginGrid implements ActionListener {
         }
     }
 
+    //repinta los usuarios
+    private void repaintUsers() throws RemoteException {
+        for (int i = 1; i < guiLoginGrid.getPanelLogin().getComponents().length; i++) {
+            guiLoginGrid.getPanelLogin().remove(i);
+        }
+        buttons.clear();
+        online.clear();
+        guiLoginGrid.getPanelLogin().revalidate();
+        guiLoginGrid.getPanelLogin().repaint();
+        for (Map m : crudPresence.getWaiters()) {
+            online.add(m);
+            String usr = (int) m.get("id") + "-" + (String) m.get("name") + " " + (String) m.get("surname");
+            addMyComponent(usr);
+        }
+        newLog = false;
+    }
 }

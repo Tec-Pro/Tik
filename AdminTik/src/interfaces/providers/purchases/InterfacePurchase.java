@@ -7,6 +7,7 @@ package interfaces.providers.purchases;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -28,10 +29,11 @@ public interface InterfacePurchase extends Remote {
      * @param providerId
      * @param datePaid
      * @param products
+     * @param ivaProducts
      * @return
      * @throws RemoteException
      */
-    public Integer create(Float cost, Float paid, String date, Integer providerId, String datePaid, LinkedList<Pair<Integer, Pair<Float, Float>>> products) throws java.rmi.RemoteException;
+    public Integer create(Float cost, Float paid, String date, Integer providerId, String datePaid, LinkedList<Pair<Integer, Pair<Float, Float>>> products,HashMap<Integer,Float> ivaProducts) throws java.rmi.RemoteException;
 
     /**
      * borra una compra
@@ -81,9 +83,10 @@ public interface InterfacePurchase extends Remote {
      * @param datePaid
      * @param products
      * @param idPurchase
+     * @param ivaProducts
      * @return
      * @throws java.rmi.RemoteException 
      */
-    public Integer modify(Float cost, Float paid, String date, Integer providerId, String datePaid, LinkedList<Pair<Integer, Pair<Float, Float>>> products, Integer idPurchase) throws java.rmi.RemoteException;
+    public Integer modify(Float cost, Float paid, String date, Integer providerId, String datePaid, LinkedList<Pair<Integer, Pair<Float, Float>>> products, Integer idPurchase,HashMap<Integer,Float> ivaProducts) throws java.rmi.RemoteException;
 
 }

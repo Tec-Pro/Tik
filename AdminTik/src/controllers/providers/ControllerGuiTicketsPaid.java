@@ -133,8 +133,9 @@ public class ControllerGuiTicketsPaid {
 
     /**
      * Función que carga las compras a un proveedor en la tabla.
+     *
      * @param purchasesProvider lista de compras a un proveedor.
-     * @throws RemoteException 
+     * @throws RemoteException
      */
     private void loadTicketsTable(List<Pair<SortedMap<String, Object>, List<Map>>> purchasesProvider) throws RemoteException {
         if (!purchasesProvider.isEmpty()) {
@@ -156,9 +157,10 @@ public class ControllerGuiTicketsPaid {
 
     /**
      * Función que carga los detalles de una compra en un JDialog nuevo.
+     *
      * @param ticket_id id de la compra de la que se quiere saber los detalles.
      * @param gui JDialog que contiene los detalles de la compra.
-     * @throws RemoteException 
+     * @throws RemoteException
      */
     private void loadTicketDetails(int ticket_id, GuiTicketDetails gui) throws RemoteException {
         Pair<Map<String, Object>, List<Map>> purchase = interfacePurchase.getPurchase(ticket_id);
@@ -169,19 +171,21 @@ public class ControllerGuiTicketsPaid {
         dtmTableDetails.setRowCount(0);
         Object[] row = new Object[6];
         for (Map<String, Object> product : purchase.second()) {
-            Map<String, Object> p = interfacePProduct.getPproduct((Integer.parseInt( product.get("pproduct_id").toString())));
+            Map<String, Object> p = interfacePProduct.getPproduct((Integer.parseInt(product.get("pproduct_id").toString())));
             row[0] = product.get("pproduct_id");
             row[1] = p.get("name");
             row[2] = product.get("amount");
             row[3] = p.get("measure_unit");
             if (p.get("measure_unit").equals("gr")) {
-                row[4] = (float) p.get("unit_price") * 100;
+                row[4] = (float) p.get("unit_price") * 1000;
             } else if (p.get("measure_unit").equals("ml")) {
                 row[4] = (float) p.get("unit_price") * 1000;
             } else {
                 row[4] = p.get("unit_price");
             }
-            row[5] = product.get("final_price");
+            //row[5] = product.get("iva");
+            //float addIva = ((float) product.get("final_price") * (float) product.get("iva")) / 100;
+            row[5] = (float) product.get("final_price");
             dtmTableDetails.addRow(row);
         }
     }

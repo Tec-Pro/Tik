@@ -14,7 +14,10 @@ import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
+import javax.swing.JSpinner;
 import javax.swing.KeyStroke;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import utils.ParserFloat;
 
 /**
@@ -32,29 +35,33 @@ public class GuiAddProductToPurchase extends javax.swing.JDialog {
      */
     public static final int RET_OK = 1;
 
+    private float manualCost; //aca guardo el costo que ingreso, así restauro
+
     /**
      * Creates new form guiAddProductToPurchase
      */
     public GuiAddProductToPurchase(java.awt.Frame parent, boolean modal, String unit, float cost) {
         super(parent, modal);
         initComponents();
-        switch(unit){
-                            case "gr":
-                                 unit = "Kg";
-                                 cost=cost*1000;
-                                 break;
-                            case "ml":
-                                 unit = "L";
-                                 cost=cost*1000;
-                                 break;   
-                            case "unitario":
-                                 unit = "unitario";
-                                 break;                                
-                        }
+        switch (unit) {
+            case "gr":
+                unit = "Kg";
+                cost = cost * 1000;
+                break;
+            case "ml":
+                unit = "L";
+                cost = cost * 1000;
+                break;
+            case "unitario":
+                unit = "unitario";
+                break;
+        }
         lblUnit.setText("(" + unit + ")");
         lblUnit1.setText("(" + unit + ")");
+        manualCost = cost;
+
         txtCost.setText(ParserFloat.floatToString(cost));
-        txtAmount.setText(ParserFloat.floatToString(new Float (1)));
+        txtAmount.setText(ParserFloat.floatToString(new Float(1)));
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
         InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
@@ -65,6 +72,16 @@ public class GuiAddProductToPurchase extends javax.swing.JDialog {
                 doClose(RET_CANCEL);
             }
         });
+        ChangeListener listener = new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                JSpinner jsp= (JSpinner) e.getSource();
+                float iva =getIva();
+                float addiva = (iva*manualCost)/100;
+                txtCost.setText(ParserFloat.floatToString(manualCost+addiva));
+            }
+        };
+        spnIva.addChangeListener(listener);
     }
 
     /**
@@ -80,6 +97,17 @@ public class GuiAddProductToPurchase extends javax.swing.JDialog {
 
     public float getReturnAmount() {
         return ParserFloat.stringToFloat(txtAmount.getText());
+    }
+
+    public float getIva() {
+        if (spnIva.getValue() instanceof Integer) {
+            return ((Integer) spnIva.getValue()).floatValue();
+        }
+        if (spnIva.getValue() instanceof Float) {
+            return (float) spnIva.getValue();
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -100,6 +128,9 @@ public class GuiAddProductToPurchase extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         lblUnit1 = new javax.swing.JLabel();
         txtAmount = new javax.swing.JFormattedTextField();
+        jLabel3 = new javax.swing.JLabel();
+        chkBoxIva = new javax.swing.JCheckBox();
+        spnIva = new javax.swing.JSpinner();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -133,13 +164,30 @@ public class GuiAddProductToPurchase extends javax.swing.JDialog {
         txtCost.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Precio total");
+        jLabel2.setText("Precio total (SIN IVA)");
 
         lblUnit1.setForeground(new java.awt.Color(255, 255, 255));
         lblUnit1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblUnit1.setText("jLabel2");
+        lblUnit1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                lblUnit1FocusLost(evt);
+            }
+        });
 
         txtAmount.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("IVA");
+
+        chkBoxIva.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkBoxIvaActionPerformed(evt);
+            }
+        });
+
+        spnIva.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.0f), null, null, Float.valueOf(1.0f)));
+        spnIva.setEnabled(false);
 
         javax.swing.GroupLayout panelImage1Layout = new javax.swing.GroupLayout(panelImage1);
         panelImage1.setLayout(panelImage1Layout);
@@ -154,19 +202,27 @@ public class GuiAddProductToPurchase extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cancelButton))
                     .addGroup(panelImage1Layout.createSequentialGroup()
-                        .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelImage1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblUnit1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(panelImage1Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblUnit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblUnit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCost, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtCost, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(panelImage1Layout.createSequentialGroup()
+                        .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelImage1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(chkBoxIva))
+                            .addGroup(panelImage1Layout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(89, 89, 89)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblUnit1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(spnIva))))
                 .addContainerGap())
         );
         panelImage1Layout.setVerticalGroup(
@@ -182,7 +238,12 @@ public class GuiAddProductToPurchase extends javax.swing.JDialog {
                     .addComponent(jLabel2)
                     .addComponent(lblUnit1)
                     .addComponent(txtCost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(spnIva)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(chkBoxIva, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                 .addGroup(panelImage1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelButton)
                     .addComponent(okButton))
@@ -220,6 +281,20 @@ public class GuiAddProductToPurchase extends javax.swing.JDialog {
         doClose(RET_CANCEL);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
+    private void chkBoxIvaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkBoxIvaActionPerformed
+        if (chkBoxIva.isSelected()) {
+            spnIva.setValue(21);
+            spnIva.setEnabled(true);
+        } else {
+            spnIva.setValue(0);
+            spnIva.setEnabled(false);
+        }
+    }//GEN-LAST:event_chkBoxIvaActionPerformed
+
+    private void lblUnit1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_lblUnit1FocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lblUnit1FocusLost
+
     private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
@@ -229,12 +304,15 @@ public class GuiAddProductToPurchase extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
+    private javax.swing.JCheckBox chkBoxIva;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel lblUnit;
     private javax.swing.JLabel lblUnit1;
     private javax.swing.JButton okButton;
     private org.edisoncor.gui.panel.PanelImage panelImage1;
+    private javax.swing.JSpinner spnIva;
     private javax.swing.JFormattedTextField txtAmount;
     private javax.swing.JFormattedTextField txtCost;
     // End of variables declaration//GEN-END:variables

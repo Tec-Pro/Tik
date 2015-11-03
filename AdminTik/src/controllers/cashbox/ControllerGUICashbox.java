@@ -144,13 +144,15 @@ public class ControllerGUICashbox implements ActionListener {
                             //JOAKOOOOOOOO ACÁ VA TU PARTE
                             //REEMPLAZAR EL 7 POR LA COLUMNA DONDE ESTÁ EL ID DE LA COMPRA, ASEGURATE QUE SEA STRING LA COLUMNA
                             // Y PONELE "" SI NO ES UN PAGO A UNA FACTURA
-                            String idPurchase = (String) target.getValueAt(row, 1);
+                            String idPurchase =  target.getValueAt(row, 1).toString();
                             if (!idPurchase.isEmpty()) {
                                 loadTicketDetails(Integer.valueOf(idPurchase), guiDetails);
                             }
                         } catch (RemoteException ex) {
                             Logger.getLogger(ControllerGuiTicketsPaid.class.getName()).log(Level.SEVERE, null, ex);
                         }
+                          //Muestro la GUI.
+                        guiDetails.setVisible(true);
                     }
                 }
             }
@@ -774,15 +776,17 @@ public class ControllerGUICashbox implements ActionListener {
             row[0] = product.get("pproduct_id");
             row[1] = p.get("name");
             row[2] = product.get("amount");
-            row[3] = p.get("measure_unit");
             if (p.get("measure_unit").equals("gr")) {
-                row[4] = (float) p.get("unit_price") * 100;
+                row[3] = "Kg";
             } else if (p.get("measure_unit").equals("ml")) {
-                row[4] = (float) p.get("unit_price") * 1000;
+                row[3] = "L";
             } else {
-                row[4] = p.get("unit_price");
+                 row[3] = "unitario";
             }
-            row[5] = product.get("final_price");
+            row[4] = product.get("final_price");
+            //row[5] = product.get("iva");
+            //float addIva = ((float) product.get("final_price") * (float) product.get("iva")) / 100;
+            row[5] = (float) product.get("final_price");
             dtmTableDetails.addRow(row);
         }
     }

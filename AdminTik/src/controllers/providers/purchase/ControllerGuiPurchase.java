@@ -29,6 +29,7 @@ import java.rmi.RemoteException;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -167,7 +168,7 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
                     Map<String, Object> product = interfacePproduct.getPproduct(id);
                     if (product != null) {
                         String measureUnit = (String) product.get("measure_unit");
-                        Float totalPrice = (float) product.get("unit_price");
+                        Float totalPrice = (float) product.get("unit_price"); //sin iva
                         Float amount = new Float(1);
                         GuiAddProductToPurchase guiAdd = new GuiAddProductToPurchase(ControllerMain.guiMain, true, measureUnit, totalPrice);
                         guiAdd.setLocationRelativeTo(guiPurchase);
@@ -191,6 +192,8 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
                                     break;
                             }
                             o[4] = ParserFloat.floatToString(totalPrice / amount);
+                            //o[5] = guiAdd.getIva();
+                            //float addIva = (totalPrice*guiAdd.getIva())/100;
                             o[5] = ParserFloat.floatToString(totalPrice);
                             tblDefaultPurchase.addRow(o);
                             guiPurchase.getTxtCost().setText(ParserFloat.floatToString(calculateCost()));
@@ -256,6 +259,7 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
             float cost = ParserFloat.stringToFloat((String) tblPurchase.getValueAt(i, 4));
             tblPurchase.setValueAt(ParserFloat.floatToString(amount), i, 2);
             tblPurchase.setValueAt(ParserFloat.floatToString(cost), i, 4);
+            //float addIva = ((amount * cost)*(Float) tblPurchase.getValueAt(i, 5))/100;
             tblPurchase.setValueAt(ParserFloat.floatToString(amount * cost), i, 5);
             result += amount * cost;
         }
@@ -332,7 +336,7 @@ public class ControllerGuiPurchase implements ActionListener, CellEditorListener
                 return -1;
             }
         }
-        int idPurchase = interfacePurchase.create(cost, paid, datePurchase, providerId, datePaid, products);
+        int idPurchase = interfacePurchase.create(cost, paid, datePurchase, providerId, datePaid, products,null);
         if (guiPurchase.getBoxPay().isSelected()) {
             interfacePayments.createPayment(providerId, "Se pagó " + ParserFloat.floatToString(paid) + " de la factura con id " + idPurchase + messageAux, totalPaid, idPurchase, datePurchase, nameAdmin);
             interfaceExpenses.createExpense(2, "Se le pagó la compra con id " + idPurchase, totalPaid, idPurchase, providerId, interfaceTurn.getTurn());

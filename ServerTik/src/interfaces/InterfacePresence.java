@@ -5,6 +5,7 @@
 package interfaces;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
 
@@ -100,7 +101,13 @@ public interface InterfacePresence extends Remote {
      */
     public boolean isSomeoneLogin() throws java.rmi.RemoteException;
     
-    
+    /**
+     * retorna true si un usuario está logeado aun
+     * @param idUser
+     * @return
+     * @throws RemoteException 
+     */
+    public boolean userIsLogin(int idUser)throws RemoteException ;
     /**
      * devuelve todos los mozos que estubieron online pero ahora no lo estan en el turno actual
      *

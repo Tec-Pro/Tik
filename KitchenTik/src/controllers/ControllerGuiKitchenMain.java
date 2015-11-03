@@ -91,6 +91,9 @@ public class ControllerGuiKitchenMain implements ActionListener {
         for (Map m : crudPresence.getCooks()) {
             online.add(m);
         }
+        for (Map m : crudPresence.getWaiters()) {
+            online.add(m);
+        }
         guiKitchenMain = new GuiKitchenMain();
         guiOrderPane = new GuiKitchenOrderPane();
         guiKitchenMain.setVisible(true);

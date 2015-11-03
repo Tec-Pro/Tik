@@ -20,6 +20,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
+import java.util.LinkedList;
 import javax.imageio.ImageIO;
 import models.Admin;
 import models.User;
@@ -33,6 +39,9 @@ import utils.Utils;
  * @author nico
  */
 public class CrudUser extends UnicastRemoteObject implements interfaces.InterfaceUser {
+
+    private Connection conn;
+    private String sql = "";
 
     public CrudUser() throws RemoteException {
         super();
@@ -169,33 +178,182 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
         return res;
     }
 
+    @Override
     public Map<String, Object> getUser(int id) throws java.rmi.RemoteException {
-        Utils.abrirBase();
-        Map<String, Object> ret = User.findById(id).toMap();
-        return ret;
+        openBase();
+                Map m = new HashMap();
+        try {
+            sql = "SELECT * from users where id ='" + id + "';";
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                m.put("id", rs.getObject("id"));
+                m.put("name", rs.getObject("name"));
+                m.put("surname", rs.getObject("surname"));
+                m.put("pass", rs.getObject("pass"));
+                m.put("date_hired", rs.getObject("date_hired"));
+                m.put("date_discharged", rs.getObject("date_discharged"));
+                m.put("turn", rs.getObject("turn"));
+                m.put("date_of_birth", rs.getObject("date_of_birth"));
+                m.put("place_of_birth", rs.getObject("place_of_birth"));
+                m.put("id_type", rs.getObject("id_type"));
+                m.put("id_number", rs.getObject("id_number"));
+                m.put("address", rs.getObject("address"));
+                m.put("home_phone", rs.getObject("home_phone"));
+                m.put("emergency_phone", rs.getObject("emergency_phone"));
+                m.put("mobile_phone", rs.getObject("mobile_phone"));
+                m.put("marital_status", rs.getObject("marital_status"));
+                m.put("blood_type", rs.getObject("blood_type"));
+                m.put("position", rs.getObject("position"));
+                m.put("order_count", rs.getObject("order_count"));
+                rs.close();
+                stmt.close();
+                conn.close();
+                return m;
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return m;
     }
 
+    @Override
     public List<Map> getUsers() throws java.rmi.RemoteException {
-        Utils.abrirBase();
-        List<Map> ret = User.findAll().toMaps();
+        openBase();
+        List<Map> ret = new LinkedList<>();
+        try {
+            sql = "SELECT * from users ";
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                Map m = new HashMap();
+
+                m.put("id", rs.getObject("id"));
+                m.put("name", rs.getObject("name"));
+                m.put("surname", rs.getObject("surname"));
+                m.put("pass", rs.getObject("pass"));
+                m.put("date_hired", rs.getObject("date_hired"));
+                m.put("date_discharged", rs.getObject("date_discharged"));
+                m.put("turn", rs.getObject("turn"));
+                m.put("date_of_birth", rs.getObject("date_of_birth"));
+                m.put("place_of_birth", rs.getObject("place_of_birth"));
+                m.put("id_type", rs.getObject("id_type"));
+                m.put("id_number", rs.getObject("id_number"));
+                m.put("address", rs.getObject("address"));
+                m.put("home_phone", rs.getObject("home_phone"));
+                m.put("emergency_phone", rs.getObject("emergency_phone"));
+                m.put("mobile_phone", rs.getObject("mobile_phone"));
+                m.put("marital_status", rs.getObject("marital_status"));
+                m.put("blood_type", rs.getObject("blood_type"));
+                m.put("position", rs.getObject("position"));
+                m.put("order_count", rs.getObject("order_count"));
+                ret.add(m);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         return ret;
     }
 
     public List<Map> getWaiters() throws java.rmi.RemoteException {
-        Utils.abrirBase();
-        List<Map> ret = User.where("position = ?", "Mozo").toMaps();
+        openBase();
+        List<Map> ret = new LinkedList<>();
+        try {
+            sql = "SELECT * from users WHERE position = 'Mozo';";
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                Map m = new HashMap();
+
+                m.put("id", rs.getObject("id"));
+                m.put("name", rs.getObject("name"));
+                m.put("surname", rs.getObject("surname"));
+                m.put("pass", rs.getObject("pass"));
+                m.put("date_hired", rs.getObject("date_hired"));
+                m.put("date_discharged", rs.getObject("date_discharged"));
+                m.put("turn", rs.getObject("turn"));
+                m.put("date_of_birth", rs.getObject("date_of_birth"));
+                m.put("place_of_birth", rs.getObject("place_of_birth"));
+                m.put("id_type", rs.getObject("id_type"));
+                m.put("id_number", rs.getObject("id_number"));
+                m.put("address", rs.getObject("address"));
+                m.put("home_phone", rs.getObject("home_phone"));
+                m.put("emergency_phone", rs.getObject("emergency_phone"));
+                m.put("mobile_phone", rs.getObject("mobile_phone"));
+                m.put("marital_status", rs.getObject("marital_status"));
+                m.put("blood_type", rs.getObject("blood_type"));
+                m.put("position", rs.getObject("position"));
+                m.put("order_count", rs.getObject("order_count"));
+                ret.add(m);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         return ret;
     }
 
     public List<Map> getCooks() throws java.rmi.RemoteException {
-        Utils.abrirBase();
-        List<Map> ret = User.where("position = ?", "Cocinero").toMaps();
+        openBase();
+        List<Map> ret = new LinkedList<>();
+        try {
+            sql = "SELECT * from users WHERE position = 'Cocinero'; ";
+            Statement stmt = conn.createStatement();
+            java.sql.ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                Map m = new HashMap();
+
+                m.put("id", rs.getObject("id"));
+                m.put("name", rs.getObject("name"));
+                m.put("surname", rs.getObject("surname"));
+                m.put("pass", rs.getObject("pass"));
+                m.put("date_hired", rs.getObject("date_hired"));
+                m.put("date_discharged", rs.getObject("date_discharged"));
+                m.put("turn", rs.getObject("turn"));
+                m.put("date_of_birth", rs.getObject("date_of_birth"));
+                m.put("place_of_birth", rs.getObject("place_of_birth"));
+                m.put("id_type", rs.getObject("id_type"));
+                m.put("id_number", rs.getObject("id_number"));
+                m.put("address", rs.getObject("address"));
+                m.put("home_phone", rs.getObject("home_phone"));
+                m.put("emergency_phone", rs.getObject("emergency_phone"));
+                m.put("mobile_phone", rs.getObject("mobile_phone"));
+                m.put("marital_status", rs.getObject("marital_status"));
+                m.put("blood_type", rs.getObject("blood_type"));
+                m.put("position", rs.getObject("position"));
+                m.put("order_count", rs.getObject("order_count"));
+                ret.add(m);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         return ret;
     }
 
     public boolean validatePass(int id, String pass) throws java.rmi.RemoteException {
         Utils.abrirBase();
-        
+
         byte[] passEncrypted = {0};
         try {
             passEncrypted = Encryption.encrypt(pass);
@@ -246,4 +404,21 @@ public class CrudUser extends UnicastRemoteObject implements interfaces.Interfac
         };
         thread.start();
     }
+
+    private void openBase() {
+        try {
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (conn == null || conn.isClosed()) {
+                conn = DriverManager.getConnection("jdbc:mysql://localhost/tik", "root", "root");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
 }
