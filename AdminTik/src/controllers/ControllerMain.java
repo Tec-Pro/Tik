@@ -190,7 +190,7 @@ public class ControllerMain implements ActionListener {
         controllerCRUDPproductCategory = new ControllerGuiPproductCategory(guiCRUDPproductCategory);
         controllerCRUDProviders = new ControllerGuiCRUDProviders(guiCRUDProviders);
         controllerCRUDUser = new ControllerGuiCRUDUser(guiCRUDUser);
-        controllerCRUDPProduct = new ControllerGuiCRUDPproduct(guiCRUDPProduct, guiLoadPurchase);
+        controllerCRUDPProduct = new ControllerGuiCRUDPproduct(guiCRUDPProduct, guiLoadPurchase,guiCRUDPproductCategory);
         controllerGuiMenu = new ControllerGuiMenu(guiMenu, guiMain);
         controllerGuiPurchase = new ControllerGuiPurchase(guiPurchase);
 //        controllerGuiCRUDWithdrawal = new ControllerGUICRUDWithdrawal(guiCRUDWithdrawal);

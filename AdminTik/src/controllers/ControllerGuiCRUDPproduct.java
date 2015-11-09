@@ -5,6 +5,7 @@
 package controllers;
 
 import gui.GuiCRUDPProduct;
+import gui.GuiCRUDPproductCategory;
 import gui.GuiLoadPurchase;
 import interfaces.InterfaceCategory;
 import interfaces.InterfacePproduct;
@@ -36,6 +37,7 @@ import utils.ParserFloat;
 public class ControllerGuiCRUDPproduct implements ActionListener {
 
     private GuiCRUDPProduct guiCRUDPProduct;
+    private GuiCRUDPproductCategory guiPProductCategory;
     private GuiLoadPurchase guiLoadPurchase;
     private JTable tableProducts;
     private DefaultTableModel tableProductsDefault;
@@ -55,8 +57,9 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
      * @throws MalformedURLException
      * @throws RemoteException
      */
-    public ControllerGuiCRUDPproduct(GuiCRUDPProduct guiCRUDPProduct, GuiLoadPurchase guiLoadPurchase) throws NotBoundException, MalformedURLException, RemoteException {
+    public ControllerGuiCRUDPproduct(GuiCRUDPProduct guiCRUDPProduct, GuiLoadPurchase guiLoadPurchase, GuiCRUDPproductCategory guiPProductCategory) throws NotBoundException, MalformedURLException, RemoteException {
         this.guiCRUDPProduct = guiCRUDPProduct;
+        this.guiPProductCategory = guiPProductCategory;
         if(ControllerMain.isAdmin())
             this.guiCRUDPProduct.setActionListener(this);
         this.guiLoadPurchase = guiLoadPurchase;
@@ -321,6 +324,11 @@ public class ControllerGuiCRUDPproduct implements ActionListener {
             } catch (RemoteException ex) {
                 Logger.getLogger(ControllerGuiCRUDPproduct.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+        //si presiono el boton de crear una categoria nueva
+        if(e.getSource() == guiCRUDPProduct.getBtnNewCategory()){
+            guiPProductCategory.setVisible(true);
+            guiPProductCategory.toFront();
         }
         if (e.getSource() == guiLoadPurchase.getBtnSave()) { //guardo la compra
             if (guiLoadPurchase.checkFields()) {

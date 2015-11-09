@@ -59,6 +59,7 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         this.btnSave.addActionListener(lis);
         this.btnPurchase.addActionListener(lis);
         this.btnCancel.addActionListener(lis);
+        this.btnNewCategory.addActionListener(lis);
     }
 
     /**
@@ -88,6 +89,7 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
     public void clicNewProduct() throws RemoteException {
         clear();
         loadCategory();
+        btnNewCategory.setEnabled(true);
         txtPrice.setEnabled(true);
         txtName.setEnabled(true);
         txtStock.setEnabled(true);
@@ -117,6 +119,7 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         btnModify.setEnabled(false);
         btnCancel.setEnabled(false);
         btnNew.setEnabled(true);
+        btnNewCategory.setEnabled(false);
         cboxMeasureUnit.setEnabled(false);
         proveedores.setEnabled(false);
         boxCategory.setEnabled(false);
@@ -153,6 +156,7 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         btnModify.setEnabled(false);
         btnCancel.setEnabled(false);
         btnNew.setEnabled(true);
+        btnNewCategory.setEnabled(false);
         cboxMeasureUnit.setEnabled(false);
         proveedores.setEnabled(false);
         boxCategory.setEnabled(false);
@@ -175,6 +179,7 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         btnModify.setEnabled(false);
         btnCancel.setEnabled(true);
         btnNew.setEnabled(false);
+        btnNewCategory.setEnabled(false);
         cboxMeasureUnit.setEditable(true);
         proveedores.setEnabled(true);
         boxCategory.setEnabled(true);
@@ -215,6 +220,10 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
 
     public JButton getBtnCancel() {
         return btnCancel;
+    }
+
+    public JButton getBtnNewCategory() {
+        return btnNewCategory;
     }
 
     /**
@@ -440,6 +449,7 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
         btnNew = new javax.swing.JButton();
         btnPurchase = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
+        btnNewCategory = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
 
         setClosable(true);
@@ -630,6 +640,9 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
                 .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
+        btnNewCategory.setText("+ Categoría");
+        btnNewCategory.setEnabled(false);
+
         javax.swing.GroupLayout panelImage2Layout = new javax.swing.GroupLayout(panelImage2);
         panelImage2.setLayout(panelImage2Layout);
         panelImage2Layout.setHorizontalGroup(
@@ -676,8 +689,10 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(boxSubcategory, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 185, Short.MAX_VALUE))
+                        .addComponent(boxSubcategory, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnNewCategory)))
+                .addGap(0, 119, Short.MAX_VALUE))
         );
         panelImage2Layout.setVerticalGroup(
             panelImage2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -714,7 +729,8 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
                     .addComponent(jLabel1)
                     .addComponent(boxCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
-                    .addComponent(boxSubcategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(boxSubcategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnNewCategory))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelImage3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -828,6 +844,7 @@ public class GuiCRUDPProduct extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnModify;
     private javax.swing.JButton btnNew;
+    private javax.swing.JButton btnNewCategory;
     private javax.swing.JButton btnPurchase;
     private javax.swing.JButton btnSave;
     private javax.swing.JComboBox cboxMeasureUnit;
